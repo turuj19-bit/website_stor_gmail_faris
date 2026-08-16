@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kirim Notifikasi Telegram</title>
+</head>
+<body>
+    <h1>Kirim Pesan ke Telegram</h1>
+    <button onclick="kirimPesan()">Kirim Test</button>
+    <div id="status"></div>
+
+    <script>
+        // Konfigurasi
+        const BOT_TOKEN = '8942598358:AAEx2mQnXz3mZtQOsYBr0vZ56VOCR_NJQiY';
+        const CHAT_ID = '7607446655';
+
+        function kirimPesan() {
+            const pesan = 
+                "儲存格式 - FORMAT RULES\n" +
+                "• Nomor wa mu : 081234567890\n" +
+                "• Nama mu : Faris\n" +
+                "• Tanggal Stor : 11/08/2026\n" +
+                "• No Dana : 081234567890\n" +
+                "• Stor Berapa : 3\n" +
+                "• Kirim Gmail ↓ :\nsyifahadju@gmail.com\nsyifahadju24@gmail.com\n\n" +
+                "• Password : aass1122\n\n" +
+                "Noted! \n" +
+                "— wajib mengirim gmail menggunakan format ini\n" +
+                "— format wajib terisi penuh agar tidak miss komunikasi.\n" +
+                "— jika tidak mengerti silahkan tanyakan";
+
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+            const data = {
+                chat_id: CHAT_ID,
+                text: pesan,
+                parse_mode: 'HTML'
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(result => {
+                if (result.ok) {
+                    document.getElementById('status').innerHTML = '✅ Pesan terkirim!';
+                } else {
+                    document.getElementById('status').innerHTML = '❌ Gagal: ' + result.description;
+                }
+            })
+            .catch(err => {
+                document.getElementById('status').innerHTML = '❌ Error: ' + err.message;
+            });
+        }
+    </script>
+</body>
+</html>

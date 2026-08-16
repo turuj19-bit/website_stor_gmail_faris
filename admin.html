@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Dashboard Admin · STOR GMAIL</title>
+
+    <!-- Font & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        /* ============================================
+                   ROOT VARIABLES & RESET
+                   ============================================ */
+        :root {
+            --bg-primary: #0a0a12;
+            --bg-secondary: #111122;
+            --bg-card: #16162e;
+            --bg-card-hover: #1e1e3a;
+            --bg-input: #0f0f22;
+            --bg-sidebar: #0c0c1a;
+            --bg-sidebar-hover: #1a1a3a;
+            --text-primary: #f0f0ff;
+            --text-secondary: #a0a0c0;
+            --text-muted: #6a6a8a;
+            --border-color: #2a2a4a;
+            --blue-primary: #3b82f6;
+            --blue-light: #60a5fa;
+            --blue-dark: #1d4ed8;
+            --blue-glow: rgba(59, 130, 246, 0.25);
+            --green: #22c55e;
+            --green-bg: rgba(34, 197, 94, 0.15);
+            --red: #ef4444;
+            --red-bg: rgba(239, 68, 68, 0.15);
+            --orange: #f59e0b;
+            --orange-bg: rgba(245, 158, 11, 0.15);
+            --radius: 14px;
+            --radius-sm: 10px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --sidebar-width: 260px;
+            --header-height: 68px;
+        }
+
+        /* Light mode */
+        [data-theme="light"] {
+            --bg-primary: #f0f2f8;
+            --bg-secondary: #e4e7ef;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f5f7fc;
+            --bg-input: #eef1f7;
+            --bg-sidebar: #ffffff;
+            --bg-sidebar-hover: #eef2f9;
+            --text-primary: #0a0a1a;
+            --text-secondary: #3a3a5a;
+            --text-muted: #7a7a9a;
+            --border-color: #d0d5e0;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 15px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: background var(--transition), color var(--transition);
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--blue-primary);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--blue-light);
+        }
+
+        /* ============================================
+                   LOGIN SCREEN
+                   ============================================ */
+        #loginScreen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-primary);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        #loginScreen.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.96);
+        }
+
+        .login-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 44px 40px 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--shadow);
+            transition: background var(--transition), border var(--transition);
+        }
+        .login-box .logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .login-box .logo h1 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--blue-light), var(--blue-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .login-box .logo p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 4px;
+            -webkit-text-fill-color: var(--text-secondary);
+        }
+        .login-box label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 13px 16px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-size: 15px;
+            font-family: inherit;
+            transition: border var(--transition), box-shadow var(--transition);
+            outline: none;
+        }
+        .login-box input:focus {
+            border-color: var(--blue-primary);
+            box-shadow: 0 0 0 4px var(--blue-glow);
+        }
+        .login-box .input-group {
+            margin-bottom: 18px;
+        }
+        .login-box .error-msg {
+            color: var(--red);
+            font-size: 13px;
+            margin-top: 6px;
+            min-height: 20px;
+            font-weight: 500;
+        }
+        .login-box .btn-login {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, var(--blue-primary), var(--blue-dark));
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.25s;
+            box-shadow: 0 4px 16px var(--blue-glow);
+            font-family: inherit;
+        }
+        .login-box .btn-login:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 28px var(--blue-glow);
+        }
+        .login-box .btn-login:active {
+            transform: scale(0.97);
+        }
+        .login-box .login-footer {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+                   LAYOUT: SIDEBAR + MAIN
+                   ============================================ */
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .app-layout.visible {
+            opacity: 1;
+        }
+
+        /* ---- SIDEBAR ---- */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: var(--sidebar-width);
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0 24px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                background var(--transition),
+                border var(--transition);
+            z-index: 100;
+            overflow-y: auto;
+        }
+        .sidebar .brand {
+            padding: 0 22px 24px 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 16px;
+        }
+        .sidebar .brand i {
+            font-size: 28px;
+            color: var(--blue-primary);
+        }
+        .sidebar .brand span {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, var(--blue-light), var(--blue-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .sidebar .nav {
+            flex: 1;
+            padding: 0 12px;
+        }
+        .sidebar .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 11px 16px;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all var(--transition);
+            text-decoration: none;
+            border: none;
+            background: transparent;
+            width: 100%;
+            font-family: inherit;
+            margin-bottom: 2px;
+        }
+        .sidebar .nav-item i {
+            width: 22px;
+            font-size: 16px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .sidebar .nav-item:hover {
+            background: var(--bg-sidebar-hover);
+            color: var(--text-primary);
+        }
+        .sidebar .nav-item.active {
+            background: var(--blue-glow);
+            color: var(--blue-light);
+            box-shadow: inset 3px 0 0 var(--blue-primary);
+        }
+        .sidebar .nav-item.logout {
+            margin-top: 8px;
+            color: var(--red);
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+            border-radius: 0;
+        }
+        .sidebar .nav-item.logout:hover {
+            background: var(--red-bg);
+            color: var(--red);
+        }
+        .sidebar .sidebar-footer {
+            padding: 16px 22px 0;
+            font-size: 11px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 8px;
+        }
+
+        /* ---- MAIN CONTENT ---- */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            min-height: 100vh;
+            padding: 0;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Header */
+        .top-header {
+            height: var(--header-height);
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            transition: background var(--transition), border var(--transition);
+            gap: 16px;
+        }
+        .top-header .left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .top-header .left .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 22px;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .top-header .left h2 {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+        .top-header .right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .top-header .right .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            font-family: inherit;
+        }
+        .top-header .right .theme-toggle:hover {
+            border-color: var(--blue-primary);
+            color: var(--text-primary);
+        }
+        .top-header .right .theme-toggle i {
+            font-size: 16px;
+        }
+        .top-header .right .admin-badge {
+            background: var(--blue-glow);
+            color: var(--blue-light);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        /* Page content */
+        .page-content {
+            padding: 28px 32px 40px;
+        }
+
+        /* ---- PAGE SECTIONS ---- */
+        .page-section {
+            display: none;
+            animation: fadeSlide 0.35s ease;
+        }
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================
+                   CARDS & STATS
+                   ============================================ */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 18px;
+            margin-bottom: 32px;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 20px 22px;
+            transition: all var(--transition);
+            box-shadow: var(--shadow);
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--blue-primary);
+        }
+        .stat-card .label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 6px;
+            letter-spacing: -0.5px;
+        }
+        .stat-card .value .currency {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-right: 2px;
+        }
+        .stat-card .icon-bg {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            background: var(--blue-glow);
+            color: var(--blue-light);
+        }
+        .stat-card .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .stat-card .change {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 30px;
+            background: var(--green-bg);
+            color: var(--green);
+        }
+
+        /* ---- CARDS GENERIC ---- */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 22px 24px;
+            box-shadow: var(--shadow);
+            transition: background var(--transition), border var(--transition);
+            margin-bottom: 24px;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        .card-header h3 {
+            font-size: 17px;
+            font-weight: 600;
+        }
+        .card-header .badge {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 30px;
+            background: var(--blue-glow);
+            color: var(--blue-light);
+        }
+
+        /* ---- TABLES ---- */
+        .table-wrap {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        table th {
+            text-align: left;
+            padding: 12px 10px 12px 0;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        table td {
+            padding: 12px 10px 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+            color: var(--text-primary);
+        }
+        table tr:last-child td {
+            border-bottom: none;
+        }
+        table .status-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 14px;
+            border-radius: 30px;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        .status-badge.pending {
+            background: var(--orange-bg);
+            color: var(--orange);
+        }
+        .status-badge.diterima {
+            background: var(--green-bg);
+            color: var(--green);
+        }
+        .status-badge.ditolak {
+            background: var(--red-bg);
+            color: var(--red);
+        }
+        .status-badge.open {
+            background: var(--green-bg);
+            color: var(--green);
+        }
+        .status-badge.close {
+            background: var(--red-bg);
+            color: var(--red);
+        }
+
+        /* ---- BUTTONS ---- */
+        .btn {
+            padding: 8px 18px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 13px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: var(--blue-primary);
+            color: #fff;
+            box-shadow: 0 2px 12px var(--blue-glow);
+        }
+        .btn-primary:hover {
+            background: var(--blue-dark);
+            transform: translateY(-1px);
+        }
+        .btn-success {
+            background: var(--green);
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #16a34a;
+        }
+        .btn-danger {
+            background: var(--red);
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        .btn-outline:hover {
+            border-color: var(--blue-primary);
+            color: var(--text-primary);
+        }
+        .btn-sm {
+            padding: 5px 14px;
+            font-size: 12px;
+        }
+        .btn-xs {
+            padding: 3px 12px;
+            font-size: 11px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        /* ---- FORM ELEMENTS ---- */
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: border var(--transition), box-shadow var(--transition);
+            outline: none;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--blue-primary);
+            box-shadow: 0 0 0 4px var(--blue-glow);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* ---- MODAL ---- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 32px 36px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: var(--shadow);
+            transform: scale(0.94) translateY(20px);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-overlay.open .modal-box {
+            transform: scale(1) translateY(0);
+        }
+        .modal-box h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .modal-box p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+        .modal-box .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+        .modal-box .modal-actions .btn {
+            min-width: 80px;
+            justify-content: center;
+        }
+
+        /* ---- ACTIVITY FEED ---- */
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        .activity-item .av {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--blue-glow);
+            color: var(--blue-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .activity-item .info {
+            flex: 1;
+        }
+        .activity-item .info .title {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .activity-item .info .time {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .activity-item .info .desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* ---- SEARCH / FILTER ---- */
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+        .filter-bar input,
+        .filter-bar select {
+            padding: 9px 14px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            transition: border var(--transition);
+            min-width: 160px;
+        }
+        .filter-bar input:focus,
+        .filter-bar select:focus {
+            border-color: var(--blue-primary);
+        }
+
+        /* ---- EMPTY STATE ---- */
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: var(--text-secondary);
+        }
+        .empty-state i {
+            font-size: 44px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+        .empty-state h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .top-header .left .menu-toggle {
+                display: block;
+            }
+            .top-header {
+                padding: 0 18px;
+            }
+            .page-content {
+                padding: 20px 18px 32px;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .modal-box {
+                padding: 24px 20px;
+                margin: 10px;
+            }
+            .login-box {
+                padding: 32px 24px;
+                margin: 16px;
+            }
+            .top-header .right .admin-badge {
+                display: none;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .stat-card {
+                padding: 14px 16px;
+            }
+            .stat-card .value {
+                font-size: 22px;
+            }
+            .stat-card .label {
+                font-size: 11px;
+            }
+            .card {
+                padding: 16px;
+            }
+            .top-header .left h2 {
+                font-size: 15px;
+            }
+            .top-header .right .theme-toggle span {
+                display: none;
+            }
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-bar input,
+            .filter-bar select {
+                min-width: unset;
+                width: 100%;
+            }
+            table {
+                font-size: 12px;
+            }
+            table th,
+            table td {
+                padding: 8px 6px 8px 0;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            .btn-group .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .modal-box .modal-actions {
+                flex-direction: column;
+            }
+            .modal-box .modal-actions .btn {
+                width: 100%;
+            }
+        }
+
+        /* ---- SIDEBAR OVERLAY (mobile) ---- */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 90;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+        }
+        .sidebar-overlay.open {
+            display: block;
+        }
+
+        /* ---- Notification toast ---- */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 24px;
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 380px;
+            width: 100%;
+        }
+        .toast {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 14px 18px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid var(--blue-primary);
+        }
+        .toast.success {
+            border-left-color: var(--green);
+        }
+        .toast.error {
+            border-left-color: var(--red);
+        }
+        .toast .toast-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .toast .toast-msg {
+            font-size: 14px;
+            font-weight: 500;
+            flex: 1;
+        }
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ---- Misc helpers ---- */
+        .text-muted {
+            color: var(--text-muted);
+        }
+        .text-secondary {
+            color: var(--text-secondary);
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .flex {
+            display: flex;
+        }
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .gap-12 {
+            gap: 12px;
+        }
+        .fw-600 {
+            font-weight: 600;
+        }
+        .truncate {
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .w-full {
+            width: 100%;
+        }
+
+        /* detail user modal extra */
+        .detail-section {
+            margin-top: 16px;
+        }
+        .detail-section h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        .detail-section .mini-list {
+            background: var(--bg-input);
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .detail-section .mini-list .item {
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .detail-section .mini-list .item:last-child {
+            border-bottom: none;
+        }
+        /* extra for delete button */
+        .card-header .btn-danger-sm {
+            padding: 4px 14px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================
+    LOGIN SCREEN
+    ============================================ -->
+    <div id="loginScreen">
+        <div class="login-box">
+            <div class="logo">
+                <h1><i class="fas fa-envelope" style="margin-right:8px; -webkit-text-fill-color:var(--blue-primary);"></i>STOR GMAIL</h1>
+                <p>Dashboard Admin</p>
+            </div>
+            <form id="loginForm" autocomplete="off">
+                <div class="input-group">
+                    <label for="adminCode">Kode Admin</label>
+                    <input type="password" id="adminCode" placeholder="Masukkan kode admin" required />
+                    <div class="error-msg" id="loginError"></div>
+                </div>
+                <button type="submit" class="btn-login"><i class="fas fa-lock" style="margin-right:8px;"></i> Masuk</button>
+            </form>
+            <div class="login-footer">⛅ Akses terbatas · Admin only</div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    TOAST CONTAINER
+    ============================================ -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ============================================
+    APP LAYOUT
+    ============================================ -->
+    <div class="app-layout" id="appLayout">
+
+        <!-- SIDEBAR OVERLAY (mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="brand">
+                <i class="fas fa-envelope"></i>
+                <span>STOR GMAIL</span>
+            </div>
+            <nav class="nav" id="sidebarNav">
+                <button class="nav-item active" data-page="dashboard"><i class="fas fa-chart-pie"></i> Dashboard</button>
+                <button class="nav-item" data-page="pending"><i class="fas fa-clock"></i> Pending Storan</button>
+                <button class="nav-item" data-page="accepted"><i class="fas fa-check-circle"></i> Storan Diterima</button>
+                <button class="nav-item" data-page="users"><i class="fas fa-users"></i> Semua User</button>
+                <button class="nav-item" data-page="messages"><i class="fas fa-paper-plane"></i> Kirim Pesan</button>
+                <button class="nav-item" data-page="deposit-settings"><i class="fas fa-cog"></i> Pengaturan Storan</button>
+                <button class="nav-item" data-page="withdraw-settings"><i class="fas fa-credit-card"></i> Pengaturan Penarikan</button>
+                <button class="nav-item logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </nav>
+            <div class="sidebar-footer">v2.0 · Netlify Backend</div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main-content">
+            <!-- TOP HEADER -->
+            <header class="top-header">
+                <div class="left">
+                    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+                    <h2 id="pageTitle">Dashboard</h2>
+                </div>
+                <div class="right">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>Mode</span>
+                    </button>
+                    <span class="admin-badge"><i class="fas fa-shield-alt" style="margin-right:6px;"></i> Admin</span>
+                </div>
+            </header>
+
+            <!-- PAGE CONTENT -->
+            <div class="page-content">
+
+                <!-- ===================== DASHBOARD ===================== -->
+                <section class="page-section active" id="page-dashboard">
+                    <div class="stats-grid" id="statsGrid">
+                        <div class="stat-card">
+                            <div class="top"><span class="label"><i class="fas fa-users"></i> Total User</span></div>
+                            <div class="value" id="statUsers">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="top"><span class="label"><i class="fas fa-clock"></i> Pending Storan</span></div>
+                            <div class="value" id="statPending">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="top"><span class="label"><i class="fas fa-check-circle"></i> Storan Diterima</span></div>
+                            <div class="value" id="statAccepted">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="top"><span class="label"><i class="fas fa-wallet"></i> Total Saldo User</span></div>
+                            <div class="value"><span class="currency">Rp</span><span id="statBalance">0</span></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="top"><span class="label"><i class="fas fa-coins"></i> Total Storan</span></div>
+                            <div class="value" id="statTotalDeposits">0</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-bolt" style="color:var(--blue-primary);margin-right:8px;"></i> Aktivitas Terbaru</h3>
+                            <span class="badge">Realtime</span>
+                        </div>
+                        <div id="activityFeed">
+                            <div class="empty-state"><i class="fas fa-inbox"></i><h4>Belum ada aktivitas</h4></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== PENDING STORAN ===================== -->
+                <section class="page-section" id="page-pending">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-clock" style="color:var(--orange);margin-right:8px;"></i> Pending Storan</h3>
+                            <span class="badge" id="pendingCount">0</span>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead><tr><th>User</th><th>Jenis</th><th>Detail</th><th>Waktu</th><th>Status</th><th>Aksi</th></tr></thead>
+                                <tbody id="pendingTableBody">
+                                    <tr><td colspan="6" class="text-muted" style="text-align:center;padding:32px 0;">Belum ada storan pending</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== STORAN DITERIMA ===================== -->
+                <section class="page-section" id="page-accepted">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-check-circle" style="color:var(--green);margin-right:8px;"></i> Storan Diterima</h3>
+                            <span class="badge" id="acceptedCount">0</span>
+                        </div>
+                        <div class="filter-bar">
+                            <input type="text" id="acceptedSearch" placeholder="Cari user..." />
+                            <select id="acceptedFilter"><option value="all">Semua</option><option value="Gmail">Gmail</option><option value="Pulsa">Pulsa</option><option value="Dana">Dana</option><option value="Ovo">Ovo</option></select>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead><tr><th>User</th><th>Jenis</th><th>Detail</th><th>Nominal</th><th>Waktu</th><th>Status</th></tr></thead>
+                                <tbody id="acceptedTableBody">
+                                    <tr><td colspan="6" class="text-muted" style="text-align:center;padding:32px 0;">Belum ada storan diterima</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== SEMUA USER ===================== -->
+                <section class="page-section" id="page-users">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-users" style="color:var(--blue-primary);margin-right:8px;"></i> Semua User</h3>
+                            <span class="badge" id="userCount">0</span>
+                        </div>
+                        <div class="filter-bar">
+                            <input type="text" id="userSearch" placeholder="Cari username..." />
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead><tr><th>Username</th><th>Saldo</th><th>Jml Storan</th><th>Status</th><th>Tanggal Daftar</th><th>Aksi</th></tr></thead>
+                                <tbody id="usersTableBody">
+                                    <tr><td colspan="6" class="text-muted" style="text-align:center;padding:32px 0;">Belum ada user</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== KIRIM PESAN ===================== -->
+                <section class="page-section" id="page-messages">
+                    <div class="card">
+                        <div class="card-header"><h3><i class="fas fa-paper-plane" style="color:var(--blue-primary);margin-right:8px;"></i> Kirim Pesan ke Semua User</h3></div>
+                        <form id="messageForm">
+                            <div class="form-group">
+                                <label>Judul Pesan</label>
+                                <input type="text" id="msgTitle" placeholder="Contoh: Pengumuman Storan" required />
+                            </div>
+                            <div class="form-group">
+                                <label>Isi Pesan</label>
+                                <textarea id="msgBody" placeholder="Tulis pesan untuk semua user..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Kirim ke Semua User</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 style="font-size:15px;"><i class="fas fa-history" style="margin-right:8px;"></i> Riwayat Pesan</h4>
+                            <button class="btn btn-danger btn-sm" id="deleteMessageHistoryBtn"><i class="fas fa-trash"></i> Hapus Semua</button>
+                        </div>
+                        <div id="messageHistory">
+                            <div class="empty-state"><i class="fas fa-inbox"></i><h4>Belum ada pesan terkirim</h4></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== PENGATURAN STORAN ===================== -->
+                <section class="page-section" id="page-deposit-settings">
+                    <div class="card">
+                        <div class="card-header"><h3><i class="fas fa-cog" style="color:var(--blue-primary);margin-right:8px;"></i> Pengaturan Storan</h3></div>
+                        <form id="depositSettingsForm">
+                            <div class="form-group">
+                                <label>Status Storan</label>
+                                <select id="depositStatus">
+                                    <option value="OPEN">OPEN — Tersedia</option>
+                                    <option value="CLOSE">CLOSE — Ditutup</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Nama / Jenis Storan</label>
+                                    <input type="text" id="depositName" placeholder="Contoh: Gmail" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Harga Storan (Rp)</label>
+                                    <input type="number" id="depositPrice" placeholder="5000" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Info Storan</label>
+                                <textarea id="depositInfo" placeholder="Contoh: Cari Gmail tahun 2020 ke bawah."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Pengaturan</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- ===================== PENGATURAN PENARIKAN ===================== -->
+                <section class="page-section" id="page-withdraw-settings">
+                    <div class="card">
+                        <div class="card-header"><h3><i class="fas fa-credit-card" style="color:var(--blue-primary);margin-right:8px;"></i> Pengaturan Penarikan</h3></div>
+                        <form id="withdrawSettingsForm">
+                            <div class="form-group">
+                                <label>Status Penarikan</label>
+                                <select id="withdrawStatus">
+                                    <option value="OPEN">OPEN — User dapat tarik</option>
+                                    <option value="CLOSE">CLOSE — Penarikan ditutup</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Pengaturan</button>
+                        </form>
+                    </div>
+                </section>
+
+            </div><!-- /page-content -->
+        </main>
+    </div><!-- /app-layout -->
+
+    <!-- ============================================
+    MODAL
+    ============================================ -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box" id="modalBox">
+            <h3 id="modalTitle">Konfirmasi</h3>
+            <p id="modalDesc">Isi nominal saldo yang akan diberikan.</p>
+            <div id="modalBody"></div>
+            <div class="modal-actions" id="modalActions">
+                <button class="btn btn-outline" id="modalCancel">Batal</button>
+                <button class="btn btn-primary" id="modalConfirm">Konfirmasi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    JAVASCRIPT
+    ============================================ -->
+    <script>
+        // =============================================
+        //  DATA LAYER — Netlify Function + localStorage cache
+        // =============================================
+        const APPSCRIPT_URL = '/.netlify/functions/api'; // ← endpoint Netlify Function
+        const ADMIN_KEY = '31faris31';
+
+        // Cache key
+        const LOCAL_KEY = 'storgmail_admin_cache';
+
+        // Default empty data (NO DUMMY DATA)
+        function getDefaultData() {
+            return {
+                users: [],
+                deposits: [],   // riwayat storan (pending, diterima, ditolak)
+                messages: [],
+                settings: {
+                    depositStatus: 'OPEN',
+                    depositName: '',
+                    depositPrice: 0,
+                    depositInfo: '',
+                    withdrawStatus: 'OPEN'
+                },
+                activities: []
+            };
+        }
+
+        function getCachedData() {
+            try {
+                const raw = localStorage.getItem(LOCAL_KEY);
+                return raw ? JSON.parse(raw) : null;
+            } catch { return null; }
+        }
+
+        function setCachedData(data) {
+            localStorage.setItem(LOCAL_KEY, JSON.stringify(data));
+        }
+
+        let dataStore = null;
+
+        // ── Netlify Function API ──
+        async function appScriptFetch(action, payload = null) {
+            // Kirim action dan payload dalam body JSON
+            const body = { action };
+            if (payload) {
+                body.payload = payload;
+            }
+            const res = await fetch(APPSCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (!res.ok) throw new Error(`Netlify Function error ${res.status}`);
+            const result = await res.json();
+            // Result diharapkan memiliki { success, data, error }
+            if (!result.success) {
+                throw new Error(result.error || 'Unknown error');
+            }
+            return result;
+        }
+
+        // ── Load Data ──
+        async function loadData() {
+            try {
+                // 1. Try Netlify Function
+                const result = await appScriptFetch('get');
+                if (result && result.data) {
+                    dataStore = result.data;
+                    setCachedData(dataStore);
+                    return dataStore;
+                }
+                throw new Error('Invalid response from Netlify Function');
+            } catch (e) {
+                console.warn('Netlify Function unavailable, using cache fallback', e);
+                const cached = getCachedData();
+                if (cached) {
+                    dataStore = cached;
+                    return dataStore;
+                }
+                // No cache — start with empty data
+                const empty = getDefaultData();
+                dataStore = empty;
+                setCachedData(empty);
+                return empty;
+            }
+        }
+
+        // ── Save Data ──
+        async function saveData() {
+            if (!dataStore) return;
+            // Always cache locally
+            setCachedData(dataStore);
+            // Sync to Netlify Function
+            try {
+                await appScriptFetch('save', { data: dataStore });
+            } catch (e) {
+                console.warn('Failed to sync to Netlify Function', e);
+            }
+        }
+
+        // =============================================
+        //  UTILITY
+        // =============================================
+        function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+        function formatTime(ts) {
+            const d = new Date(ts);
+            return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' +
+                d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function formatRupiah(n) {
+            return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+
+        function toast(msg, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const el = document.createElement('div');
+            el.className = `toast ${type}`;
+            const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' :
+            'fa-info-circle';
+            el.innerHTML = `<span class="toast-icon"><i class="fas ${icon}"></i></span><span class="toast-msg">${msg}</span>`;
+            container.appendChild(el);
+            setTimeout(() => { el.style.opacity = '0';
+                el.style.transform = 'translateX(40px)';
+                setTimeout(() => el.remove(), 300); }, 3500);
+        }
+
+        // =============================================
+        //  AUTH
+        // =============================================
+        function checkAuth() {
+            return sessionStorage.getItem('adminAuth') === 'true';
+        }
+
+        function requireAuth() {
+            if (!checkAuth()) {
+                document.getElementById('loginScreen').classList.remove('hidden');
+                document.getElementById('appLayout').classList.remove('visible');
+                return false;
+            }
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('appLayout').classList.add('visible');
+            return true;
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const code = document.getElementById('adminCode').value.trim();
+            const errEl = document.getElementById('loginError');
+            errEl.textContent = '';
+
+            if (!code) {
+                errEl.textContent = 'Masukkan kode admin.';
+                return;
+            }
+
+            if (code === ADMIN_KEY) {
+                sessionStorage.setItem('adminAuth', 'true');
+                requireAuth();
+                await loadData();
+                renderAll();
+                toast('Selamat datang, Admin!', 'success');
+                document.getElementById('adminCode').value = '';
+            } else {
+                errEl.textContent = 'Kode admin salah!';
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            sessionStorage.removeItem('adminAuth');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('appLayout').classList.remove('visible');
+            toast('Anda telah logout.', 'info');
+            closeSidebar();
+        });
+
+        // =============================================
+        //  SIDEBAR NAVIGATION
+        // =============================================
+        const navItems = document.querySelectorAll('.nav-item[data-page]');
+        const pages = {
+            dashboard: document.getElementById('page-dashboard'),
+            pending: document.getElementById('page-pending'),
+            accepted: document.getElementById('page-accepted'),
+            users: document.getElementById('page-users'),
+            messages: document.getElementById('page-messages'),
+            'deposit-settings': document.getElementById('page-deposit-settings'),
+            'withdraw-settings': document.getElementById('page-withdraw-settings'),
+        };
+        const pageTitles = {
+            dashboard: 'Dashboard',
+            pending: 'Pending Storan',
+            accepted: 'Storan Diterima',
+            users: 'Semua User',
+            messages: 'Kirim Pesan',
+            'deposit-settings': 'Pengaturan Storan',
+            'withdraw-settings': 'Pengaturan Penarikan',
+        };
+
+        function navigateTo(page) {
+            Object.keys(pages).forEach(key => {
+                pages[key].classList.toggle('active', key === page);
+            });
+            navItems.forEach(item => {
+                item.classList.toggle('active', item.dataset.page === page);
+            });
+            document.getElementById('pageTitle').textContent = pageTitles[page] || page;
+            closeSidebar();
+            if (page === 'dashboard') renderDashboard();
+            else if (page === 'pending') renderPending();
+            else if (page === 'accepted') renderAccepted();
+            else if (page === 'users') renderUsers();
+            else if (page === 'messages') renderMessages();
+            else if (page === 'deposit-settings') renderDepositSettings();
+            else if (page === 'withdraw-settings') renderWithdrawSettings();
+        }
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navigateTo(item.dataset.page);
+            });
+        });
+
+        // Mobile sidebar
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('sidebarOverlay').classList.add('open');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('open');
+        }
+        document.getElementById('menuToggle').addEventListener('click', openSidebar);
+        document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
+
+        // =============================================
+        //  THEME TOGGLE
+        // =============================================
+        let currentTheme = localStorage.getItem('storgmail_theme') || 'dark';
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            const icon = document.querySelector('#themeToggle i');
+            const span = document.querySelector('#themeToggle span');
+            if (theme === 'light') {
+                icon.className = 'fas fa-sun';
+                span.textContent = 'Terang';
+            } else {
+                icon.className = 'fas fa-moon';
+                span.textContent = 'Gelap';
+            }
+            localStorage.setItem('storgmail_theme', theme);
+            currentTheme = theme;
+        }
+
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+        applyTheme(currentTheme);
+
+        // =============================================
+        //  MODAL
+        // =============================================
+        let modalResolve = null;
+
+        function openModal(title, desc, bodyHTML, confirmText = 'Konfirmasi', cancelText = 'Batal') {
+            return new Promise((resolve) => {
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalDesc').textContent = desc;
+                document.getElementById('modalBody').innerHTML = bodyHTML || '';
+                document.getElementById('modalConfirm').textContent = confirmText;
+                document.getElementById('modalCancel').textContent = cancelText;
+                document.getElementById('modalOverlay').classList.add('open');
+                modalResolve = resolve;
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('open');
+            if (modalResolve) { modalResolve(false);
+                modalResolve = null; }
+        }
+
+        document.getElementById('modalCancel').addEventListener('click', closeModal);
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+
+        document.getElementById('modalConfirm').addEventListener('click', () => {
+            document.getElementById('modalOverlay').classList.remove('open');
+            if (modalResolve) { modalResolve(true);
+                modalResolve = null; }
+        });
+
+        // =============================================
+        //  RENDER FUNCTIONS
+        // =============================================
+
+        function renderAll() {
+            renderDashboard();
+            renderPending();
+            renderAccepted();
+            renderUsers();
+            renderMessages();
+            renderDepositSettings();
+            renderWithdrawSettings();
+        }
+
+        // --- DASHBOARD ---
+        function renderDashboard() {
+            if (!dataStore) return;
+            const { users, deposits, activities } = dataStore;
+            const totalUsers = users ? users.length : 0;
+            const pending = deposits ? deposits.filter(d => d.status === 'pending').length : 0;
+            const accepted = deposits ? deposits.filter(d => d.status === 'diterima').length : 0;
+            const totalBalance = users ? users.reduce((sum, u) => sum + (u.balance || 0), 0) : 0;
+            const totalDeposits = deposits ? deposits.length : 0;
+
+            document.getElementById('statUsers').textContent = totalUsers;
+            document.getElementById('statPending').textContent = pending;
+            document.getElementById('statAccepted').textContent = accepted;
+            document.getElementById('statBalance').textContent = formatRupiah(totalBalance);
+            document.getElementById('statTotalDeposits').textContent = totalDeposits;
+
+            const feed = document.getElementById('activityFeed');
+            const list = activities || [];
+            if (list.length === 0) {
+                feed.innerHTML =
+                    `<div class="empty-state"><i class="fas fa-inbox"></i><h4>Belum ada aktivitas</h4></div>`;
+                return;
+            }
+            feed.innerHTML = list.slice(-8).reverse().map(a => `
+                    <div class="activity-item">
+                        <div class="av">${(a.user || '?')[0].toUpperCase()}</div>
+                        <div class="info">
+                            <div class="title">${a.user || 'User'} <span class="text-secondary">${a.action || 'aktivitas'}</span></div>
+                            <div class="time">${formatTime(a.time || Date.now())}</div>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        // --- PENDING ---
+        function renderPending() {
+            if (!dataStore) return;
+            const pending = dataStore.deposits ? dataStore.deposits.filter(d => d.status === 'pending') : [];
+            document.getElementById('pendingCount').textContent = pending.length;
+            const tbody = document.getElementById('pendingTableBody');
+            if (pending.length === 0) {
+                tbody.innerHTML =
+                    `<tr><td colspan="6" class="text-muted" style="text-align:center;padding:32px 0;">Belum ada storan pending</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = pending.map(d => `
+                    <tr>
+                        <td><strong>${d.username || '—'}</strong></td>
+                        <td><span class="status-badge open">${d.type || '—'}</span></td>
+                        <td class="truncate">${d.detail || '-'}</td>
+                        <td>${formatTime(d.createdAt)}</td>
+                        <td><span class="status-badge pending">Pending</span></td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn btn-primary btn-xs" onclick="viewPending('${d.id}')"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-success btn-xs" onclick="acceptDeposit('${d.id}')"><i class="fas fa-check"></i></button>
+                                <button class="btn btn-danger btn-xs" onclick="rejectDeposit('${d.id}')"><i class="fas fa-times"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+        }
+
+        window.viewPending = async function(id) {
+            const d = (dataStore.deposits || []).find(x => x.id === id);
+            if (!d) return toast('Data tidak ditemukan.', 'error');
+            await openModal(
+                'Detail Storan',
+                `User: ${d.username || '—'} · ${d.type || '—'}`,
+                `
+                        <div style="background:var(--bg-input);padding:14px;border-radius:var(--radius-sm);margin-bottom:8px;">
+                            <div style="display:flex;justify-content:space-between;padding:4px 0;"><span class="text-secondary">Detail</span><span>${d.detail || '-'}</span></div>
+                            <div style="display:flex;justify-content:space-between;padding:4px 0;"><span class="text-secondary">Waktu</span><span>${formatTime(d.createdAt)}</span></div>
+                            <div style="display:flex;justify-content:space-between;padding:4px 0;"><span class="text-secondary">Status</span><span class="status-badge pending">Pending</span></div>
+                        </div>
+                    `,
+                'Tutup'
+            );
+        };
+
+        window.acceptDeposit = async function(id) {
+            const d = (dataStore.deposits || []).find(x => x.id === id);
+            if (!d) return toast('Data tidak ditemukan.', 'error');
+
+            const confirmed = await openModal(
+                'Terima Storan',
+                `Terima storan dari ${d.username || 'User'}? Masukkan nominal saldo yang diberikan.`,
+                `
+                        <div class="form-group">
+                            <label>Nominal Saldo (Rp)</label>
+                            <input type="number" id="modalNominal" value="${d.amount || 5000}" min="1" style="width:100%;padding:11px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);font-size:14px;font-family:inherit;outline:none;" />
+                        </div>
+                        <div style="font-size:13px;color:var(--text-secondary);">Saldo user akan bertambah sesuai nominal ini.</div>
+                    `,
+                'Terima',
+                'Batal'
+            );
+
+            if (confirmed) {
+                const nominalInput = document.getElementById('modalNominal');
+                const nominal = parseInt(nominalInput.value) || d.amount || 0;
+                if (nominal <= 0) {
+                    toast('Nominal harus lebih dari 0.', 'error');
+                    return;
+                }
+
+                d.status = 'diterima';
+                d.adminNote = `Rp${formatRupiah(nominal)}`;
+
+                const user = (dataStore.users || []).find(u => u.id === d.userId || u.username === d.username);
+                if (user) {
+                    user.balance = (user.balance || 0) + nominal;
+                    user.totalDeposits = (user.totalDeposits || 0) + 1;
+                } else {
+                    toast('User tidak ditemukan, saldo tidak bertambah.', 'error');
+                }
+
+                if (!dataStore.activities) dataStore.activities = [];
+                dataStore.activities.push({
+                    user: d.username || 'User',
+                    action: `storan diterima (${d.type || '—'}) +Rp${formatRupiah(nominal)}`,
+                    time: Date.now()
+                });
+
+                await saveData();
+                renderAll();
+                toast(`Storan ${d.username || 'User'} diterima! Saldo +Rp${formatRupiah(nominal)}`, 'success');
+            }
+        };
+
+        window.rejectDeposit = async function(id) {
+            const d = (dataStore.deposits || []).find(x => x.id === id);
+            if (!d) return toast('Data tidak ditemukan.', 'error');
+
+            const confirmed = await openModal(
+                'Tolak Storan',
+                `Yakin menolak storan dari ${d.username || 'User'}?`,
+                '',
+                'Tolak',
+                'Batal'
+            );
+
+            if (confirmed) {
+                d.status = 'ditolak';
+                if (!dataStore.activities) dataStore.activities = [];
+                dataStore.activities.push({
+                    user: d.username || 'User',
+                    action: `storan ditolak (${d.type || '—'})`,
+                    time: Date.now()
+                });
+                await saveData();
+                renderAll();
+                toast(`Storan ${d.username || 'User'} ditolak.`, 'error');
+            }
+        };
+
+        // --- ACCEPTED ---
+        function renderAccepted() {
+            if (!dataStore) return;
+            const accepted = dataStore.deposits ? dataStore.deposits.filter(d => d.status === 'diterima') : [];
+            document.getElementById('acceptedCount').textContent = accepted.length;
+
+            const search = document.getElementById('acceptedSearch').value.toLowerCase();
+            const filter = document.getElementById('acceptedFilter').value;
+
+            let filtered = accepted;
+            if (search) filtered = filtered.filter(d => (d.username || '').toLowerCase().includes(search));
+            if (filter !== 'all') filtered = filtered.filter(d => d.type === filter);
+
+            const tbody = document.getElementById('acceptedTableBody');
+            if (filtered.length === 0) {
+                tbody.innerHTML =
+                    `<tr><td colspan="6" class="text-muted" style="text-align:center;padding:32px 0;">Belum ada storan diterima</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = filtered.map(d => `
+                    <tr>
+                        <td><strong>${d.username || '—'}</strong></td>
+                        <td><span class="status-badge open">${d.type || '—'}</span></td>
+                        <td class="truncate">${d.detail || '-'}</td>
+                        <td><strong>Rp${formatRupiah(d.amount || 0)}</strong></td>
+                        <td>${formatTime(d.createdAt)}</td>
+                        <td><span class="status-badge diterima">Diterima</span></td>
+                    </tr>
+                `).join('');
+        }
+
+        document.getElementById('acceptedSearch').addEventListener('input', renderAccepted);
+        document.getElementById('acceptedFilter').addEventListener('change', renderAccepted);
+
+        // --- USERS ---
+        function renderUsers() {
+            if (!dataStore) return;
+            const users = dataStore.users || [];
+            document.getElementById('userCount').textContent = users.length;
+            const search = document.getElementById('userSearch').value.toLowerCase();
+            const filtered = search ? users.filter(u => (u.username || '').toLowerCase().includes(search)) : users;
+
+            const tbody = document.getElementById('usersTableBody');
+            if (filtered.length === 0) {
+                tbody.innerHTML =
+                    `<tr><td colspan="6" class="text-muted" style="text-align:center;padding:32px 0;">Belum ada user</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = filtered.map(u => `
+                    <tr>
+                        <td><strong>${u.username || '—'}</strong></td>
+                        <td>Rp${formatRupiah(u.balance || 0)}</td>
+                        <td>${u.totalDeposits || 0}</td>
+                        <td><span class="status-badge ${u.status === 'aktif' ? 'diterima' : 'pending'}">${u.status || 'aktif'}</span></td>
+                        <td>${u.createdAt || '-'}</td>
+                        <td><button class="btn btn-primary btn-xs" onclick="viewUser('${u.id}')"><i class="fas fa-user"></i> Detail</button></td>
+                    </tr>
+                `).join('');
+        }
+
+        document.getElementById('userSearch').addEventListener('input', renderUsers);
+
+        window.viewUser = async function(id) {
+            const u = (dataStore.users || []).find(x => x.id === id);
+            if (!u) return toast('User tidak ditemukan.', 'error');
+
+            const userDeposits = (dataStore.deposits || []).filter(d => d.userId === id || d.username === u.username);
+            const depositHistory = userDeposits.slice(-5).map(d =>
+                    `<div class="item"><span>${d.type || '—'} — ${d.detail || '-'}</span><span class="status-badge ${d.status || 'pending'}">${d.status || 'pending'}</span></div>`
+                ).join('') || '<div class="item">Belum ada storan</div>';
+
+            await openModal(
+                `Detail User: ${u.username || '—'}`,
+                `Saldo: Rp${formatRupiah(u.balance || 0)} · Total Storan: ${u.totalDeposits || 0}`,
+                `
+                        <div class="detail-section">
+                            <h4>Riwayat Storan</h4>
+                            <div class="mini-list">${depositHistory}</div>
+                        </div>
+                        <div class="detail-section" style="margin-top:12px;">
+                            <h4>Info Akun</h4>
+                            <div style="background:var(--bg-input);padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;">
+                                <div>Status: <span class="status-badge ${u.status === 'aktif' ? 'diterima' : 'pending'}">${u.status || 'aktif'}</span></div>
+                                <div>Bergabung: ${u.createdAt || '-'}</div>
+                            </div>
+                        </div>
+                    `,
+                'Tutup'
+            );
+        };
+
+        // --- MESSAGES ---
+        function renderMessages() {
+            if (!dataStore) return;
+            const msgs = dataStore.messages || [];
+            const container = document.getElementById('messageHistory');
+            if (msgs.length === 0) {
+                container.innerHTML =
+                    `<div class="empty-state"><i class="fas fa-inbox"></i><h4>Belum ada pesan terkirim</h4></div>`;
+                return;
+            }
+            container.innerHTML = msgs.slice(-5).reverse().map(m => `
+                    <div style="padding:12px 0;border-bottom:1px solid var(--border-color);">
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <strong>${m.title || '—'}</strong>
+                            <span class="text-muted" style="font-size:12px;">${formatTime(m.createdAt)}</span>
+                        </div>
+                        <div style="color:var(--text-secondary);font-size:13px;margin-top:4px;">${m.content || ''}</div>
+                        <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Dikirim ke: ${m.sentTo || 'semua user'}</div>
+                    </div>
+                `).join('');
+        }
+
+        document.getElementById('deleteMessageHistoryBtn').addEventListener('click', async () => {
+            if (!dataStore || !dataStore.messages || dataStore.messages.length === 0) {
+                toast('Tidak ada riwayat pesan untuk dihapus.', 'info');
+                return;
+            }
+            const confirmed = await openModal(
+                'Hapus Semua Riwayat Pesan',
+                'Yakin ingin menghapus semua riwayat pesan? Tindakan ini tidak dapat dibatalkan.',
+                '',
+                'Hapus',
+                'Batal'
+            );
+            if (confirmed) {
+                dataStore.messages = [];
+                if (!dataStore.activities) dataStore.activities = [];
+                dataStore.activities.push({
+                    user: 'Admin',
+                    action: 'menghapus semua riwayat pesan',
+                    time: Date.now()
+                });
+                await saveData();
+                renderMessages();
+                toast('Semua riwayat pesan berhasil dihapus.', 'success');
+            }
+        });
+
+        document.getElementById('messageForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('msgTitle').value.trim();
+            const content = document.getElementById('msgBody').value.trim();
+            if (!title || !content) {
+                toast('Judul dan isi pesan harus diisi.', 'error');
+                return;
+            }
+
+            const confirmed = await openModal(
+                'Kirim Pesan',
+                `Kirim pesan "${title}" ke semua user?`,
+                `<div style="background:var(--bg-input);padding:12px;border-radius:var(--radius-sm);font-size:14px;">${content}</div>`,
+                'Kirim',
+                'Batal'
+            );
+
+            if (confirmed) {
+                if (!dataStore.messages) dataStore.messages = [];
+                dataStore.messages.push({
+                    id: uid(),
+                    title,
+                    content,
+                    sentTo: 'all',
+                    createdAt: Date.now()
+                });
+                if (!dataStore.activities) dataStore.activities = [];
+                dataStore.activities.push({
+                    user: 'Admin',
+                    action: `mengirim pesan: "${title}"`,
+                    time: Date.now()
+                });
+                await saveData();
+                renderAll();
+                document.getElementById('msgTitle').value = '';
+                document.getElementById('msgBody').value = '';
+                toast('Pesan berhasil dikirim ke semua user!', 'success');
+            }
+        });
+
+        // --- DEPOSIT SETTINGS ---
+        function renderDepositSettings() {
+            if (!dataStore) return;
+            const s = dataStore.settings || {};
+            document.getElementById('depositStatus').value = s.depositStatus || 'OPEN';
+            document.getElementById('depositName').value = s.depositName || '';
+            document.getElementById('depositPrice').value = s.depositPrice || '';
+            document.getElementById('depositInfo').value = s.depositInfo || '';
+        }
+
+        document.getElementById('depositSettingsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!dataStore.settings) dataStore.settings = {};
+            dataStore.settings.depositStatus = document.getElementById('depositStatus').value;
+            dataStore.settings.depositName = document.getElementById('depositName').value.trim();
+            dataStore.settings.depositPrice = parseInt(document.getElementById('depositPrice').value) || 0;
+            dataStore.settings.depositInfo = document.getElementById('depositInfo').value.trim();
+
+            await saveData();
+            toast('Pengaturan storan berhasil disimpan!', 'success');
+        });
+
+        // --- WITHDRAW SETTINGS ---
+        function renderWithdrawSettings() {
+            if (!dataStore) return;
+            const s = dataStore.settings || {};
+            document.getElementById('withdrawStatus').value = s.withdrawStatus || 'OPEN';
+        }
+
+        document.getElementById('withdrawSettingsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!dataStore.settings) dataStore.settings = {};
+            dataStore.settings.withdrawStatus = document.getElementById('withdrawStatus').value;
+            await saveData();
+            toast('Pengaturan penarikan berhasil disimpan!', 'success');
+        });
+
+        // =============================================
+        //  INIT
+        // =============================================
+        async function init() {
+            await loadData();
+            if (requireAuth()) {
+                renderAll();
+            }
+        }
+
+        // Refresh data when tab becomes visible
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && checkAuth()) {
+                loadData().then(() => {
+                    const active = document.querySelector('.page-section.active');
+                    if (active) {
+                        const id = active.id.replace('page-', '');
+                        navigateTo(id);
+                    }
+                });
+            }
+        });
+
+        window.addEventListener('focus', () => {
+            if (checkAuth()) {
+                loadData().then(() => {
+                    const active = document.querySelector('.page-section.active');
+                    if (active) {
+                        const id = active.id.replace('page-', '');
+                        navigateTo(id);
+                    }
+                });
+            }
+        });
+
+        init();
+
+        console.log('🚀 STOR GMAIL Admin Dashboard v2.1 · Netlify Backend');
+        console.log('🔑 Kode admin:', ADMIN_KEY);
+        console.log('🌐 Netlify Function URL:', APPSCRIPT_URL);
+    </script>
+</body>
+</html>
