@@ -23,6 +23,15 @@
       window.visualViewport.addEventListener('resize', setAppHeight);
       window.visualViewport.addEventListener('scroll', setAppHeight);
     }
+
+    function detectKeyboard() {
+      if (!window.visualViewport) return;
+      var keyboardOpen = (window.innerHeight - window.visualViewport.height) > 120;
+      document.body.classList.toggle('keyboard-open', keyboardOpen);
+    }
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', detectKeyboard);
+    }
   </script>
   <style>
     /* ===== RESET & VARIABEL ===== */
@@ -688,6 +697,7 @@
 
     /* ===== BOTTOM NAV ===== */
     .bottom-nav { position:relative; flex:0 0 auto; z-index:200; background:rgba(255,255,255,0.92); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-top:1px solid var(--border-subtle); border-radius:28px 28px 0 0; padding:6px 4px calc(6px + var(--safe-bottom)); display:flex; align-items:center; justify-content:space-around; box-shadow:0 -8px 40px rgba(26,38,52,0.06); height:calc(var(--nav-height) + var(--safe-bottom)); transition:background var(--transition); margin:0; width:100%; }
+    body.keyboard-open .bottom-nav { display:none; }
     body.light .bottom-nav { background:rgba(245,248,255,0.94); }
     .nav-item { display:flex; flex-direction:column; align-items:center; gap:1px; padding:4px 2px; border-radius:var(--radius-sm); transition:all var(--transition); cursor:pointer; flex:1; max-width:56px; background:none; border:none; color:var(--text-secondary); font-size:8px; font-weight:600; }
     .nav-item .ni-icon { font-size:18px; transition:all var(--transition); }
