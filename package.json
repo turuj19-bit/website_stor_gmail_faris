@@ -1,8 +1,0 @@
-{
-  "name": "storfaris-backend",
-  "version": "1.0.0",
-  "type": "module",
-  "dependencies": {
-    "@netlify/blobs": "^1.0.0"
-  }
-}
