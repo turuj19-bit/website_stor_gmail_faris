@@ -1,0 +1,3318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, interactive-widget=resizes-content" />
+  <title>SELL GMAIL 06</title>
+  <meta name="description" content="Sell gmail 06 adalah website frelannce yang menerima storan email dengan kualitas dan harga terbaik di indonesia" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    function setAppHeight() {
+      var h = (window.visualViewport && window.visualViewport.height) ? window.visualViewport.height : window.innerHeight;
+      document.documentElement.style.setProperty('--app-height', h + 'px');
+    }
+    setAppHeight();
+    window.addEventListener('resize', setAppHeight);
+    window.addEventListener('orientationchange', function() { setTimeout(setAppHeight, 300); });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', setAppHeight);
+      window.visualViewport.addEventListener('scroll', setAppHeight);
+    }
+  </script>
+  <style>
+    /* ===== RESET & VARIABEL ===== */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --bg-body:#F0F4FA;
+      --bg-card:#FFFFFF;
+      --bg-card-alt:#F5F8FC;
+      --bg-card-hover:#EBF0F6;
+      --text-primary:#1A2634;
+      --text-secondary:#4A5A6E;
+      --border-subtle:rgba(43,127,255,0.12);
+      --blue-primary:#2B7FFF;
+      --blue-bright:#4A90E2;
+      --blue-glow:rgba(43,127,255,0.18);
+      --radius:20px;
+      --radius-sm:12px;
+      --radius-full:9999px;
+      --header-height:60px;
+      --nav-height:60px;
+      --safe-bottom:env(safe-area-inset-bottom,0px);
+      --max-width:1100px;
+      --shadow-card:0 8px 30px rgba(26,38,52,0.08),0 2px 8px rgba(26,38,52,0.04);
+      --shadow-card-hover:0 12px 40px rgba(26,38,52,0.12),0 4px 12px rgba(26,38,52,0.06);
+      --shadow-card-lg:0 20px 60px rgba(26,38,52,0.10),0 8px 24px rgba(26,38,52,0.06);
+      --transition:0.3s cubic-bezier(0.22,1,0.36,1);
+    }
+    body.light {
+      --bg-body:#F5F8FF;
+      --bg-card:#FFFFFF;
+      --bg-card-alt:#F0F4FA;
+      --bg-card-hover:#E8EEF8;
+      --text-primary:#0F1A2E;
+      --text-secondary:#3B4E66;
+      --border-subtle:rgba(43,127,255,0.10);
+      --shadow-card:0 4px 20px rgba(26,38,52,0.06),0 1px 4px rgba(26,38,52,0.03);
+      --shadow-card-hover:0 8px 30px rgba(26,38,52,0.10),0 2px 8px rgba(26,38,52,0.05);
+      --shadow-card-lg:0 16px 48px rgba(26,38,52,0.08),0 4px 16px rgba(26,38,52,0.04);
+    }
+    body { font-family:'Inter',sans-serif; background:var(--bg-body); color:var(--text-primary); transition:background var(--transition),color var(--transition); min-height:100vh; overflow-x:hidden; -webkit-font-smoothing:antialiased; margin:0; }
+    a,button { font-family:inherit; color:inherit; text-decoration:none; cursor:pointer; border:none; background:none; outline:none; }
+    .hidden { display:none !important; }
+    body.locked { overflow:hidden; height:100%; overscroll-behavior:none; }
+    html.locked { overflow:hidden; height:100%; overscroll-behavior:none; }
+    .text-secondary { color:var(--text-secondary); }
+    .text-center { text-align:center; }
+
+    /* ===== HILANGKAN EFEK BIRU KOTAK SAAT DITEKAN/FOKUS ===== */
+    *:focus, *:active, *:focus-visible {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+    button:focus, button:active,
+    input:focus, input:active,
+    select:focus, select:active,
+    textarea:focus, textarea:active,
+    a:focus, a:active,
+    [tabindex]:focus, [tabindex]:active {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--border-subtle) !important;
+    }
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ===== PERBAIKAN NAVIGASI AGAR TIDAK GOYANG ===== */
+    .header, .bottom-nav {
+      backface-visibility: hidden;
+      transform: translateZ(0);
+      will-change: transform;
+      margin:0;
+    }
+
+    /* ===== LOADING ===== */
+    #loadingOverlay { position:fixed; inset:0; z-index:99999; background:rgba(240,244,250,0.85); backdrop-filter:blur(6px); display:none; align-items:center; justify-content:center; flex-direction:column; gap:16px; }
+    #loadingOverlay.show { display:flex; }
+    #loadingOverlay .loading-logo { font-size:64px; background:linear-gradient(145deg,#2B7FFF,#4A90E2); -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:floatLogo 1.8s ease-in-out infinite; filter:drop-shadow(0 0 30px rgba(43,127,255,0.30)); }
+    #loadingOverlay .loading-logo .gmail-envelope { position:relative; display:inline-block; }
+    #loadingOverlay .loading-logo .gmail-envelope i { font-size:64px; -webkit-text-fill-color:initial; color:#fff; background:linear-gradient(145deg,#2B7FFF,#4A90E2); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    #loadingOverlay .loading-logo .gmail-envelope .envelope-dot { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:18px; color:#2B7FFF; font-weight:900; -webkit-text-fill-color:#2B7FFF; }
+    #loadingOverlay .loading-text { color:var(--text-primary); font-size:16px; font-weight:600; letter-spacing:0.5px; opacity:0.8; }
+    @keyframes floatLogo { 0%{transform:translateY(0px) scale(1);} 50%{transform:translateY(-12px) scale(1.04);} 100%{transform:translateY(0px) scale(1);} }
+
+    /* ===== MUSIK ===== */
+    #musicToggle { position:fixed; bottom:100px; right:20px; z-index:999; width:48px; height:48px; border-radius:50%; background:var(--blue-primary); color:#fff; font-size:20px; box-shadow:0 4px 20px var(--blue-glow); display:none; align-items:center; justify-content:center; transition:all var(--transition); cursor:pointer; border:1px solid rgba(255,255,255,0.2); backdrop-filter:blur(4px); }
+    #musicToggle:hover { transform:scale(1.1); box-shadow:0 6px 30px var(--blue-glow); }
+
+    /* ===== AUTH ===== */
+    #authPage { min-height:100dvh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; background:var(--bg-body); position:relative; overflow:visible; }
+    #authPage::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 15% 25%, rgba(43,127,255,0.12), transparent 55%), radial-gradient(circle at 85% 70%, rgba(74,144,226,0.10), transparent 50%), radial-gradient(circle at 45% 85%, rgba(43,127,255,0.08), transparent 40%), radial-gradient(circle at 70% 15%, rgba(74,144,226,0.08), transparent 35%), radial-gradient(circle at 10% 80%, rgba(43,127,255,0.06), transparent 30%); background-size:250% 250%; animation:authBgAnim 18s ease-in-out infinite alternate; pointer-events:none; z-index:0; }
+    @keyframes authBgAnim { 0%{background-position:0% 0%; transform:scale(1) rotate(0deg);} 33%{background-position:60% 40%; transform:scale(1.04) rotate(1.5deg);} 66%{background-position:20% 80%; transform:scale(0.98) rotate(-1deg);} 100%{background-position:80% 20%; transform:scale(1.02) rotate(0.5deg);} }
+    .auth-particle { position:absolute; border-radius:50%; pointer-events:none; z-index:0; opacity:0.30; background:radial-gradient(circle at 30% 30%, rgba(43,127,255,0.20), transparent 70%); filter:blur(2px); animation:floatParticle linear infinite alternate; }
+    .auth-particle:nth-child(1){width:200px;height:200px;top:5%;left:-5%;animation-duration:14s;}
+    .auth-particle:nth-child(2){width:280px;height:280px;bottom:0;right:-8%;animation-duration:18s;animation-delay:2s;}
+    .auth-particle:nth-child(3){width:160px;height:160px;top:40%;left:60%;animation-duration:12s;animation-delay:4s;}
+    .auth-particle:nth-child(4){width:120px;height:120px;top:10%;right:15%;animation-duration:16s;animation-delay:1s;}
+    .auth-particle:nth-child(5){width:220px;height:220px;bottom:20%;left:10%;animation-duration:20s;animation-delay:3s;}
+    .auth-particle:nth-child(6){width:100px;height:100px;top:60%;right:5%;animation-duration:13s;animation-delay:5s;}
+    @keyframes floatParticle { 0%{transform:translate(0,0) scale(1); opacity:0.15;} 33%{transform:translate(30px,-40px) scale(1.15); opacity:0.30;} 66%{transform:translate(-20px,30px) scale(0.9); opacity:0.20;} 100%{transform:translate(15px,-15px) scale(1.05); opacity:0.25;} }
+    .auth-stars { position:absolute; inset:0; z-index:0; pointer-events:none; }
+    .auth-stars::before { content:''; position:absolute; inset:0; background-image:radial-gradient(2px 2px at 10% 20%, rgba(43,127,255,0.25), transparent), radial-gradient(2px 2px at 30% 65%, rgba(43,127,255,0.20), transparent), radial-gradient(1px 1px at 50% 10%, rgba(43,127,255,0.30), transparent), radial-gradient(2px 2px at 70% 80%, rgba(43,127,255,0.20), transparent), radial-gradient(1px 1px at 90% 40%, rgba(43,127,255,0.25), transparent), radial-gradient(2px 2px at 15% 90%, rgba(43,127,255,0.15), transparent), radial-gradient(1px 1px at 60% 45%, rgba(43,127,255,0.20), transparent), radial-gradient(1px 1px at 85% 10%, rgba(43,127,255,0.18), transparent), radial-gradient(2px 2px at 5% 55%, rgba(43,127,255,0.15), transparent), radial-gradient(1px 1px at 45% 75%, rgba(43,127,255,0.20), transparent), radial-gradient(2px 2px at 75% 55%, rgba(43,127,255,0.15), transparent), radial-gradient(1px 1px at 25% 30%, rgba(43,127,255,0.18), transparent), radial-gradient(1px 1px at 95% 70%, rgba(43,127,255,0.15), transparent), radial-gradient(2px 2px at 40% 5%, rgba(43,127,255,0.20), transparent); background-size:200px 200px; animation:twinkle 6s ease-in-out infinite alternate; }
+    @keyframes twinkle { 0%{opacity:0.4;} 100%{opacity:1;} }
+    .auth-box { background:rgba(255,255,255,0.85); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-radius:var(--radius); padding:32px 24px; max-width:400px; width:100%; border:1px solid rgba(43,127,255,0.15); box-shadow:0 20px 60px rgba(26,38,52,0.10),0 8px 24px rgba(26,38,52,0.06),0 0 60px rgba(43,127,255,0.06); position:relative; z-index:1; }
+    body.light .auth-box { background:rgba(255,255,255,0.88); backdrop-filter:blur(16px); }
+    .auth-logo { position:relative; z-index:1; margin-bottom:20px; text-align:center; display:flex; flex-direction:column; align-items:center; }
+    .auth-logo .store-icon { font-size:72px; background:linear-gradient(135deg,var(--blue-primary),var(--blue-bright)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; filter:drop-shadow(0 0 30px var(--blue-glow)); line-height:1; }
+    .auth-logo .store-text { font-size:28px; font-weight:900; letter-spacing:-0.5px; background:linear-gradient(135deg,var(--blue-primary),var(--blue-bright)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-top:-8px; text-shadow:0 0 40px var(--blue-glow); }
+    .auth-box .auth-title { text-align:center; font-size:24px; font-weight:800; letter-spacing:-0.5px; margin-bottom:4px; color:var(--text-primary); }
+    .auth-box .auth-title .highlight { background:linear-gradient(135deg,var(--blue-primary),var(--blue-bright)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .auth-box .auth-sub { text-align:center; color:var(--text-secondary); font-size:14px; margin-bottom:20px; }
+    .auth-box .auth-tabs { display:flex; gap:0; margin-bottom:20px; border-radius:var(--radius-sm); overflow:hidden; border:1px solid var(--border-subtle); }
+    .auth-box .auth-tabs button { flex:1; padding:10px; font-weight:700; font-size:14px; background:var(--bg-card-alt); color:var(--text-secondary); transition:all var(--transition); border:none; cursor:pointer; }
+    .auth-box .auth-tabs button.active { background:var(--blue-primary); color:#fff; box-shadow:inset 0 0 20px rgba(43,127,255,0.30); }
+    .auth-box .auth-tabs button:first-child { border-radius:var(--radius-sm) 0 0 var(--radius-sm); }
+    .auth-box .auth-tabs button:last-child { border-radius:0 var(--radius-sm) var(--radius-sm) 0; }
+    .auth-box .form-group { margin-bottom:14px; }
+    .auth-box .form-group label { display:block; font-weight:600; font-size:13px; color:var(--text-secondary); margin-bottom:4px; }
+    .auth-box .form-group input { width:100%; padding:12px 16px; background:var(--bg-card-alt); border:1.5px solid var(--border-subtle); border-radius:var(--radius-sm); color:var(--text-primary); font-size:15px; transition:border var(--transition), box-shadow var(--transition); }
+    .auth-box .form-group input:focus { border-color:var(--blue-primary); box-shadow:0 0 0 3px var(--blue-glow); outline:none; }
+    .auth-box .btn-auth { width:100%; padding:14px; background:linear-gradient(135deg,var(--blue-primary),var(--blue-bright)); border:none; border-radius:var(--radius-sm); font-weight:700; font-size:16px; color:#fff; box-shadow:0 4px 30px var(--blue-glow); transition:all var(--transition); margin-top:4px; position:relative; }
+    .auth-box .btn-auth:disabled { opacity:0.7; cursor:not-allowed; }
+    .auth-box .btn-auth .spinner { display:none; width:20px; height:20px; border:2px solid rgba(255,255,255,0.3); border-top:2px solid #fff; border-radius:50%; animation:spin 0.8s linear infinite; margin-right:8px; }
+    .auth-box .btn-auth.loading .spinner { display:inline-block; }
+    .auth-box .btn-auth.loading .btn-text { display:none; }
+    .auth-box .btn-auth:hover { transform:scale(1.02); }
+    .auth-box .toggle-link { text-align:center; margin-top:14px; font-size:14px; color:var(--text-secondary); cursor:pointer; }
+    .auth-box .toggle-link span { color:var(--blue-primary); font-weight:600; }
+    .auth-box .auth-error { background:rgba(239,68,68,0.12); color:#EF4444; padding:10px 14px; border-radius:var(--radius-sm); font-size:13px; margin-bottom:12px; display:none; }
+    .auth-box .auth-error.show { display:block; }
+
+    /* ===== HEADER ===== */
+    .header { position:relative; flex:0 0 auto; z-index:100; background:rgba(255,255,255,0.88); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid var(--border-subtle); height:var(--header-height); display:flex; align-items:center; padding:0 16px; transition:background var(--transition); box-shadow:0 2px 20px rgba(26,38,52,0.04); margin:0; }
+    body.light .header { background:rgba(245,248,255,0.90); }
+    .header-inner { max-width:var(--max-width); width:100%; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
+    .logo { display:flex; align-items:center; gap:5px; font-weight:800; font-size:20px; letter-spacing:-0.5px; user-select:none; cursor:pointer; color:var(--text-primary); }
+    .logo .gmail-mini { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; background:linear-gradient(145deg,#2B7FFF,#4A90E2); color:#fff; border-radius:4px; font-size:12px; box-shadow:0 2px 6px rgba(43,127,255,0.30); flex-shrink:0; }
+    .logo .gmail-mini i { font-size:11px; color:#fff; }
+    .logo .brand-text-sel { color:#000; font-weight:800; }
+    .logo .brand-text-gmail { background:linear-gradient(135deg,var(--blue-primary),var(--blue-bright)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; text-shadow:0 0 30px var(--blue-glow); }
+    .header-actions { display:flex; align-items:center; gap:8px; }
+    .user-badge { display:flex; align-items:center; gap:10px; padding:4px 12px 4px 4px; border-radius:var(--radius-full); background:rgba(43,127,255,0.05); border:1px solid rgba(43,127,255,0.08); cursor:pointer; transition:all var(--transition); }
+    .user-badge:hover { background:rgba(43,127,255,0.08); border-color:rgba(43,127,255,0.15); }
+    .user-avatar { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--blue-primary),var(--blue-bright)); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; color:#fff; box-shadow:0 0 20px var(--blue-glow); overflow:hidden; flex-shrink:0; }
+    .user-avatar img { width:100%; height:100%; object-fit:cover; }
+    .user-name { font-size:14px; font-weight:600; color:var(--text-primary); max-width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .btn-inbox { font-size:20px; color:var(--text-secondary); padding:4px 8px; transition:color var(--transition); cursor:pointer; background:none; border:none; display:flex; align-items:center; justify-content:center; position:relative; }
+    .btn-inbox:hover { color:var(--blue-bright); }
+    .inbox-dot { position:absolute; top:0px; right:4px; width:10px; height:10px; background:#EF4444; border-radius:50%; border:2px solid var(--bg-body); display:none; z-index:5; }
+    .inbox-dot.show { display:block; }
+
+    /* ===== APP ===== */
+    #appPage { display:none; height:100vh; height:var(--app-height, 100dvh); background:var(--bg-body); margin:0; flex-direction:column; overflow:hidden; }
+    #appPage.show { display:flex; }
+    #appScrollArea { flex:1 1 auto; min-height:0; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+    #authPage.hide { display:none; }
+
+    /* ===== PAGES ===== */
+    .page { display:none; animation:fadeUp 0.4s ease both; max-width:var(--max-width); margin:0 auto; padding:0 16px 16px; }
+    .page.active { display:block; }
+    @keyframes fadeUp { 0%{opacity:0; transform:translateY(16px);} 100%{opacity:1; transform:translateY(0);} }
+    .page-title { font-size:22px; font-weight:800; letter-spacing:-0.5px; margin-bottom:4px; display:flex; align-items:center; gap:10px; color:var(--text-primary); }
+    .page-title i { color:var(--blue-bright); }
+    .page-sub { color:var(--text-secondary); font-size:14px; margin-bottom:16px; }
+
+    /* ===== CARDS ===== */
+    .card { background:var(--bg-card); border-radius:var(--radius); padding:18px 20px; border:1px solid var(--border-subtle); margin-bottom:16px; box-shadow:var(--shadow-card); transition:background var(--transition), border var(--transition), box-shadow var(--transition); }
+    .card:hover { box-shadow:var(--shadow-card-hover); border-color:rgba(43,127,255,0.18); }
+    .card-alt { background:var(--bg-card-alt); }
+    .card-title { font-weight:700; font-size:16px; margin-bottom:8px; display:flex; align-items:center; gap:8px; color:var(--text-primary); }
+    .card-title i { color:var(--blue-bright); }
+
+    /* ===== SALDO CARD (BANNER) ===== */
+    .saldo-card { background:linear-gradient(135deg,#1A4A7A,#2B7FFF); border-radius:var(--radius); padding:28px 24px 24px; margin-bottom:16px; box-shadow:0 8px 30px rgba(43,127,255,0.25),0 4px 16px rgba(43,127,255,0.10); position:relative; overflow:hidden; }
+    .saldo-card::before { content:''; position:absolute; top:-50%; right:-20%; width:200px; height:200px; background:radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%); border-radius:50%; pointer-events:none; }
+    .saldo-card .saldo-header { display:flex; align-items:center; gap:10px; margin-bottom:4px; }
+    .saldo-card .saldo-header .saldo-icon { font-size:28px; color:rgba(255,255,255,0.85); }
+    .saldo-card .saldo-header .saldo-label { font-weight:700; font-size:18px; color:rgba(255,255,255,0.95); letter-spacing:0.3px; }
+    .saldo-card .saldo-nominal { font-size:44px; font-weight:900; letter-spacing:-1px; color:#FFFFFF; margin:4px 0 16px; text-shadow:0 2px 20px rgba(0,0,0,0.10); display:flex; align-items:baseline; }
+    .saldo-card .saldo-nominal .currency { font-size:24px; font-weight:700; color:rgba(255,255,255,0.80); margin-right:4px; }
+    .saldo-card .saldo-actions { display:flex; gap:10px; flex-wrap:wrap; }
+    .saldo-card .saldo-actions .btn { padding:10px 24px; border-radius:var(--radius-full); font-weight:700; font-size:14px; transition:all var(--transition); display:inline-flex; align-items:center; gap:8px; border:none; cursor:pointer; background:rgba(255,255,255,0.20); color:#fff; backdrop-filter:blur(4px); border:1px solid rgba(255,255,255,0.10); }
+    .saldo-card .saldo-actions .btn:hover { background:rgba(255,255,255,0.35); transform:scale(1.03); }
+    .saldo-card .saldo-actions .btn i { color:rgba(255,255,255,0.90); }
+
+    /* ===== MENU GRID (8 menu bulat) ===== */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px 10px;
+      margin: 18px 0 20px;
+    }
+    .menu-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+    }
+    .menu-item:hover { transform:translateY(-3px); }
+    .menu-item:active { transform:scale(0.94); }
+    .menu-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue-primary), var(--blue-bright));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #fff;
+      box-shadow: 0 4px 16px var(--blue-glow);
+      transition: box-shadow 0.3s, transform 0.2s;
+      flex-shrink: 0;
+    }
+    .menu-item:hover .menu-icon { box-shadow:0 6px 24px var(--blue-glow); }
+    .menu-label {
+      margin-top: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-align: center;
+      letter-spacing: 0.2px;
+      line-height: 1.2;
+    }
+    @media(max-width:480px){
+      .menu-grid { gap:10px 6px; }
+      .menu-icon { width:50px; height:50px; font-size:20px; }
+      .menu-label { font-size:10px; }
+    }
+    @media(max-width:380px){
+      .menu-icon { width:44px; height:44px; font-size:18px; }
+      .menu-label { font-size:9px; }
+    }
+
+    /* ===== STATUS CARD ===== */
+    .status-card { background:var(--bg-card); border-radius:var(--radius-sm); padding:16px 20px; border:1px solid var(--border-subtle); margin-bottom:16px; box-shadow:var(--shadow-card); display:flex; flex-direction:column; gap:8px; }
+    .status-row { display:flex; justify-content:space-between; align-items:center; font-size:14px; color:var(--text-secondary); }
+    .status-row .label { font-weight:600; }
+    .status-row .value { font-weight:700; color:var(--text-primary); }
+    .badge-status { font-size:11px; font-weight:700; padding:3px 12px; border-radius:var(--radius-full); text-transform:uppercase; letter-spacing:0.3px; flex-shrink:0; }
+    .badge-status.open { background:rgba(34,197,94,0.12); color:#22C55E; }
+    .badge-status.close { background:rgba(239,68,68,0.12); color:#EF4444; }
+    .badge-status.diterima { background:rgba(34,197,94,0.12); color:#22C55E; }
+    .badge-status.pending { background:rgba(245,158,11,0.12); color:#F59E0B; }
+    .badge-status.ditolak { background:rgba(239,68,68,0.12); color:#EF4444; }
+
+    /* ===== STATS GRID ===== */
+    .stats-grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:12px 0 16px; }
+    .stats-grid-3 .stat-item { background:var(--bg-card); border-radius:var(--radius-sm); padding:14px 8px; text-align:center; border:1px solid var(--border-subtle); box-shadow:var(--shadow-card); transition:box-shadow var(--transition), border var(--transition); }
+    .stats-grid-3 .stat-item:hover { box-shadow:var(--shadow-card-hover); border-color:rgba(43,127,255,0.15); }
+    .stats-grid-3 .stat-item .num { font-size:24px; font-weight:800; color:var(--blue-bright); }
+    .stats-grid-3 .stat-item .lbl { font-size:11px; color:var(--text-secondary); font-weight:600; text-transform:uppercase; letter-spacing:0.3px; margin-top:2px; }
+    .stats-grid-3 .stat-item.pending .num { color:#F59E0B; }
+    .stats-grid-3 .stat-item.diterima .num { color:#22C55E; }
+    .stats-grid-3 .stat-item.total .num { color:var(--blue-bright); }
+
+    /* ===== FORM ===== */
+    .form-group { margin-bottom:14px; }
+    .form-group label { display:block; font-weight:600; font-size:13px; color:var(--text-secondary); margin-bottom:4px; }
+    .form-group input,.form-group textarea,.form-group select { width:100%; padding:12px 16px; background:var(--bg-card-alt); border:1.5px solid var(--border-subtle); border-radius:var(--radius-sm); color:var(--text-primary); font-size:15px; transition:border var(--transition), box-shadow var(--transition); font-family:'Inter',sans-serif; appearance:auto; }
+    .form-group input:focus,.form-group textarea:focus,.form-group select:focus { border-color:var(--blue-primary); box-shadow:0 0 0 3px var(--blue-glow); outline:none; }
+    .form-group textarea { min-height:120px; resize:vertical; }
+    .form-group .helper { font-size:12px; color:var(--text-secondary); margin-top:4px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    @media(max-width:480px){ .form-row{grid-template-columns:1fr;} }
+    .btn-submit { width:100%; padding:14px; background:linear-gradient(135deg,var(--blue-primary),var(--blue-bright)); border:none; border-radius:var(--radius-sm); font-weight:700; font-size:16px; color:#fff; box-shadow:0 4px 30px var(--blue-glow); transition:all var(--transition); display:flex; align-items:center; justify-content:center; gap:10px; margin-top:4px; position:relative; }
+    .btn-submit:disabled { opacity:0.5; cursor:not-allowed; transform:none !important; }
+    .btn-submit .spinner { display:none; width:20px; height:20px; border:2px solid rgba(255,255,255,0.3); border-top:2px solid #fff; border-radius:50%; animation:spin 0.8s linear infinite; margin-right:8px; }
+    .btn-submit.loading .spinner { display:inline-block; }
+    .btn-submit.loading .btn-text { display:none; }
+    .btn-submit:hover:not(:disabled) { transform:scale(1.02); box-shadow:0 6px 40px var(--blue-glow); }
+    .btn-submit:active:not(:disabled) { transform:scale(0.96); }
+
+    /* ===== PRICE CARD ===== */
+    .price-card { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; background:var(--bg-card); border-radius:var(--radius); padding:14px 20px; border:1px solid var(--border-subtle); margin-bottom:16px; box-shadow:var(--shadow-card); }
+    .price-card .label { font-weight:600; font-size:15px; color:var(--text-secondary); }
+    .price-card .value { font-weight:800; font-size:26px; background:linear-gradient(135deg,var(--blue-primary),var(--blue-bright)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .price-card .sub { font-size:12px; color:var(--text-secondary); width:100%; }
+
+    /* ===== RIWAYAT TABS ===== */
+    .riwayat-tabs { display:flex; gap:6px; margin-bottom:16px; background:var(--bg-card-alt); border-radius:var(--radius-sm); padding:4px; border:1px solid var(--border-subtle); flex-wrap:wrap; }
+    .riwayat-tabs .riwayat-tab { flex:1; padding:10px 12px; border-radius:var(--radius-sm); font-weight:700; font-size:13px; color:var(--text-secondary); background:transparent; border:1px solid transparent; cursor:pointer; transition:background var(--transition), color var(--transition), box-shadow var(--transition), border-color var(--transition); text-align:center; min-width:60px; }
+    .riwayat-tabs .riwayat-tab.active { background:var(--bg-card); color:var(--text-primary); box-shadow:var(--shadow-card); border-color:var(--border-subtle); }
+    .riwayat-tabs .riwayat-tab:hover { color:var(--text-primary); }
+    .riwayat-tabs .riwayat-tab:active { opacity:0.7; }
+    .riwayat-content { display:none; }
+    .riwayat-content.active { display:block; }
+
+    /* ===== PERBAIKAN LEADERBOARD TOMBOL ===== */
+    #leaderboardTabs .riwayat-tab {
+      pointer-events: auto !important;
+      cursor: pointer !important;
+      touch-action: manipulation !important;
+      user-select: none;
+      position: relative;
+      z-index: 10;
+    }
+    #leaderboardTabs .riwayat-tab:active {
+      opacity: 0.6;
+    }
+    #leaderboardTabs .riwayat-tab.active {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-card);
+      border-color: var(--border-subtle);
+    }
+
+    #page-rules.page { padding-top:14px; }
+    #page-profil.page { padding-top:16px; padding-bottom:28px; }
+    #page-beranda.page { padding-top:14px; }
+    #page-riwayat.page { padding-top:14px; }
+    #page-leaderboard.page { padding-top:14px; }
+    .history-actions { display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
+    .btn-danger { background:rgba(239,68,68,0.10); color:#EF4444; border:1px solid rgba(239,68,68,0.20); padding:8px 18px; border-radius:var(--radius-full); font-weight:700; font-size:13px; transition:all var(--transition); cursor:pointer; display:inline-flex; align-items:center; gap:6px; }
+    .btn-danger:hover { background:rgba(239,68,68,0.18); transform:scale(1.02); }
+    .search-input { width:100%; padding:10px 16px; background:var(--bg-card-alt); border:1.5px solid var(--border-subtle); border-radius:var(--radius-sm); color:var(--text-primary); font-size:14px; transition:border var(--transition); margin-bottom:12px; }
+    .search-input:focus { border-color:var(--blue-primary); box-shadow:0 0 0 3px var(--blue-glow); outline:none; }
+    .history-item { background:var(--bg-card); border-radius:var(--radius-sm); padding:14px 16px; border:1px solid var(--border-subtle); margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; box-shadow:var(--shadow-card); transition:box-shadow var(--transition), border var(--transition); }
+    .history-item:hover { box-shadow:var(--shadow-card-hover); border-color:rgba(43,127,255,0.12); }
+    .history-item .hi-left { display:flex; flex-direction:column; gap:2px; flex:1; min-width:0; }
+    .history-item .hi-id { font-weight:600; font-size:14px; word-break:break-all; color:var(--blue-bright); }
+    .history-item .hi-date { font-size:12px; color:var(--text-secondary); }
+    .history-item .hi-email { font-size:12px; color:var(--text-secondary); font-style:italic; }
+    .history-item .hi-right { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .empty-state { text-align:center; padding:40px 16px; color:var(--text-secondary); }
+    .empty-state .empty-icon { font-size:48px; opacity:0.30; margin-bottom:12px; color:var(--text-secondary); }
+    .load-more-btn { display:block; width:100%; padding:12px; background:var(--bg-card-alt); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); color:var(--text-secondary); font-weight:700; font-size:14px; cursor:pointer; transition:all var(--transition); margin-top:8px; text-align:center; }
+    .load-more-btn:hover { border-color:var(--blue-primary); color:var(--text-primary); background:var(--bg-card); }
+
+    /* ===== RULES ===== */
+    .rules-content { font-size:14px; line-height:1.7; color:var(--text-primary); }
+    .rules-content .section-title { font-weight:800; font-size:18px; margin:16px 0 8px; color:var(--blue-bright); display:block; }
+    .rules-content .rule-box { background:var(--bg-card-alt); border-radius:var(--radius-sm); padding:12px 16px; margin:8px 0; border-left:3px solid var(--blue-primary); }
+    .rules-content .danger { color:#EF4444; }
+    .rules-content .success { color:#22C55E; }
+    .rules-content ul,.rules-content ol { padding-left:20px; margin:6px 0; }
+    .rules-content li { margin-bottom:4px; }
+    .btn-wa-channel { display:inline-flex; align-items:center; gap:10px; background:#25D366; color:#fff; padding:12px 24px; border-radius:var(--radius-full); font-weight:700; font-size:15px; transition:all var(--transition); margin-top:12px; border:none; cursor:pointer; }
+    .btn-wa-channel:hover { transform:scale(1.03); box-shadow:0 4px 20px rgba(37,211,102,0.30); }
+    .btn-wa-masing { display:inline-flex; align-items:center; gap:10px; background:#25D366; color:#fff; padding:10px 20px; border-radius:var(--radius-full); font-weight:700; font-size:14px; transition:all var(--transition); border:none; cursor:pointer; width:100%; justify-content:center; margin-bottom:12px; text-decoration:none; }
+    .btn-wa-masing:hover { transform:scale(1.02); box-shadow:0 4px 20px rgba(37,211,102,0.30); }
+    .card-cs { cursor:pointer; transition:all var(--transition); }
+    .card-cs:hover { border-color:var(--blue-primary); background:var(--bg-card-alt); }
+
+    /* ===== LEADERBOARD (PODIUM + DAFTAR) - FIX SOLID & GELAP ===== */
+    .lb-container {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 16px 0;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      min-height: 200px;
+      transition: none;
+    }
+
+    /* Podium */
+    .podium-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 12px;
+      padding: 14px 12px 12px;
+      flex-wrap: wrap;
+    }
+    .podium-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 110px;
+      max-width: 130px;
+    }
+    .podium-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 4px;
+      width: 100%;
+    }
+    .podium-content .podium-rank {
+      font-size: 26px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 2px;
+      text-shadow: 0 0 20px currentColor;
+    }
+    .podium-content .podium-avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue-primary), var(--blue-bright));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 26px;
+      color: #fff;
+      overflow: hidden;
+      box-shadow: 0 4px 16px var(--blue-glow);
+      margin-bottom: 6px;
+      border: 3px solid rgba(255,255,255,0.6);
+    }
+    .podium-content .podium-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .podium-content .podium-name {
+      font-weight: 700;
+      font-size: 15px;
+      text-align: center;
+      line-height: 1.2;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--text-primary);
+    }
+    .podium-content .podium-email {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 1px;
+    }
+    .podium-content .podium-amount {
+      font-weight: 800;
+      font-size: 16px;
+      margin-top: 2px;
+    }
+
+    /* ===== KOTAK PODIUM - SOLID & ANGKA DI TENGAH ===== */
+    .podium-box {
+      width: 100%;
+      border-radius: 10px 10px 0 0;
+      min-height: 30px;
+      transition: all 0.3s;
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 6px;
+    }
+
+    /* Angka di dalam kotak */
+    .podium-number {
+      font-size: 40px;
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      line-height: 1;
+      margin: 0;
+    }
+
+    /* JUARA 1 – KUNING SOLID (lebih gelap sedikit) */
+    .podium-box.podium-1 {
+      height: 200px;
+      background: #E6B800;
+      border-color: #CCA000;
+      box-shadow: 0 0 30px rgba(230,184,0,0.4);
+    }
+    .podium-1 .podium-rank { color: #B8960F; }
+    .podium-1 .podium-amount { color: #B8960F; }
+    .podium-1 .podium-name { color: #8A6D00; }
+    .podium-1 .podium-number { color: #fff; }
+
+    /* JUARA 2 – OREN SOLID (lebih gelap sedikit) */
+    .podium-box.podium-2 {
+      height: 170px;
+      background: #E07A00;
+      border-color: #C66A00;
+      box-shadow: 0 0 20px rgba(224,122,0,0.4);
+    }
+    .podium-2 .podium-rank { color: #CC7000; }
+    .podium-2 .podium-amount { color: #CC7000; }
+    .podium-2 .podium-name { color: #A85A00; }
+    .podium-2 .podium-number { color: #fff; }
+
+    /* JUARA 3 – ABU-ABU SOLID (lebih gelap sedikit) */
+    .podium-box.podium-3 {
+      height: 145px;
+      background: #8C8C8C;
+      border-color: #777;
+      box-shadow: 0 0 16px rgba(140,140,140,0.3);
+    }
+    .podium-3 .podium-rank { color: #6E6E6E; }
+    .podium-3 .podium-amount { color: #6E6E6E; }
+    .podium-3 .podium-name { color: #555; }
+    .podium-3 .podium-number { color: #fff; }
+
+    /* Daftar biasa untuk peringkat 4+ */
+    .leaderboard-list {
+      padding: 0 12px;
+    }
+    .leaderboard-item {
+      display: flex;
+      align-items: center;
+      background: var(--bg-card);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      margin-bottom: 6px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      transition: all var(--transition);
+    }
+    .leaderboard-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card-hover);
+      border-color: var(--blue-primary);
+    }
+    .leaderboard-item .rank {
+      width: 34px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+    .leaderboard-item .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue-primary), var(--blue-bright));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      color: #fff;
+      flex-shrink: 0;
+      margin-right: 12px;
+      overflow: hidden;
+    }
+    .leaderboard-item .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .leaderboard-item .info {
+      flex: 1;
+      min-width: 0;
+    }
+    .leaderboard-item .info .name {
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--text-primary);
+    }
+    .leaderboard-item .info .emails {
+      font-size: 10px;
+      color: var(--text-secondary);
+    }
+    .leaderboard-item .amount {
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--blue-bright);
+      flex-shrink: 0;
+    }
+
+    /* ===== MODALS ===== */
+    .modal-overlay { position:fixed; inset:0; z-index:999; background:rgba(26,38,52,0.50); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); display:none; align-items:center; justify-content:center; padding:20px; transition:opacity 0.25s ease; }
+    .modal-overlay.open { display:flex; opacity:1; }
+    .modal { background:var(--bg-card); border-radius:28px; padding:28px 24px 24px; max-width:420px; width:100%; border:1px solid var(--border-subtle); box-shadow:var(--shadow-card-lg); max-height:90vh; overflow-y:auto; transform:scale(0.96); opacity:0; transition:transform 0.25s ease, opacity 0.25s ease; }
+    .modal-overlay.open .modal { transform:scale(1); opacity:1; }
+    .modal .modal-close { float:right; font-size:22px; color:var(--text-secondary); cursor:pointer; transition:all var(--transition); background:none; border:none; padding:4px; }
+    .modal .modal-close:hover { color:var(--text-primary); transform:rotate(90deg); }
+    .modal .modal-title { font-size:22px; font-weight:800; margin-bottom:4px; color:var(--text-primary); }
+    .modal .modal-sub { color:var(--text-secondary); font-size:14px; margin-bottom:18px; }
+    .modal label { font-weight:600; font-size:13px; color:var(--text-secondary); display:block; margin-bottom:4px; }
+    .modal input,.modal select { width:100%; padding:12px 16px; background:var(--bg-card-alt); border:1.5px solid var(--border-subtle); border-radius:var(--radius-sm); color:var(--text-primary); font-size:15px; transition:border var(--transition), box-shadow var(--transition); margin-bottom:14px; font-family:'Inter',sans-serif; appearance:auto; }
+    .modal input:focus,.modal select:focus { border-color:var(--blue-primary); box-shadow:0 0 0 3px var(--blue-glow); outline:none; }
+    .modal .btn-modal { width:100%; padding:14px; background:linear-gradient(135deg,var(--blue-primary),var(--blue-bright)); border:none; border-radius:var(--radius-sm); font-weight:700; font-size:16px; color:#fff; box-shadow:0 4px 30px var(--blue-glow); transition:all var(--transition); }
+    .modal .btn-modal:hover { transform:scale(1.02); }
+    .modal .toggle-link { display:block; text-align:center; margin-top:14px; font-size:14px; color:var(--text-secondary); cursor:pointer; }
+    .modal .toggle-link:hover { color:var(--blue-bright); }
+    .modal .toggle-link span { color:var(--blue-primary); font-weight:600; }
+    .modal .btn-danger-inbox { display:block; width:100%; padding:12px; margin-top:12px; background:rgba(239,68,68,0.10); color:#EF4444; border:1px solid rgba(239,68,68,0.20); border-radius:var(--radius-sm); font-weight:700; transition:all var(--transition); cursor:pointer; }
+    .modal .btn-danger-inbox:hover { background:rgba(239,68,68,0.18); }
+    .inbox-msg { cursor:pointer; transition:background 0.2s; }
+    .inbox-msg:hover { background:var(--bg-card-hover) !important; border-color:var(--blue-primary) !important; }
+
+    /* ===== MODAL TARIK SALDO ===== */
+    #modalTarikSaldo .modal .saldo-info { background:var(--bg-card-alt); border-radius:var(--radius-sm); padding:14px 18px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border-subtle); }
+    #modalTarikSaldo .modal .saldo-info .label { font-weight:600; color:var(--text-secondary); font-size:14px; }
+    #modalTarikSaldo .modal .saldo-info .nominal { font-weight:800; font-size:22px; color:var(--blue-bright); }
+    #modalTarikSaldo .modal .fee-info { background:var(--bg-card-alt); border-radius:var(--radius-sm); padding:12px 16px; margin:12px 0 16px; border:1px solid var(--border-subtle); display:flex; flex-direction:column; gap:6px; }
+    #modalTarikSaldo .modal .fee-info .fee-row { display:flex; justify-content:space-between; font-size:14px; color:var(--text-secondary); padding:2px 0; }
+    #modalTarikSaldo .modal .fee-info .fee-row .value { font-weight:700; color:var(--text-primary); }
+    #modalTarikSaldo .modal .fee-info .fee-row .value.highlight { color:#22C55E; font-size:18px; }
+    #modalTarikSaldo .modal .btn-tarik { width:100%; padding:16px; background:linear-gradient(135deg,#22C55E,#16A34A); border:none; border-radius:var(--radius-sm); font-weight:800; font-size:18px; color:#fff; box-shadow:0 4px 30px rgba(34,197,94,0.25); transition:all var(--transition); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; margin-top:8px; }
+    #modalTarikSaldo .modal .btn-tarik:hover:not(:disabled) { transform:scale(1.02); box-shadow:0 6px 40px rgba(34,197,94,0.30); }
+    #modalTarikSaldo .modal .btn-tarik:disabled { opacity:0.5; cursor:not-allowed; transform:none !important; }
+    .save-ewallet-row { display:flex; align-items:center; gap:10px; margin-top:4px; margin-bottom:12px; }
+    .save-ewallet-row input[type="checkbox"] { width:18px; height:18px; accent-color:var(--blue-primary); cursor:pointer; margin:0; }
+    .save-ewallet-row label { font-size:13px; color:var(--text-secondary); cursor:pointer; font-weight:500; margin:0; }
+
+    /* ===== MODAL STOR SUCCESS ===== */
+    #modalStorSuccess .modal { max-width:420px; text-align:center; }
+    #modalStorSuccess .modal .success-icon { font-size:48px; color:#22C55E; margin-bottom:12px; display:flex; justify-content:center; width:100%; }
+    #modalStorSuccess .modal .success-title { font-size:18px; font-weight:700; margin-bottom:8px; color:var(--text-primary); }
+    #modalStorSuccess .modal .success-desc { font-size:14px; color:var(--text-secondary); line-height:1.6; margin-bottom:16px; }
+    #modalStorSuccess .modal .success-desc strong { color:var(--text-primary); }
+    #modalStorSuccess .modal .success-actions { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+    #modalStorSuccess .modal .success-actions a,#modalStorSuccess .modal .success-actions button { flex:1; min-width:80px; padding:10px 12px; border-radius:var(--radius-full); font-weight:700; font-size:13px; transition:all var(--transition); border:none; cursor:pointer; text-align:center; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:6px; }
+    #modalStorSuccess .modal .success-actions .btn-wa { background:#25D366; color:#fff; box-shadow:0 4px 20px rgba(37,211,102,0.25); }
+    #modalStorSuccess .modal .success-actions .btn-wa:hover { transform:scale(1.03); }
+    #modalStorSuccess .modal .success-actions .btn-telegram { background:#0088cc; color:#fff; box-shadow:0 4px 20px rgba(0,136,204,0.25); }
+    #modalStorSuccess .modal .success-actions .btn-telegram:hover { transform:scale(1.03); }
+    #modalStorSuccess .modal .success-actions .btn-ok { background:linear-gradient(135deg,var(--blue-primary),var(--blue-bright)); color:#fff; box-shadow:0 4px 20px var(--blue-glow); }
+    #modalStorSuccess .modal .success-actions .btn-ok:hover { transform:scale(1.03); }
+
+    /* ===== MODAL ERROR ===== */
+    #modalError .modal { max-width:380px; text-align:center; }
+    #modalError .modal .error-icon { font-size:48px; color:#EF4444; margin-bottom:12px; display:flex; justify-content:center; width:100%; }
+    #modalError .modal .error-title { font-size:18px; font-weight:700; margin-bottom:6px; color:var(--text-primary); }
+    #modalError .modal .error-desc { font-size:14px; color:var(--text-secondary); line-height:1.6; margin-bottom:18px; }
+    #modalError .modal .btn-error-close { padding:10px 30px; background:linear-gradient(135deg,var(--blue-primary),var(--blue-bright)); border:none; border-radius:var(--radius-full); font-weight:700; font-size:14px; color:#fff; box-shadow:0 4px 20px var(--blue-glow); transition:all var(--transition); cursor:pointer; }
+    #modalError .modal .btn-error-close:hover { transform:scale(1.03); }
+
+    /* ===== MODAL LOGOUT ===== */
+    #modalLogout .modal { max-width:340px; text-align:center; }
+    #modalLogout .modal .logout-icon { font-size:48px; color:#EF4444; margin-bottom:12px; display:flex; justify-content:center; width:100%; }
+    #modalLogout .modal .logout-title { font-size:20px; font-weight:800; margin-bottom:6px; color:var(--text-primary); }
+    #modalLogout .modal .logout-desc { font-size:14px; color:var(--text-secondary); margin-bottom:20px; }
+    #modalLogout .modal .logout-actions { display:flex; gap:12px; }
+    #modalLogout .modal .logout-actions button { flex:1; padding:12px; border-radius:var(--radius-sm); font-weight:700; font-size:15px; transition:all var(--transition); border:none; cursor:pointer; }
+    #modalLogout .modal .logout-actions .btn-batal { background:var(--bg-card-alt); color:var(--text-secondary); border:1px solid var(--border-subtle); }
+    #modalLogout .modal .logout-actions .btn-batal:hover { background:var(--bg-card); }
+    #modalLogout .modal .logout-actions .btn-oke { background:#EF4444; color:#fff; box-shadow:0 4px 20px rgba(239,68,68,0.25); }
+    #modalLogout .modal .logout-actions .btn-oke:hover { transform:scale(1.03); }
+
+    /* ===== MODAL MESSAGE NOTIF ===== */
+    #modalMessageNotif .modal { max-width:400px; text-align:left; }
+    #modalMessageNotif .modal .notif-header { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+    #modalMessageNotif .modal .notif-header .envelope-icon { font-size:32px; color:var(--blue-bright); }
+    #modalMessageNotif .modal .notif-header .notif-title { font-size:18px; font-weight:700; color:var(--text-primary); }
+    #modalMessageNotif .modal .notif-body { background:var(--bg-card-alt); border-radius:var(--radius-sm); padding:16px; margin:8px 0 16px; border-left:3px solid var(--blue-primary); font-size:15px; line-height:1.6; color:var(--text-primary); white-space:pre-wrap; word-break:break-word; }
+    #modalMessageNotif .modal .notif-footer { font-size:12px; color:var(--text-secondary); text-align:right; }
+
+    /* ===== MODAL RESET PASSWORD ===== */
+    .modal .reset-user-info { display:flex; align-items:center; gap:14px; background:var(--bg-card-alt); border-radius:var(--radius-sm); padding:14px 18px; margin-bottom:18px; border:1px solid var(--border-subtle); }
+    .modal .reset-user-info .rui-avatar { width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,var(--blue-primary),var(--blue-bright)); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:20px; color:#fff; flex-shrink:0; box-shadow:0 0 20px var(--blue-glow); }
+    .modal .reset-user-info .rui-name { font-weight:700; font-size:16px; color:var(--text-primary); }
+    .modal .reset-user-info .rui-email { font-size:13px; color:var(--text-secondary); }
+    .modal .reset-step { display:block; }
+    .modal .reset-step.hidden-step { display:none; }
+
+    /* ===== MODAL KONFIRMASI HAPUS ===== */
+    #modalConfirmDelete .modal { max-width:380px; text-align:center; }
+    #modalConfirmDelete .modal .confirm-icon { font-size:48px; color:#EF4444; margin-bottom:12px; display:flex; justify-content:center; width:100%; }
+    #modalConfirmDelete .modal .confirm-title { font-size:20px; font-weight:800; margin-bottom:6px; color:var(--text-primary); }
+    #modalConfirmDelete .modal .confirm-desc { font-size:14px; color:var(--text-secondary); line-height:1.6; margin-bottom:20px; }
+    #modalConfirmDelete .modal .confirm-actions { display:flex; gap:12px; justify-content:center; }
+    #modalConfirmDelete .modal .confirm-actions button { flex:1; padding:12px; border-radius:var(--radius-sm); font-weight:700; font-size:15px; transition:all var(--transition); border:none; cursor:pointer; min-width:80px; }
+    #modalConfirmDelete .modal .confirm-actions .btn-batal { background:var(--bg-card-alt); color:var(--text-secondary); border:1px solid var(--border-subtle); }
+    #modalConfirmDelete .modal .confirm-actions .btn-batal:hover { background:var(--bg-card); }
+    #modalConfirmDelete .modal .confirm-actions .btn-hapus { background:#EF4444; color:#fff; box-shadow:0 4px 20px rgba(239,68,68,0.25); }
+    #modalConfirmDelete .modal .confirm-actions .btn-hapus:hover { transform:scale(1.03); }
+
+    /* ===== BOTTOM NAV ===== */
+    .bottom-nav { position:relative; flex:0 0 auto; z-index:200; background:rgba(255,255,255,0.92); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-top:1px solid var(--border-subtle); border-radius:28px 28px 0 0; padding:6px 4px calc(6px + var(--safe-bottom)); display:flex; align-items:center; justify-content:space-around; box-shadow:0 -8px 40px rgba(26,38,52,0.06); height:calc(var(--nav-height) + var(--safe-bottom)); transition:background var(--transition); margin:0; width:100%; }
+    body.light .bottom-nav { background:rgba(245,248,255,0.94); }
+    .nav-item { display:flex; flex-direction:column; align-items:center; gap:1px; padding:4px 2px; border-radius:var(--radius-sm); transition:all var(--transition); cursor:pointer; flex:1; max-width:56px; background:none; border:none; color:var(--text-secondary); font-size:8px; font-weight:600; }
+    .nav-item .ni-icon { font-size:18px; transition:all var(--transition); }
+    .nav-item .ni-label { font-size:8px; margin-top:1px; }
+    .nav-item.active { color:var(--blue-bright); }
+    .nav-item.active .ni-icon { filter:drop-shadow(0 0 12px var(--blue-glow)); }
+    .nav-item:active { opacity:0.55; }
+    /* ===== TOMBOL STOR DIPERBESAR (DARI 52px MENJADI 58px) ===== */
+    .nav-item.stor-btn {
+      background:linear-gradient(135deg,var(--blue-primary),var(--blue-bright));
+      color:#fff;
+      border-radius:50%;
+      width:58px;
+      height:58px;
+      max-width:58px;
+      padding:0;
+      justify-content:center;
+      margin-top:-20px;
+      box-shadow:0 4px 30px var(--blue-glow);
+      border:2px solid rgba(255,255,255,0.20);
+    }
+    .nav-item.stor-btn .ni-icon {
+      font-size:24px;
+      color:#fff;
+      filter:none;
+    }
+    .nav-item.stor-btn .ni-label {
+      display:block;
+      font-size:8px;
+      color:#fff;
+      margin-top:1px;
+    }
+    @media(max-width:420px){
+      .nav-item .ni-icon{font-size:16px;}
+      .nav-item.stor-btn{width:50px;height:50px;max-width:50px;margin-top:-16px;}
+      .nav-item.stor-btn .ni-icon{font-size:20px;}
+      .nav-item .ni-label{font-size:7px;}
+    }
+
+    /* ===== TOAST ===== */
+    .toast-container { position:fixed; bottom:calc(var(--nav-height) + var(--safe-bottom) + 20px); left:16px; right:16px; z-index:9999; display:flex; flex-direction:column; gap:8px; pointer-events:none; max-width:400px; margin:0 auto; }
+    .toast { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:14px 18px; display:flex; align-items:center; gap:12px; box-shadow:var(--shadow-card-lg); pointer-events:auto; animation:toastIn 0.4s cubic-bezier(0.22,1,0.36,1); }
+    .toast.removing { animation:toastOut 0.3s ease forwards; }
+    @keyframes toastIn { 0%{opacity:0; transform:translateY(30px) scale(0.94);} 100%{opacity:1; transform:translateY(0) scale(1);} }
+    @keyframes toastOut { 0%{opacity:1; transform:scale(1);} 100%{opacity:0; transform:scale(0.92) translateY(20px);} }
+    .toast .toast-icon { font-size:20px; flex-shrink:0; }
+    .toast .toast-icon.success { color:#22C55E; }
+    .toast .toast-icon.error { color:#EF4444; }
+    .toast .toast-icon.info { color:var(--blue-bright); }
+    .toast .toast-body { flex:1; }
+    .toast .toast-title { font-weight:700; font-size:14px; color:var(--text-primary); }
+    .toast .toast-desc { font-size:13px; color:var(--text-secondary); }
+
+    /* ===== TOAST BESAR ===== */
+    .toast-big { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0.9); background:var(--bg-card); border:2px solid var(--blue-primary); border-radius:var(--radius); padding:32px 28px; max-width:420px; width:90%; box-shadow:var(--shadow-card-lg); z-index:10000; text-align:center; opacity:0; pointer-events:none; transition:all 0.5s cubic-bezier(0.22,1,0.36,1); backdrop-filter:blur(8px); }
+    .toast-big.show { opacity:1; pointer-events:auto; transform:translate(-50%,-50%) scale(1); }
+    .toast-big .big-icon { font-size:48px; color:var(--blue-bright); margin-bottom:12px; }
+    .toast-big .big-title { font-size:22px; font-weight:800; margin-bottom:8px; color:var(--text-primary); }
+    .toast-big .big-desc { font-size:15px; color:var(--text-secondary); line-height:1.6; margin-bottom:20px; }
+    .toast-big .btn-close-big { padding:10px 32px; background:linear-gradient(135deg,var(--blue-primary),var(--blue-bright)); border:none; border-radius:var(--radius-full); font-weight:700; font-size:15px; color:#fff; box-shadow:0 4px 20px var(--blue-glow); transition:all var(--transition); cursor:pointer; }
+    .toast-big .btn-close-big:hover { transform:scale(1.04); }
+
+    /* ===== PROFIL ===== */
+    .profile-header { text-align:center; padding:24px 16px 20px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-subtle); box-shadow:var(--shadow-card); margin-bottom:16px; }
+    .profile-avatar-wrapper { position:relative; display:inline-block; margin-bottom:12px; }
+    .profile-avatar-wrapper .avatar-placeholder { width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg,var(--blue-primary),var(--blue-bright)); display:flex; align-items:center; justify-content:center; font-size:36px; font-weight:800; color:#fff; box-shadow:0 0 40px var(--blue-glow); margin:0 auto; border:2px solid var(--blue-primary); }
+    .profile-avatar-wrapper img { width:80px; height:80px; border-radius:50%; object-fit:cover; border:2px solid var(--blue-primary); box-shadow:0 0 40px var(--blue-glow); display:block; margin:0 auto; }
+    .edit-avatar-btn { position:absolute; bottom:2px; right:-2px; width:32px; height:32px; border-radius:50%; background:var(--blue-primary); color:#fff; border:2px solid var(--bg-card); display:flex; align-items:center; justify-content:center; font-size:14px; cursor:pointer; transition:all var(--transition); box-shadow:0 4px 16px var(--blue-glow); }
+    .edit-avatar-btn:hover { transform:scale(1.1); }
+    .profile-name { font-size:22px; font-weight:800; letter-spacing:-0.3px; color:var(--text-primary); }
+    .profile-role { font-size:14px; color:var(--text-secondary); margin-top:2px; font-weight:600; }
+    .profile-menu { display:flex; flex-direction:column; gap:6px; }
+    .profile-menu .pm-item { display:flex; align-items:center; padding:14px 18px; background:var(--bg-card); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); box-shadow:var(--shadow-card); cursor:pointer; transition:all var(--transition); gap:14px; }
+    .profile-menu .pm-item:hover { border-color:var(--blue-primary); background:var(--bg-card-alt); box-shadow:var(--shadow-card-hover); }
+    .profile-menu .pm-item .pm-icon { font-size:18px; color:var(--blue-bright); width:28px; text-align:center; }
+    .profile-menu .pm-item .pm-label { flex:1; font-weight:600; font-size:14px; color:var(--text-primary); }
+    .profile-menu .pm-item .pm-arrow { color:var(--text-secondary); font-size:14px; }
+    .profile-menu .pm-item.danger .pm-label { color:#EF4444; }
+    .profile-menu .pm-item.danger .pm-icon { color:#EF4444; }
+
+    /* ===== INFO MODAL ===== */
+    .info-card { display:flex; align-items:center; gap:14px; padding:12px 16px; background:var(--bg-card-alt); border-radius:var(--radius-sm); margin-bottom:10px; border:1px solid var(--border-subtle); }
+    .info-card .ic-icon { font-size:24px; color:var(--blue-bright); width:36px; text-align:center; }
+    .info-card .ic-body { flex:1; }
+    .info-card .ic-title { font-weight:700; font-size:14px; color:var(--text-primary); }
+    .info-card .ic-desc { font-size:13px; color:var(--text-secondary); }
+    .status-online { display:inline-flex; align-items:center; gap:6px; color:#22C55E; font-weight:600; }
+    .status-online .dot { width:8px; height:8px; border-radius:50%; background:#22C55E; animation:pulse-dot 1.5s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%,100%{opacity:1; transform:scale(1);} 50%{opacity:0.4; transform:scale(0.7);} }
+
+    /* ===== INBOX ===== */
+    .inbox-list { max-height:340px; overflow-y:auto; }
+    .inbox-list .inbox-empty { text-align:center; padding:30px 0; color:var(--text-secondary); }
+    .inbox-list .inbox-empty i { font-size:40px; opacity:0.30; display:block; margin-bottom:10px; }
+
+    /* ===== CHAT PUBLIC - PERBAIKAN ===== */
+    #chatPublicOverlay {
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:300;
+      background:var(--bg-body);
+      flex-direction:column;
+      height:100dvh;
+      width:100dvw;
+      overflow:hidden;
+    }
+    #chatPublicOverlay.show { display:flex; }
+
+    /* Header chat - sticky agar tetap terlihat saat keyboard muncul */
+    .chat-header {
+      display:flex;
+      align-items:center;
+      padding:12px 16px;
+      background:var(--bg-card);
+      border-bottom:1px solid var(--border-subtle);
+      flex-shrink:0;
+      position:sticky;
+      top:0;
+      z-index:10;
+      min-height:60px;
+    }
+    .chat-header .back-btn {
+      background:none;
+      border:none;
+      color:var(--text-primary);
+      font-size:24px;
+      padding:4px 12px 4px 0;
+      cursor:pointer;
+    }
+    .chat-header .title-area {
+      flex:1;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .chat-header .title-area .main-title {
+      font-weight:800;
+      font-size:18px;
+      color:var(--text-primary);
+    }
+    .chat-header .title-area .online-status {
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      color:#22C55E;
+      font-weight:600;
+      font-size:12px;
+    }
+    .chat-header .title-area .online-status .dot {
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#22C55E;
+      display:inline-block;
+      animation:pulse-dot 1.5s ease-in-out infinite;
+    }
+    .chat-header .clear-btn {
+      background:none;
+      border:none;
+      color:var(--text-secondary);
+      font-size:18px;
+      padding:4px;
+      cursor:pointer;
+    }
+
+    /* Container chat */
+    #chatMessagesContainer {
+      flex:1;
+      overflow-y:auto;
+      padding:12px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      background:var(--bg-body);
+      min-height:0;
+    }
+
+    /* Input wrapper */
+    .chat-input-wrapper {
+      display:flex;
+      align-items:center;
+      padding:8px 12px;
+      background:var(--bg-card);
+      border-top:1px solid var(--border-subtle);
+      flex-shrink:0;
+      gap:8px;
+      padding-bottom:calc(8px + var(--safe-bottom, 0px));
+    }
+
+    .chat-message { display:flex; gap:10px; align-items:flex-start; }
+    .chat-message .avatar { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--blue-primary),var(--blue-bright)); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; color:#fff; flex-shrink:0; overflow:hidden; }
+    .chat-message .avatar img { width:100%; height:100%; object-fit:cover; }
+    .chat-message .bubble { background:var(--bg-card); border-radius:12px 12px 12px 4px; padding:8px 14px; max-width:80%; border:1px solid var(--border-subtle); box-shadow:var(--shadow-card); }
+    .chat-message .bubble .sender { font-weight:700; font-size:13px; color:var(--blue-bright); }
+    .chat-message .bubble .time { font-size:10px; color:var(--text-secondary); margin-left:8px; }
+    .chat-message .bubble .text { font-size:14px; word-break:break-word; color:var(--text-primary); }
+    .chat-message.self .bubble { border-radius:12px 12px 4px 12px; background:var(--blue-primary); color:#fff; border-color:var(--blue-primary); }
+    .chat-message.self .bubble .sender { color:rgba(255,255,255,0.80); }
+    .chat-message.self .bubble .time { color:rgba(255,255,255,0.60); }
+    .chat-message.self .bubble .text { color:#fff; }
+
+    #emojiPicker { display:none; background:var(--bg-card); border-top:1px solid var(--border-subtle); padding:8px 12px; flex-wrap:wrap; gap:6px; max-height:120px; overflow-y:auto; flex-shrink:0; }
+    #emojiPicker.show { display:flex; }
+    #emojiPicker .emoji-btn { background:none; border:none; font-size:24px; padding:4px 6px; cursor:pointer; border-radius:6px; transition:background 0.2s; }
+    #emojiPicker .emoji-btn:hover { background:var(--bg-card-hover); }
+
+    .chat-send-btn { background:var(--blue-primary); border:none; border-radius:50%; width:44px; height:44px; color:#fff; font-size:20px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.2s; flex-shrink:0; box-shadow:0 2px 12px var(--blue-glow); border:1px solid rgba(255,255,255,0.10); }
+    .chat-send-btn:hover { transform:scale(1.05); box-shadow:0 4px 20px var(--blue-glow); background:var(--blue-bright); }
+    .chat-send-btn:active { transform:scale(0.92); }
+    .chat-send-btn:disabled { opacity:0.5; cursor:not-allowed; transform:none !important; }
+    .chat-send-btn .fa-spinner { animation:spin 0.8s linear infinite; }
+    @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+
+    /* ===== RESPONSIVE ===== */
+    @media(max-width:480px){
+      .form-row{grid-template-columns:1fr;}
+      .stats-grid-3{gap:6px;}
+      .stats-grid-3 .stat-item .num{font-size:20px;}
+      .stats-grid-3 .stat-item .lbl{font-size:10px;}
+      #modalStorSuccess .modal .success-actions{flex-direction:column;}
+      #modalStorSuccess .modal .success-actions a,#modalStorSuccess .modal .success-actions button{flex:none;width:100%;}
+      .status-row{font-size:12px;flex-wrap:wrap;gap:4px;}
+      .saldo-card .saldo-nominal{font-size:32px;}
+      .saldo-card .saldo-actions .btn{font-size:12px;padding:8px 16px;}
+      .riwayat-tabs .riwayat-tab{font-size:11px;padding:8px 6px;}
+      .toast-big{padding:24px 20px;}
+      .toast-big .big-title{font-size:18px;}
+      #musicToggle{width:40px;height:40px;font-size:16px;bottom:90px;right:12px;}
+      .profile-name{font-size:18px;}
+      .profile-avatar-wrapper .avatar-placeholder{width:64px;height:64px;font-size:28px;}
+      .profile-avatar-wrapper img{width:64px;height:64px;}
+      .chat-send-btn{width:40px;height:40px;font-size:18px;}
+      .podium-container{gap:10px;padding:10px 6px 8px;}
+      .podium-item{width:92px;max-width:104px;}
+      .podium-content .podium-avatar{width:56px;height:56px;font-size:22px;}
+      .podium-content .podium-rank{font-size:22px;}
+      .podium-content .podium-name{font-size:13px;}
+      .podium-content .podium-amount{font-size:14px;}
+      .podium-content .podium-email{font-size:11px;}
+      .podium-box.podium-1{height:170px;}
+      .podium-box.podium-2{height:145px;}
+      .podium-box.podium-3{height:120px;}
+      .podium-number{font-size:34px !important;}
+      .leaderboard-item{padding:8px 10px;}
+      .leaderboard-item .rank{font-size:11px;width:26px;}
+      .leaderboard-item .avatar{width:26px;height:26px;font-size:10px;margin-right:8px;}
+      .leaderboard-item .info .name{font-size:11px;}
+      .leaderboard-item .info .emails{font-size:9px;}
+      .leaderboard-item .amount{font-size:11px;}
+      .menu-grid { gap:10px 6px; }
+      .menu-icon { width:50px; height:50px; font-size:20px; }
+      .menu-label { font-size:10px; }
+    }
+    @media(max-width:380px){ .logo{font-size:18px;} .saldo-card .saldo-nominal{font-size:28px;} .saldo-card .saldo-actions .btn{font-size:11px;padding:6px 12px;} .menu-icon { width:44px; height:44px; font-size:18px; } .menu-label { font-size:9px; } }
+    @media(min-width:768px){ .bottom-nav{max-width:480px;align-self:center;border-radius:28px 28px 0 0;} .toast-container{max-width:420px;left:50%;transform:translateX(-50%);bottom:calc(var(--nav-height) + var(--safe-bottom) + 24px);} }
+  </style>
+</head>
+<body>
+
+  <!-- ===== MUSIK ===== -->
+  <audio id="bgMusic" src="send.mp3" loop preload="auto"></audio>
+  <button id="musicToggle" onclick="toggleMusic()" title="Putar/Hentikan musik">
+    <i class="fas fa-play"></i>
+  </button>
+
+  <!-- ===== LOADING ===== -->
+  <div id="loadingOverlay">
+    <div class="loading-logo">
+      <div class="gmail-envelope">
+        <i class="fas fa-envelope"></i>
+        <span class="envelope-dot">M</span>
+      </div>
+    </div>
+    <div class="loading-text">Memproses...</div>
+  </div>
+
+  <!-- ===== AUTH ===== -->
+  <div id="authPage">
+    <div class="auth-particle"></div>
+    <div class="auth-particle"></div>
+    <div class="auth-particle"></div>
+    <div class="auth-particle"></div>
+    <div class="auth-particle"></div>
+    <div class="auth-particle"></div>
+    <div class="auth-stars"></div>
+    <div class="auth-logo">
+      <div class="store-icon"><i class="fas fa-store"></i></div>
+      <div class="store-text"></div>
+    </div>
+    <div class="auth-box">
+      <div class="auth-title">STOR <span class="highlight">GMAIL FARIS</span></div>
+      <div class="auth-sub">Silakan login atau daftar untuk melanjutkan</div>
+      <div class="auth-tabs">
+        <button id="tabLogin" class="active" onclick="switchAuthTab('login')">Login</button>
+        <button id="tabRegister" onclick="switchAuthTab('register')">Daftar</button>
+      </div>
+      <div id="authError" class="auth-error"></div>
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group"><label>Username</label><input type="text" id="loginUsername" placeholder="Masukkan username" required /></div>
+        <div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="Masukkan password" required /></div>
+        <button type="submit" class="btn-auth" id="loginBtn"><span class="spinner"></span><span class="btn-text"><i class="fas fa-sign-in-alt"></i> Login</span></button>
+        <div class="toggle-link" onclick="openResetPassword()">Lupa kata sandi? <span>Reset di sini</span></div>
+      </form>
+      <form id="registerForm" style="display:none;" onsubmit="handleRegister(event)">
+        <div class="form-group"><label>Username</label><input type="text" id="regUsername" placeholder="Pilih username" required /></div>
+        <div class="form-group"><label>Email</label><input type="email" id="regEmailPhone" placeholder="email@contoh.com" required /></div>
+        <div class="form-group"><label>Password</label><input type="password" id="regPassword" placeholder="Buat password" required /></div>
+        <div class="form-group"><label>Konfirmasi Password</label><input type="password" id="regConfirmPassword" placeholder="Ulangi password" required /></div>
+        <button type="submit" class="btn-auth" id="registerBtn"><span class="spinner"></span><span class="btn-text"><i class="fas fa-user-plus"></i> Daftar Sekarang</span></button>
+        <div class="toggle-link" onclick="switchAuthTab('login')">Sudah punya akun? <span>Login</span></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== APP ===== -->
+  <div id="appPage">
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo" onclick="showPage('beranda')">
+          <span class="gmail-mini"><i class="fas fa-envelope"></i></span>
+          <span class="brand-text-sel">SEL</span>
+          <span class="brand-text-gmail">GMAIL</span>
+        </div>
+        <div class="header-actions">
+          <div class="user-badge" onclick="showPage('profil')">
+            <div class="user-avatar" id="headerAvatar">U</div>
+            <span class="user-name" id="headerName">User</span>
+          </div>
+          <button class="btn-inbox" onclick="openInbox()" title="Pesan / Inbox">
+            <i class="fas fa-inbox"></i>
+            <span class="inbox-dot" id="inboxDot"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div id="appScrollArea">
+    <!-- BERANDA -->
+    <div class="page active" id="page-beranda">
+      <div class="saldo-card" style="margin-bottom:12px;">
+        <div class="saldo-header"><span class="saldo-icon"><i class="fas fa-wallet"></i></span><span class="saldo-label">SALDO SAYA</span></div>
+        <div class="saldo-nominal" id="berandaSaldo"><span class="currency">Rp</span>0</div>
+        <div class="saldo-actions">
+          <button class="btn" onclick="openModal('modalTarikSaldo')"><i class="fas fa-arrow-down"></i> Tarik Saldo</button>
+          <button class="btn" onclick="showPage('riwayat'); switchRiwayatTab('penarikan')"><i class="fas fa-clock-rotate-left"></i> Riwayat Penarikan</button>
+        </div>
+      </div>
+
+      <div class="menu-grid">
+        <button class="menu-item" onclick="showPage('stor')">
+          <span class="menu-icon"><i class="fas fa-paper-plane"></i></span>
+          <span class="menu-label">Stor</span>
+        </button>
+        <button class="menu-item" onclick="showPage('riwayat'); switchRiwayatTab('storan')">
+          <span class="menu-icon"><i class="fas fa-clock-rotate-left"></i></span>
+          <span class="menu-label">Riwayat</span>
+        </button>
+        <button class="menu-item" onclick="openModal('modalTarikSaldo')">
+          <span class="menu-icon"><i class="fas fa-wallet"></i></span>
+          <span class="menu-label">Saldo</span>
+        </button>
+        <button class="menu-item" onclick="showPage('rules')">
+          <span class="menu-icon"><i class="fas fa-scroll"></i></span>
+          <span class="menu-label">Rules</span>
+        </button>
+        <button class="menu-item" onclick="openModal('modalInfo')">
+          <span class="menu-icon"><i class="fas fa-headset"></i></span>
+          <span class="menu-label">Faris Support</span>
+        </button>
+        <button class="menu-item" onclick="openChatPublic()">
+          <span class="menu-icon"><i class="fas fa-users"></i></span>
+          <span class="menu-label">Komunitas</span>
+        </button>
+        <button class="menu-item" onclick="showPage('leaderboard')">
+          <span class="menu-icon"><i class="fas fa-trophy"></i></span>
+          <span class="menu-label">Leaderboard</span>
+        </button>
+        <button class="menu-item" onclick="showPage('riwayat'); switchRiwayatTab('pendapatan')">
+          <span class="menu-icon"><i class="fas fa-chart-simple"></i></span>
+          <span class="menu-label">Laporan</span>
+        </button>
+      </div>
+
+      <div class="status-card" id="statusCard">
+        <div class="status-row"><span class="label">STATUS PENARIKAN</span><span class="value" id="statusPenarikan"><span class="badge-status open">OPEN</span></span></div>
+        <div class="status-row"><span class="label">STATUS STORAN</span><span class="value" id="statusStoran"><span class="badge-status open">OPEN</span></span></div>
+        <div class="status-row"><span class="label">PASSWORD HARI INI</span><span class="value" id="statusPass">murah123</span></div>
+        <div class="status-row"><span class="label">RATE</span><span class="value" id="statusRate">Rp 4.000 / email</span></div>
+      </div>
+      <a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" class="btn-wa-masing"><i class="fab fa-whatsapp"></i> Info Storan Gmail Faris – Klik di sini</a>
+      <div class="stats-grid-3">
+        <div class="stat-item pending"><div class="num" id="berandaStatPending">0</div><div class="lbl">Pending</div></div>
+        <div class="stat-item diterima"><div class="num" id="berandaStatDiterima">0</div><div class="lbl">Diterima</div></div>
+        <div class="stat-item total"><div class="num" id="berandaStatTotal">0</div><div class="lbl">Total Storan</div></div>
+      </div>
+      <div class="price-card"><span class="label">🔥 Harga Saat Ini</span><span class="value" id="berandaHarga">Rp 3K - 4K - 5K</span><span class="sub">per Gmail / item · Harga dapat berubah sesuai ketentuan.</span></div>
+      <a href="https://wa.me/6283821406716" target="_blank" style="text-decoration:none;display:block;">
+        <div class="card card-alt card-cs"><div class="card-title"><i class="fas fa-headset"></i> Admin CS</div><div style="display:flex;align-items:center;gap:10px;color:var(--text-secondary);"><i class="fab fa-whatsapp" style="font-size:40px;color:#25D366;"></i><span style="font-size:14px;">Klik untuk chat</span></div></div>
+      </a>
+    </div>
+
+    <!-- STOR -->
+    <div class="page" id="page-stor">
+      <h2 class="page-title"><i class="fas fa-paper-plane"></i> Stor Gmail</h2>
+      <p class="page-sub">Kirim data setoran sesuai format. Lengkapi data di bawah.</p>
+      <div class="stats-grid-3">
+        <div class="stat-item pending"><div class="num" id="storStatPending">0</div><div class="lbl">Pending</div></div>
+        <div class="stat-item diterima"><div class="num" id="storStatDiterima">0</div><div class="lbl">Diterima</div></div>
+        <div class="stat-item total"><div class="num" id="storStatTotal">0</div><div class="lbl">Total Storan</div></div>
+      </div>
+      <div class="card">
+        <div class="form-row">
+          <div class="form-group"><label><i class="fab fa-telegram"></i> Pilih Kontak</label><select id="storKontakType"><option value="WA">WhatsApp</option><option value="Telegram">Telegram</option></select></div>
+          <div class="form-group"><label><i class="fas fa-hashtag"></i> Nomor / Username</label><input type="text" id="storKontak" placeholder="Contoh: 0812xxxx atau @username" /></div>
+        </div>
+        <div class="form-group"><label><i class="fas fa-user"></i> Nama User</label><input type="text" id="storNama" placeholder="Nama lengkap atau panggilan" /></div>
+        <div class="form-group"><label><i class="fas fa-calendar"></i> Tanggal</label><input type="text" id="storTanggal" readonly style="background:var(--bg-card-alt);cursor:default;" /></div>
+        <div class="form-row">
+          <div class="form-group"><label><i class="fas fa-key"></i> Pilih Password</label>
+            <select id="storPassword">
+              <option value="aass1122">aass1122</option>
+              <option value="murah123">murah123</option>
+              <option value="sgsg1122">sgsg1122</option>
+              <option value="fineirga">fineirga</option>
+              <option value="prabujaya">prabujaya</option>
+            </select>
+          </div>
+          <div class="form-group"><label>&nbsp;</label><div style="padding-top:6px;font-size:13px;color:var(--text-secondary);">Pastikan password sesuai rules</div></div>
+        </div>
+        <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris, <strong>wajib @gmail.com</strong>)</label><textarea id="storInput" placeholder="contoh1@gmail.com&#10;contoh2@gmail.com"></textarea><div class="helper" id="storCounter">Terdeteksi: 0 item</div></div>
+        <button class="btn-submit" id="storSubmitBtn" onclick="submitStor()"><span class="spinner"></span><span class="btn-text"><i class="fas fa-paper-plane"></i> Kirim Setoran</span></button>
+        <div id="storClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
+      </div>
+      <div class="price-card"><span class="label">🔥 Harga Saat Ini</span><span class="value" id="storHarga">Rp 3K - 4K - 5K</span><span class="sub" id="storHargaSub">per Gmail / item · Harga dapat berubah sesuai ketentuan.</span></div>
+      <div class="card card-alt"><div class="card-title"><i class="fas fa-star"></i> Kualitas Stor</div><p style="color:var(--text-secondary);font-size:14px;">Belum ada data</p><div style="height:6px;background:var(--bg-card-alt);border-radius:99px;margin-top:8px;overflow:hidden;"><div style="width:0%;height:100%;background:linear-gradient(90deg,var(--blue-primary),var(--blue-bright));border-radius:99px;"></div></div></div>
+    </div>
+
+    <!-- RIWAYAT -->
+    <div class="page" id="page-riwayat">
+      <h2 class="page-title"><i class="fas fa-clock-rotate-left"></i> Riwayat</h2>
+      <p class="page-sub">Lihat riwayat storan, penarikan, dan pendapatan Anda.</p>
+      <div class="riwayat-tabs">
+        <button class="riwayat-tab active" data-tab="storan" onclick="switchRiwayatTab('storan')">Storan</button>
+        <button class="riwayat-tab" data-tab="penarikan" onclick="switchRiwayatTab('penarikan')">Penarikan</button>
+        <button class="riwayat-tab" data-tab="pendapatan" onclick="switchRiwayatTab('pendapatan')">Pendapatan</button>
+      </div>
+      <div class="riwayat-content active" id="riwayatContentStoran">
+        <div class="history-actions"><button class="btn-danger" onclick="showConfirmDelete()"><i class="fas fa-trash-can"></i> Hapus Riwayat Periode Ini</button></div>
+        <input class="search-input" type="text" id="historySearch" placeholder="Cari transaksi..." oninput="renderHistory()" />
+        <div id="historyList"><div class="empty-state"><div class="empty-icon"><i class="fas fa-inbox"></i></div><p>Belum ada riwayat stor.</p></div></div>
+        <button class="load-more-btn" id="loadMoreBtn" onclick="loadMoreHistory()" style="display:none;">Muat Lebih Banyak</button>
+      </div>
+      <div class="riwayat-content" id="riwayatContentPenarikan"><div id="withdrawalList"><div class="empty-state"><div class="empty-icon"><i class="fas fa-inbox"></i></div><p>Belum ada riwayat penarikan.</p></div></div></div>
+      <div class="riwayat-content" id="riwayatContentPendapatan"><div id="pendapatanList"><div class="empty-state"><div class="empty-icon"><i class="fas fa-inbox"></i></div><p>Belum ada pendapatan.</p></div></div></div>
+    </div>
+
+    <!-- RULES -->
+    <div class="page" id="page-rules">
+      <h2 class="page-title"><i class="fas fa-scroll"></i> Rules</h2>
+      <p class="page-sub">Harap baca ketentuan sebelum melakukan stor.</p>
+      <div class="card"><div class="rules-content">
+          <div class="rule-box" style="border-left-color: #8B5CF6;"><p style="font-weight:700;color:#8B5CF6;">📖 Istilah / Singkatan</p><ul>
+            <li><strong>S</strong> = Salah Sandi</li>
+            <li><strong>V</strong> = Verify</li>
+            <li><strong>DD</strong> = Double Drop (2x Ngirim)</li>
+            <li><strong>X</strong> = Tidak Ditemukan</li>
+            <li><strong>B</strong> = Bekas</li>
+            <li><strong>BB</strong> = Ngak sesuai rules</li>Semua istilah bisa di bilang dalam 1 kalimat ( bud )  kalo email udah bud ngak bakal saya ambil.
+          </ul></div>
+          <div class="rule-box" style="border-left-color: var(--blue-primary);"><p style="font-weight:700;">📌 Status Saat Ini</p><div id="rulesStatusInfo"><p><span style="font-weight:600;">Status Storan:</span> <span id="rulesStatusStoran" class="success">OPEN</span></p><p><span style="font-weight:600;">Status Penarikan:</span> <span id="rulesStatusPenarikan" class="success">OPEN</span></p></div><div style="margin-top:10px;font-size:13px;color:var(--text-secondary);line-height:1.6;border-top:1px solid var(--border-subtle);padding-top:10px;"><p>Jika status masih <strong>OPEN</strong>, storan dan penarikan dapat dilakukan.</p><p>Jika status <strong>CLOSE</strong>, maka storan dan penarikan tidak bisa dilakukan. Silakan tunggu hingga status dibuka kembali atau cek informasi di grup/saluran admin.</p></div></div>
+          <div class="rule-box" style="border-left-color: #F59E0B;"><p style="font-weight:700;color:#F59E0B;">⚠️ PENTING!</p><p>Sebelum membuat email, <strong>tanyakan dulu ke admin</strong> atau lihat di grup/notifikasi inbox password mana yang sedang aktif digunakan.</p><p>Jika salah password di email, maka akan susah/drama dan bisa ditolak.</p><p>Cek selalu <strong>Pesan / Inbox</strong> untuk informasi terbaru.</p></div>
+          <span class="section-title">🔐 PASSWORD 1: aass1122</span><div class="rule-box"><ul><li>Gmail fresh manual HP.</li><li>Nama dan username usahakan nama orang (tidak aneh).</li><li>Angka maksimal 2 digit.</li><li>Tidak boleh ada huruf setelah angka.</li><li>Dilarang huruf double terlalu banyak.</li><li>Tanggal lahir bebas (1990-2005).</li><li>Tidak menggunakan nomor HP.</li><li>Email tidak boleh menggunakan nama dan nomor berurutan.</li><li>Dilarang berurutan.</li><li>Dilarang pake kata aneh: janda, mewing, imut, cantik, dll.</li></ul></div>
+          <span class="section-title">🔐 PASSWORD 2: murah123</span><div class="rule-box"><ul><li>Gmail fresh manual HP.</li><li>Password wajib <strong>murah123</strong>.</li><li>Nama dan usn Gmail usahakan nama orang.</li><li>Angka max 2 digit.</li><li>Tidak boleh ada huruf kembali setelah angka.</li><li>Dilarang huruf double terlalu banyak.</li><li>Tanggal lahir bebas (1990-2005).</li><li>Tidak menggunakan no HP.</li><li>Email tidak boleh menggunakan nama dan nomor berurutan.</li><li>Dilarang berurutan.</li></ul></div>
+          <span class="section-title">🔐 PASSWORD 3: sgsg1122</span><div class="rule-box"><ul><li>Gmail fresh manual HP.</li><li>Password wajib <strong>sgsg1122</strong>.</li><li>Nama dan usn Gmail usahakan nama orang.</li><li>Angka max 2 digit.</li><li>Tidak boleh ada huruf kembali setelah angka.</li><li>Dilarang huruf double terlalu banyak.</li><li>Tanggal lahir bebas (1990-2005).</li><li>Tidak menggunakan no HP.</li><li>Email tidak boleh menggunakan nama dan nomor berurutan.</li><li>Dilarang berurutan.</li></ul></div>
+          <span class="section-title">🔐 PASSWORD 4: fineirga</span><div class="rule-box"><ul><li>Gmail fresh manual HP.</li><li>Password wajib <strong>fineirga</strong>.</li><li>Nama dan usn Gmail usahakan nama orang.</li><li>Angka max 2 digit.</li><li>Tidak boleh ada huruf kembali setelah angka.</li><li>Dilarang huruf double terlalu banyak.</li><li>Tanggal lahir bebas (1990-2005).</li><li>Tidak menggunakan no HP.</li><li>Email tidak boleh menggunakan nama dan nomor berurutan.</li><li>Dilarang berurutan.</li></ul></div>
+          <span class="section-title">🔐 PASSWORD 5: prabujaya</span><div class="rule-box"><ul><li>Gmail fresh manual HP.</li><li>Password wajib <strong>prabujaya</strong>.</li><li>Nama dan usn Gmail usahakan nama orang.</li><li>Angka max 2 digit.</li><li>Tidak boleh ada huruf kembali setelah angka.</li><li>Dilarang huruf double terlalu banyak.</li><li>Tanggal lahir bebas (1990-2005).</li><li>Tidak menggunakan no HP.</li><li>Email tidak boleh menggunakan nama dan nomor berurutan.</li><li>Dilarang berurutan.</li></ul></div>
+          <span class="section-title">✅ Contoh Email Benar</span><div class="rule-box" style="border-left-color:#22C55E;"><ul><li class="success">syifahadju@gmail.com ✅</li><li class="success">syifahadju24@gmail.com ✅</li></ul></div>
+          <span class="section-title">❌ Contoh Email Salah</span><div class="rule-box" style="border-left-color:#EF4444;"><ul><li class="danger">f548294749@gmail.com ❌ (angka terlalu banyak)</li><li class="danger">syifaimutcantik@gmail.com ❌ (kata aneh)</li><li class="danger">syifahadju1@gmail.com ❌ (berurutan)</li></ul></div>
+          <p style="margin-top:12px;">✈️ Terimakasih Atas Pengertiannya<br />Created By Faris 💭</p>
+          <a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" class="btn-wa-channel"><i class="fab fa-whatsapp"></i> Rules Selengkapnya - Klik di sini</a>
+        </div></div>
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div class="page" id="page-leaderboard">
+      <h2 class="page-title"><i class="fas fa-trophy"></i> Leaderboard</h2>
+      <p class="page-sub">Peringkat storan berdasarkan periode.</p>
+      <div class="riwayat-tabs" id="leaderboardTabs">
+        <button class="riwayat-tab active" data-period="today">Hari Ini</button>
+        <button class="riwayat-tab" data-period="7days">7 Hari</button>
+        <button class="riwayat-tab" data-period="30days">30 Hari</button>
+        <button class="riwayat-tab" data-period="all">Sepanjang Masa</button>
+      </div>
+      <div id="leaderboardContent" class="lb-container">
+        <div class="empty-state"><div class="empty-icon"><i class="fas fa-spinner fa-spin"></i></div><p>Memuat data...</p></div>
+      </div>
+    </div>
+
+    <!-- PROFIL -->
+    <div class="page" id="page-profil">
+      <div class="profile-header">
+        <div class="profile-avatar-wrapper">
+          <div id="profileAvatarDisplay"><div class="avatar-placeholder" id="profileAvatarPlaceholder">U</div></div>
+          <button class="edit-avatar-btn" onclick="document.getElementById('avatarInput').click()" title="Ganti foto profil"><i class="fas fa-camera"></i></button>
+          <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)" />
+        </div>
+        <div class="profile-name" id="profileNameDisplay">User</div>
+        <div class="profile-role">Member</div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">ID: <span id="profileUid">-</span></div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">Email/HP: <span id="profileEmailPhone">-</span></div>
+        <div style="font-size:14px;color:var(--blue-bright);margin-top:6px;font-weight:700;">Saldo: <span id="profileSaldo">Rp 0</span></div>
+      </div>
+      <div class="profile-menu">
+        <div class="pm-item" onclick="showPage('riwayat'); switchRiwayatTab('storan')"><span class="pm-icon"><i class="fas fa-clock-rotate-left"></i></span><span class="pm-label">Riwayat Stor</span><span class="pm-arrow"><i class="fas fa-chevron-right"></i></span></div>
+        <div class="pm-item" onclick="openModal('modalTarikSaldo')"><span class="pm-icon"><i class="fas fa-arrow-down"></i></span><span class="pm-label">Tarik Saldo</span><span class="pm-arrow"><i class="fas fa-chevron-right"></i></span></div>
+        <div class="pm-item" onclick="showPage('riwayat'); switchRiwayatTab('penarikan')"><span class="pm-icon"><i class="fas fa-clock-rotate-left"></i></span><span class="pm-label">Riwayat Penarikan</span><span class="pm-arrow"><i class="fas fa-chevron-right"></i></span></div>
+        <div class="pm-item" onclick="showPage('riwayat'); switchRiwayatTab('pendapatan')"><span class="pm-icon"><i class="fas fa-arrow-up"></i></span><span class="pm-label">Riwayat Pendapatan</span><span class="pm-arrow"><i class="fas fa-chevron-right"></i></span></div>
+        <div class="pm-item" onclick="showPage('rules')"><span class="pm-icon"><i class="fas fa-scroll"></i></span><span class="pm-label">Rules</span><span class="pm-arrow"><i class="fas fa-chevron-right"></i></span></div>
+        <div class="pm-item" onclick="openModal('modalEditProfile')"><span class="pm-icon"><i class="fas fa-user-edit"></i></span><span class="pm-label">Edit Profil</span><span class="pm-arrow"><i class="fas fa-chevron-right"></i></span></div>
+        <div class="pm-item" onclick="openModal('modalForgotPassword')"><span class="pm-icon"><i class="fas fa-key"></i></span><span class="pm-label">Lupa Kata Sandi</span><span class="pm-arrow"><i class="fas fa-chevron-right"></i></span></div>
+        <div class="pm-item" onclick="openModal('modalInfo')"><span class="pm-icon"><i class="fas fa-circle-info"></i></span><span class="pm-label">Tentang / Info</span><span class="pm-arrow"><i class="fas fa-chevron-right"></i></span></div>
+        <div class="pm-item danger" onclick="openModal('modalLogout')"><span class="pm-icon"><i class="fas fa-sign-out-alt"></i></span><span class="pm-label">Logout</span><span class="pm-arrow"><i class="fas fa-chevron-right"></i></span></div>
+      </div>
+    </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-page="beranda" onclick="showPage('beranda')"><span class="ni-icon"><i class="fas fa-home"></i></span><span class="ni-label">Beranda</span></button>
+      <button class="nav-item" data-page="chatpublic" onclick="openChatPublic()"><span class="ni-icon"><i class="fas fa-comment-dots"></i></span><span class="ni-label">Chat</span></button>
+      <button class="nav-item" data-page="riwayat" onclick="showPage('riwayat'); switchRiwayatTab('storan')"><span class="ni-icon"><i class="fas fa-clock-rotate-left"></i></span><span class="ni-label">Riwayat</span></button>
+      <button class="nav-item stor-btn" data-page="stor" onclick="showPage('stor')"><span class="ni-icon"><i class="fas fa-paper-plane"></i></span><span class="ni-label">Stor</span></button>
+      <button class="nav-item" data-page="rules" onclick="showPage('rules')"><span class="ni-icon"><i class="fas fa-scroll"></i></span><span class="ni-label">Rules</span></button>
+      <button class="nav-item" data-page="leaderboard" onclick="showPage('leaderboard')"><span class="ni-icon"><i class="fas fa-trophy"></i></span><span class="ni-label">Peringkat</span></button>
+      <button class="nav-item" data-page="profil" onclick="showPage('profil')"><span class="ni-icon"><i class="fas fa-user"></i></span><span class="ni-label">Profil</span></button>
+    </nav>
+  </div>
+
+  <!-- ===== CHAT PUBLIC OVERLAY - PERBAIKAN HEADER STICKY & STATUS ONLINE ===== -->
+  <div id="chatPublicOverlay">
+    <div class="chat-header">
+      <button class="back-btn" onclick="closeChatPublic()"><i class="fas fa-arrow-left"></i></button>
+      <div class="title-area">
+        <span class="main-title">💬 Chat Public</span>
+        <span class="online-status">
+          <span class="dot"></span> Online
+        </span>
+      </div>
+      <button class="clear-btn" onclick="clearChatHistoryLocal()" title="Hapus riwayat chat (hanya untuk Anda)"><i class="fas fa-trash-can"></i></button>
+    </div>
+    <div id="chatMessagesContainer" style="flex:1; overflow-y:auto; padding:12px 16px; display:flex; flex-direction:column; gap:8px; background:var(--bg-body); min-height:0;"></div>
+    <div class="chat-input-wrapper">
+      <button onclick="toggleEmojiPicker()" style="background:none; border:none; color:var(--text-secondary); font-size:24px; padding:4px; cursor:pointer;"><i class="fas fa-smile"></i></button>
+      <input type="text" id="chatInput" placeholder="Ketik pesan..." style="flex:1; padding:10px 14px; border-radius:24px; border:1px solid var(--border-subtle); background:var(--bg-card-alt); color:var(--text-primary); font-size:15px; outline:none;" />
+      <button class="chat-send-btn" id="chatSendBtn" onclick="sendChatMessage()" title="Kirim pesan">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+    <div id="emojiPicker" style="display:none; background:var(--bg-card); border-top:1px solid var(--border-subtle); padding:8px 12px; flex-wrap:wrap; gap:6px; max-height:120px; overflow-y:auto; flex-shrink:0;"></div>
+  </div>
+
+  <!-- ===== TOAST BESAR ===== -->
+  <div class="toast-big" id="welcomeToast">
+    <div class="big-icon"><i class="fas fa-rocket"></i></div>
+    <div class="big-title" id="welcomeTitle">Selamat Datang! 🎉</div>
+    <div class="big-desc" id="welcomeDesc">Selamat datang di <strong>STOR GMAIL FARIS</strong>,<br />ayo stor sebanyak-banyaknya biar cuan ngalir terus!</div>
+    <button class="btn-close-big" onclick="closeWelcomeToast()">Oke, Siap!</button>
+  </div>
+
+  <!-- ===== MODALS ===== -->
+  <div class="modal-overlay" id="modalInbox">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('modalInbox')"><i class="fas fa-xmark"></i></button>
+      <div class="modal-title"><i class="fas fa-inbox"></i> Pesan / Inbox</div>
+      <div class="modal-sub">Pesan dari admin (umum) dan pesan pribadi khusus untuk Anda.</div>
+      <div class="inbox-list" id="inboxContentUmum">
+        <div class="inbox-empty"><i class="fas fa-envelope"></i><p>Belum ada pesan.</p></div>
+      </div>
+      <button class="btn-danger-inbox" onclick="clearInbox()"><i class="fas fa-trash-can"></i> Hapus Semua Pesan</button>
+      <button class="btn-modal" onclick="closeModal('modalInbox')" style="margin-top:12px;">Tutup</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalMessageNotif">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('modalMessageNotif')"><i class="fas fa-xmark"></i></button>
+      <div class="notif-header">
+        <span class="envelope-icon"><i class="fas fa-envelope-open-text"></i></span>
+        <span class="notif-title" id="notifMsgTitle">Pesan</span>
+      </div>
+      <div class="notif-body" id="notifMsgBody">Isi pesan</div>
+      <div class="notif-footer" id="notifMsgTime">-</div>
+      <button class="btn-modal" onclick="closeModal('modalMessageNotif')" style="margin-top:12px;">Tutup</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalStorSuccess"><div class="modal"><button class="modal-close" onclick="closeModal('modalStorSuccess')"><i class="fas fa-xmark"></i></button><div class="success-icon"><i class="fas fa-check-circle"></i></div><div class="success-title">Setoran Berhasil!</div><div class="success-desc"><strong>𝗦𝗲𝘁𝗼𝗿𝗮𝗻 𝗴𝗺𝗮𝗶𝗹 𝗸𝗮𝗺𝘂 𝘀𝘂𝗱𝗮𝗵 𝗸𝗮𝗺𝗶 𝘀𝗶𝗺𝗽𝗮𝗻.</strong><br />𝗣𝗮𝘆𝗺𝗲𝗻𝘁 𝗮𝗸𝗮𝗻 𝗱𝗶𝗹𝗮𝗸𝘂𝗸𝗮𝗻 𝗯𝗲𝘀𝗼𝗸 𝘀𝗼𝗿𝗲 𝗮𝘁𝗮𝘂 𝗺𝗮𝗹𝗲𝗺,<br />𝗷𝗶𝗸𝗮 𝗯𝗲𝗹𝘂𝗺 𝗽𝗮𝘆𝗺𝗲𝗻𝘁 𝗱𝗮𝗹𝗮𝗺 𝘄𝗮𝗸𝘁𝘂 𝗱𝗶𝗮𝘁𝗮𝘀,<br />𝘀𝗶𝗹𝗮𝗵𝗸𝗮𝗻 𝗵𝘂𝗯𝘂𝗻𝗴𝗶 𝗮𝗱𝗺𝗶𝗻 𝗸𝗲𝗺𝗯𝗮𝗹𝗶.</div><div class="success-actions"><a href="https://wa.me/6283821406716" target="_blank" class="btn-wa"><i class="fab fa-whatsapp"></i> WA</a><a href="https://t.me/farishost1" target="_blank" class="btn-telegram"><i class="fab fa-telegram-plane"></i> Telegram</a><button class="btn-ok" onclick="closeModal('modalStorSuccess')">OK</button></div></div></div>
+
+  <div class="modal-overlay" id="modalError"><div class="modal"><button class="modal-close" onclick="closeModal('modalError')"><i class="fas fa-xmark"></i></button><div class="error-icon"><i class="fas fa-circle-exclamation"></i></div><div class="error-title" id="errorTitle">Terjadi Kesalahan</div><div class="error-desc" id="errorDesc">Silakan periksa kembali data Anda.</div><button class="btn-error-close" onclick="closeModal('modalError')">Mengerti</button></div></div>
+
+  <div class="modal-overlay" id="modalConfirmDelete"><div class="modal"><button class="modal-close" onclick="closeModal('modalConfirmDelete')"><i class="fas fa-xmark"></i></button><div class="confirm-icon"><i class="fas fa-trash-can"></i></div><div class="confirm-title" id="confirmTitle">Hapus Riwayat hari ini?</div><div class="confirm-desc" id="confirmDesc">Yakin ingin menghapus semua riwayat stor untuk periode hari ini? Tindakan ini tidak dapat dibatalkan.</div><div class="confirm-actions"><button class="btn-batal" onclick="closeModal('modalConfirmDelete')">Batal</button><button class="btn-hapus" onclick="executeDelete()">Hapus</button></div></div></div>
+
+  <div class="modal-overlay" id="modalLogout"><div class="modal"><button class="modal-close" onclick="closeModal('modalLogout')"><i class="fas fa-xmark"></i></button><div class="logout-icon"><i class="fas fa-sign-out-alt"></i></div><div class="logout-title">Yakin ingin logout?</div><div class="logout-desc">Anda akan keluar dari akun ini dan perlu login kembali untuk mengakses.</div><div class="logout-actions"><button class="btn-batal" onclick="closeModal('modalLogout')">Batal</button><button class="btn-oke" onclick="confirmLogout()">Oke, Logout</button></div></div></div>
+
+  <div class="modal-overlay" id="modalResetPassword">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('modalResetPassword')"><i class="fas fa-xmark"></i></button>
+      <div id="resetStep1" class="reset-step">
+        <div class="modal-title">Cari Akun</div>
+        <div class="modal-sub">Masukkan email Anda untuk mencari akun.</div>
+        <div class="form-group">
+          <label for="resetEmail">Email</label>
+          <input type="email" id="resetEmail" placeholder="Masukkan email Anda" required />
+        </div>
+        <button class="btn-modal" onclick="findUserByEmail('reset')"><i class="fas fa-search"></i> Cari Akun</button>
+        <div class="toggle-link" onclick="closeModal('modalResetPassword')">Kembali ke <span>Login</span></div>
+      </div>
+      <div id="resetStep2" class="reset-step hidden-step">
+        <div class="modal-title">Reset Kata Sandi</div>
+        <div class="modal-sub">Akun ditemukan, silakan buat password baru.</div>
+        <div class="reset-user-info">
+          <div class="rui-avatar" id="resetUserAvatar">U</div>
+          <div>
+            <div class="rui-name" id="resetUserName">Username</div>
+            <div class="rui-email" id="resetUserEmail">email@example.com</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="resetNewPassword">Password Baru</label>
+          <input type="password" id="resetNewPassword" placeholder="Masukkan password baru" required />
+        </div>
+        <div class="form-group">
+          <label for="resetConfirmPassword">Konfirmasi Password</label>
+          <input type="password" id="resetConfirmPassword" placeholder="Ulangi password baru" required />
+        </div>
+        <button class="btn-modal" onclick="handleResetPasswordConfirm('reset')"><i class="fas fa-key"></i> Reset Password</button>
+        <div class="toggle-link" onclick="goToResetStep1('reset')">Kembali ke <span>Cari Akun</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalForgotPassword">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('modalForgotPassword')"><i class="fas fa-xmark"></i></button>
+      <div id="forgotStep1" class="reset-step">
+        <div class="modal-title">Cari Akun</div>
+        <div class="modal-sub">Masukkan email Anda untuk mencari akun.</div>
+        <div class="form-group">
+          <label for="forgotEmail">Email</label>
+          <input type="email" id="forgotEmail" placeholder="Masukkan email Anda" required />
+        </div>
+        <button class="btn-modal" onclick="findUserByEmail('forgot')"><i class="fas fa-search"></i> Cari Akun</button>
+        <div class="toggle-link" onclick="closeModal('modalForgotPassword')">Kembali ke <span>Profil</span></div>
+      </div>
+      <div id="forgotStep2" class="reset-step hidden-step">
+        <div class="modal-title">Reset Kata Sandi</div>
+        <div class="modal-sub">Akun ditemukan, silakan buat password baru.</div>
+        <div class="reset-user-info">
+          <div class="rui-avatar" id="forgotUserAvatar">U</div>
+          <div>
+            <div class="rui-name" id="forgotUserName">Username</div>
+            <div class="rui-email" id="forgotUserEmail">email@example.com</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="forgotNewPassword">Password Baru</label>
+          <input type="password" id="forgotNewPassword" placeholder="Masukkan password baru" required />
+        </div>
+        <div class="form-group">
+          <label for="forgotConfirmPassword">Konfirmasi Password</label>
+          <input type="password" id="forgotConfirmPassword" placeholder="Ulangi password baru" required />
+        </div>
+        <button class="btn-modal" onclick="handleResetPasswordConfirm('forgot')"><i class="fas fa-key"></i> Reset Password</button>
+        <div class="toggle-link" onclick="goToResetStep1('forgot')">Kembali ke <span>Cari Akun</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalEditProfile"><div class="modal"><button class="modal-close" onclick="closeModal('modalEditProfile')"><i class="fas fa-xmark"></i></button><div class="modal-title">Edit Profil</div><div class="modal-sub">Ubah nama atau foto profil Anda.</div><form id="editProfileForm" onsubmit="handleEditProfile(event)"><label for="editName">Nama Lengkap</label><input type="text" id="editName" placeholder="Masukkan nama baru" /><button type="submit" class="btn-modal"><i class="fas fa-save"></i> Simpan Perubahan</button></form></div></div>
+
+  <div class="modal-overlay" id="modalInfo"><div class="modal"><button class="modal-close" onclick="closeModal('modalInfo')"><i class="fas fa-xmark"></i></button><div class="modal-title">Tentang STOR GMAIL FARIS</div><div class="modal-sub">Platform untuk mengelola proses stor secara sederhana, cepat, dan terorganisir.</div><div class="info-card"><div class="ic-icon"><i class="fas fa-headset"></i></div><div class="ic-body"><div class="ic-title">Support</div><div class="ic-desc"><a href="https://wa.me/6283821406716" target="_blank" style="color:var(--blue-bright);font-weight:600;"><i class="fab fa-whatsapp" style="color:#25D366;"></i> Chat WA</a></div></div></div><div class="info-card"><div class="ic-icon"><i class="fas fa-clock"></i></div><div class="ic-body"><div class="ic-title">Jam Operasional</div><div class="ic-desc">Senin - Jumat · 09:00 – 17:00</div></div></div><div class="info-card"><div class="ic-icon"><i class="fas fa-signal"></i></div><div class="ic-body"><div class="ic-title">Status Sistem</div><div class="ic-desc"><span class="status-online"><span class="dot"></span> ONLINE</span></div></div></div><div class="info-card"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran WhatsApp</div><div class="ic-desc"><a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" style="color:#25D366;font-weight:600;"><i class="fab fa-whatsapp"></i> Gabung Saluran</a></div></div></div><div style="text-align:center;color:var(--text-secondary);font-size:13px;margin-top:8px;">STOR GMAIL FARIS v 1.0 · &copy; 2026</div></div></div>
+
+  <!-- ===== MODAL TARIK SALDO (UPDATED) ===== -->
+  <div class="modal-overlay" id="modalTarikSaldo">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('modalTarikSaldo')"><i class="fas fa-xmark"></i></button>
+      <div class="modal-title"><i class="fas fa-arrow-down" style="color:var(--blue-bright);"></i> Tarik Saldo</div>
+      <div class="modal-sub">Pilih metode, minimal penarikan berbeda-beda. <strong>Fee langsung dipotong</strong>.</div>
+      <div class="saldo-info"><span class="label">Saldo Tersedia</span><span class="nominal" id="tarikSaldoDisplay"><span style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-right:2px;">Rp</span>0</span></div>
+      <form id="tarikForm" onsubmit="handleTarikSaldo(event)">
+        <div class="form-group"><label>Nominal Penarikan (Rp) — sudah termasuk fee</label><input type="text" id="tarikNominal" placeholder="Contoh: 10000" inputmode="numeric" oninput="formatRupiahInput(this)" /></div>
+        <div class="form-group"><label>Metode Penarikan</label>
+          <select id="tarikMetode">
+            <option value="DANA">DANA</option>
+            <option value="ShopeePay">ShopeePay</option>
+            <option value="GoPay">GoPay</option>
+            <option value="OVO">OVO</option>
+          </select>
+        </div>
+        <!-- KETERANGAN MINIMAL -->
+        <div id="minimalInfo" style="font-size:13px;color:var(--text-secondary);margin-top:-10px;margin-bottom:12px;font-weight:600;"></div>
+        <div class="form-group"><label>Nomor Tujuan / Akun</label><input type="text" id="tarikAkun" placeholder="Masukkan nomor DANA / ShopeePay / GoPay / OVO" required /></div>
+        <div class="save-ewallet-row">
+          <input type="checkbox" id="saveEwalletCheck" checked />
+          <label for="saveEwalletCheck">Simpan nomor ini untuk penarikan berikutnya</label>
+        </div>
+        <div class="fee-info">
+          <div class="fee-row"><span>Biaya Penarikan</span><span class="value" id="feeDisplay">Rp 500</span></div>
+          <div class="fee-row"><span>Nominal</span><span class="value" id="totalBayarDisplay">Rp 0</span></div>
+          <div class="fee-row"><span>Dana yang Diterima</span><span class="value highlight" id="danaDiterimaDisplay">Rp 0</span></div>
+        </div>
+        <button type="submit" class="btn-tarik" id="tarikSubmitBtn"><i class="fas fa-arrow-down"></i> Tarik Saldo</button>
+        <div id="tarikClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Penarikan sedang ditutup oleh admin.</div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // ============================================================
+    // KONFIGURASI SUPABASE
+    // ============================================================
+    const SUPABASE_URL = 'https://szvrryxrgxvljpoodxgq.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6dnJyeXhyZ3h2bGpwb29keGdxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzQ3MjgsImV4cCI6MjEwMzM1MDcyOH0.3ZZfO6DLtZxWg9qbPpqkVvMEKyFyOP38CunPFhPomTw';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const ACTION_MAP = {
+      bootstrap:            { fn: 'bootstrap_data',           needsToken: true,  params: () => ({}) },
+      login:                { fn: 'login_user',                needsToken: false, params: (d) => ({ p_username: d.username, p_password: d.password }) },
+      register:             { fn: 'register_user',             needsToken: false, params: (d) => ({ p_username: d.username, p_email_phone: d.emailPhone, p_password: d.password }) },
+      resetPassword:        { fn: 'find_user_by_email',        needsToken: false, params: (d) => ({ p_email_phone: d.emailPhone }) },
+      resetPasswordConfirm: { fn: 'reset_password_direct',     needsToken: false, params: (d) => ({ p_user_id: d.userId, p_new_password: d.newPassword }) },
+      updateProfile:        { fn: 'update_profile',            needsToken: true,  params: (d) => ({ p_fullname: d.fullname || null, p_avatar: d.avatar || null }) },
+      createWithdrawal:     { fn: 'create_withdrawal',         needsToken: true,  params: (d) => ({ p_nominal: d.nominal, p_metode: d.metode, p_akun: d.akun }) },
+      logout:               { fn: 'logout_user',               needsToken: true,  params: () => ({}) },
+      clearInbox:           { fn: 'clear_inbox',                needsToken: true,  params: () => ({}) },
+      createStor:           { fn: 'create_stor',                needsToken: true,  params: (d) => ({ p_kontak_type: d.kontakType, p_kontak: d.kontak, p_nama: d.nama, p_password: d.password, p_emails: d.emails, p_tanggal: d.tanggal }) },
+      getLeaderboard:       { fn: 'get_leaderboard',            needsToken: false, params: (d) => ({ p_period: d.period }) },
+      getChatMessages:      { fn: 'get_chat_messages',          needsToken: false, params: (d) => ({ p_since: d.since || 0 }) },
+      sendChatMessage:      { fn: 'send_chat_message',          needsToken: true,  params: (d) => ({ p_message: d.message }) },
+      chatHeartbeat:        { fn: 'chat_heartbeat',             needsToken: true,  params: () => ({}) },
+      deleteHistoryByPeriod:{ fn: 'delete_history_by_period',   needsToken: true,  params: (d) => ({ p_days: d.days }) }
+    };
+
+    // ============================================================
+    // MUSIK
+    // ============================================================
+    const audio = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicToggle');
+    let isMusicPlaying = false;
+
+    function toggleMusic() {
+      if (isMusicPlaying) {
+        audio.pause();
+        musicBtn.innerHTML = '<i class="fas fa-play"></i>';
+        isMusicPlaying = false;
+      } else {
+        audio.play().then(() => {
+          musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+          isMusicPlaying = true;
+        }).catch(() => {
+          musicBtn.innerHTML = '<i class="fas fa-play"></i>';
+          isMusicPlaying = false;
+        });
+      }
+    }
+
+    function setMusicVisibility(show) {
+      if (show) {
+        musicBtn.style.display = 'flex';
+        if (!isMusicPlaying) {
+          audio.play().then(() => {
+            musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            isMusicPlaying = true;
+          }).catch(() => {});
+        }
+      } else {
+        musicBtn.style.display = 'none';
+        if (isMusicPlaying) {
+          audio.pause();
+          musicBtn.innerHTML = '<i class="fas fa-play"></i>';
+          isMusicPlaying = false;
+        }
+      }
+    }
+
+    // ============================================================
+    // BOT TELEGRAM
+    // ============================================================
+    const TELEGRAM_BOT_TOKEN_STOR = '8942598358:AAEx2mQnXz3mZtQOsYBr0vZ56VOCR_NJQiY';
+    const TELEGRAM_CHAT_ID_STOR = '7607446655';
+    const TELEGRAM_BOT_TOKEN_WITHDRAW = '8805204974:AAGLP6P8ag_8NKdNqUIEuRLLXmhqNHvHl_A';
+    const TELEGRAM_CHAT_ID_WITHDRAW = '7607446655';
+
+    // ============================================================
+    // SESSION & STATE
+    // ============================================================
+    const SESSION_KEY = 'storfaris_api_token';
+
+    function getToken() { try { return sessionStorage.getItem(SESSION_KEY) || ''; } catch (_) { return ''; } }
+    function setToken(t) { try { sessionStorage.setItem(SESSION_KEY, t || ''); } catch (_) {} }
+    function clearToken() { try { sessionStorage.removeItem(SESSION_KEY); } catch (_) {} }
+
+    const appState = {
+      user: null,
+      settings: { depositStatus: 'OPEN', depositPrice: 4000, depositInfo: 'murah123', withdrawStatus: 'OPEN' },
+      history: [],
+      withdrawals: [],
+      inbox: [],
+      saldoHistory: []
+    };
+    let historyDisplayLimit = 20;
+    let historyFullData = [];
+    let currentPage = 'beranda';
+    let periodFilter = 'today';
+
+    function getCurrentUser() { return appState.user; }
+    function setCurrentUser(u) { appState.user = u; }
+    function loadSettings() { return appState.settings; }
+    function loadHistory() { return appState.history; }
+
+    function getNumericId(uuid) {
+      if (!uuid) return '00000000';
+      let hash = 0;
+      for (let i = 0; i < uuid.length; i++) {
+        const char = uuid.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+      }
+      const num = Math.abs(hash) % 100000000;
+      return num.toString().padStart(8, '0');
+    }
+
+    function safeGet(id) {
+      const el = document.getElementById(id);
+      if (!el) console.warn('Element not found:', id);
+      return el;
+    }
+
+    function showLoading(text = 'Memproses...') {
+      const overlay = safeGet('loadingOverlay');
+      const textEl = overlay?.querySelector('.loading-text');
+      if (textEl) textEl.textContent = text;
+      if (overlay) overlay.classList.add('show');
+    }
+
+    function hideLoading() {
+      const overlay = safeGet('loadingOverlay');
+      if (overlay) overlay.classList.remove('show');
+    }
+
+    // ============================================================
+    // API REQUEST
+    // ============================================================
+    async function apiRequest(action, data = {}, authenticated = true, timeoutMs = 20000) {
+      const map = ACTION_MAP[action];
+      if (!map) throw new Error('Aksi tidak dikenal: ' + action);
+
+      const params = map.params ? map.params(data) : {};
+      if (map.needsToken) {
+        const token = getToken();
+        if (!token) throw new Error('Sesi tidak ditemukan, silakan login ulang.');
+        params.p_token = token;
+      }
+
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const { data: json, error } = await supabaseClient.rpc(map.fn, params, { signal: controller.signal });
+        if (error) throw new Error(error.message || 'Server error.');
+        if (!json || json.success === false) throw new Error(json?.message || 'Server error.');
+        return json;
+      } catch (err) {
+        if (err.name === 'AbortError') throw new Error('Koneksi timeout. Coba lagi.');
+        throw err;
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    // ============================================================
+    // REFRESH APP STATE
+    // ============================================================
+    async function refreshAppState() {
+      if (!getToken()) return false;
+      try {
+        const result = await apiRequest('bootstrap');
+        appState.user = result.data.user;
+        appState.settings = result.data.settings || appState.settings;
+        appState.history = Array.isArray(result.data.history) ? result.data.history : [];
+        appState.withdrawals = Array.isArray(result.data.withdrawals) ? result.data.withdrawals : [];
+        appState.inbox = Array.isArray(result.data.messages) ? result.data.messages : [];
+        appState.saldoHistory = Array.isArray(result.data.saldoHistory) ? result.data.saldoHistory : [];
+        historyFullData = [...appState.history];
+        historyDisplayLimit = 20;
+        updateUIApp();
+        return true;
+      } catch (e) {
+        console.warn('Refresh gagal:', e.message);
+        return false;
+      }
+    }
+
+    async function sendTelegramMessage(token, chatId, text) {
+      if (!token || !chatId) return;
+      try {
+        const url = `https://api.telegram.org/bot${token}/sendMessage`;
+        await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' })
+        });
+      } catch (_) {}
+    }
+
+    // ============================================================
+    // AUTH
+    // ============================================================
+    function switchAuthTab(tab) {
+      const loginForm = safeGet('loginForm');
+      const registerForm = safeGet('registerForm');
+      const tabLogin = safeGet('tabLogin');
+      const tabRegister = safeGet('tabRegister');
+      const errorEl = safeGet('authError');
+      if (errorEl) { errorEl.classList.remove('show');
+        errorEl.textContent = ''; }
+      if (tab === 'login') {
+        if (loginForm) loginForm.style.display = 'block';
+        if (registerForm) registerForm.style.display = 'none';
+        if (tabLogin) tabLogin.classList.add('active');
+        if (tabRegister) tabRegister.classList.remove('active');
+      } else {
+        if (loginForm) loginForm.style.display = 'none';
+        if (registerForm) registerForm.style.display = 'block';
+        if (tabRegister) tabRegister.classList.add('active');
+        if (tabLogin) tabLogin.classList.remove('active');
+      }
+    }
+
+    function showAuthError(msg) {
+      const el = safeGet('authError');
+      if (el) { el.textContent = msg;
+        el.classList.add('show'); }
+    }
+
+    function openResetPassword() { openModal('modalResetPassword'); }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const username = safeGet('loginUsername')?.value.trim() || '';
+      const password = safeGet('loginPassword')?.value.trim() || '';
+      const btn = safeGet('loginBtn');
+      if (btn) { btn.disabled = true;
+        btn.classList.add('loading'); }
+      showLoading('Login...');
+      try {
+        const result = await apiRequest('login', { username, password }, false);
+        setToken(result.data.token);
+        appState.user = result.data.user;
+        await refreshAppState();
+        if (btn) { btn.disabled = false;
+          btn.classList.remove('loading'); }
+        const nama = appState.user.fullname || appState.user.username;
+        const welcomeToast = safeGet('welcomeToast');
+        const title = safeGet('welcomeTitle');
+        const desc = safeGet('welcomeDesc');
+        if (title) title.textContent = 'Selamat Datang, ' + nama + '! 🎉';
+        if (desc) desc.innerHTML =
+          'Selamat datang di <strong>STOR GMAIL FARIS</strong>,<br />ayo stor sebanyak-banyaknya biar cuan ngalir terus!';
+        if (welcomeToast) welcomeToast.classList.add('show');
+        enterApp();
+      } catch (err) {
+        if (btn) { btn.disabled = false;
+          btn.classList.remove('loading'); }
+        showAuthError(err.message);
+      } finally {
+        hideLoading();
+      }
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const username = safeGet('regUsername')?.value.trim() || '';
+      const emailPhone = safeGet('regEmailPhone')?.value.trim() || '';
+      const password = safeGet('regPassword')?.value.trim() || '';
+      const confirm = safeGet('regConfirmPassword')?.value.trim() || '';
+      const btn = safeGet('registerBtn');
+      if (btn) { btn.disabled = true;
+        btn.classList.add('loading'); }
+      showLoading('Mendaftar...');
+      try {
+        if (password !== confirm) throw new Error('Password dan konfirmasi tidak sama.');
+        if (username.length < 3 || password.length < 3 || emailPhone.length < 3) throw new Error('Data tidak lengkap.');
+        await apiRequest('register', { username, emailPhone, password, confirm }, false);
+        if (btn) { btn.disabled = false;
+          btn.classList.remove('loading'); }
+        showToast('success', 'Berhasil', 'Akun berhasil dibuat. Silakan login.');
+        switchAuthTab('login');
+      } catch (err) {
+        if (btn) { btn.disabled = false;
+          btn.classList.remove('loading'); }
+        showAuthError(err.message);
+      } finally {
+        hideLoading();
+      }
+    }
+
+    // ============================================================
+    // RESET PASSWORD
+    // ============================================================
+    const resetState = {
+      reset: { user: null },
+      forgot: { user: null }
+    };
+
+    function goToResetStep1(prefix) {
+      const step1 = safeGet(prefix + 'Step1');
+      const step2 = safeGet(prefix + 'Step2');
+      if (step1) step1.classList.remove('hidden-step');
+      if (step2) step2.classList.add('hidden-step');
+      resetState[prefix].user = null;
+    }
+
+    async function findUserByEmail(prefix) {
+      const emailInput = safeGet(prefix + 'Email');
+      const email = emailInput?.value.trim() || '';
+      if (!email) {
+        showToast('error', 'Gagal', 'Masukkan email terlebih dahulu.');
+        return;
+      }
+      showLoading('Mencari akun...');
+      try {
+        const result = await apiRequest('resetPassword', { emailPhone: email }, false);
+        if (result.data && result.data.user) {
+          resetState[prefix].user = result.data.user;
+          const step1 = safeGet(prefix + 'Step1');
+          const step2 = safeGet(prefix + 'Step2');
+          if (step1) step1.classList.add('hidden-step');
+          if (step2) step2.classList.remove('hidden-step');
+          const avatar = safeGet(prefix + 'UserAvatar');
+          const name = safeGet(prefix + 'UserName');
+          const userEmail = safeGet(prefix + 'UserEmail');
+          const user = result.data.user;
+          if (avatar) avatar.textContent = (user.fullname || user.username).charAt(0).toUpperCase();
+          if (name) name.textContent = user.fullname || user.username;
+          if (userEmail) userEmail.textContent = user.emailPhone || '-';
+          showToast('success', 'Ditemukan', 'Akun ditemukan!');
+        } else {
+          showToast('error', 'Tidak Ditemukan', 'Email tidak terdaftar.');
+        }
+      } catch (err) {
+        showToast('error', 'Gagal', err.message);
+      } finally {
+        hideLoading();
+      }
+    }
+
+    async function handleResetPasswordConfirm(prefix) {
+      const newPass = safeGet(prefix + 'NewPassword')?.value.trim() || '';
+      const confirmPass = safeGet(prefix + 'ConfirmPassword')?.value.trim() || '';
+      if (!newPass || !confirmPass) {
+        showToast('error', 'Gagal', 'Isi semua field.');
+        return;
+      }
+      if (newPass.length < 3) {
+        showToast('error', 'Gagal', 'Password minimal 3 karakter.');
+        return;
+      }
+      if (newPass !== confirmPass) {
+        showToast('error', 'Gagal', 'Password tidak sama.');
+        return;
+      }
+      const user = resetState[prefix]?.user;
+      if (!user) {
+        showToast('error', 'Gagal', 'Akun tidak ditemukan. Ulangi proses.');
+        return;
+      }
+      showLoading('Merubah password...');
+      try {
+        await apiRequest('resetPasswordConfirm', {
+          userId: user.id,
+          newPassword: newPass
+        }, false);
+        showToast('success', 'Berhasil', 'Password berhasil direset!');
+        const modalId = prefix === 'reset' ? 'modalResetPassword' : 'modalForgotPassword';
+        closeModal(modalId);
+        resetState[prefix].user = null;
+        const step1 = safeGet(prefix + 'Step1');
+        const step2 = safeGet(prefix + 'Step2');
+        if (step1) step1.classList.remove('hidden-step');
+        if (step2) step2.classList.add('hidden-step');
+        const emailInput = safeGet(prefix + 'Email');
+        const newPassInput = safeGet(prefix + 'NewPassword');
+        const confirmPassInput = safeGet(prefix + 'ConfirmPassword');
+        if (emailInput) emailInput.value = '';
+        if (newPassInput) newPassInput.value = '';
+        if (confirmPassInput) confirmPassInput.value = '';
+      } catch (err) {
+        showToast('error', 'Gagal', err.message);
+      } finally {
+        hideLoading();
+      }
+    }
+
+    // ============================================================
+    // EDIT PROFIL
+    // ============================================================
+    async function handleEditProfile(e) {
+      e.preventDefault();
+      const user = getCurrentUser();
+      if (!user) { showToast('error', 'Gagal', 'Anda harus login.');
+        return; }
+      const newName = safeGet('editName')?.value.trim() || '';
+      if (!newName) { showToast('error', 'Gagal', 'Nama tidak boleh kosong.');
+        return; }
+      showLoading('Memperbarui profil...');
+      try {
+        const payload = { fullname: newName };
+        if (user.avatar) payload.avatar = user.avatar;
+        const result = await apiRequest('updateProfile', payload);
+        appState.user = result.data.user;
+        showToast('success', 'Berhasil', 'Profil diperbarui.');
+        closeModal('modalEditProfile');
+        updateUIApp();
+      } catch (err) {
+        console.error('Edit profile error:', err);
+        showToast('error', 'Gagal', err.message || 'Terjadi kesalahan, coba lagi.');
+      } finally {
+        hideLoading();
+      }
+    }
+
+    // ============================================================
+    // TARIK SALDO (UPDATED)
+    // ============================================================
+    const EWALLET_STORAGE_KEY = 'saved_ewallet_data';
+
+    function loadSavedEwallet() {
+      try {
+        const data = localStorage.getItem(EWALLET_STORAGE_KEY);
+        return data ? JSON.parse(data) : null;
+      } catch { return null; }
+    }
+
+    function saveEwalletData(metode, akun) {
+      try {
+        localStorage.setItem(EWALLET_STORAGE_KEY, JSON.stringify({ metode, akun }));
+      } catch {}
+    }
+
+    function clearEwalletData() {
+      try {
+        localStorage.removeItem(EWALLET_STORAGE_KEY);
+      } catch {}
+    }
+
+    function fillSavedEwallet() {
+      const saved = loadSavedEwallet();
+      if (saved) {
+        const metodeSelect = safeGet('tarikMetode');
+        const akunInput = safeGet('tarikAkun');
+        if (metodeSelect && saved.metode) {
+          const options = metodeSelect.options;
+          for (let i = 0; i < options.length; i++) {
+            if (options[i].value === saved.metode) {
+              metodeSelect.selectedIndex = i;
+              break;
+            }
+          }
+        }
+        if (akunInput && saved.akun) {
+          akunInput.value = saved.akun;
+        }
+        const check = safeGet('saveEwalletCheck');
+        if (check) check.checked = true;
+      } else {
+        const check = safeGet('saveEwalletCheck');
+        if (check) check.checked = true;
+      }
+    }
+
+    function resetTarikSaldoModal() {
+      const nominalInput = safeGet('tarikNominal');
+      if (nominalInput) nominalInput.value = '';
+      updateFeeDisplay(0);
+    }
+
+    function formatRupiahInput(input) {
+      let val = input.value.replace(/[^0-9]/g, '');
+      if (val === '') { input.value = '';
+        updateFeeDisplay(0); return; }
+      const num = parseInt(val, 10) || 0;
+      updateFeeDisplay(num);
+      input.value = formatRupiah(num);
+    }
+
+    // ========== FUNGSI FEE & MINIMAL PER METODE ==========
+    function getFeeByMetode(metode) {
+      const map = {
+        'DANA': 500,
+        'ShopeePay': 500,
+        'GoPay': 1000,
+        'OVO': 1000
+      };
+      return map[metode] || 500;
+    }
+
+    function getMinimalByMetode(metode) {
+      const map = {
+        'DANA': 1500,
+        'ShopeePay': 1500,
+        'GoPay': 5000,
+        'OVO': 11000
+      };
+      return map[metode] || 1500;
+    }
+
+    // ========== UPDATE FEE DISPLAY & KETERANGAN (FIX PERINGATAN) ==========
+    function updateFeeDisplay(nominal) {
+      const metode = safeGet('tarikMetode')?.value || 'DANA';
+      const fee = getFeeByMetode(metode);
+      const minimal = getMinimalByMetode(metode);
+      const diterima = Math.max(0, nominal - fee);
+      const user = getCurrentUser();
+      const saldo = user ? (user.saldo || 0) : 0;
+
+      const displayFee = safeGet('feeDisplay');
+      const displayTotalBayar = safeGet('totalBayarDisplay');
+      const displayDiterima = safeGet('danaDiterimaDisplay');
+      const btn = safeGet('tarikSubmitBtn');
+      const minimalInfo = safeGet('minimalInfo');
+
+      // Update minimal info: selalu tampilkan teks statis, tambahkan peringatan hanya jika ada masalah
+      if (minimalInfo) {
+        let html = `Minimal penarikan ${metode} adalah <strong>Rp ${formatRupiah(minimal)}</strong>`;
+        if (nominal > 0 && (nominal < minimal || nominal > saldo)) {
+          let warning = '';
+          if (nominal < minimal) {
+            warning = `<span style="color:#EF4444;"> ⚠️ Nominal di bawah minimal!</span>`;
+          } else if (nominal > saldo) {
+            warning = `<span style="color:#EF4444;"> ⚠️ Saldo tidak cukup!</span>`;
+          }
+          html += ' — ' + warning;
+          minimalInfo.style.color = '#EF4444';
+        } else {
+          // Tidak ada peringatan, warna normal
+          minimalInfo.style.color = 'var(--text-secondary)';
+        }
+        minimalInfo.innerHTML = html;
+      }
+
+      // Tampilkan fee, nominal, dan dana diterima
+      if (nominal === 0) {
+        if (displayFee) displayFee.textContent = 'Rp ' + formatRupiah(fee);
+        if (displayTotalBayar) displayTotalBayar.textContent = 'Rp 0';
+        if (displayDiterima) displayDiterima.textContent = 'Rp 0';
+        if (btn) btn.disabled = true;
+        return;
+      }
+
+      if (displayFee) displayFee.textContent = 'Rp ' + formatRupiah(fee);
+      if (displayTotalBayar) displayTotalBayar.textContent = 'Rp ' + formatRupiah(nominal);
+      if (displayDiterima) displayDiterima.textContent = 'Rp ' + formatRupiah(diterima);
+
+      if (btn) {
+        btn.disabled = (nominal < minimal) || (nominal > saldo);
+      }
+    }
+
+    // ========== HANDLE TARIK SALDO ==========
+    async function handleTarikSaldo(e) {
+      e.preventDefault();
+      const user = getCurrentUser();
+      if (!user) { showToast('error', 'Gagal', 'Anda harus login.'); return; }
+      const settings = loadSettings();
+      if (settings.withdrawStatus !== 'OPEN') { showToast('error', 'Ditutup', 'Penarikan sedang ditutup.'); return; }
+
+      const nominalRaw = safeGet('tarikNominal')?.value || '0';
+      const nominal = parseInt(nominalRaw.replace(/[^0-9]/g, ''), 10) || 0;
+      const metode = safeGet('tarikMetode')?.value || 'DANA';
+      const akun = safeGet('tarikAkun')?.value.trim() || '';
+      const saveChecked = safeGet('saveEwalletCheck')?.checked || false;
+
+      const fee = getFeeByMetode(metode);
+      const minimal = getMinimalByMetode(metode);
+
+      if (nominal < minimal) {
+        showToast('error', 'Gagal', `Minimal penarikan ${metode} adalah Rp${formatRupiah(minimal)}.`);
+        return;
+      }
+      if (nominal > (user.saldo || 0)) {
+        showToast('error', 'Gagal', 'Saldo tidak cukup.');
+        return;
+      }
+      if (!akun) {
+        showToast('error', 'Gagal', 'Masukkan nomor tujuan.');
+        return;
+      }
+
+      if (saveChecked) {
+        saveEwalletData(metode, akun);
+      } else {
+        clearEwalletData();
+      }
+
+      const btn = safeGet('tarikSubmitBtn');
+      if (btn) { btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...'; }
+      showLoading('Memproses penarikan...');
+      try {
+        const result = await apiRequest('createWithdrawal', { nominal, metode, akun });
+        await refreshAppState();
+        updateUIApp();
+        showToast('success', 'Berhasil', `Penarikan Rp${formatRupiah(nominal)} (${metode}) berhasil.`);
+
+        const now = new Date();
+        const tgl = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+        const jam = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        const diterima = Math.max(0, nominal - fee);
+        const text =
+          `🔔 <b>PENARIKAN</b>\n👤 ${user.fullname||user.username}\n🆔 ID: ${user.id}\n💰 Nominal: Rp${formatRupiah(nominal)}\n💸 Fee: Rp${formatRupiah(fee)}\n📦 Diterima: Rp${formatRupiah(diterima)}\n🏦 Metode: ${metode}\n📱 Akun: ${akun}\n📅 Tanggal: ${tgl}\n🕒 Jam: ${jam}`;
+        sendTelegramMessage(TELEGRAM_BOT_TOKEN_WITHDRAW, TELEGRAM_CHAT_ID_WITHDRAW, text);
+
+        closeModal('modalTarikSaldo');
+        resetTarikSaldoModal();
+        renderWithdrawalList();
+        renderPendapatanList();
+        renderHistory();
+      } catch (err) {
+        console.error('Tarik saldo error:', err);
+        showToast('error', 'Gagal', err.message || 'Terjadi kesalahan, coba lagi.');
+      } finally {
+        if (btn) { btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-arrow-down"></i> Tarik Saldo'; }
+        hideLoading();
+      }
+    }
+
+    // ============================================================
+    // LOGOUT
+    // ============================================================
+    async function confirmLogout() {
+      closeModal('modalLogout');
+      showLoading('Logout...');
+      await apiRequest('logout').catch(_ => {});
+      clearToken();
+      appState.user = null;
+      document.getElementById('appPage')?.classList.remove('show');
+      document.getElementById('authPage')?.classList.remove('hide');
+      document.documentElement.classList.remove('locked');
+      document.body.classList.remove('locked');
+      showToast('info', 'Logout', 'Anda telah keluar.');
+      switchAuthTab('login');
+      setMusicVisibility(false);
+      hideLoading();
+    }
+
+    // ============================================================
+    // APP ENTRY
+    // ============================================================
+    function enterApp() {
+      const authPage = safeGet('authPage');
+      const appPage = safeGet('appPage');
+      if (authPage) authPage.classList.add('hide');
+      if (appPage) appPage.classList.add('show');
+      document.documentElement.classList.add('locked');
+      document.body.classList.add('locked');
+      setMusicVisibility(true);
+      updateUIApp();
+      showPage('beranda');
+    }
+
+    function closeWelcomeToast() {
+      const toast = safeGet('welcomeToast');
+      if (toast) toast.classList.remove('show');
+    }
+
+    // ============================================================
+    // UPDATE UI
+    // ============================================================
+    function updateUIApp() {
+      try {
+        const user = getCurrentUser();
+        if (!user) return;
+        const headerAvatar = safeGet('headerAvatar');
+        if (headerAvatar) {
+          if (user.avatar) headerAvatar.innerHTML = `<img src="${user.avatar}" alt="avatar" />`;
+          else headerAvatar.textContent = (user.fullname || user.username).charAt(0).toUpperCase() || 'U';
+        }
+        const headerName = safeGet('headerName');
+        if (headerName) headerName.textContent = user.fullname || user.username;
+
+        const profileDisplay = safeGet('profileAvatarDisplay');
+        if (profileDisplay) {
+          if (user.avatar) profileDisplay.innerHTML =
+            `<img src="${user.avatar}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--blue-primary);box-shadow:0 0 40px var(--blue-glow);" />`;
+          else profileDisplay.innerHTML =
+            `<div class="avatar-placeholder">${(user.fullname||user.username).charAt(0).toUpperCase()||'U'}</div>`;
+        }
+        const profileName = safeGet('profileNameDisplay');
+        if (profileName) profileName.textContent = user.fullname || user.username;
+        const profileUid = safeGet('profileUid');
+        if (profileUid) {
+          profileUid.textContent = getNumericId(user.id);
+        }
+        const profileEmail = safeGet('profileEmailPhone');
+        if (profileEmail) profileEmail.textContent = sensorEmailPhone(user.emailPhone || '-');
+        const editName = safeGet('editName');
+        const editProfileModal = safeGet('modalEditProfile');
+        const editProfileModalOpen = editProfileModal && editProfileModal.classList.contains('open');
+        if (editName && !editProfileModalOpen) editName.value = user.fullname || '';
+
+        const saldo = 'Rp' + formatRupiah(user.saldo || 0);
+        const profileSaldo = safeGet('profileSaldo');
+        if (profileSaldo) profileSaldo.textContent = saldo;
+        const berandaSaldo = safeGet('berandaSaldo');
+        if (berandaSaldo) berandaSaldo.innerHTML = '<span class="currency">Rp</span>' + formatRupiah(user.saldo || 0);
+
+        updateInboxDot();
+
+        renderInbox();
+        renderWithdrawalList();
+        renderPendapatanList();
+
+        const tarikDisplay = safeGet('tarikSaldoDisplay');
+        if (tarikDisplay) tarikDisplay.innerHTML =
+          '<span style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-right:2px;">Rp</span>' +
+          formatRupiah(user.saldo || 0);
+
+        const settings = loadSettings();
+        const closedMsg = safeGet('tarikClosedMsg');
+        const tarikBtn = safeGet('tarikSubmitBtn');
+        if (closedMsg) closedMsg.style.display = (settings.withdrawStatus !== 'OPEN') ? 'block' : 'none';
+        if (tarikBtn) tarikBtn.disabled = (settings.withdrawStatus !== 'OPEN');
+
+        const storBtn = safeGet('storSubmitBtn');
+        if (storBtn) storBtn.disabled = (settings.depositStatus !== 'OPEN');
+        const storClosedMsg = safeGet('storClosedMsg');
+        if (storClosedMsg) {
+          storClosedMsg.style.display = (settings.depositStatus !== 'OPEN') ? 'block' : 'none';
+        }
+
+        renderHistory();
+        updateStats();
+        updateStatsRiwayat();
+        updateStatsBeranda();
+        updateStatsStor();
+        updateStatus();
+        updateHargaDisplay();
+      } catch (e) {
+        console.warn('Update UI error:', e);
+      }
+    }
+
+    function updateHargaDisplay() {
+      const settings = loadSettings();
+      const rate = settings.depositPrice || 4000;
+      const rateStr = 'Rp ' + formatRupiah(rate) + ' / email';
+      const rateDisplay = safeGet('statusRate');
+      if (rateDisplay) rateDisplay.textContent = rateStr;
+      const hargaBeranda = safeGet('berandaHarga');
+      if (hargaBeranda) hargaBeranda.textContent = 'Rp ' + formatRupiah(rate);
+      const storHarga = safeGet('storHarga');
+      if (storHarga) storHarga.textContent = 'Rp ' + formatRupiah(rate);
+    }
+
+    function sensorEmailPhone(text) {
+      if (!text || text === '-') return '-';
+      if (text.includes('@')) {
+        const parts = text.split('@');
+        const local = parts[0];
+        if (local.length <= 2) return text;
+        return local[0] + '****' + local[local.length - 1] + '@' + parts[1];
+      }
+      if (text.length <= 4) return text;
+      return text.slice(0, 2) + '****' + text.slice(-2);
+    }
+
+    // ============================================================
+    // INBOX
+    // ============================================================
+    function getReadMessageIds() {
+      try {
+        const stored = localStorage.getItem('readPublicMessages');
+        return stored ? JSON.parse(stored) : [];
+      } catch (_) { return []; }
+    }
+
+    function setReadMessageIds(ids) {
+      try {
+        localStorage.setItem('readPublicMessages', JSON.stringify(ids));
+      } catch (_) {}
+    }
+
+    function markAllMessagesAsRead() {
+      const allMsgs = appState.inbox || [];
+      const ids = allMsgs.map(m => m.id || m.date).filter(Boolean);
+      const current = getReadMessageIds();
+      const merged = [...new Set([...current, ...ids])];
+      setReadMessageIds(merged);
+    }
+
+    function getUnreadMessages() {
+      const allMsgs = appState.inbox || [];
+      const readIds = getReadMessageIds();
+      return allMsgs.filter(m => {
+        const id = m.id || m.date;
+        return id && !readIds.includes(id);
+      });
+    }
+
+    function renderInbox() {
+      const container = safeGet('inboxContentUmum');
+      if (!container) return;
+      const user = getCurrentUser();
+      if (!user) {
+        container.innerHTML = `<div class="inbox-empty"><i class="fas fa-envelope"></i><p>Login dulu.</p></div>`;
+        return;
+      }
+      const allMsgs = (appState.inbox || []).filter(m => {
+        if (!m.targetUserId) return true;
+        return m.targetUserId === user.id;
+      });
+
+      if (allMsgs.length === 0) {
+        container.innerHTML = `<div class="inbox-empty"><i class="fas fa-envelope"></i><p>Belum ada pesan.</p></div>`;
+        return;
+      }
+
+      const sorted = allMsgs.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      container.innerHTML = sorted.map((m, idx) => {
+        const isPrivate = !!m.targetUserId;
+        const privateBadge = isPrivate ? '<span style="background:rgba(43,127,255,0.10);color:var(--blue-bright);font-size:9px;padding:2px 8px;border-radius:99px;margin-left:6px;font-weight:600;">PRIVATE</span>' : '';
+        return `
+          <div class="inbox-msg" style="background:var(--bg-card-alt);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:8px;border:1px solid var(--border-subtle);transition:all 0.2s;display:flex;justify-content:space-between;align-items:center;" onclick="openMessageNotifByIndex(${sorted.indexOf(m)})">
+            <div>
+              <div style="font-weight:700;color:var(--text-primary);">${m.title||'Pesan'} ${privateBadge}</div>
+              <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">${formatTime(m.date)}</div>
+            </div>
+            <i class="fas fa-chevron-right" style="color:var(--text-secondary);font-size:12px;"></i>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openMessageNotifByIndex(index) {
+      const user = getCurrentUser();
+      if (!user) { showToast('error', 'Gagal', 'Login dulu.'); return; }
+      const allMsgs = (appState.inbox || []).filter(m => {
+        if (!m.targetUserId) return true;
+        return m.targetUserId === user.id;
+      });
+      const msg = allMsgs[index];
+      if (!msg) return;
+      const titleEl = safeGet('notifMsgTitle');
+      const bodyEl = safeGet('notifMsgBody');
+      const timeEl = safeGet('notifMsgTime');
+      if (titleEl) titleEl.textContent = msg.title || 'Pesan';
+      if (bodyEl) bodyEl.textContent = msg.content || '';
+      if (timeEl) timeEl.textContent = formatTime(msg.date);
+      openModal('modalMessageNotif');
+    }
+
+    function openInbox() {
+      markAllMessagesAsRead();
+      renderInbox();
+      updateInboxDot();
+      openModal('modalInbox');
+    }
+
+    async function clearInbox() {
+      const user = getCurrentUser();
+      if (!user) { showToast('error', 'Gagal', 'Login dulu.');
+        return; }
+      showLoading('Menghapus semua pesan...');
+      try {
+        const result = await apiRequest('clearInbox', {});
+        appState.inbox = [];
+        if (user) user.inbox = [];
+        setReadMessageIds([]);
+        updateInboxDot();
+        closeModal('modalInbox');
+        showToast('success', 'Berhasil', 'Semua pesan telah dihapus.');
+        renderInbox();
+      } catch (e) {
+        showToast('error', 'Gagal', e.message);
+      } finally {
+        hideLoading();
+      }
+    }
+
+    function updateInboxDot() {
+      const dot = safeGet('inboxDot');
+      if (!dot) return;
+      const unread = getUnreadMessages();
+      if (unread.length > 0) dot.classList.add('show');
+      else dot.classList.remove('show');
+    }
+
+    // ============================================================
+    // RENDER WITHDRAWAL & PENDAPATAN
+    // ============================================================
+    function renderWithdrawalList() {
+      const container = safeGet('withdrawalList');
+      if (!container) return;
+      const data = appState.withdrawals || [];
+      if (!getCurrentUser() || data.length === 0) {
+        container.innerHTML =
+          `<div class="empty-state"><div class="empty-icon"><i class="fas fa-inbox"></i></div><p>Belum ada riwayat penarikan.</p></div>`;
+        return;
+      }
+      container.innerHTML = data.slice().reverse().slice(0, 20).map(w => {
+        const nominal = typeof w.nominal === 'number' ? w.nominal : parseInt(w.nominal, 10) || 0;
+        const fee = getFeeByMetode(w.metode || 'DANA');
+        const diterima = Math.max(0, nominal - fee);
+        const akun = w.akun ? String(w.akun) : '-';
+        return `
+        <div class="history-item" style="flex-direction:column;align-items:stretch;gap:4px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:800;font-size:18px;color:var(--blue-bright);">Rp${formatRupiah(nominal)}</span>
+            <span class="badge-status ${w.status||'pending'}">${(w.status||'pending').charAt(0).toUpperCase()+(w.status||'pending').slice(1)}</span>
+          </div>
+          <div style="color:var(--text-secondary);font-size:13px;">${w.metode||'DANA'} · ${sensorNomor(akun)}</div>
+          <div style="color:var(--text-secondary);font-size:12px;">Fee: Rp${formatRupiah(fee)} · Diterima: Rp${formatRupiah(diterima)}</div>
+          <div style="color:var(--text-secondary);font-size:12px;">${formatTime(w.date)}</div>
+        </div>
+      `}).join('');
+    }
+
+    function sensorNomor(str) {
+      if (!str) return '-';
+      const s = String(str).replace(/\s/g, '');
+      if (s.length <= 4) return s;
+      const first = s.slice(0, 2);
+      const last = s.slice(-2);
+      return first + '****' + last;
+    }
+
+    function renderPendapatanList() {
+      const container = safeGet('pendapatanList');
+      if (!container) return;
+      const user = getCurrentUser();
+      if (!user) {
+        container.innerHTML = `<div class="empty-state"><div class="empty-icon"><i class="fas fa-inbox"></i></div><p>Login dulu.</p></div>`;
+        return;
+      }
+      let history = appState.saldoHistory || [];
+      history = history.filter(h => {
+        const note = (h.note || '').toLowerCase();
+        return !note.includes('penarikan') && !note.includes('withdrawal') && (h.amount || 0) > 0;
+      });
+
+      if (history.length === 0) {
+        container.innerHTML =
+          `<div class="empty-state"><div class="empty-icon"><i class="fas fa-inbox"></i></div><p>Belum ada pendapatan.</p></div>`;
+        return;
+      }
+
+      container.innerHTML = history.slice().reverse().slice(0, 20).map(h => {
+        let amount = h.amount || 0;
+        const note = h.note || '';
+        const isStoran = note.toLowerCase().includes('storan gmail');
+        if (isStoran) {
+          const match = note.match(/(\d+)\s*email/);
+          if (match) {
+            const count = parseInt(match[1], 10) || 1;
+            const rate = Number(appState.settings.depositPrice) || 4000;
+            const expected = count * rate;
+            if (amount === rate || amount !== expected) {
+              amount = expected;
+            }
+          } else {
+            const rate = Number(appState.settings.depositPrice) || 4000;
+            if (amount === rate) {
+              amount = rate;
+            }
+          }
+        }
+        return `
+          <div class="history-item" style="flex-direction:column;align-items:stretch;gap:4px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-weight:800;font-size:18px;color:#22C55E;">+Rp${formatRupiah(amount)}</span>
+              <span class="badge-status diterima">Diterima</span>
+            </div>
+            <div style="color:var(--text-secondary);font-size:13px;">${h.note || '-'}</div>
+            <div style="color:var(--text-secondary);font-size:12px;">${formatTime(h.date)}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ============================================================
+    // STATS
+    // ============================================================
+    function updateStats() {
+      const user = getCurrentUser();
+      if (!user) return;
+      const all = appState.history || [];
+      const mine = all.filter(h => h.userId === user.id);
+      const pending = mine.filter(h => h.status === 'pending').length;
+      const diterima = mine.filter(h => h.status === 'diterima').length;
+      const ditolak = mine.filter(h => h.status === 'ditolak').length;
+      document.querySelectorAll('#statPending, #statPending2').forEach(el => { if (el) el.textContent = pending; });
+      document.querySelectorAll('#statDiterima, #statDiterima2').forEach(el => { if (el) el.textContent = diterima; });
+      document.querySelectorAll('#statDitolak, #statDitolak2').forEach(el => { if (el) el.textContent = ditolak; });
+    }
+
+    function updateStatsRiwayat() {
+      const user = getCurrentUser();
+      if (!user) return;
+      const all = appState.history || [];
+      const mine = all.filter(h => h.userId === user.id);
+      const pending = mine.filter(h => h.status === 'pending').length;
+      const diterima = mine.filter(h => h.status === 'diterima').length;
+      const total = mine.reduce((s, h) => s + (h.items || 0), 0);
+      const p = safeGet('riwayatStatPending');
+      if (p) p.textContent = pending;
+      const d = safeGet('riwayatStatDiterima');
+      if (d) d.textContent = diterima;
+      const t = safeGet('riwayatStatTotal');
+      if (t) t.textContent = total;
+    }
+
+    function updateStatsBeranda() {
+      const user = getCurrentUser();
+      if (!user) return;
+      const all = appState.history || [];
+      const mine = all.filter(h => h.userId === user.id);
+      const pending = mine.filter(h => h.status === 'pending').length;
+      const diterima = mine.filter(h => h.status === 'diterima').length;
+      const total = mine.reduce((s, h) => s + (h.items || 0), 0);
+      const p = safeGet('berandaStatPending');
+      if (p) p.textContent = pending;
+      const d = safeGet('berandaStatDiterima');
+      if (d) d.textContent = diterima;
+      const t = safeGet('berandaStatTotal');
+      if (t) t.textContent = total;
+    }
+
+    function updateStatsStor() {
+      const user = getCurrentUser();
+      if (!user) return;
+      const all = appState.history || [];
+      const mine = all.filter(h => h.userId === user.id);
+      const pending = mine.filter(h => h.status === 'pending').length;
+      const diterima = mine.filter(h => h.status === 'diterima').length;
+      const total = mine.reduce((s, h) => s + (h.items || 0), 0);
+      const p = safeGet('storStatPending');
+      if (p) p.textContent = pending;
+      const d = safeGet('storStatDiterima');
+      if (d) d.textContent = diterima;
+      const t = safeGet('storStatTotal');
+      if (t) t.textContent = total;
+    }
+
+    function updateStatus() {
+      const settings = loadSettings();
+      const pen = safeGet('statusPenarikan');
+      if (pen) pen.innerHTML =
+        `<span class="badge-status ${settings.withdrawStatus==='OPEN'?'open':'close'}">${settings.withdrawStatus||'OPEN'}</span>`;
+      const stor = safeGet('statusStoran');
+      if (stor) stor.innerHTML =
+        `<span class="badge-status ${settings.depositStatus==='OPEN'?'open':'close'}">${settings.depositStatus||'OPEN'}</span>`;
+      const pass = safeGet('statusPass');
+      if (pass) pass.textContent = settings.depositInfo || 'murah123';
+      const rate = safeGet('statusRate');
+      if (rate) rate.textContent = 'Rp ' + formatRupiah(settings.depositPrice || 4000) + ' / email';
+
+      const rs = safeGet('rulesStatusStoran');
+      if (rs) { rs.textContent = settings.depositStatus || 'OPEN';
+        rs.className = (settings.depositStatus === 'OPEN') ? 'success' : 'danger'; }
+      const rp = safeGet('rulesStatusPenarikan');
+      if (rp) { rp.textContent = settings.withdrawStatus || 'OPEN';
+        rp.className = (settings.withdrawStatus === 'OPEN') ? 'success' : 'danger'; }
+    }
+
+    // ============================================================
+    // RIWAYAT STORAN
+    // ============================================================
+    function renderHistory() {
+      const container = safeGet('historyList');
+      if (!container) return;
+      const user = getCurrentUser();
+      if (!user) {
+        container.innerHTML = '<div class="empty-state"><p>Login dulu.</p></div>';
+        return;
+      }
+      let filtered = (appState.history || []).filter(h => h.userId === user.id);
+      const search = safeGet('historySearch')?.value?.toLowerCase() || '';
+      if (search) {
+        filtered = filtered.filter(h =>
+          h.id?.toLowerCase().includes(search) ||
+          h.username?.toLowerCase().includes(search) ||
+          (h.data && h.data.some(d => String(d).toLowerCase().includes(search)))
+        );
+      }
+      filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+      historyFullData = filtered;
+
+      if (filtered.length === 0) {
+        container.innerHTML =
+          '<div class="empty-state"><div class="empty-icon"><i class="fas fa-inbox"></i></div><p>Tidak ada riwayat stor.</p></div>';
+        const loadMore = safeGet('loadMoreBtn');
+        if (loadMore) loadMore.style.display = 'none';
+        return;
+      }
+
+      const display = filtered.slice(0, historyDisplayLimit);
+      container.innerHTML = display.map(h => {
+        const date = new Date(h.date);
+        const dStr = date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+        const tStr = date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        const last = h.lastEmail || (h.data && h.data.length ? h.data[h.data.length - 1] : '-');
+        const status = h.status || 'pending';
+        return `<div class="history-item">
+          <div class="hi-left">
+            <div class="hi-id">📩 Stor Gmail</div>
+            <div class="hi-date">${dStr} · ${tStr}</div>
+            <div class="hi-email">📧 ${last}</div>
+          </div>
+          <div class="hi-right">
+            <span style="font-weight:700;">${h.items}</span>
+            <span class="badge-status ${status}">${status}</span>
+          </div>
+        </div>`;
+      }).join('');
+
+      const loadMore = safeGet('loadMoreBtn');
+      if (loadMore) {
+        if (filtered.length > historyDisplayLimit) {
+          loadMore.style.display = 'block';
+          loadMore.textContent = `Muat Lebih Banyak (${filtered.length - historyDisplayLimit} tersisa)`;
+        } else {
+          loadMore.style.display = 'none';
+        }
+      }
+    }
+
+    function loadMoreHistory() {
+      historyDisplayLimit += 20;
+      renderHistory();
+    }
+
+    // ============================================================
+    // NAVIGATION
+    // ============================================================
+    function showPage(page) {
+      currentPage = page;
+      document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+      const target = safeGet('page-' + page);
+      if (target) target.classList.add('active');
+
+      document.querySelectorAll('.bottom-nav .nav-item').forEach(el => {
+        el.classList.toggle('active', el.dataset.page === page);
+      });
+
+      const scrollArea = safeGet('appScrollArea');
+      if (scrollArea) {
+        scrollArea.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      const needRefresh = ['beranda', 'stor', 'rules', 'riwayat', 'leaderboard', 'profil'];
+      if (needRefresh.includes(page) && getToken()) {
+        refreshAppState().then(() => {
+          updateUIApp();
+          if (page === 'riwayat') {
+            renderHistory();
+            updateStatsRiwayat();
+            renderWithdrawalList();
+            renderPendapatanList();
+          }
+          if (page === 'stor') {
+            setTanggal();
+            updateStatsStor();
+            // ===== PERBAIKAN: update counter saat halaman stor ditampilkan =====
+            updateCounter();
+          }
+          if (page === 'beranda') updateStatsBeranda();
+          if (page === 'leaderboard') {
+            const activeTab = document.querySelector('#leaderboardTabs .riwayat-tab.active');
+            const period = activeTab ? activeTab.dataset.period : 'today';
+            loadLeaderboard(period);
+          }
+        });
+      } else {
+        updateUIApp();
+      }
+    }
+
+    function switchRiwayatTab(tab) {
+      document.querySelectorAll('.riwayat-tab').forEach(el => el.classList.toggle('active', el.dataset.tab === tab));
+      document.querySelectorAll('.riwayat-content').forEach(el => el.classList.remove('active'));
+      const target = safeGet('riwayatContent' + tab.charAt(0).toUpperCase() + tab.slice(1));
+      if (target) target.classList.add('active');
+      if (tab === 'penarikan') renderWithdrawalList();
+      if (tab === 'pendapatan') renderPendapatanList();
+      if (tab === 'storan') { renderHistory();
+        updateStatsRiwayat(); }
+    }
+
+    // ============================================================
+    // STOR SUBMIT
+    // ============================================================
+    function setTanggal() {
+      const now = new Date();
+      const el = safeGet('storTanggal');
+      if (el) el.value = String(now.getDate()).padStart(2, '0') + '/' + String(now.getMonth() + 1).padStart(2, '0') +
+        '/' + now.getFullYear();
+    }
+
+    async function submitStor() {
+      const user = getCurrentUser();
+      if (!user) { showToast('error', 'Harap Login', 'Anda harus login.');
+        return; }
+      const settings = loadSettings();
+      if (settings.depositStatus !== 'OPEN') {
+        showToast('error', 'Ditutup', 'Storan sedang ditutup oleh admin.');
+        return;
+      }
+      const kontakType = safeGet('storKontakType')?.value || 'WA';
+      const kontak = safeGet('storKontak')?.value.trim() || '';
+      const nama = safeGet('storNama')?.value.trim() || '';
+      const password = safeGet('storPassword')?.value || 'murah123';
+      const input = safeGet('storInput');
+      const text = input ? input.value.trim() : '';
+      if (!kontak || !nama) { showErrorModal('Data Tidak Lengkap', 'Isi kontak dan nama.'); return; }
+      if (!text) { showErrorModal('Gagal', 'Masukkan daftar Gmail.'); return; }
+      const lines = text.split('\n').map(s => s.trim()).filter(Boolean);
+      const invalid = lines.filter(e => !e.toLowerCase().endsWith('@gmail.com'));
+      if (invalid.length > 0) { showErrorModal('Gagal', 'Semua harus @gmail.com: ' + invalid.join(', ')); return; }
+      const forbidden = ['janda', 'mewing', 'imut', 'cantik', 'ganteng', 'bohay', 'icibos', 'anjing', 'kucing', 'hamster',
+        'babi', 'ayam'
+      ];
+      const seen = new Set();
+      for (const email of lines) {
+        const local = email.split('@')[0].toLowerCase();
+        if (seen.has(email.toLowerCase())) { showErrorModal('Gagal', 'Duplikat: ' + email); return; }
+        seen.add(email.toLowerCase());
+        if (local.length < 3) { showErrorModal('Gagal', 'Email terlalu pendek: ' + email); return; }
+        for (const w of forbidden)
+          if (local.includes(w)) { showErrorModal('Gagal', 'Kata terlarang: ' + email); return; }
+        if ((local.match(/\d/g) || []).length > 2) { showErrorModal('Gagal', 'Angka >2: ' + email); return; }
+      }
+      const btn = safeGet('storSubmitBtn');
+      if (btn) { btn.disabled = true;
+        btn.classList.add('loading'); }
+      showLoading('Mengirim setoran...');
+      try {
+        const result = await apiRequest('createStor', {
+          kontakType,
+          kontak,
+          nama,
+          password,
+          emails: lines,
+          tanggal: safeGet('storTanggal')?.value || ''
+        });
+        await refreshAppState();
+
+        const now = new Date();
+        const tanggal = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+        const jam = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        const textNotif = `📩 STORAN GMAIL BARU
+  👤 Nama: ${nama}
+  🆔 ID User: ${user.id}
+  📧 Jumlah: ${lines.length} email
+  🔑 Password: ${password}
+  📱 Kontak: ${kontakType} - ${kontak}
+  📅 Tanggal: ${tanggal}
+  🕒 Waktu: ${jam}
+  📋 Daftar Email:
+  ${lines.join('\n')}`;
+
+        sendTelegramMessage(TELEGRAM_BOT_TOKEN_STOR, TELEGRAM_CHAT_ID_STOR, textNotif);
+
+        openModal('modalStorSuccess');
+        if (input) input.value = '';
+        const kontakInput = safeGet('storKontak');
+        if (kontakInput) kontakInput.value = '';
+        const namaInput = safeGet('storNama');
+        if (namaInput) namaInput.value = '';
+        updateCounter();
+        renderHistory();
+        updateStats();
+        updateStatsRiwayat();
+        updateStatsBeranda();
+        updateStatsStor();
+      } catch (err) { showToast('error', 'Gagal', err.message); } finally {
+        if (btn) { btn.disabled = false;
+          btn.classList.remove('loading'); }
+        hideLoading();
+      }
+    }
+
+    // ============================================================
+    // COUNTER – PERBAIKAN: otomatis update saat mengetik
+    // ============================================================
+    function updateCounter() {
+      const input = safeGet('storInput');
+      const counter = safeGet('storCounter');
+      if (!input || !counter) return;
+      const lines = input.value.trim() ? input.value.split('\n').filter(s => s.trim().length > 0) : [];
+      counter.textContent = 'Terdeteksi: ' + lines.length + ' item';
+    }
+
+    function showErrorModal(title, desc) {
+      const t = safeGet('errorTitle');
+      const d = safeGet('errorDesc');
+      if (t) t.textContent = title;
+      if (d) d.textContent = desc + ' Lihat rules.';
+      openModal('modalError');
+    }
+
+    // ============================================================
+    // LEADERBOARD - PERBAIKAN TOTAL (TANPA BUG, TOMBOL SELALU RESPONSIF)
+    // ============================================================
+    const leaderboardState = {
+      currentPeriod: 'today',
+      isLoading: false,
+      abortController: null,
+      cache: {},
+      CACHE_TTL: 10000,
+      pendingRequest: null
+    };
+
+    async function loadLeaderboard(period) {
+      if (leaderboardState.isLoading) {
+        if (leaderboardState.abortController) {
+          leaderboardState.abortController.abort();
+          leaderboardState.abortController = null;
+        }
+        await new Promise(resolve => setTimeout(resolve, 150));
+        if (leaderboardState.isLoading) {
+          leaderboardState.isLoading = false;
+        }
+      }
+
+      leaderboardState.isLoading = true;
+      leaderboardState.currentPeriod = period;
+
+      const container = safeGet('leaderboardContent');
+      if (!container) {
+        leaderboardState.isLoading = false;
+        return;
+      }
+
+      updateActiveTab(period);
+
+      const cached = leaderboardState.cache[period];
+      if (cached && (Date.now() - cached.timestamp < leaderboardState.CACHE_TTL)) {
+        renderLeaderboardHTML(container, cached.data);
+        leaderboardState.isLoading = false;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon"><i class="fas fa-spinner fa-spin"></i></div>
+          <p>Memuat data leaderboard...</p>
+        </div>
+      `;
+
+      leaderboardState.abortController = new AbortController();
+
+      try {
+        const result = await apiRequest('getLeaderboard', { period }, true, 15000);
+        const data = result.data || [];
+        leaderboardState.cache[period] = { data, timestamp: Date.now() };
+        renderLeaderboardHTML(container, data);
+      } catch (err) {
+        if (err.name === 'AbortError') {
+          console.log('Leaderboard request dibatalkan.');
+          return;
+        }
+        console.warn('Leaderboard error:', err);
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon"><i class="fas fa-exclamation-circle"></i></div>
+            <p>Gagal memuat data: ${err.message}</p>
+            <button onclick="loadLeaderboard('${period}')" 
+              style="margin-top:12px;padding:8px 20px;background:var(--blue-primary);color:#fff;border-radius:99px;font-weight:700;border:none;cursor:pointer;">
+              Coba Lagi
+            </button>
+          </div>
+        `;
+      } finally {
+        leaderboardState.isLoading = false;
+        leaderboardState.abortController = null;
+      }
+    }
+
+    function updateActiveTab(period) {
+      document.querySelectorAll('#leaderboardTabs .riwayat-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.period === period);
+      });
+    }
+
+    function renderLeaderboardHTML(container, data) {
+      if (!data || data.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon"><i class="fas fa-trophy"></i></div>
+            <p>Belum ada data untuk periode ini.</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+
+      const top3 = data.slice(0, 3);
+      if (top3.length > 0) {
+        let podiumOrder = [];
+        if (top3.length === 1) {
+          podiumOrder = [top3[0]];
+        } else if (top3.length === 2) {
+          podiumOrder = [top3[1], top3[0]];
+        } else {
+          podiumOrder = [top3[1], top3[0], top3[2]];
+        }
+
+        html += `<div class="podium-container">`;
+        podiumOrder.forEach((item, idx) => {
+          let rank = 0;
+          if (top3.length === 1) {
+            rank = 1;
+          } else if (top3.length === 2) {
+            rank = idx === 0 ? 2 : 1;
+          } else {
+            rank = idx === 0 ? 2 : (idx === 1 ? 1 : 3);
+          }
+          let podiumClass = '';
+          let rankDisplay = '';
+          if (rank === 1) { podiumClass = 'podium-1'; rankDisplay = '👑'; }
+          else if (rank === 2) { podiumClass = 'podium-2'; rankDisplay = '🥈'; }
+          else if (rank === 3) { podiumClass = 'podium-3'; rankDisplay = '🥉'; }
+
+          const avatarHtml = item.avatar ? `<img src="${item.avatar}" alt="avatar" />` : (item.fullname || item.username).charAt(0).toUpperCase();
+          const displayName = item.fullname || item.username || 'User';
+          const totalEmails = item.totalEmails || 0;
+          const totalAmount = item.totalAmount || 0;
+
+          html += `
+            <div class="podium-item ${podiumClass}">
+              <div class="podium-content">
+                <div class="podium-rank">${rankDisplay}</div>
+                <div class="podium-avatar">${avatarHtml}</div>
+                <div class="podium-name">${displayName}</div>
+                <div class="podium-email">${totalEmails} Gmail diterima</div>
+                <div class="podium-amount">Rp${formatRupiah(totalAmount)}</div>
+              </div>
+              <div class="podium-box ${podiumClass}">
+                <div class="podium-number">${rank}</div>
+              </div>
+            </div>
+          `;
+        });
+        html += `</div>`;
+      }
+
+      const rest = data.slice(3);
+      if (rest.length > 0) {
+        html += `<div class="leaderboard-list">`;
+        rest.forEach((item, index) => {
+          const rank = index + 4;
+          const avatarHtml = item.avatar ? `<img src="${item.avatar}" alt="avatar" />` : (item.fullname || item.username).charAt(0).toUpperCase();
+          const displayName = item.fullname || item.username || 'User';
+          const totalEmails = item.totalEmails || 0;
+          const totalAmount = item.totalAmount || 0;
+
+          html += `
+            <div class="leaderboard-item">
+              <div class="rank">#${rank}</div>
+              <div class="avatar">${avatarHtml}</div>
+              <div class="info">
+                <div class="name">${displayName}</div>
+                <div class="emails">${totalEmails} Gmail diterima</div>
+              </div>
+              <div class="amount">Rp${formatRupiah(totalAmount)}</div>
+            </div>
+          `;
+        });
+        html += `</div>`;
+      }
+
+      container.innerHTML = html;
+    }
+
+    // ============================================================
+    // CHAT PUBLIC
+    // ============================================================
+    let chatMessages = [];
+    let chatPollingInterval = null;
+    let chatLastSeen = parseInt(localStorage.getItem('chatLastSeen') || '0', 10);
+    const CHAT_POLL_INTERVAL = 3000;
+
+    function openChatPublic() {
+      const overlay = document.getElementById('chatPublicOverlay');
+      if (!overlay) return;
+      overlay.classList.add('show');
+      document.body.style.overflow = 'hidden';
+      loadEmojis();
+      loadChatMessages();
+      if (chatPollingInterval) clearInterval(chatPollingInterval);
+      chatPollingInterval = setInterval(loadChatMessages, CHAT_POLL_INTERVAL);
+      sendChatHeartbeat();
+      const input = document.getElementById('chatInput');
+      if (input) setTimeout(() => input.focus(), 300);
+    }
+
+    function closeChatPublic() {
+      const overlay = document.getElementById('chatPublicOverlay');
+      if (overlay) overlay.classList.remove('show');
+      document.body.style.overflow = '';
+      if (chatPollingInterval) {
+        clearInterval(chatPollingInterval);
+        chatPollingInterval = null;
+      }
+    }
+
+    async function loadChatMessages() {
+      const container = document.getElementById('chatMessagesContainer');
+      if (!container) return;
+      const user = getCurrentUser();
+      if (!user) {
+        container.innerHTML = '<div class="empty-state"><p>Login dulu untuk melihat chat.</p></div>';
+        return;
+      }
+      try {
+        const result = await apiRequest('getChatMessages', { since: chatLastSeen || 0 });
+        const newMessages = result.data || [];
+        if (newMessages.length > 0) {
+          const existingIds = new Set(chatMessages.map(m => m.id));
+          const filteredNew = newMessages.filter(m => !existingIds.has(m.id));
+          chatMessages = [...chatMessages, ...filteredNew];
+          if (filteredNew.length > 0) {
+            const maxTs = Math.max(...filteredNew.map(m => m.timestamp || 0));
+            if (maxTs > chatLastSeen) {
+              chatLastSeen = maxTs;
+              localStorage.setItem('chatLastSeen', String(chatLastSeen));
+            }
+          }
+        }
+        renderChatMessages();
+      } catch (err) {
+        console.warn('Gagal muat chat:', err);
+        renderChatMessages();
+      }
+    }
+
+    function renderChatMessages() {
+      const container = document.getElementById('chatMessagesContainer');
+      if (!container) return;
+      const user = getCurrentUser();
+      if (!user) {
+        container.innerHTML = '<div class="empty-state"><p>Login dulu.</p></div>';
+        return;
+      }
+
+      if (chatMessages.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fas fa-comment-dots"></i></div><p>Belum ada pesan. Mulai chat!</p></div>';
+        return;
+      }
+
+      const sorted = chatMessages.slice().sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+
+      let html = '';
+      for (const msg of sorted) {
+        const isSelf = msg.userId === user.id;
+        const avatarHtml = msg.avatar ? `<img src="${msg.avatar}" alt="avatar" />` : (msg.fullname || msg.username).charAt(0).toUpperCase();
+        const time = msg.timestamp ? formatTime(msg.timestamp) : '';
+        const displayName = msg.fullname || msg.username || 'User';
+        html += `
+          <div class="chat-message ${isSelf ? 'self' : ''}">
+            <div class="avatar">${avatarHtml}</div>
+            <div class="bubble">
+              <div class="sender">${displayName} <span class="time">${time}</span></div>
+              <div class="text">${escapeHtml(msg.message)}</div>
+            </div>
+          </div>
+        `;
+      }
+      container.innerHTML = html;
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    async function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const sendBtn = document.getElementById('chatSendBtn');
+      if (!input) return;
+
+      const text = input.value.trim();
+      if (!text) {
+        showToast('info', 'Pesan kosong', 'Ketik pesan terlebih dahulu.');
+        return;
+      }
+
+      const user = getCurrentUser();
+      if (!user) {
+        showToast('error', 'Gagal', 'Login dulu.');
+        return;
+      }
+
+      if (sendBtn) {
+        sendBtn.disabled = true;
+        sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      }
+
+      const tempId = 'temp_' + Date.now();
+      const newMsg = {
+        id: tempId,
+        userId: user.id,
+        username: user.username,
+        fullname: user.fullname || user.username,
+        avatar: user.avatar || null,
+        message: text,
+        timestamp: Date.now()
+      };
+      chatMessages.push(newMsg);
+      renderChatMessages();
+      input.value = '';
+      input.focus();
+
+      try {
+        const result = await apiRequest('sendChatMessage', { message: text });
+        chatMessages = chatMessages.filter(m => m.id !== tempId);
+        if (result.data && result.data.id) {
+          const newMsgFromServer = {
+            id: result.data.id,
+            userId: user.id,
+            username: user.username,
+            fullname: user.fullname || user.username,
+            avatar: user.avatar || null,
+            message: text,
+            timestamp: result.data.timestamp || Date.now()
+          };
+          chatMessages.push(newMsgFromServer);
+        } else {
+          const fallbackMsg = {
+            id: 'msg_' + Date.now(),
+            userId: user.id,
+            username: user.username,
+            fullname: user.fullname || user.username,
+            avatar: user.avatar || null,
+            message: text,
+            timestamp: Date.now()
+          };
+          chatMessages.push(fallbackMsg);
+        }
+        chatLastSeen = Date.now();
+        localStorage.setItem('chatLastSeen', String(chatLastSeen));
+        renderChatMessages();
+      } catch (err) {
+        showToast('error', 'Gagal kirim', err.message);
+        chatMessages = chatMessages.filter(m => m.id !== tempId);
+        renderChatMessages();
+        input.value = text;
+        input.focus();
+      } finally {
+        if (sendBtn) {
+          sendBtn.disabled = false;
+          sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i>';
+        }
+      }
+    }
+
+    function toggleEmojiPicker() {
+      const picker = document.getElementById('emojiPicker');
+      if (!picker) return;
+      picker.classList.toggle('show');
+    }
+
+    function loadEmojis() {
+      const picker = document.getElementById('emojiPicker');
+      if (!picker) return;
+      const emojis = ['😊', '😂', '🤣', '❤️', '🔥', '👍', '👏', '🙌', '💪', '🎉', '✨', '🌟', '💯', '😎', '🥳', '😍', '🤩', '😘', '😁', '🤗'];
+      picker.innerHTML = emojis.map(e => `<button class="emoji-btn" onclick="insertEmoji('${e}')">${e}</button>`).join('');
+    }
+
+    function insertEmoji(emoji) {
+      const input = document.getElementById('chatInput');
+      if (!input) return;
+      input.value += emoji;
+      input.focus();
+      toggleEmojiPicker();
+    }
+
+    function clearChatHistoryLocal() {
+      chatLastSeen = Date.now();
+      localStorage.setItem('chatLastSeen', String(chatLastSeen));
+      chatMessages = [];
+      renderChatMessages();
+      showToast('info', 'Riwayat Dihapus', 'Chat yang lama disembunyikan untuk Anda.');
+    }
+
+    async function sendChatHeartbeat() {
+      try {
+        await apiRequest('chatHeartbeat', {});
+      } catch (_) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const chatInput = document.getElementById('chatInput');
+      if (chatInput) {
+        chatInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendChatMessage();
+          }
+        });
+      }
+
+      // ===== PERBAIKAN: event listener untuk counter otomatis saat mengetik =====
+      const storInput = document.getElementById('storInput');
+      if (storInput) {
+        storInput.addEventListener('input', updateCounter);
+        // inisialisasi awal
+        updateCounter();
+      }
+
+      // ===== INISIALISASI EVENT LISTENER UNTUK TAB LEADERBOARD =====
+      const tabs = document.querySelectorAll('#leaderboardTabs .riwayat-tab');
+      tabs.forEach(tab => {
+        const newTab = tab.cloneNode(true);
+        tab.parentNode.replaceChild(newTab, tab);
+        newTab.addEventListener('click', function(e) {
+          e.preventDefault();
+          const period = this.dataset.period;
+          if (period) {
+            loadLeaderboard(period);
+          }
+        });
+      });
+
+      // Load awal: Hari Ini
+      setTimeout(() => {
+        loadLeaderboard('today');
+      }, 300);
+    });
+
+    // ============================================================
+    // MODAL
+    // ============================================================
+    function openModal(id) {
+      const el = safeGet(id);
+      if (el) { el.classList.add('open');
+        document.body.style.overflow = 'hidden'; }
+      if (id === 'modalTarikSaldo') {
+        const user = getCurrentUser();
+        if (user) {
+          const display = safeGet('tarikSaldoDisplay');
+          if (display) display.innerHTML =
+            '<span style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-right:2px;">Rp</span>' +
+            formatRupiah(user.saldo || 0);
+        }
+        updateFeeDisplay(0);
+        fillSavedEwallet();
+        // ===== PERBAIKAN: setelah mengisi ewallet, update fee =====
+        onMetodeChange();
+        resetTarikSaldoModal();
+        const metodeSelect = safeGet('tarikMetode');
+        if (metodeSelect) {
+          metodeSelect.removeEventListener('change', onMetodeChange);
+          metodeSelect.addEventListener('change', onMetodeChange);
+        }
+      }
+      if (id === 'modalInbox') {
+        markAllMessagesAsRead();
+        renderInbox();
+        updateInboxDot();
+      }
+    }
+
+    function onMetodeChange() {
+      const nominalRaw = safeGet('tarikNominal')?.value || '0';
+      const nominal = parseInt(nominalRaw.replace(/[^0-9]/g, ''), 10) || 0;
+      updateFeeDisplay(nominal);
+    }
+
+    function closeModal(id) {
+      const el = safeGet(id);
+      if (el) { el.classList.remove('open');
+        document.body.style.overflow = ''; }
+      if (id === 'modalTarikSaldo') {
+        resetTarikSaldoModal();
+        const metodeSelect = safeGet('tarikMetode');
+        if (metodeSelect) {
+          metodeSelect.removeEventListener('change', onMetodeChange);
+        }
+      }
+    }
+
+    document.querySelectorAll('.modal-overlay').forEach(ov => {
+      ov.addEventListener('click', function(e) { if (e.target === this) { this.classList.remove('open');
+          document.body.style.overflow = '';
+          if (this.id === 'modalTarikSaldo') resetTarikSaldoModal(); } });
+    });
+
+    function showConfirmDelete() {
+      const periodName = periodFilter === 'today' ? 'hari ini' : (periodFilter === '7days' ? '7 hari terakhir' :
+        '1 bulan terakhir');
+      const title = safeGet('confirmTitle');
+      const desc = safeGet('confirmDesc');
+      if (title) title.textContent = `Hapus Riwayat ${periodName}?`;
+      if (desc) desc.textContent = `Yakin hapus riwayat ${periodName}? Tindakan tidak dapat dibatalkan.`;
+      openModal('modalConfirmDelete');
+    }
+
+    async function executeDelete() {
+      closeModal('modalConfirmDelete');
+      const user = getCurrentUser();
+      if (!user) { showToast('error', 'Gagal', 'Login dulu.');
+        return; }
+      let days = periodFilter === 'today' ? 1 : (periodFilter === '7days' ? 7 : 30);
+      showLoading('Menghapus riwayat...');
+      try {
+        await apiRequest('deleteHistoryByPeriod', { days });
+        await refreshAppState();
+        showToast('success', 'Berhasil', 'Riwayat terhapus.');
+        renderHistory();
+        updateStats();
+        updateStatsRiwayat();
+        updateStatsBeranda();
+        updateStatsStor();
+      } catch (e) {
+        showToast('error', 'Gagal', e.message);
+      } finally {
+        hideLoading();
+      }
+    }
+
+    // ============================================================
+    // AVATAR
+    // ============================================================
+    async function handleAvatarUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const user = getCurrentUser();
+      if (!user) { showToast('error', 'Gagal', 'Login dulu.');
+        return; }
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        showLoading('Mengunggah foto...');
+        try {
+          const result = await apiRequest('updateProfile', { fullname: user.fullname, avatar: e.target.result });
+          appState.user = result.data.user;
+          showToast('success', 'Berhasil', 'Foto profil diperbarui.');
+          updateUIApp();
+        } catch (err) {
+          showToast('error', 'Gagal', err.message);
+        } finally {
+          hideLoading();
+        }
+      };
+      reader.readAsDataURL(file);
+      event.target.value = '';
+    }
+
+    // ============================================================
+    // UTILITY
+    // ============================================================
+    function formatRupiah(n) {
+      if (n === undefined || n === null) return '0';
+      let num = typeof n === 'string' ? parseFloat(n.replace(/[^0-9.-]/g, '')) : n;
+      if (isNaN(num) || !isFinite(num)) return '0';
+      return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    function formatTime(ts) {
+      const d = new Date(ts);
+      return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + d
+        .toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function showToast(type, title, desc) {
+      const container = safeGet('toastContainer');
+      if (!container) return;
+      const icons = { success: 'fas fa-check-circle', error: 'fas fa-exclamation-circle', info: 'fas fa-info-circle' };
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML =
+        `<span class="toast-icon ${type}"><i class="${icons[type] || icons.info}"></i></span><div class="toast-body"><div class="toast-title">${title}</div><div class="toast-desc">${desc}</div></div>`;
+      container.appendChild(toast);
+      setTimeout(() => { toast.classList.add('removing');
+        setTimeout(() => toast.remove(), 300); }, 3000);
+    }
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      if (SUPABASE_URL.includes('GANTI_DENGAN') || SUPABASE_ANON_KEY.includes('GANTI_DENGAN')) {
+        alert('⚠️ Konfigurasi Supabase belum diisi! Buka file index.html dan ganti SUPABASE_URL dan SUPABASE_ANON_KEY dengan kredensial nyata dari dashboard Supabase.');
+      }
+      switchAuthTab('login');
+      switchRiwayatTab('storan');
+      setMusicVisibility(false);
+      if (getToken()) {
+        refreshAppState().then(() => {
+          if (getCurrentUser()) {
+            enterApp();
+            updateUIApp();
+            showPage('beranda');
+          } else {
+            clearToken();
+          }
+        }).catch(() => { clearToken(); });
+      }
+
+      setInterval(async () => {
+        if (getToken()) {
+          await refreshAppState();
+        }
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
