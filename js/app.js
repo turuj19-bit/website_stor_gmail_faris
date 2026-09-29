@@ -1313,6 +1313,7 @@ ${lines.join('\n')}`;
 
     sendTelegramMessage(TELEGRAM_BOT_TOKEN_STOR, TELEGRAM_CHAT_ID_STOR, textNotif);
 
+    updatePaymentEstimate();
     openModal('modalStorSuccess');
     if (inputEl) inputEl.value = '';
     if (kontakEl) kontakEl.value = '';
@@ -1330,6 +1331,25 @@ ${lines.join('\n')}`;
     if (btn) { btn.disabled = false;
       btn.classList.remove('loading'); }
     hideLoading();
+  }
+}
+
+// ============================================================
+// ESTIMASI PAYMENT di popup "Setoran Berhasil"
+// Tanggal dihitung otomatis dari hari ini: 24 jam = +1 hari,
+// 48 jam = +2 hari, batas maksimal = +3 hari.
+// ============================================================
+function updatePaymentEstimate() {
+  try {
+    const now = new Date();
+    for (let i = 1; i <= 3; i++) {
+      const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+      const text = d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      const el = document.getElementById('payEstDate' + i);
+      if (el) el.textContent = text;
+    }
+  } catch (e) {
+    console.warn('updatePaymentEstimate error:', e);
   }
 }
 
