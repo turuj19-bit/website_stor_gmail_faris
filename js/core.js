@@ -70,6 +70,42 @@
     }
 
     // ============================================================
+    // LOADING TOMBOL -> AMPLOP ANIMASI
+    // Tombol Login / Daftar / Kirim Setoran dulu menampilkan spinner
+    // bulat kecil. Sekarang saat tombol-tombol itu masuk mode "loading",
+    // overlay amplop animasi ikut tampil, dan ditutup lagi begitu
+    // tombolnya selesai. Kalau overlay sudah dinyalakan proses lain
+    // (mis. submitStor), tidak ditimpa & tidak ditutup paksa dari sini.
+    // ============================================================
+    (function syncButtonLoadingOverlay() {
+      const buttons = document.querySelectorAll('.btn-auth, .btn-submit');
+      if (!buttons.length || typeof MutationObserver === 'undefined') return;
+      let owned = false;
+      let safetyTimer = null;
+
+      function release() {
+        if (safetyTimer) { clearTimeout(safetyTimer); safetyTimer = null; }
+        if (owned) { owned = false; hideLoading(); }
+      }
+
+      function check() {
+        const anyLoading = !!document.querySelector('.btn-auth.loading, .btn-submit.loading');
+        const overlay = document.getElementById('loadingOverlay');
+        if (anyLoading && !owned && overlay && !overlay.classList.contains('show')) {
+          owned = true;
+          showLoading('Memproses...');
+          // Jaring pengaman: jangan pernah biarkan overlay nyangkut selamanya
+          safetyTimer = setTimeout(release, 30000);
+        } else if (!anyLoading) {
+          release();
+        }
+      }
+
+      const obs = new MutationObserver(check);
+      buttons.forEach(function (b) { obs.observe(b, { attributes: true, attributeFilter: ['class'] }); });
+    })();
+
+    // ============================================================
     // API REQUEST — DIPERBAIKI: PASTIKAN p_jenis TERKIRIM UNTUK createStor
     // ============================================================
     async function apiRequest(action, data = {}, authenticated = true, timeoutMs = 20000) {

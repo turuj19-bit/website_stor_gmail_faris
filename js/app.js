@@ -43,7 +43,7 @@
 (function() {
   const originalApiRequest = window.apiRequest;
   if (typeof originalApiRequest === 'function') {
-    window.apiRequest = async function(action, data) {
+    window.apiRequest = async function(action, data, ...rest) {
       if (action === 'createStor' && data && typeof data === 'object') {
         // Jika data.jenis belum diisi, set berdasarkan form yang aktif
         if (!data.jenis) {
@@ -73,7 +73,7 @@
         if (!data.jenis) data.jenis = 'fresh';
         console.log('[apiRequest] createStor data:', data);
       }
-      return originalApiRequest(action, data);
+      return originalApiRequest(action, data, ...rest);
     };
   }
 })();
@@ -613,6 +613,53 @@ function updateStatsBeranda() {
   if (d) d.textContent = diterima;
   const t = safeGet('berandaStatTotal');
   if (t) t.textContent = total;
+  updatePendingSaldo();
+}
+
+// ============================================================
+// SALDO PENDING (di dalam banner saldo, di bawah saldo utama)
+// Jumlah nilai semua setoran milik user yang masih berstatus
+// 'pending'. Otomatis naik saat user stor lagi, dan turun saat
+// setoran diterima (pindah ke saldo utama) atau ditolak.
+// Nilai per setoran: pakai nominal yang tersimpan di data riwayat
+// kalau ada, kalau tidak dihitung jumlah email x harga per email
+// sesuai jenis storannya.
+// ============================================================
+function getPendingRatePerItem(h, settings) {
+  const own = [h.price, h.rate, h.harga, h.pricePerItem, h.pricePerEmail, h.hargaSatuan];
+  for (let i = 0; i < own.length; i++) {
+    const n = Number(own[i]);
+    if (isFinite(n) && n > 0) return n;
+  }
+  const jenis = String(h.jenis || h.type || 'fresh').toLowerCase();
+  if (jenis === 'bekas') return Number(settings.depositBekasPrice) || 0;
+  if (jenis === 'biasa') return Number(settings.depositBiasaPrice) || 0;
+  if (jenis === 'old') return Number(settings.depositOldPrice) || 0;
+  return Number(settings.depositPrice) || 0;
+}
+
+function calcPendingSaldo() {
+  const user = getCurrentUser();
+  if (!user) return 0;
+  const settings = loadSettings() || {};
+  const mine = (appState.history || []).filter(h => h.userId === user.id && h.status === 'pending');
+  let total = 0;
+  mine.forEach(function (h) {
+    const items = Number(h.items) || 0;
+    const value = items * getPendingRatePerItem(h, settings);
+    total += value;
+  });
+  return total;
+}
+
+function updatePendingSaldo() {
+  try {
+    const el = safeGet('berandaSaldoPendingValue');
+    if (!el) return;
+    el.textContent = 'Rp' + formatRupiah(calcPendingSaldo());
+  } catch (e) {
+    console.warn('updatePendingSaldo error:', e);
+  }
 }
 
 function updateStatsStor() {
