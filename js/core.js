@@ -59,55 +59,20 @@
 
     // ============================================================
     // LOADING OVERLAY (amplop animasi)
-    // FIX: sebelumnya siapa pun yang memanggil hideLoading() langsung
-    // mematikan amplop, walau proses lain (permintaan ke server) masih
-    // berjalan -- itu yang bikin amplop kadang hilang sebelum selesai.
-    // Sekarang hideLoading() DITUNDA selama masih ada permintaan server
-    // yang belum selesai (dihitung di apiRequest), dan baru benar-benar
-    // menutup setelah semuanya selesai. Batas maksimal penundaan 12 detik
-    // supaya amplop tidak pernah nyangkut selamanya.
+    // Tampil/hilang murni mengikuti pemanggil (showLoading/hideLoading).
+    // Penyebab amplop hilang di tengah proses sudah diperbaiki di init.js
+    // (timer 2 detik yang ikut mematikan loading login).
     // ============================================================
-    let __apiInflight = 0;
-    let __hidePending = false;
-    let __hideDeferStart = 0;
-    let __hideForceTimer = null;
-
-    function __clearHidePending() {
-      __hidePending = false;
-      if (__hideForceTimer) { clearTimeout(__hideForceTimer); __hideForceTimer = null; }
-    }
-
     function showLoading(text = 'Memproses...') {
       const overlay = safeGet('loadingOverlay');
       const textEl = overlay?.querySelector('.loading-text');
       if (textEl) textEl.textContent = text;
-      // Ada proses baru yang butuh loading -> batalkan permintaan tutup yang tertunda
-      __clearHidePending();
       if (overlay) overlay.classList.add('show');
     }
 
-    function hideLoading(force) {
+    function hideLoading() {
       const overlay = safeGet('loadingOverlay');
-      if (!overlay) return;
-      if (force !== true && __apiInflight > 0) {
-        if (!__hidePending) {
-          __hidePending = true;
-          __hideDeferStart = Date.now();
-          __hideForceTimer = setTimeout(function () { hideLoading(true); }, 12000);
-        }
-        return; // masih ada proses berjalan -- amplop tetap tampil
-      }
-      __clearHidePending();
-      overlay.classList.remove('show');
-    }
-
-    // Dipanggil saat sebuah permintaan server selesai: kalau tadi ada
-    // permintaan tutup yang tertunda, tutup sekarang (setelah jeda singkat
-    // supaya tidak kedip kalau proses langsung lanjut ke permintaan berikutnya).
-    function __onApiSettled() {
-      if (__hidePending && __apiInflight === 0) {
-        setTimeout(function () { if (__hidePending) hideLoading(); }, 250);
-      }
+      if (overlay) overlay.classList.remove('show');
     }
 
     // ============================================================
@@ -200,7 +165,6 @@
 
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), timeoutMs);
-      __apiInflight++;
       try {
         const { data: json, error } = await supabaseClient.rpc(map.fn, params, { signal: controller.signal });
         if (error) throw new Error(error.message || 'Server error.');
@@ -211,8 +175,6 @@
         throw err;
       } finally {
         clearTimeout(timer);
-        __apiInflight = Math.max(0, __apiInflight - 1);
-        __onApiSettled();
       }
     }
 
