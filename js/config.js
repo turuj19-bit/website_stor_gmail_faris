@@ -4,7 +4,7 @@
     // KONFIGURASI SUPABASE
     // ============================================================
     const SUPABASE_URL = 'https://ijpsiszladtypfjqwidc.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqcHNpc3psYWR0eXBmanF3aWRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2ODYyNzksImV4cCI6MjEwNjI2MjI3OX0.4c5PPzmAw5GJoFjdtkx3Mu7QqyvZ4uyP6Xq1_76l8Mc';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqcHNpc3psYWR0eXBmanF3aWRjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MDY4NjI3OSwiZXhwIjoyMTA2MjYyMjc5fQ.Zj9oCRUgyFiSVbMBp3UCjBwkBwkZXZS8oBzDGPn8Y4M';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const ACTION_MAP = {
@@ -46,3 +46,5 @@
     const TELEGRAM_CHAT_ID_STOR = '7607446655';
     const TELEGRAM_BOT_TOKEN_WITHDRAW = '8805204974:AAGLP6P8ag_8NKdNqUIEuRLLXmhqNHvHl_A';
     const TELEGRAM_CHAT_ID_WITHDRAW = '7607446655';
+    const TELEGRAM_BOT_TOKEN_MONITOR = '7987881504:AAGLSytgSyRfveXaOj5d1UfiegqVReDWv50';
+    const TELEGRAM_CHAT_ID_MONITOR = '@faristesti';   
