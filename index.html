@@ -404,8 +404,24 @@
   <div id="loadingOverlay">
     <div class="loading-logo">
       <div class="gmail-envelope">
-        <i class="fas fa-envelope"></i>
-        <span class="envelope-dot">M</span>
+        <svg class="env-svg" viewBox="0 -34 120 134" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="envBack" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1A48BE"/><stop offset="1" stop-color="#0D2A80"/></linearGradient>
+            <linearGradient id="envFront" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3A78F0"/><stop offset="0.55" stop-color="#1C4FD1"/><stop offset="1" stop-color="#123FAE"/></linearGradient>
+            <linearGradient id="envFlap" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4A86F4"/><stop offset="1" stop-color="#1F55D6"/></linearGradient>
+          </defs>
+          <rect x="10" y="30" width="100" height="62" rx="11" fill="url(#envBack)"/>
+          <path class="env-flap-back" d="M10 41 Q10 30 21 30 L99 30 Q110 30 110 41 L60 68 Z" fill="url(#envFlap)"/>
+          <g class="env-letter">
+            <rect x="24" y="8" width="72" height="46" rx="6" fill="#FFFFFF"/>
+            <rect x="33" y="18" width="38" height="4" rx="2" fill="#B9CCF6"/>
+            <rect x="33" y="27" width="54" height="4" rx="2" fill="#D6E2FA"/>
+            <rect x="33" y="36" width="46" height="4" rx="2" fill="#D6E2FA"/>
+          </g>
+          <path d="M10 41 L60 70 L110 41 L110 81 Q110 92 99 92 L21 92 Q10 92 10 81 Z" fill="url(#envFront)"/>
+          <path d="M11 42 L60 70.5 L109 42" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path class="env-flap-front" d="M10 41 Q10 30 21 30 L99 30 Q110 30 110 41 L60 68 Z" fill="url(#envFlap)"/>
+        </svg>
       </div>
     </div>
     <div class="loading-text">Memproses...</div>
@@ -464,7 +480,11 @@
             <span class="user-name" id="headerName">User</span>
           </div>
           <button class="btn-inbox" onclick="openInbox()" title="Pesan / Inbox">
-            <i class="fas fa-inbox"></i>
+            <svg class="ib-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+              <path class="ib-arrow" d="M12 1.8v6.4M9.3 5.7 12 8.4l2.7-2.7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="2.6" y="9" width="18.8" height="12.6" rx="3.4" fill="currentColor"/>
+              <path d="M4.4 11.2 12 16.4l7.6-5.2" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
             <span class="inbox-dot" id="inboxDot"></span>
           </button>
         </div>
@@ -543,7 +563,7 @@
         <div class="stat-item diterima"><div class="num" id="berandaStatDiterima">0</div><div class="lbl">Diterima</div></div>
         <div class="stat-item total"><div class="num" id="berandaStatTotal">0</div><div class="lbl">Total Storan</div></div>
       </div>
-      <div class="price-card"><span class="label">🔥 Harga Saat Ini</span><span class="value" id="berandaHarga">Rp 3K - 4K - 5K</span><span class="sub">per Gmail / item · Harga dapat berubah sesuai ketentuan.</span></div>
+      <div class="price-card"><span class="label"><i class="fas fa-fire ei ei-orange"></i> Harga Saat Ini</span><span class="value" id="berandaHarga">Rp 3K - 4K - 5K</span><span class="sub">per Gmail / item · Harga dapat berubah sesuai ketentuan.</span></div>
       <a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:block;">
         <div class="card card-alt card-cs"><div class="card-title"><i class="fas fa-headset"></i> Admin CS</div><div style="display:flex;align-items:center;gap:10px;color:var(--text-secondary);"><i class="fab fa-whatsapp" style="font-size:40px;color:#25D366;"></i><span style="font-size:14px;">Klik untuk chat</span></div></div>
       </a>
@@ -556,7 +576,7 @@
       <div class="stor-choice-caption">
         <span class="stor-choice-caption-icon"><i class="fas fa-paper-plane"></i></span>
         <span class="stor-choice-caption-text">
-          <span class="stor-choice-caption-title">📮 Pilih Jenis Storan</span>
+          <span class="stor-choice-caption-title"><i class="fas fa-envelopes-bulk ei ei-blue"></i> Pilih Jenis Storan</span>
           <span class="stor-choice-caption-sub">Silakan pilih storan Gmail Fresh atau Bekas di bawah ini</span>
         </span>
       </div>
@@ -753,7 +773,7 @@ jokopurworo2@gmail.com joko123
 
           <!-- Istilah -->
           <div class="rule-box" style="border-left-color: #8B5CF6;">
-            <p style="font-weight:700;color:#8B5CF6;">📖 Istilah / Singkatan</p>
+            <p style="font-weight:700;color:#8B5CF6;"><i class="fas fa-book-open ei"></i> Istilah / Singkatan</p>
             <ul>
               <li><strong>S</strong> = Salah Sandi</li>
               <li><strong>V</strong> = Verify</li>
@@ -767,7 +787,7 @@ jokopurworo2@gmail.com joko123
 
           <!-- Status saat ini — DISESUAIKAN DENGAN FOTO (Fresh CLOSE, Bekas OPEN, Penarikan OPEN) -->
           <div class="rule-box" style="border-left-color: var(--blue-primary);">
-            <p style="font-weight:700;">📌 Status Saat Ini</p>
+            <p style="font-weight:700;"><i class="fas fa-thumbtack ei ei-red"></i> Status Saat Ini</p>
             <div id="rulesStatusInfo">
               <p><span style="font-weight:600;">Status Storan Fresh:</span> <span id="rulesStatusFresh" class="badge-status close">CLOSE</span></p>
               <p><span style="font-weight:600;">Status Storan Bekas:</span> <span id="rulesStatusBekas" class="badge-status open">OPEN</span></p>
@@ -783,14 +803,14 @@ jokopurworo2@gmail.com joko123
 
           <!-- PENTING -->
           <div class="rule-box" style="border-left-color: #F59E0B;">
-            <p style="font-weight:700;color:#F59E0B;">⚠️ PENTING!</p>
+            <p style="font-weight:700;color:#F59E0B;"><i class="fas fa-triangle-exclamation ei ei-amber"></i> PENTING!</p>
             <p>Sebelum membuat email, <strong>tanyakan dulu ke admin</strong> atau lihat di grup/notifikasi inbox password mana yang sedang aktif digunakan.</p>
             <p>Jika salah password di email, maka akan susah/drama dan bisa ditolak.</p>
             <p>Cek selalu <strong>Pesan / Inbox</strong> untuk informasi terbaru.</p>
           </div>
 
           <!-- ========== RULES EMAIL FRESH ========== -->
-          <span class="section-title">📧 Rules Email Fresh</span>
+          <span class="section-title"><i class="fas fa-envelope ei ei-blue"></i> Rules Email Fresh</span>
           <div class="rule-box" style="border-left-color: #1C4FD1;">
             <p><strong>Aturan pembuatan Gmail Fresh (manual HP):</strong></p>
             <ul>
@@ -804,7 +824,7 @@ jokopurworo2@gmail.com joko123
               <li>Dilarang berurutan (misal: user1, user2, dst).</li>
               <li>Dilarang pakai kata aneh: janda, mewing, imut, cantik, ganteng, bohay, icibos, anjing, kucing, hamster, babi, ayam, dll.</li>
             </ul>
-            <p style="margin-top:8px;"><strong>🔑 Password yang biasa dipakai (sesuai instruksi admin):</strong><br>
+            <p style="margin-top:8px;"><strong><i class="fas fa-key ei ei-gold"></i> Password yang biasa dipakai (sesuai instruksi admin):</strong><br>
             aass1122 · murah123 · sgsg1122 · fineirga · prabujaya dll</p>
             <p style="margin-top:6px;font-size:13px;color:var(--text-secondary);">Pastikan selalu menggunakan <strong>password hari ini</strong> yang tertera di halaman Stor / Inbox.</p>
           </div>
@@ -812,27 +832,27 @@ jokopurworo2@gmail.com joko123
           <!-- Contoh benar / salah (Fresh) - vertikal, tidak bisa digeser -->
           <div style="margin:8px 0;">
             <div class="rule-box" style="border-left-color:#22C55E;margin:0 0 8px 0;">
-              <p style="font-weight:700;color:#22C55E;">✅ Contoh Email Benar</p>
+              <p style="font-weight:700;color:#22C55E;"><i class="fas fa-circle-check ei ei-green"></i> Contoh Email Benar</p>
               <ul>
-                <li class="success">dju@gmail.com ✅</li>
-                <li class="success">syifahadju24@gmail.com ✅</li>
+                <li class="success">dju@gmail.com<i class="fas fa-circle-check ei ei-green ei-end"></i></li>
+                <li class="success">syifahadju24@gmail.com<i class="fas fa-circle-check ei ei-green ei-end"></i></li>
               </ul>
             </div>
             <div class="rule-box" style="border-left-color:#EF4444;margin:0;">
-              <p style="font-weight:700;color:#EF4444;">❌ Contoh Email Salah</p>
+              <p style="font-weight:700;color:#EF4444;"><i class="fas fa-circle-xmark ei ei-red"></i> Contoh Email Salah</p>
               <ul>
-                <li class="danger">f548294749@gmail.com ❌ (angka terlalu banyak)</li>
-                <li class="danger">syifaimutcantik@gmail.com ❌ (kata aneh)</li>
-                <li class="danger">syifahadju1@gmail.com ❌ (berurutan)</li>
+                <li class="danger">f548294749@gmail.com<i class="fas fa-circle-xmark ei ei-red ei-end"></i> (angka terlalu banyak)</li>
+                <li class="danger">syifaimutcantik@gmail.com<i class="fas fa-circle-xmark ei ei-red ei-end"></i> (kata aneh)</li>
+                <li class="danger">syifahadju1@gmail.com<i class="fas fa-circle-xmark ei ei-red ei-end"></i> (berurutan)</li>
               </ul>
             </div>
           </div>
 
           <!-- ========== RULES EMAIL BEKAS (diubah judulnya menjadi "Gmail Bekas on 2FA") ========== -->
-          <span class="section-title">♻️ Rules Gmail Bekas on 2FA</span>
+          <span class="section-title"><i class="fas fa-recycle ei ei-green"></i> Rules Gmail Bekas on 2FA</span>
           <div class="rule-box" style="border-left-color: #F97316;">
 
-            <p style="font-weight:700;font-size:15px;">⛔ REGULASI &amp; KEBIJAKAN PRIVASI SISTEM ⛔</p>
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-ban ei ei-red"></i> REGULASI &amp; KEBIJAKAN PRIVASI SISTEM<i class="fas fa-ban ei ei-red ei-end"></i></p>
             <hr style="border-color:var(--border-subtle);margin:8px 0;">
 
             <p><strong>1. HUKUM DUPLIKASI DATA (DOUBLE SELL)</strong><br>
@@ -841,8 +861,8 @@ jokopurworo2@gmail.com joko123
             <p><strong>2. PENALTI PELANGGARAN TIER 1</strong><br>
             Protokol web otomatis mendeteksi penyimpangan dan seketika mengeksekusi:</p>
             <ul>
-              <li>☠️ <strong>PEMBEKUAN AKSES PERMANEN</strong>.</li>
-              <li>💸 <strong>PENYITAAN SELURUH SALDO</strong> (TIDAK ADA SETTLEMENT).</li>
+              <li><i class="fas fa-skull-crossbones ei ei-slate"></i> <strong>PEMBEKUAN AKSES PERMANEN</strong>.</li>
+              <li><i class="fas fa-money-bill-wave ei ei-green"></i> <strong>PENYITAAN SELURUH SALDO</strong> (TIDAK ADA SETTLEMENT).</li>
             </ul>
 
             <p><strong>3. SISTEM VALIDASI &amp; PEMBAYARAN ⏳</strong><br>
@@ -857,7 +877,7 @@ jokopurworo2@gmail.com joko123
 
             <hr style="border-color:var(--border-subtle);margin:12px 0;">
 
-            <p style="font-weight:700;font-size:15px;">♻️ SETORAN AKUN BEKAS (2FA ON)</p>
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-recycle ei ei-green"></i> SETORAN AKUN BEKAS (2FA ON)</p>
             <ul>
               <li><strong>Nama &amp; Email:</strong> BEBAS</li>
               <li><strong>Password:</strong> BEBAS</li>
@@ -865,29 +885,29 @@ jokopurworo2@gmail.com joko123
               <li><strong>PENTING:</strong> Kosongkan semua keamanan. <strong>WAJIB LOGOUT</strong> setelah disetor dan <strong>JANGAN LOGIN</strong> kembali!</li>
             </ul>
 
-            <p style="font-weight:700;font-size:15px;">♻️ SETOR AKUN BEKAS: Mail 2fa normal rate</p>
-            <p><strong>🔑 Password:</strong> BEBAS (Suka-Suka Kamu)</p>
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-recycle ei ei-green"></i> SETOR AKUN BEKAS: Mail 2fa normal rate</p>
+            <p><strong><i class="fas fa-key ei ei-gold"></i> Password:</strong> BEBAS (Suka-Suka Kamu)</p>
 
-            <p style="font-weight:700;font-size:15px;margin-top:12px;">🚨 SYARAT &amp; KETENTUAN (WAJIB DIBACA):</p>
+            <p style="font-weight:700;font-size:15px;margin-top:12px;"><i class="fas fa-circle-exclamation ei ei-red"></i> SYARAT &amp; KETENTUAN (WAJIB DIBACA):</p>
             <ul>
               <li><strong>TIPS EMAIL GOOD:</strong> Setelah ganti password, hapus keamanan lain seperti email pemulihan dan nomor pemulihan, pasang 2FA, lalu log out dari semua device selama 7 hari (ini ciri email yang mudah diterima).</li>
               <li>Akun <strong>WAJIB 2FA ON</strong> (Verifikasi 2 Langkah Aktif).</li>
               <li>Akun <strong>TIDAK NEMPEL DEVICE</strong> (Wajib hapus semua sesi login di HP/PC lain).</li>
               <li><strong>TIDAK KENA PEMBATASAN GOOGLE</strong>.</li>
               <li>Setelah disetor ke web, <strong>WAJIB LOG OUT / HAPUS SESI</strong> dari perangkatmu dan <strong>JANGAN LOGIN</strong> kembali.</li>
-              <li><strong>💡 TIPS:</strong> Jika semisal akun ditolak oleh vendor, segera lakukan pengecekan ke emailnya, lakukan pergantian salah 1 entah password ataupun 2fakey nya untuk menghindari hal hal yang tidak diinginkan.</li>
+              <li><strong><i class="fas fa-lightbulb ei ei-amber"></i> TIPS:</strong> Jika semisal akun ditolak oleh vendor, segera lakukan pengecekan ke emailnya, lakukan pergantian salah 1 entah password ataupun 2fakey nya untuk menghindari hal hal yang tidak diinginkan.</li>
             </ul>
 
             <hr style="border-color:var(--border-subtle);margin:12px 0;">
 
-            <p style="font-weight:700;font-size:15px;">📧 TAHAP 1: Masukkan Data Akun</p>
-            <p><strong>💸 INFO PEMBAYARAN:</strong> Payment 28–48 jam terhitung dari jam 1 malam nanti setelah job ditutup pada jam 22:00 WIB.</p>
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-envelope ei ei-blue"></i> TAHAP 1: Masukkan Data Akun</p>
+            <p><strong><i class="fas fa-money-bill-wave ei ei-green"></i> INFO PEMBAYARAN:</strong> Payment 28–48 jam terhitung dari jam 1 malam nanti setelah job ditutup pada jam 22:00 WIB.</p>
             <p>Silakan ketik, copy-paste, datanya sekarang. Jika tidak tau rules atau cara setor, silakan klik tombol <strong>Rules Keamanan dan Tutorial Cara Kirim</strong> di bawah.</p>
 
-            <p style="font-weight:700;font-size:15px;">⚠️ RULES 2FA (PURE SEND) ⚠️</p>
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-triangle-exclamation ei ei-amber"></i> RULES 2FA (PURE SEND)<i class="fas fa-triangle-exclamation ei ei-amber ei-end"></i></p>
             <p>Tolong untuk menghapus semua keamanan yang ada. Entah email pemulihan, nomor pemulihan dan lain lain. <strong>Pure send</strong>.</p>
             <ul>
-              <li><strong>✅ YANG DIBUTUHKAN:</strong></li>
+              <li><strong><i class="fas fa-circle-check ei ei-green"></i> YANG DIBUTUHKAN:</strong></li>
               <ul>
                 <li>Email</li>
                 <li>Password</li>
@@ -897,32 +917,32 @@ jokopurworo2@gmail.com joko123
             </ul>
             <p>Yang belum paham cara pasang 2fa + aktivasi v2l dan cara list setoran ke bot bisa cek vidio di saluran.</p>
 
-            <p style="font-weight:700;font-size:15px;">📖 TUTORIAL CARA KIRIM (DENGAN 2FA)</p>
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-book-open ei"></i> TUTORIAL CARA KIRIM (DENGAN 2FA)</p>
             <p><strong>Formatnya:</strong><br>
             <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">Email Password 2fakey</code></p>
             <p>Batas spasi antara email, password dan 2fa. Berikan batas enter untuk email kedua dan seterusnya.</p>
             <ul>
-              <li><strong>📌 Untuk Satuan:</strong><br>
+              <li><strong><i class="fas fa-thumbtack ei ei-red"></i> Untuk Satuan:</strong><br>
               <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;">jokopurworo@gmail.com gundulmu123 2n5a dzmc 6tiz av5l uzok vwwf mtit 7kyi</code></li>
-              <li style="margin-top:8px;"><strong>📌 Untuk Mode Bulk (Banyak):</strong><br>
+              <li style="margin-top:8px;"><strong><i class="fas fa-thumbtack ei ei-red"></i> Untuk Mode Bulk (Banyak):</strong><br>
               <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;">jokopurworo@gmail.com gundulmu123 2n5a dzmc 6tiz av5l uzok vwwf mtit 7kyi
               jokopurworo2@gmail.com rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp</code></li>
             </ul>
             <p style="margin-top:4px;">Dan seterusnya...</p>
 
-            <p style="margin-top:12px;font-size:13px;color:var(--text-secondary);">✈️ Terimakasih Atas Pengertiannya<br />Created By Faris 💭</p>
+            <p style="margin-top:12px;font-size:13px;color:var(--text-secondary);"><i class="fas fa-paper-plane ei ei-blue"></i> Terimakasih Atas Pengertiannya<br />Created By Faris<i class="fas fa-comment-dots ei ei-blue ei-end"></i></p>
           </div>
 
           <!-- ========== TAMBAHAN RULES BARU: EMAIL OLD (2000-2025, TANPA 2FA) ========== -->
-          <span class="section-title">📥 SETOR EMAIL OLD mail 2000-2025 of 2fa</span>
+          <span class="section-title"><i class="fas fa-inbox ei ei-blue"></i> SETOR EMAIL OLD mail 2000-2025 of 2fa</span>
           <div class="rule-box" style="border-left-color: #7C3AED;">
 
-            <p style="font-weight:700;font-size:15px;">🔑 Password Wajib: <span style="color:var(--blue-bright);">BEBAS</span></p>
-            <p style="font-weight:700;font-size:15px;">🔐 Wajib 2FA: <span style="color:#EF4444;">TIDAK</span></p>
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-key ei ei-gold"></i> Password Wajib: <span style="color:var(--blue-bright);">BEBAS</span></p>
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-lock ei ei-slate"></i> Wajib 2FA: <span style="color:#EF4444;">TIDAK</span></p>
 
             <hr style="border-color:var(--border-subtle);margin:8px 0;">
 
-            <p style="font-weight:700;font-size:15px;">🚨 SYARAT &amp; KETENTUAN (WAJIB DIBACA):</p>
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-circle-exclamation ei ei-red"></i> SYARAT &amp; KETENTUAN (WAJIB DIBACA):</p>
             <ul>
               <li><strong>EMAIL LAMA:</strong> Pembuatan tahun 2000 sampai dengan 2025. Bekas apapun di terima.</li>
               <li><strong>AKUN:</strong> Email bebas, Password bebas.</li>
@@ -931,27 +951,27 @@ jokopurworo2@gmail.com joko123
               <li><strong>RIWAYAT:</strong> Tidak ada history menghapus email/nomor pemulihan dalam 7 hari terakhir.</li>
               <li><strong>WAKTU:</strong> Max hold mail 12-16 jam.</li>
               <li>Setelah disetor ke web, <strong>WAJIB LOG OUT / HAPUS SESI</strong> dari perangkatmu dan <strong>JANGAN LOGIN</strong> kembali.</li>
-              <li><strong>💡 TIPS:</strong> Jika semisal akun ditolak oleh vendor, segera lakukan pengecekan ke emailnya, lakukan pergantian salah 1 entah password ataupun 2fakey nya untuk menghindari hal hal yang tidak diinginkan.</li>
+              <li><strong><i class="fas fa-lightbulb ei ei-amber"></i> TIPS:</strong> Jika semisal akun ditolak oleh vendor, segera lakukan pengecekan ke emailnya, lakukan pergantian salah 1 entah password ataupun 2fakey nya untuk menghindari hal hal yang tidak diinginkan.</li>
             </ul>
 
             <hr style="border-color:var(--border-subtle);margin:12px 0;">
 
-            <p style="font-weight:700;font-size:15px;">📧 MASUKKAN DATA AKUN</p>
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-envelope ei ei-blue"></i> MASUKKAN DATA AKUN</p>
             <p>Silakan ketik, copy-paste, ke dalam kolam daftar email, di dalam kolom cuma ada email + password, antara email atau password kasih spasi.</p>
             <p style="margin-top:4px;"><strong>Contoh:</strong></p>
             <code style="display:block;background:var(--bg-card-alt);padding:8px 12px;border-radius:8px;font-size:13px;white-space:pre-wrap;margin-top:4px;">gilang6538@gmail.com gilang123
 budiman@gmail.com diman222</code>
             <p style="margin-top:6px;font-size:13px;color:var(--text-secondary);">Antara email dan password kasih spasi.</p>
 
-            <p style="margin-top:12px;font-size:13px;color:var(--text-secondary);">✈️ Terimakasih Atas Pengertiannya<br />Created By Faris 💭</p>
+            <p style="margin-top:12px;font-size:13px;color:var(--text-secondary);"><i class="fas fa-paper-plane ei ei-blue"></i> Terimakasih Atas Pengertiannya<br />Created By Faris<i class="fas fa-comment-dots ei ei-blue ei-end"></i></p>
           </div>
 
           <!-- ========== TAMBAHAN RULES BARU: EMAIL BEKAS BIASA ========== -->
-          <span class="section-title">📦 SETOR EMAIL BEKAS BIASA</span>
+          <span class="section-title"><i class="fas fa-box ei ei-gold"></i> SETOR EMAIL BEKAS BIASA</span>
           <div class="rule-box" style="border-left-color: #14B8A6;">
 
-            <p style="font-weight:700;font-size:15px;">🔑 Password Wajib: <span style="color:var(--blue-bright);">BEBAS APA SAJA</span></p>
-            <p style="font-weight:700;font-size:15px;">📧 Nama email: <span style="color:var(--blue-bright);">BEBAS APA SAJA</span></p>
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-key ei ei-gold"></i> Password Wajib: <span style="color:var(--blue-bright);">BEBAS APA SAJA</span></p>
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-envelope ei ei-blue"></i> Nama email: <span style="color:var(--blue-bright);">BEBAS APA SAJA</span></p>
 
             <hr style="border-color:var(--border-subtle);margin:8px 0;">
 
@@ -968,14 +988,14 @@ budiman@gmail.com diman222</code>
 
             <hr style="border-color:var(--border-subtle);margin:12px 0;">
 
-            <p style="font-weight:700;font-size:15px;">📨 MASUKAN DATA AKUN</p>
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-envelope-open-text ei ei-blue"></i> MASUKAN DATA AKUN</p>
             <p>Silahkan kan ketik copy-paste, ke dalam kolam daftar email, di dalam kolom cuma ada email + password, antara email atau password kasih spasi.</p>
             <p style="margin-top:4px;"><strong>Contoh:</strong></p>
             <code style="display:block;background:var(--bg-card-alt);padding:8px 12px;border-radius:8px;font-size:13px;white-space:pre-wrap;margin-top:4px;">jokokendi@gmail.com joko123
 jokokendi9875@gmail.com kendi333</code>
             <p style="margin-top:6px;font-size:13px;color:var(--text-secondary);">Antara email dan password kasih spasi.</p>
 
-            <p style="margin-top:12px;font-size:13px;color:var(--text-secondary);">✈️ Terimakasih Atas Pengertiannya<br />Created By Faris 💭</p>
+            <p style="margin-top:12px;font-size:13px;color:var(--text-secondary);"><i class="fas fa-paper-plane ei ei-blue"></i> Terimakasih Atas Pengertiannya<br />Created By Faris<i class="fas fa-comment-dots ei ei-blue ei-end"></i></p>
           </div>
 
           <!-- Link saluran peraturan lengkap -->
@@ -1120,7 +1140,7 @@ jokokendi9875@gmail.com kendi333</code>
   <!-- ===== TOAST BESAR ===== -->
   <div class="toast-big" id="welcomeToast">
     <div class="big-icon"><i class="fas fa-rocket"></i></div>
-    <div class="big-title" id="welcomeTitle">Selamat Datang! 🎉</div>
+    <div class="big-title" id="welcomeTitle">Selamat Datang!<i class="fas fa-champagne-glasses ei ei-gold ei-end"></i></div>
     <div class="big-desc" id="welcomeDesc">Selamat datang di <strong>Website STOR GMAIL FARIS</strong>,<br />ayo stor sebanyak-banyaknya biar cuan ngalir terus!</div>
     <button class="btn-close-big" onclick="closeWelcomeToast()">Oke, Siap!</button>
   </div>
