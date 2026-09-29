@@ -3,8 +3,8 @@
     // ============================================================
     // KONFIGURASI SUPABASE
     // ============================================================
-    const SUPABASE_URL = 'https://jpbdgaccxipptwilkzgz.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpwYmRnYWNjeGlwcHR3aWxremd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwOTk0MjQsImV4cCI6MjEwMzY3NTQyNH0.jKx6U9Qz7l7hPC7I85BH0cIfa-X_4eyxOZT3VBp0564';
+    const SUPABASE_URL = '';
+    const SUPABASE_ANON_KEY = '';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const ACTION_MAP = {
@@ -19,7 +19,7 @@
       createWithdrawal:     { fn: 'create_withdrawal',         needsToken: true,  params: (d) => ({ p_nominal: d.nominal, p_metode: d.metode, p_akun: d.akun }) },
       logout:               { fn: 'logout_user',               needsToken: true,  params: () => ({}) },
       clearInbox:           { fn: 'clear_inbox',                needsToken: true,  params: () => ({}) },
-      createStor:           { fn: 'create_stor',                needsToken: true,  params: (d) => ({ p_kontak_type: d.kontakType, p_kontak: d.kontak, p_nama: d.nama, p_password: d.password, p_emails: d.emails, p_tanggal: d.tanggal }) },
+      createStor:           { fn: 'create_stor',                needsToken: true,  params: (d) => ({ p_kontak_type: d.kontakType, p_kontak: d.kontak, p_nama: d.nama, p_password: d.password, p_emails: d.emails, p_tanggal: d.tanggal, p_jenis: d.jenis || 'fresh' }) },
       getLeaderboard:       { fn: 'get_leaderboard',            needsToken: false, params: (d) => ({ p_period: d.period }) },
       getPublicWithdrawals: { fn: 'get_public_withdrawals',     needsToken: false, params: (d) => ({ p_limit: d.limit || 50 }) },
       getChatMessages:      { fn: 'get_chat_messages',          needsToken: false, params: (d) => ({ p_since: d.since || 0 }) },
