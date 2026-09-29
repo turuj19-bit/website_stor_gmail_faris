@@ -1176,7 +1176,46 @@ jokokendi9875@gmail.com kendi333</code>
     </div>
   </div>
 
-  <div class="modal-overlay" id="modalStorSuccess"><div class="modal"><button class="modal-close" onclick="closeModal('modalStorSuccess')"><i class="fas fa-xmark"></i></button><div class="success-icon"><i class="fas fa-check-circle"></i></div><div class="success-title">Setoran Berhasil!</div><div class="success-desc"><strong>𝗦𝗲𝘁𝗼𝗿𝗮𝗻 𝗴𝗺𝗮𝗶𝗹 𝗸𝗮𝗺𝘂 𝘀𝘂𝗱𝗮𝗵 𝗸𝗮𝗺𝗶 𝘀𝗶𝗺𝗽𝗮𝗻.</strong><br />𝗣𝗮𝘆𝗺𝗲𝗻𝘁 𝗮𝗸𝗮𝗻 𝗱𝗶𝗹𝗮𝗸𝘂𝗸𝗮𝗻 𝗯𝗲𝘀𝗼𝗸 𝘀𝗼𝗿𝗲 𝗮𝘁𝗮𝘂 𝗺𝗮𝗹𝗲𝗺,<br />𝗷𝗶𝗸𝗮 𝗯𝗲𝗹𝘂𝗺 𝗽𝗮𝘆𝗺𝗲𝗻𝘁 𝗱𝗮𝗹𝗮𝗺 𝘄𝗮𝗸𝘁𝘂 𝗱𝗶𝗮𝘁𝗮𝘀,<br />𝘀𝗶𝗹𝗮𝗵𝗸𝗮𝗻 𝗵𝘂𝗯𝘂𝗻𝗴𝗶 𝗮𝗱𝗺𝗶𝗻 𝗸𝗲𝗺𝗯𝗮𝗹𝗶.</div><div class="success-actions"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" class="btn-wa"><i class="fab fa-whatsapp"></i> WA</a><a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" class="btn-telegram"><i class="fab fa-telegram-plane"></i> Telegram</a><button class="btn-ok" onclick="closeModal('modalStorSuccess')">OK</button></div></div></div>
+  <div class="modal-overlay" id="modalStorSuccess"><div class="modal">
+    <button class="modal-close" onclick="closeModal('modalStorSuccess')"><i class="fas fa-xmark"></i></button>
+    <div class="success-icon"><span class="success-badge"><i class="fas fa-check"></i></span></div>
+    <div class="success-title">Setoran Berhasil!</div>
+    <div class="success-desc"><strong>Setoran gmail kamu sudah kami simpan.</strong><br />Payment akan dilakukan dalam 24 / 48 jam.</div>
+
+    <div class="pay-est" id="payEst">
+      <div class="pay-est-head">
+        <span class="pay-est-title"><i class="fas fa-calendar-check"></i> Estimasi Payment</span>
+        <span class="pay-est-badge">24 / 48 jam</span>
+      </div>
+      <div class="pay-est-list">
+        <div class="pay-est-row">
+          <span class="pay-est-dot"></span>
+          <div class="pay-est-body">
+            <div class="pay-est-top"><span class="pay-est-label">24 jam</span><span class="pay-est-tag fast">Tercepat</span></div>
+            <div class="pay-est-date" id="payEstDate1">-</div>
+          </div>
+        </div>
+        <div class="pay-est-row">
+          <span class="pay-est-dot"></span>
+          <div class="pay-est-body">
+            <div class="pay-est-top"><span class="pay-est-label">48 jam</span><span class="pay-est-tag usual">Umumnya</span></div>
+            <div class="pay-est-date" id="payEstDate2">-</div>
+          </div>
+        </div>
+        <div class="pay-est-row">
+          <span class="pay-est-dot max"></span>
+          <div class="pay-est-body">
+            <div class="pay-est-top"><span class="pay-est-label">Maks. 3 hari</span><span class="pay-est-tag max">Maksimal</span></div>
+            <div class="pay-est-date" id="payEstDate3">-</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="success-note"><i class="fas fa-circle-info"></i><span>Jika belum payment dalam waktu diatas, silahkan hubungi admin kembali.</span></div>
+
+    <div class="success-actions"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" class="btn-wa"><i class="fab fa-whatsapp"></i> WA</a><a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" class="btn-telegram"><i class="fab fa-telegram-plane"></i> Telegram</a><button class="btn-ok" onclick="closeModal('modalStorSuccess')">OK</button></div>
+  </div></div>
 
   <div class="modal-overlay" id="modalError"><div class="modal"><button class="modal-close" onclick="closeModal('modalError')"><i class="fas fa-xmark"></i></button><div class="error-icon"><i class="fas fa-circle-exclamation"></i></div><div class="error-title" id="errorTitle">Terjadi Kesalahan</div><div class="error-desc" id="errorDesc">Silakan periksa kembali data Anda.</div><button class="btn-error-close" onclick="closeModal('modalError')">Mengerti</button></div></div>
 
