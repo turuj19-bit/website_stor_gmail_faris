@@ -38,6 +38,8 @@
       //   Beranda.
       // ============================================================
       let appEntered = false;
+      // true selama loading yang tampil adalah loading "Memuat sesi..." milik resume sesi
+      let resumingSession = !!getToken();
       function tryEnterAppIfNeeded() {
         if (appEntered) return;
         if (getCurrentUser()) {
@@ -103,9 +105,17 @@
               lastBanCheckAt = Date.now();
               await enforceBanCheck();
             }
-          } else if (!appEntered) {
+          } else if (!appEntered && resumingSession) {
             // Token memang sudah tidak ada (sesi invalid/logout) -- pastikan
-            // loading tidak tertahan selamanya.
+            // loading "Memuat sesi..." tidak tertahan selamanya.
+            // FIX: dulu cabang ini TANPA syarat resumingSession, jadi tiap 2
+            // detik (selama belum masuk app & belum ada token) loading ikut
+            // dimatikan -- termasuk loading "Login..." yang sedang berjalan
+            // (token baru ada SETELAH login sukses). Akibatnya kalau login
+            // butuh > 2 detik, amplop loading hilang padahal proses belum
+            // selesai. Sekarang hanya dimatikan kalau loading itu memang
+            // milik proses resume sesi.
+            resumingSession = false;
             hideLoading();
             document.documentElement.classList.remove('has-session');
           }
