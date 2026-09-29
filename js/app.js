@@ -399,7 +399,7 @@ function renderInbox() {
 
   container.innerHTML = sorted.map((m, idx) => {
     const isPrivate = !!m.targetUserId;
-    const privateBadge = isPrivate ? '<span style="background:rgba(43,127,255,0.10);color:var(--blue-bright);font-size:9px;padding:2px 8px;border-radius:99px;margin-left:6px;font-weight:600;">PRIVATE</span>' : '';
+    const privateBadge = isPrivate ? '<span style="background:rgba(28,79,209,0.10);color:var(--blue-bright);font-size:9px;padding:2px 8px;border-radius:99px;margin-left:6px;font-weight:600;">PRIVATE</span>' : '';
     return `
       <div class="inbox-msg" style="background:var(--bg-card-alt);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:8px;border:1px solid var(--border-subtle);transition:all 0.2s;display:flex;justify-content:space-between;align-items:center;" onclick="openMessageNotifByIndex(${idx})">
         <div>
