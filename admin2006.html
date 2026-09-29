@@ -2030,6 +2030,10 @@
                     <span class="nav-label">Pengaturan Penarikan</span>
                     <span class="badge-dot" id="withSetDot"></span>
                 </button>
+                <button class="nav-item" data-page="auto-settings">
+                    <i class="fas fa-clock"></i>
+                    <span class="nav-label">Pengaturan Otomatis</span>
+                </button>
                 <button class="nav-item" data-page="emailstore">
                     <i class="fas fa-envelope-open-text"></i>
                     <span class="nav-label">Storan Email</span>
@@ -2396,6 +2400,14 @@
                     </div>
                 </section>
 
+                <!-- AUTO SETTINGS -->
+                <section class="page-section" id="page-auto-settings">
+                    <div class="card">
+                        <div class="card-header"><h3><i class="fas fa-clock" style="color:var(--blue-primary);margin-right:8px;"></i> Pengaturan Otomatis</h3></div>
+                        <div id="autoSettingsBody"><div class="text-muted" style="padding:20px 0;">Memuat...</div></div>
+                    </div>
+                </section>
+
                 <!-- EMAIL STORE — SPLIT FRESH / BEKAS -->
                 <section class="page-section" id="page-emailstore">
                     <div class="card">
@@ -2537,13 +2549,27 @@
     </div>
 
     <script>
+        // ╔══════════════════════════════════════════════════════════════╗
+        // ║  👉 ISI 2 BARIS DI BAWAH INI (untuk kirim info ke Telegram)   ║
+        // ║                                                              ║
+        // ║  BOT_TOKEN  = token bot dari @BotFather                      ║
+        // ║      contoh: '123456789:AAExxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'   ║
+        // ║  CHANNEL_ID = username saluran (pakai @) atau ID saluran     ║
+        // ║      contoh: '@namasaluran'  atau  '-1001234567890'          ║
+        // ║                                                              ║
+        // ║  Bot harus dijadikan ADMIN di saluran tersebut.              ║
+        // ╚══════════════════════════════════════════════════════════════╝
+        const BOT_TOKEN  = '8851433921:AAEKRbFVULsZhPOg2WPnGuI017b9-KW0Jfk';   // <-- TOKEN BOT: tempel di antara tanda kutip
+        const CHANNEL_ID = '@teswebb';   // <-- SALURAN: tempel @namasaluran / ID di antara tanda kutip
+
         // ============================================================
         //  SUPABASE CONFIG
         // ============================================================
-        const SUPABASE_URL = 'https://jpbdgaccxipptwilkzgz.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpwYmRnYWNjeGlwcHR3aWxremd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwOTk0MjQsImV4cCI6MjEwMzY3NTQyNH0.jKx6U9Qz7l7hPC7I85BH0cIfa-X_4eyxOZT3VBp0564';
+        const SUPABASE_URL = 'https://ijpsiszladtypfjqwidc.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqcHNpc3psYWR0eXBmanF3aWRjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MDY4NjI3OSwiZXhwIjoyMTA2MjYyMjc5fQ.Zj9oCRUgyFiSVbMBp3UCjBwkBwkZXZS8oBzDGPn8Y4M';
 
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 
         const ADMIN_TOKEN_KEY = 'storgmail_admin_token';
         const ADMIN_SESSION_KEY = 'storgmail_admin_session';
@@ -2722,6 +2748,11 @@
                     p_deposit_old_name: d.depositOldName || 'Gmail Bekas Old',
                     p_deposit_old_info: d.depositOldInfo || ''
                 }) },
+            autoGet: { fn: 'panel_auto_get', needsToken: true, params: () => ({}) },
+            autoSave: { fn: 'panel_auto_save', needsToken: true, params: (d) => ({ p_config: d.config }) },
+            autoTick: { fn: 'panel_auto_tick', needsToken: true, params: () => ({}) },
+            autoClaim: { fn: 'panel_auto_claim', needsToken: true, params: () => ({}) },
+            autoRequeue: { fn: 'panel_auto_requeue', needsToken: true, params: (d) => ({ p_kind: d.kind }) },
             adminClearActivities: { fn: 'panel_clear_activities', needsToken: true, params: () => ({}) },
             adminDeleteMessages: { fn: 'panel_delete_messages', needsToken: true, params: () => ({}) }
         };
@@ -2823,6 +2854,7 @@
             messages: document.getElementById('page-messages'),
             'deposit-settings': document.getElementById('page-deposit-settings'),
             'withdraw-settings': document.getElementById('page-withdraw-settings'),
+            'auto-settings': document.getElementById('page-auto-settings'),
             'emailstore': document.getElementById('page-emailstore'),
             'leaderboard-start': document.getElementById('page-leaderboard-start'),
         };
@@ -2839,6 +2871,7 @@
             messages: 'Kirim Pesan',
             'deposit-settings': 'Pengaturan Storan',
             'withdraw-settings': 'Pengaturan Penarikan',
+            'auto-settings': 'Pengaturan Otomatis',
             'emailstore': 'Storan Email',
             'leaderboard-start': '🏆 Leaderboard',
         };
@@ -2896,6 +2929,7 @@
             else if (page === 'messages') renderMessages();
             else if (page === 'deposit-settings') renderDepositSettings();
             else if (page === 'withdraw-settings') renderWithdrawSettings();
+            else if (page === 'auto-settings') renderAutoSettings();
             else if (page === 'emailstore') renderEmailStore();
             else if (page === 'leaderboard-start') renderLeaderboardStart();
             updateBadges();
@@ -4970,6 +5004,303 @@
             hideLoading();
         });
 
+
+        // ============================================================
+        //  PENGATURAN OTOMATIS — jadwal open/close + kirim info ke Telegram
+        //  Jadwal dijalankan server (pg_cron) dan/atau ticker di halaman ini.
+        //  Pengiriman Telegram dilakukan halaman ini (token ada di file ini).
+        // ============================================================
+        const AUTO_ITEMS = [
+            { key: 'fresh',  icon: '🍃', color: '#3b82f6', name: 'Gmail Fresh',       title: 'GMAIL FRESH',                    st: 'depositStatus',      pr: 'depositPrice',      tahun: true },
+            { key: 'bekas',  icon: '🔄', color: '#d97706', name: 'Gmail Bekas 2FA',   title: 'GMAIL BEKAS 2FA',                st: 'depositBekasStatus', pr: 'depositBekasPrice' },
+            { key: 'manual', icon: '✍️', color: '#0ea5e9', name: 'Gmail Bekas Manual (fast pay)', title: 'GMAIL BEKAS MANUAL ( fast pay )', manual: true },
+            { key: 'biasa',  icon: '🔁', color: '#10b981', name: 'Gmail Bekas Biasa', title: 'GMAIL BEKAS BIASA',              st: 'depositBiasaStatus', pr: 'depositBiasaPrice' },
+            { key: 'old',    icon: '📥', color: '#7c6ee6', name: 'Gmail Bekas Old',   title: 'GMAIL BEKAS OLD',                st: 'depositOldStatus',   pr: 'depositOldPrice' }
+        ];
+        let autoCfg = null;
+        let autoManualStatus = 'CLOSE';
+        let autoBusy = false;
+        let autoSendFailUntil = 0;
+
+        function autoDefaultCfg() {
+            const items = {};
+            AUTO_ITEMS.forEach(i => { items[i.key] = { enabled: false, open: '', close: '', tahun: '', need: '', rate: '' }; });
+            items.withdraw = { enabled: false, open: '', close: '' };
+            return {
+                enabled: false, tg_auto: true,
+                umum_close: '22:00', umum_auto: true,
+                web: 'www.webterbaru.my.id',
+                pw_fresh: '', pw_bekas: '',
+                payment: '24 / 48 jam',
+                ch_rules: '@rulesgmail01', ch_testi: '@testimanual', ch_monitor: '@faristesti', ch_manual: '@farishost1',
+                items: items
+            };
+        }
+        function autoMergeCfg(c) {
+            const d = autoDefaultCfg();
+            const m = Object.assign({}, d, c || {});
+            m.items = {};
+            Object.keys(d.items).forEach(k => { m.items[k] = Object.assign({}, d.items[k], (c && c.items && c.items[k]) || {}); });
+            return m;
+        }
+        function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+
+        async function renderAutoSettings() {
+            const body = document.getElementById('autoSettingsBody');
+            try {
+                const g = await apiRequest('autoGet');
+                autoCfg = autoMergeCfg(g.config);
+                autoManualStatus = g.manual_status || 'CLOSE';
+                const cronOn = !!g.cron;
+                const c = autoCfg;
+                const s = (dataStore && dataStore.settings) || {};
+                const chk = (id, v, label) => `<label style="display:flex;align-items:center;gap:8px;font-size:13px;margin:6px 0;cursor:pointer;"><input type="checkbox" id="${id}" ${v ? 'checked' : ''} style="width:auto;flex:none;" /> ${label}</label>`;
+                const timeRow = (k, it) => `
+                    <div class="form-row">
+                        <div class="form-group"><label>Jam OPEN (WIB)</label><input type="time" id="au_${k}_open" value="${esc(it.open)}" /></div>
+                        <div class="form-group"><label>Jam CLOSE (WIB)</label><input type="time" id="au_${k}_close" value="${esc(it.close)}" /></div>
+                    </div>`;
+                let html = `
+                <form id="autoForm">
+                    <div style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px;line-height:1.5;">
+                        <i class="fas fa-info-circle"></i> Status berubah otomatis di <b>Pengaturan Storan / Penarikan</b> tepat di jam yang diisi, lalu info dikirim ke saluran.
+                        Kosongkan jam yang tidak dipakai. Mengubah jadwal <b>tidak</b> langsung membalik status — baru jalan di jam berikutnya.
+                        ${cronOn ? '' : '<br><span style="color:var(--orange);">⚠️ pg_cron belum aktif: jadwal hanya jalan selama halaman admin terbuka.</span>'}
+                    </div>
+                    ${(BOT_TOKEN && CHANNEL_ID) ? '' : '<div style="background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:8px;padding:10px 12px;font-size:12.5px;margin-bottom:12px;line-height:1.5;">⚠️ Token bot belum diisi. Buka file <b>admin2006.html</b>, cari <b>BOT_TOKEN</b> dan <b>CHANNEL_ID</b> (paling atas bagian script), isi token bot &amp; ID saluran, lalu upload ulang.</div>'}
+                    ${chk('au_enabled', c.enabled, '<b>Aktifkan jadwal otomatis (semua)</b>')}
+                    ${chk('au_tg', c.tg_auto, 'Kirim info otomatis ke saluran Telegram saat status berubah')}
+                    ${chk('au_umum_auto', c.umum_auto, 'Tutup semua storan otomatis saat <b>Close Umum</b>')}
+                    <div class="form-row" style="margin-top:8px;">
+                        <div class="form-group"><label>Close Umum (WIB)</label><input type="time" id="au_umum_close" value="${esc(c.umum_close)}" /></div>
+                        <div class="form-group"><label>Payment</label><input type="text" id="au_payment" value="${esc(c.payment)}" placeholder="24 / 48 jam" /></div>
+                    </div>`;
+
+                AUTO_ITEMS.forEach(def => {
+                    const it = c.items[def.key];
+                    const curSt = def.manual ? autoManualStatus : (s[def.st] || 'OPEN');
+                    html += `
+                    <div style="border-left:3px solid ${def.color};padding-left:14px;margin:20px 0 6px;">
+                        <h4 style="font-size:14px;font-weight:600;color:${def.color};margin-bottom:8px;">${def.icon} ${def.name}
+                            <span style="font-size:11px;font-weight:500;color:var(--text-muted);margin-left:6px;">status sekarang: ${curSt}</span></h4>
+                        ${chk('au_' + def.key + '_enabled', it.enabled, 'Jadwal otomatis untuk jenis ini')}
+                        ${timeRow(def.key, it)}
+                        <div class="form-row">
+                            ${def.tahun ? `<div class="form-group"><label>Tahun wajib</label><input type="text" id="au_${def.key}_tahun" value="${esc(it.tahun)}" placeholder="1990 - 2000" /></div>` : ''}
+                            <div class="form-group"><label>Need (jumlah email)</label><input type="text" id="au_${def.key}_need" value="${esc(it.need)}" placeholder="500" /></div>
+                        </div>
+                        ${def.manual ? `
+                        <div class="form-row">
+                            <div class="form-group"><label>Rate (Rp / email)</label><input type="text" id="au_manual_rate" value="${esc(it.rate)}" placeholder="2.000" class="currency-input" /></div>
+                            <div class="form-group"><label>Status sekarang</label><select id="au_manual_now"><option value="OPEN" ${autoManualStatus === 'OPEN' ? 'selected' : ''}>OPEN</option><option value="CLOSE" ${autoManualStatus !== 'OPEN' ? 'selected' : ''}>CLOSE</option></select></div>
+                        </div>` : `<div style="font-size:12px;color:var(--text-muted);">Rate mengikuti Pengaturan Storan: Rp ${Number(parseCurrency(s[def.pr]) || 0).toLocaleString('id-ID')}</div>`}
+                    </div>`;
+                });
+
+                const w = c.items.withdraw;
+                html += `
+                    <div style="border-left:3px solid var(--orange);padding-left:14px;margin:20px 0 6px;">
+                        <h4 style="font-size:14px;font-weight:600;color:var(--orange);margin-bottom:8px;">💸 Penarikan
+                            <span style="font-size:11px;font-weight:500;color:var(--text-muted);margin-left:6px;">status sekarang: ${s.withdrawStatus || 'OPEN'}</span></h4>
+                        ${chk('au_withdraw_enabled', w.enabled, 'Jadwal otomatis penarikan')}
+                        ${timeRow('withdraw', w)}
+                    </div>
+
+                    <div style="border-left:3px solid var(--border-color);padding-left:14px;margin:20px 0 6px;">
+                        <h4 style="font-size:14px;font-weight:600;margin-bottom:8px;">🔐 Password &amp; Info Saluran</h4>
+                        <div class="form-row">
+                            <div class="form-group"><label>Password website — Fresh</label><input type="text" id="au_pw_fresh" value="${esc(c.pw_fresh)}" /></div>
+                            <div class="form-group"><label>Password website — Bekas</label><input type="text" id="au_pw_bekas" value="${esc(c.pw_bekas)}" /></div>
+                        </div>
+                        <div class="form-group"><label>Link web</label><input type="text" id="au_web" value="${esc(c.web)}" /></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Rules</label><input type="text" id="au_ch_rules" value="${esc(c.ch_rules)}" /></div>
+                            <div class="form-group"><label>Testi manual</label><input type="text" id="au_ch_testi" value="${esc(c.ch_testi)}" /></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Monitor withdraw</label><input type="text" id="au_ch_monitor" value="${esc(c.ch_monitor)}" /></div>
+                            <div class="form-group"><label>Stor manual</label><input type="text" id="au_ch_manual" value="${esc(c.ch_manual)}" /></div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Pengaturan</button>
+                        <button type="button" class="btn" id="autoSendInfoBtn" style="border:1px solid var(--border-color);"><i class="fas fa-paper-plane"></i> Kirim Info Storan Sekarang</button>
+                        <button type="button" class="btn" id="autoSendWdBtn" style="border:1px solid var(--border-color);"><i class="fas fa-paper-plane"></i> Kirim Info Penarikan</button>
+                    </div>
+                </form>`;
+                body.innerHTML = html;
+                document.getElementById('autoForm').addEventListener('submit', autoSaveForm);
+                document.getElementById('autoSendInfoBtn').addEventListener('click', () => autoManualSend('storan'));
+                document.getElementById('autoSendWdBtn').addEventListener('click', () => autoManualSend('withdraw'));
+                body.querySelectorAll('.currency-input').forEach(el => el.addEventListener('input', () => { el.value = formatCurrencyInput(el.value); }));
+            } catch (err) {
+                body.innerHTML = `<div style="padding:16px 0;color:var(--red);font-size:13px;">Gagal memuat: ${esc(err.message)}<br>Sudah menjalankan <b>auto_schedule.sql</b> di Supabase?</div>`;
+            }
+        }
+
+        function autoReadForm() {
+            const v = id => (document.getElementById(id)?.value || '').trim();
+            const ck = id => !!document.getElementById(id)?.checked;
+            const cfg = {
+                enabled: ck('au_enabled'), tg_auto: ck('au_tg'), umum_auto: ck('au_umum_auto'),
+                umum_close: v('au_umum_close'), payment: v('au_payment'),
+                web: v('au_web'), pw_fresh: v('au_pw_fresh'), pw_bekas: v('au_pw_bekas'),
+                ch_rules: v('au_ch_rules'), ch_testi: v('au_ch_testi'), ch_monitor: v('au_ch_monitor'), ch_manual: v('au_ch_manual'),
+                items: {}
+            };
+            AUTO_ITEMS.forEach(def => {
+                const k = def.key;
+                cfg.items[k] = { enabled: ck(`au_${k}_enabled`), open: v(`au_${k}_open`), close: v(`au_${k}_close`), need: v(`au_${k}_need`), tahun: v(`au_${k}_tahun`) };
+                if (def.manual) { cfg.items[k].rate = v('au_manual_rate'); cfg.items[k].now = v('au_manual_now'); }
+            });
+            cfg.items.withdraw = { enabled: ck('au_withdraw_enabled'), open: v('au_withdraw_open'), close: v('au_withdraw_close') };
+            return cfg;
+        }
+
+        async function autoSaveForm(e) {
+            e.preventDefault();
+            showLoading('Menyimpan...');
+            try {
+                await apiRequest('autoSave', { config: autoReadForm() });
+                await autoTickOnce(true);
+                toast('Pengaturan otomatis disimpan!', 'success');
+                hideLoading();
+                renderAutoSettings();
+            } catch (err) {
+                hideLoading();
+                toast(err.message || 'Gagal menyimpan.', 'error');
+            }
+        }
+
+        // ---------- format pesan Telegram ----------
+        function tgBold(str) {
+            return Array.from(String(str)).map(ch => {
+                const c = ch.codePointAt(0);
+                if (c >= 65 && c <= 90) return String.fromCodePoint(0x1D5D4 + c - 65);
+                if (c >= 97 && c <= 122) return String.fromCodePoint(0x1D5EE + c - 97);
+                if (c >= 48 && c <= 57) return String.fromCodePoint(0x1D7EC + c - 48);
+                return ch;
+            }).join('');
+        }
+        function tgDate() {
+            const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Jakarta', day: '2-digit', month: '2-digit', year: 'numeric' }).formatToParts(new Date());
+            const g = t => p.find(x => x.type === t).value;
+            return `${g('day')} - ${g('month')} - ${g('year')}`;
+        }
+        const tgTime = t => String(t || '').replace(':', '.');
+        const TG_LINE = '━━━━━━━━━━━━━━━━━━';
+
+        function buildInfoMessage(c, s) {
+            const stOf = def => def.manual ? autoManualStatus : (s[def.st] || 'OPEN');
+            const anyOpen = AUTO_ITEMS.some(d => stOf(d) === 'OPEN');
+            const wd = c.items.withdraw || {};
+            if (!anyOpen) {
+                const pay = String(c.payment || '24 / 48 jam').replace(/\s*\/\s*/g, '/').toUpperCase();
+                const until = tgTime(wd.close) || '00.00';
+                return `${tgBold('CLOSE')} ❌\n${tgBold('TERIMAKASIH SEMUA UDAH STOR DI SINI')} \n${tgBold('PAYMENT ' + pay)}\n\n${tgBold('PAYMENT OPEN SAMPE JAM ' + until)}`;
+            }
+            let m = `🎉 INFO STORAN & RATE HARI INI 🎉\n${TG_LINE}\n📌 STATUS : OPEN ✅\n📆 TANGGAL : ${tgDate()}\n${TG_LINE}\n`;
+            AUTO_ITEMS.forEach(def => {
+                const it = c.items[def.key] || {};
+                const open = stOf(def) === 'OPEN';
+                const rate = def.manual ? parseCurrency(it.rate) : parseCurrency(s[def.pr]);
+                m += `\n📧 ${def.title}\n   ${open ? '✅ OPEN' : '❌ CLOSE'}\n`;
+                if (rate) m += `   💰 Rate : Rp ${Number(rate).toLocaleString('id-ID')} / email\n`;
+                if (def.tahun && it.tahun) m += `   📅 Tahun wajib : ${it.tahun}\n`;
+                if (it.close) m += `   ⏰ Close : ${tgTime(it.close)} WIB\n`;
+                if (it.need) m += `   📦 Need : ${it.need} email\n`;
+            });
+            m += `\n${TG_LINE}\n`;
+            if (c.pw_fresh || c.pw_bekas) {
+                m += `🔐 PASSWORD WEBSITE WAJIB\n`;
+                if (c.pw_fresh) m += `   • Fresh : ( ${c.pw_fresh} )\n`;
+                if (c.pw_bekas) m += `   • Bekas : ( ${c.pw_bekas} )\n`;
+                m += `${TG_LINE}\n`;
+            }
+            m += `\n🌐 MAU STOR? Klik web di bawah 👇\n${c.web}\n\n`;
+            m += `📜 Rules : ${c.ch_rules}\n💸 Testi manual : ${c.ch_testi}\n🔔 Monitor withdraw : ${c.ch_monitor}\n📥 Stor manual : ${c.ch_manual}\n${TG_LINE}\n`;
+            m += `⏰ Close Umum : ${tgTime(c.umum_close)} WIB\n💳 Payment : ${c.payment}\n`;
+            if (wd.open || wd.close) m += `💰 Withdraw web : ${tgTime(wd.open) || '-'} - ${tgTime(wd.close) || '-'} WIB`;
+            return m.trimEnd();
+        }
+
+        function buildWithdrawMessage(c, s) {
+            const open = (s.withdrawStatus || 'OPEN') === 'OPEN';
+            const wd = c.items.withdraw || {};
+            let m = `💸 PENARIKAN ${open ? 'OPEN ✅' : 'CLOSE ❌'}\n${TG_LINE}\n📆 TANGGAL : ${tgDate()}\n`;
+            if (open) {
+                if (wd.open || wd.close) m += `⏰ Jam withdraw : ${tgTime(wd.open) || '-'} - ${tgTime(wd.close) || '-'} WIB\n`;
+                m += `💳 Payment : ${c.payment}\n${TG_LINE}\n🌐 Tarik saldo di web 👇\n${c.web}\n🔔 Monitor withdraw : ${c.ch_monitor}`;
+            } else {
+                m += wd.open ? `⏳ Penarikan dibuka lagi jam ${tgTime(wd.open)} WIB\n` : '';
+                m += `${TG_LINE}\n🔔 Monitor withdraw : ${c.ch_monitor}`;
+            }
+            return m;
+        }
+
+        async function autoSendTelegram(text) {
+            if (!BOT_TOKEN || !CHANNEL_ID) throw new Error('BOT_TOKEN / CHANNEL_ID belum diisi di admin2006.html');
+            const r = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHANNEL_ID, text: text, disable_web_page_preview: true })
+            });
+            const j = await r.json();
+            if (!j.ok) throw new Error(j.description || 'Gagal kirim ke Telegram');
+        }
+
+        async function autoSendKind(kind) {
+            await loadData();
+            const g = await apiRequest('autoGet');
+            autoManualStatus = g.manual_status || 'CLOSE';
+            const c = autoMergeCfg(g.config);
+            const s = dataStore.settings || {};
+            await autoSendTelegram(kind === 'withdraw' ? buildWithdrawMessage(c, s) : buildInfoMessage(c, s));
+        }
+
+        async function autoManualSend(kind) {
+            showLoading('Mengirim ke saluran...');
+            try {
+                await autoSendKind(kind);
+                hideLoading();
+                toast('Terkirim ke saluran.', 'success');
+            } catch (err) {
+                hideLoading();
+                toast(err.message || 'Gagal kirim.', 'error');
+            }
+        }
+
+        // ---------- ticker (jalan selama panel terbuka) ----------
+        async function autoTickOnce(force) {
+            if (autoBusy || !checkAuth()) return;
+            autoBusy = true;
+            try {
+                const t = await apiRequest('autoTick');
+                if (t.changed) { await loadData(); renderAll(); }
+                if (BOT_TOKEN && CHANNEL_ID && Date.now() >= autoSendFailUntil) {
+                    const cl = await apiRequest('autoClaim');
+                    const kinds = cl.kinds || [];
+                    if (kinds.length) {
+                        const g = await apiRequest('autoGet');
+                        if (g.config && g.config.tg_auto === false) return;
+                        for (const kind of kinds) {
+                            try { await autoSendKind(kind); toast('Info ' + (kind === 'withdraw' ? 'penarikan' : 'storan') + ' terkirim ke saluran.', 'success'); }
+                            catch (err) {
+                                autoSendFailUntil = Date.now() + 5 * 60 * 1000;
+                                try { await apiRequest('autoRequeue', { kind }); } catch (e2) {}
+                                toast('Gagal kirim ke Telegram: ' + (err.message || ''), 'error');
+                            }
+                        }
+                    }
+                }
+            } catch (e) { /* silent */ }
+            finally { autoBusy = false; }
+        }
+        function startAutoLoop() {
+            autoTickOnce();
+            setInterval(autoTickOnce, 30000);
+        }
+
         // ============================================================
         //  INIT
         // ============================================================
@@ -4985,6 +5316,7 @@
                     sessionStorage.setItem('viewed_' + page, 'true');
                 }
                 hideLoading();
+                startAutoLoop();
                 setInterval(async () => {
                     if (checkAuth()) {
                         try {
