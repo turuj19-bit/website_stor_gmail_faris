@@ -156,10 +156,22 @@
   const originalConfirmLogout = window.confirmLogout;
   if (typeof originalConfirmLogout === 'function') {
     window.confirmLogout = function(...args) {
-      const forceHide = function() { try { hideLoading(); } catch (_) {} };
+      // FIX: dulu penutup paksa 4 detik ini mematikan SIAPA PUN loading yang
+      // sedang tampil -- termasuk loading "Login..." milik login berikutnya
+      // kalau user keluar-masuk cepat (login dalam 4 detik setelah logout),
+      // sehingga amplop hilang padahal login belum selesai. Sekarang hanya
+      // menutup kalau loading yang tampil masih milik proses logout ini.
+      let mySeq = null;
+      const forceHide = function() {
+        try {
+          if (mySeq === null || window.__loadingSeq === mySeq) hideLoading();
+        } catch (_) {}
+      };
       let result;
       try {
         result = originalConfirmLogout.apply(this, args);
+        // showLoading('Logout...') dipanggil sinkron di awal confirmLogout()
+        mySeq = window.__loadingSeq;
       } catch (e) {
         forceHide();
         throw e;

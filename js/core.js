@@ -67,6 +67,9 @@
       const overlay = safeGet('loadingOverlay');
       const textEl = overlay?.querySelector('.loading-text');
       if (textEl) textEl.textContent = text;
+      // Nomor urut "siapa yang terakhir menyalakan loading" -- dipakai penutup
+      // otomatis/tertunda supaya tidak mematikan loading milik proses BARU.
+      window.__loadingSeq = (window.__loadingSeq || 0) + 1;
       if (overlay) overlay.classList.add('show');
     }
 
@@ -89,11 +92,16 @@
       let owned = false;
       let safetyTimer = null;
       let releaseTimer = null;
+      let ownedSeq = 0;
 
       function release() {
         if (safetyTimer) { clearTimeout(safetyTimer); safetyTimer = null; }
         if (releaseTimer) { clearTimeout(releaseTimer); releaseTimer = null; }
-        if (owned) { owned = false; hideLoading(); }
+        if (owned) {
+          owned = false;
+          // Tutup hanya kalau belum ada proses lain yang menyalakan loading sesudahnya
+          if (window.__loadingSeq === ownedSeq) hideLoading();
+        }
       }
 
       function check() {
@@ -105,6 +113,7 @@
           if (overlay && !overlay.classList.contains('show')) {
             owned = true;
             showLoading('Memproses...');
+            ownedSeq = window.__loadingSeq;
           }
           if (!safetyTimer) safetyTimer = setTimeout(release, 30000);
         } else if (owned && !releaseTimer) {
