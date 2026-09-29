@@ -1441,3 +1441,48 @@
     @media(prefers-reduced-motion:reduce){
       *, *::before, *::after { animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
     }
+
+    /* =====================================================================
+       v1.2 — PERBAIKAN: loading amplop di semua proses, latar modal kaca,
+       saldo pending & hiasan banner saldo
+       ===================================================================== */
+
+    /* ---- 1) LOADING: semua proses pakai amplop animasi ---- */
+    /* Overlay dibuat lebih pekat & tanpa backdrop-filter (blur di belakang
+       animasi yang bergerak sering bikin logo kedip/hilang di HP Android). */
+    #loadingOverlay { background:rgba(240,244,250,0.96); -webkit-backdrop-filter:none; backdrop-filter:none; }
+    /* Bayangan dibuat statis (bukan filter di elemen yang bergerak) supaya
+       logo tidak ikut kedip saat digambar ulang tiap frame. */
+    #loadingOverlay .loading-logo { filter:none; position:relative; }
+    #loadingOverlay .loading-logo::after { content:''; position:absolute; left:50%; bottom:-14px; width:84px; height:14px; transform:translateX(-50%); background:radial-gradient(ellipse at center, rgba(18,63,174,0.28), rgba(18,63,174,0) 70%); pointer-events:none; }
+    /* Spinner bulat di tombol dimatikan; teks tombol tetap tampil, animasi
+       amplop yang jadi penanda loading (lihat core.js). */
+    .auth-box .btn-auth .spinner, .btn-submit .spinner { display:none !important; }
+    .auth-box .btn-auth.loading .btn-text, .btn-submit.loading .btn-text { display:inline; }
+    /* Spinner ikon (fa-spinner) yang mungkin dipakai file lain diganti ikon amplop bergerak */
+    i.fa-spinner.fa-spin, i.fa-spinner { animation:miniEnvBob 1.3s ease-in-out infinite !important; display:inline-block; }
+    i.fa-spinner::before { content:"\f0e0"; }
+    @keyframes miniEnvBob { 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-3px) scale(1.14);} }
+    /* Amplop kecil untuk "Memuat data..." (leaderboard) */
+    .empty-state .empty-icon.empty-icon-env { opacity:1; font-size:0; margin-bottom:8px; }
+    .mini-env { display:flex; justify-content:center; }
+    .mini-env .env-svg { width:64px; }
+    /* Animasi loading tidak boleh ikut mati oleh "kurangi animasi" (HP hemat baterai/aksesibilitas),
+       karena itu satu-satunya penanda proses sedang berjalan. */
+    @media(prefers-reduced-motion:reduce){
+      #loadingOverlay .loading-logo { animation-duration:1.8s !important; animation-iteration-count:infinite !important; }
+      #loadingOverlay .env-svg, .mini-env .env-svg { animation-duration:3.2s !important; animation-iteration-count:infinite !important; }
+      #loadingOverlay .env-flap-front, #loadingOverlay .env-flap-back, #loadingOverlay .env-letter,
+      .mini-env .env-flap-front, .mini-env .env-flap-back, .mini-env .env-letter { animation-duration:3.2s !important; animation-iteration-count:infinite !important; }
+      i.fa-spinner, i.fa-spinner.fa-spin { animation-duration:1.3s !important; animation-iteration-count:infinite !important; }
+    }
+
+    /* ---- 2) LATAR POP-UP (logout dll): blur netral seperti kaca, tidak biru ---- */
+    .modal-overlay { background:rgba(30,41,59,0.20); -webkit-backdrop-filter:blur(10px) saturate(1.05); backdrop-filter:blur(10px) saturate(1.05); }
+
+    /* ---- 3) BANNER SALDO: saldo pending + hiasan bayangan ---- */
+    .saldo-card > * { position:relative; z-index:1; }
+    .saldo-card::after { content:''; position:absolute; right:-14px; bottom:-10px; width:66%; height:118%; background:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgMjIwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGcgb3BhY2l0eT0iMC41NSIgc3Ryb2tlLXdpZHRoPSIzIj48ZyB0cmFuc2Zvcm09InJvdGF0ZSgtMTQgMjAwIDEyMCkiPjxyZWN0IHg9IjExOCIgeT0iNzAiIHdpZHRoPSIxNzAiIGhlaWdodD0iMTEyIiByeD0iMTYiLz48cGF0aCBkPSJNMTIyIDgwIEwyMDMgMTQwIEwyODQgODAiLz48L2c+PC9nPjxnIG9wYWNpdHk9IjAuNDUiIHN0cm9rZS13aWR0aD0iMyI+PGNpcmNsZSBjeD0iNzAiIGN5PSI3MCIgcj0iMzAiLz48Y2lyY2xlIGN4PSI3MCIgY3k9IjcwIiByPSIyMCIgc3Ryb2tlLWRhc2hhcnJheT0iMyA2Ii8+PHBhdGggZD0iTTcwIDU4djI0TTYyIDY2aDEzYTYgNiAwIDAgMSAwIDEySDYyIi8+PC9nPjxnIG9wYWNpdHk9IjAuNDAiIHN0cm9rZS13aWR0aD0iMyI+PGVsbGlwc2UgY3g9IjI0MCIgY3k9IjE5MiIgcng9IjM0IiByeT0iMTAiLz48cGF0aCBkPSJNMjA2IDE5MnYtMTRjMCA2IDE1IDEwIDM0IDEwczM0LTQgMzQtMTB2MTQiLz48cGF0aCBkPSJNMjA2IDE3OHYtMTRjMCA2IDE1IDEwIDM0IDEwczM0LTQgMzQtMTB2MTQiLz48L2c+PGcgb3BhY2l0eT0iMC41IiBzdHJva2Utd2lkdGg9IjIuNSI+PHBhdGggZD0iTTMwIDE3MCBxMzAgLTM0IDYwIC0xMCB0NjAgLTE0IHQ2MCAtMjIiLz48cGF0aCBkPSJNNDAgMTk0IHEzMCAtMjYgNTYgLTggdDU4IC0xMCIvPjwvZz48ZyBvcGFjaXR5PSIwLjYiIGZpbGw9IiNmZmYiIHN0cm9rZT0ibm9uZSI+PHBhdGggZD0iTTE1MCAyNmw0IDExIDExIDQtMTEgNC00IDExLTQtMTEtMTEtNCAxMS00eiIvPjxwYXRoIGQ9Ik0yNzAgNDBsMi42IDcgNyAyLjYtNyAyLjYtMi42IDctMi42LTctNy0yLjYgNy0yLjZ6Ii8+PGNpcmNsZSBjeD0iMjQiIGN5PSIxMjAiIHI9IjMiLz48Y2lyY2xlIGN4PSIxMjAiIGN5PSIxOTYiIHI9IjIuNSIvPjxjaXJjbGUgY3g9IjI4NiIgY3k9IjEyMCIgcj0iMi41Ii8+PC9nPjwvc3ZnPg==") no-repeat right bottom / contain; opacity:0.17; pointer-events:none; z-index:0; }
+    .saldo-card .saldo-pending { display:flex; width:fit-content; max-width:100%; align-items:center; gap:6px; margin:-8px 0 14px; padding:4px 11px; border-radius:99px; background:rgba(255,255,255,0.13); border:1px solid rgba(255,255,255,0.14); font-size:12px; font-weight:600; color:rgba(255,255,255,0.88); line-height:1.2; }
+    .saldo-card .saldo-pending i { font-size:11px; color:rgba(255,255,255,0.80); }
+    .saldo-card .saldo-pending .sp-value { font-weight:800; color:#fff; }
