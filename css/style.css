@@ -1486,3 +1486,36 @@
     .saldo-card .saldo-pending { display:flex; width:fit-content; max-width:100%; align-items:center; gap:6px; margin:-8px 0 14px; padding:4px 11px; border-radius:99px; background:rgba(255,255,255,0.13); border:1px solid rgba(255,255,255,0.14); font-size:12px; font-weight:600; color:rgba(255,255,255,0.88); line-height:1.2; }
     .saldo-card .saldo-pending i { font-size:11px; color:rgba(255,255,255,0.80); }
     .saldo-card .saldo-pending .sp-value { font-weight:800; color:#fff; }
+
+    /* =====================================================================
+       v1.3 — Popup "Setoran Berhasil": tampilan lebih rapi + estimasi payment
+       (dibatasi ke #modalStorSuccess saja, popup lain tidak berubah)
+       ===================================================================== */
+    #modalStorSuccess .modal { padding:24px 22px 22px; }
+    #modalStorSuccess .modal .success-icon { margin:4px 0 16px; }
+    #modalStorSuccess .modal .success-badge { width:64px; height:64px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:28px; color:#fff; background:linear-gradient(145deg,#34D399 0%,#16A34A 100%); box-shadow:0 10px 24px rgba(22,163,74,0.30), 0 0 0 8px rgba(34,197,94,0.12); animation:successPop 0.55s var(--ease-smooth) both; }
+    @keyframes successPop { 0%{transform:scale(0.55); opacity:0;} 70%{transform:scale(1.08); opacity:1;} 100%{transform:scale(1); opacity:1;} }
+    #modalStorSuccess .modal .success-title { font-size:22px; font-weight:800; letter-spacing:-0.2px; margin-bottom:6px; }
+    #modalStorSuccess .modal .success-desc { font-size:14px; line-height:1.55; margin-bottom:16px; }
+
+    #modalStorSuccess .pay-est { text-align:left; margin:0 0 12px; padding:14px 14px 4px; border-radius:18px; background:linear-gradient(135deg, rgba(28,79,209,0.09), rgba(28,79,209,0.02)); border:1px solid rgba(28,79,209,0.16); }
+    #modalStorSuccess .pay-est-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; }
+    #modalStorSuccess .pay-est-title { display:inline-flex; align-items:center; gap:8px; font-size:13.5px; font-weight:800; color:var(--text-primary); }
+    #modalStorSuccess .pay-est-title i { color:var(--blue-primary); font-size:14px; }
+    #modalStorSuccess .pay-est-badge { font-size:11.5px; font-weight:800; color:#fff; padding:4px 10px; border-radius:99px; background:linear-gradient(155deg,var(--blue-bright) 0%,var(--blue-primary) 55%,var(--blue-deep) 100%); box-shadow:0 4px 12px var(--blue-glow); white-space:nowrap; }
+    #modalStorSuccess .pay-est-row { position:relative; display:flex; align-items:flex-start; gap:12px; padding-bottom:14px; }
+    #modalStorSuccess .pay-est-row:not(:last-child)::before { content:''; position:absolute; left:5px; top:18px; bottom:-2px; width:2px; border-radius:2px; background:rgba(28,79,209,0.20); }
+    #modalStorSuccess .pay-est-dot { flex-shrink:0; width:12px; height:12px; margin-top:4px; border-radius:50%; background:var(--blue-primary); box-shadow:0 0 0 4px rgba(28,79,209,0.14); position:relative; z-index:1; }
+    #modalStorSuccess .pay-est-dot.max { background:#F59E0B; box-shadow:0 0 0 4px rgba(245,158,11,0.18); }
+    #modalStorSuccess .pay-est-body { flex:1; min-width:0; }
+    #modalStorSuccess .pay-est-top { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    #modalStorSuccess .pay-est-label { font-size:12.5px; font-weight:700; color:var(--text-secondary); }
+    #modalStorSuccess .pay-est-tag { font-size:10.5px; font-weight:800; padding:2px 8px; border-radius:99px; letter-spacing:0.2px; }
+    #modalStorSuccess .pay-est-tag.fast { color:var(--blue-primary); background:rgba(28,79,209,0.10); }
+    #modalStorSuccess .pay-est-tag.usual { color:#15803D; background:rgba(34,197,94,0.14); }
+    #modalStorSuccess .pay-est-tag.max { color:#B45309; background:rgba(245,158,11,0.16); }
+    #modalStorSuccess .pay-est-date { margin-top:2px; font-size:14.5px; font-weight:800; color:var(--text-primary); line-height:1.35; }
+
+    #modalStorSuccess .success-note { display:flex; align-items:flex-start; gap:8px; text-align:left; margin:0 0 16px; padding:10px 12px; border-radius:12px; background:var(--bg-card-alt); border:1px solid var(--border-subtle); font-size:12.5px; line-height:1.5; color:var(--text-secondary); }
+    #modalStorSuccess .success-note i { color:var(--blue-primary); font-size:13px; margin-top:2px; flex-shrink:0; }
+
