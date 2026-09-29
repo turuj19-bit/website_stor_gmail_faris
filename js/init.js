@@ -70,18 +70,52 @@
         });
       }
 
-      let banCheckTick = 0;
-      setInterval(async () => {
-        if (getToken()) {
-          const ok = await refreshAppState();
-          if (ok) tryEnterAppIfNeeded();
-          banCheckTick++;
-          if (banCheckTick % 7 === 0) await enforceBanCheck();
-        } else if (!appEntered) {
-          // Token memang sudah tidak ada (sesi invalid/logout) -- pastikan
-          // loading tidak tertahan selamanya.
-          hideLoading();
-          document.documentElement.classList.remove('has-session');
+      // ============================================================
+      // v1.1 — HEMAT KUOTA: dulu refreshAppState() (ambil SEMUA data akun)
+      // dipanggil tiap 2 detik terus-menerus. Sekarang:
+      // - Selama belum masuk aplikasi (retry sesi) tetap cepat tiap 2 detik,
+      //   sama seperti sebelumnya.
+      // - Setelah masuk, refresh data cuma tiap REFRESH_EVERY_MS, dan
+      //   dihentikan saat tab tidak sedang dilihat (document.hidden).
+      // - Begitu tab dibuka lagi, data langsung disegarkan sekali.
+      // - Tidak ada permintaan yang menumpuk (tickBusy).
+      // Cek banned (enforceBanCheck) tetap kira-kira tiap 14 detik seperti
+      // sebelumnya selama tab terlihat.
+      // ============================================================
+      const REFRESH_EVERY_MS = 25000;
+      const BANCHECK_EVERY_MS = 14000;
+      let lastRefreshAt = Date.now();
+      let lastBanCheckAt = Date.now();
+      let tickBusy = false;
+
+      async function appTick(force) {
+        if (tickBusy) return;
+        tickBusy = true;
+        try {
+          if (getToken()) {
+            const due = !appEntered || force === true || (Date.now() - lastRefreshAt >= REFRESH_EVERY_MS);
+            if (due && (!document.hidden || !appEntered)) {
+              lastRefreshAt = Date.now();
+              const ok = await refreshAppState();
+              if (ok) tryEnterAppIfNeeded();
+            }
+            if (!document.hidden && Date.now() - lastBanCheckAt >= BANCHECK_EVERY_MS) {
+              lastBanCheckAt = Date.now();
+              await enforceBanCheck();
+            }
+          } else if (!appEntered) {
+            // Token memang sudah tidak ada (sesi invalid/logout) -- pastikan
+            // loading tidak tertahan selamanya.
+            hideLoading();
+            document.documentElement.classList.remove('has-session');
+          }
+        } finally {
+          tickBusy = false;
         }
-      }, 2000);
+      }
+
+      setInterval(appTick, 2000);
+      document.addEventListener('visibilitychange', function() {
+        if (!document.hidden && getToken()) appTick(true);
+      });
     });
