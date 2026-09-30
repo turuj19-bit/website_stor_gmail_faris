@@ -2030,11 +2030,6 @@
                     <span class="nav-label">Pengaturan Penarikan</span>
                     <span class="badge-dot" id="withSetDot"></span>
                 </button>
-                <button class="nav-item" data-page="auto-settings">
-                    <i class="fas fa-clock"></i>
-                    <span class="nav-label">Pengaturan Otomatis</span>
-                    <span class="badge-dot" id="autoSetDot"></span>
-                </button>
                 <button class="nav-item" data-page="emailstore">
                     <i class="fas fa-envelope-open-text"></i>
                     <span class="nav-label">Storan Email</span>
@@ -2401,188 +2396,6 @@
                     </div>
                 </section>
 
-
-                <!-- AUTO SETTINGS -->
-                <section class="page-section" id="page-auto-settings">
-                    <style>
-                        .auto-block { padding-left:14px; margin-bottom:22px; }
-                        .auto-block-head { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:10px; }
-                        .auto-block-head h4 { font-size:14px; font-weight:600; margin:0; }
-                        .auto-switch { display:flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color:var(--text-secondary); cursor:pointer; }
-                        .auto-switch input { width:auto !important; }
-                        .auto-pill { font-size:11px; font-weight:700; padding:2px 10px; border-radius:20px; background:var(--bg-input); color:var(--text-secondary); margin-left:auto; }
-                        .auto-pill.open { background:rgba(34,197,94,.15); color:#16a34a; }
-                        .auto-pill.close { background:rgba(239,68,68,.15); color:#dc2626; }
-                        .auto-rate-note { font-size:12px; color:var(--text-muted); margin-bottom:10px; }
-                        .auto-status-bar { display:flex; gap:10px; flex-wrap:wrap; font-size:12px; margin-bottom:16px; }
-                        .auto-status-bar span { padding:4px 10px; border-radius:20px; background:var(--bg-input); color:var(--text-secondary); font-weight:600; }
-                        .auto-status-bar span.ok { background:rgba(34,197,94,.15); color:#16a34a; }
-                        .auto-status-bar span.bad { background:rgba(239,68,68,.15); color:#dc2626; }
-                        .auto-preview { white-space:pre-wrap; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12px; line-height:1.5; background:var(--bg-input); border:1px solid var(--border-color); border-radius:var(--radius-sm); padding:14px; max-height:520px; overflow:auto; }
-                        .auto-actions { display:flex; gap:10px; flex-wrap:wrap; }
-                    </style>
-
-                    <form id="autoSettingsForm">
-                        <div class="card">
-                            <div class="card-header"><h3><i class="fas fa-clock" style="color:var(--blue-primary);margin-right:8px;"></i> Pengaturan Otomatis</h3></div>
-                            <div class="auto-status-bar" id="autoStatusBar"></div>
-                            <div class="form-group">
-                                <label class="auto-switch" style="font-size:14px;"><input type="checkbox" id="autoEnabled" /> <span>Aktifkan jadwal otomatis (saklar utama)</span></label>
-                                <div style="font-size:12px;color:var(--text-muted);margin-top:6px;">Kalau saklar ini mati, semua jadwal di bawah tidak jalan. Saat jam tiba, status di <b>Pengaturan Storan</b> &amp; <b>Pengaturan Penarikan</b> berubah sendiri, lalu info otomatis dikirim ke saluran. Semua jam memakai WIB dan tetap jalan walau dashboard ditutup.</div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header"><h3>🗓️ Jadwal Storan</h3></div>
-                            
-                            <div class="auto-block" style="border-left:3px solid #3b82f6;">
-                                <div class="auto-block-head">
-                                    <h4 style="color:#3b82f6;">🍃 Gmail Fresh</h4>
-                                    <label class="auto-switch"><input type="checkbox" id="auto_fresh_enabled" /> <span>Jadwal aktif</span></label>
-                                    <span class="auto-pill" id="auto_fresh_now">-</span>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group"><label>Jam OPEN (WIB)</label><input type="time" id="auto_fresh_open" /></div>
-                                    <div class="form-group"><label>Jam CLOSE (WIB)</label><input type="time" id="auto_fresh_close" /></div>
-                                </div>
-                            <div class="auto-rate-note" id="auto_fresh_ratenote"></div>
-                                <div class="form-row">
-                                    <div class="form-group"><label>Tahun wajib (tampil di info)</label><input type="text" id="auto_fresh_year" placeholder="Contoh: 1990 - 2000 (kosongkan jika tidak ada)" /></div>
-                                    <div class="form-group"><label>Need (email, 0 = sembunyikan)</label><input type="number" min="0" id="auto_fresh_need" placeholder="0" /></div>
-                                </div>
-                            </div>
-                            <div class="auto-block" style="border-left:3px solid #d97706;">
-                                <div class="auto-block-head">
-                                    <h4 style="color:#d97706;">🔄 Gmail Bekas 2FA</h4>
-                                    <label class="auto-switch"><input type="checkbox" id="auto_bekas_enabled" /> <span>Jadwal aktif</span></label>
-                                    <span class="auto-pill" id="auto_bekas_now">-</span>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group"><label>Jam OPEN (WIB)</label><input type="time" id="auto_bekas_open" /></div>
-                                    <div class="form-group"><label>Jam CLOSE (WIB)</label><input type="time" id="auto_bekas_close" /></div>
-                                </div>
-                            <div class="auto-rate-note" id="auto_bekas_ratenote"></div>
-                                <div class="form-row">
-                                    <input type="hidden" id="auto_bekas_year" value="" />
-                                    <div class="form-group"><label>Need (email, 0 = sembunyikan)</label><input type="number" min="0" id="auto_bekas_need" placeholder="0" /></div>
-                                </div>
-                            </div>
-                            <div class="auto-block" style="border-left:3px solid #ec4899;">
-                                <div class="auto-block-head">
-                                    <h4 style="color:#ec4899;">✋ Gmail Bekas Manual (fast pay)</h4>
-                                    <label class="auto-switch"><input type="checkbox" id="auto_manual_enabled" /> <span>Jadwal aktif</span></label>
-                                    <span class="auto-pill" id="auto_manual_now">-</span>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group"><label>Jam OPEN (WIB)</label><input type="time" id="auto_manual_open" /></div>
-                                    <div class="form-group"><label>Jam CLOSE (WIB)</label><input type="time" id="auto_manual_close" /></div>
-                                </div>
-                            <div class="form-row">
-                                <div class="form-group"><label>Rate (Rp) — khusus Manual</label><input type="text" id="auto_manual_rate" class="currency-input" placeholder="2.000" /></div>
-                                <div class="form-group"><label>Status sekarang</label><select id="auto_manual_status"><option value="OPEN">OPEN</option><option value="CLOSE">CLOSE</option></select></div>
-                            </div>
-                                <div class="form-row">
-                                    <input type="hidden" id="auto_manual_year" value="" />
-                                    <div class="form-group"><label>Need (email, 0 = sembunyikan)</label><input type="number" min="0" id="auto_manual_need" placeholder="0" /></div>
-                                </div>
-                            </div>
-                            <div class="auto-block" style="border-left:3px solid #10b981;">
-                                <div class="auto-block-head">
-                                    <h4 style="color:#10b981;">🔁 Gmail Bekas Biasa</h4>
-                                    <label class="auto-switch"><input type="checkbox" id="auto_biasa_enabled" /> <span>Jadwal aktif</span></label>
-                                    <span class="auto-pill" id="auto_biasa_now">-</span>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group"><label>Jam OPEN (WIB)</label><input type="time" id="auto_biasa_open" /></div>
-                                    <div class="form-group"><label>Jam CLOSE (WIB)</label><input type="time" id="auto_biasa_close" /></div>
-                                </div>
-                            <div class="auto-rate-note" id="auto_biasa_ratenote"></div>
-                                <div class="form-row">
-                                    <input type="hidden" id="auto_biasa_year" value="" />
-                                    <div class="form-group"><label>Need (email, 0 = sembunyikan)</label><input type="number" min="0" id="auto_biasa_need" placeholder="0" /></div>
-                                </div>
-                            </div>
-                            <div class="auto-block" style="border-left:3px solid #7c6ee6;">
-                                <div class="auto-block-head">
-                                    <h4 style="color:#7c6ee6;">📥 Gmail Bekas Old</h4>
-                                    <label class="auto-switch"><input type="checkbox" id="auto_old_enabled" /> <span>Jadwal aktif</span></label>
-                                    <span class="auto-pill" id="auto_old_now">-</span>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group"><label>Jam OPEN (WIB)</label><input type="time" id="auto_old_open" /></div>
-                                    <div class="form-group"><label>Jam CLOSE (WIB)</label><input type="time" id="auto_old_close" /></div>
-                                </div>
-                            <div class="auto-rate-note" id="auto_old_ratenote"></div>
-                                <div class="form-row">
-                                    <input type="hidden" id="auto_old_year" value="" />
-                                    <div class="form-group"><label>Need (email, 0 = sembunyikan)</label><input type="number" min="0" id="auto_old_need" placeholder="0" /></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header"><h3>💳 Jadwal Penarikan Web</h3></div>
-                            <div class="auto-block" style="border-left:3px solid #0ea5e9;">
-                                <div class="auto-block-head">
-                                    <h4 style="color:#0ea5e9;">Penarikan (withdraw)</h4>
-                                    <label class="auto-switch"><input type="checkbox" id="auto_withdraw_enabled" /> <span>Jadwal aktif</span></label>
-                                    <span class="auto-pill" id="auto_withdraw_now">-</span>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group"><label>Jam OPEN (WIB)</label><input type="time" id="auto_withdraw_open" /></div>
-                                    <div class="form-group"><label>Jam CLOSE (WIB)</label><input type="time" id="auto_withdraw_close" /></div>
-                                </div>
-                                <div style="font-size:12px;color:var(--text-muted);">Jam ini juga tampil di info saluran sebagai "Withdraw web".</div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header"><h3>📝 Isi Info Saluran</h3></div>
-                            <div class="form-row">
-                                <div class="form-group"><label>Password wajib — Fresh</label><input type="text" id="autoPwFresh" autocomplete="off" /></div>
-                                <div class="form-group"><label>Password wajib — Bekas</label><input type="text" id="autoPwBekas" autocomplete="off" /></div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group"><label>Close Umum (contoh 22.00)</label><input type="text" id="autoUmumClose" placeholder="22.00" /></div>
-                                <div class="form-group"><label>Payment (jam)</label><input type="text" id="autoPaymentHours" placeholder="24 / 48" /></div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group"><label>Payment open sampai jam (format CLOSE)</label><input type="text" id="autoPaymentOpen" placeholder="00.00" /></div>
-                                <div class="form-group"><label>Link web storan</label><input type="text" id="autoWebUrl" placeholder="www.webterbaru.my.id" /></div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group"><label>Rules</label><input type="text" id="autoLinkRules" placeholder="@rulesgmail01" /></div>
-                                <div class="form-group"><label>Testi manual</label><input type="text" id="autoLinkTesti" placeholder="@testimanual" /></div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group"><label>Monitor withdraw</label><input type="text" id="autoLinkMonitor" placeholder="@faristesti" /></div>
-                                <div class="form-group"><label>Stor manual</label><input type="text" id="autoLinkStor" placeholder="@farishost1" /></div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header"><h3>🤖 Bot Telegram &amp; Saluran</h3></div>
-                            <div class="form-group">
-                                <label class="auto-switch"><input type="checkbox" id="autoSendTelegram" /> <span>Kirim info ke saluran setiap status berubah otomatis</span></label>
-                            </div>
-                            <div id="autoTokenHint" style="font-size:13px;margin-bottom:8px;">-</div>
-                            <div style="font-size:12px;color:var(--text-muted);">Token bot &amp; saluran diisi di file <b>admin2006.html</b> (cari <code>AUTO_BOT_TOKEN</code> dan <code>AUTO_CHAT_ID</code>), bukan di form ini. Bot harus dijadikan <b>admin</b> di saluran dengan izin kirim pesan.</div>
-                        </div>
-
-                        <div class="card">
-                            <div class="auto-actions">
-                                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Pengaturan Otomatis</button>
-                                <button type="button" class="btn btn-outline" id="autoSendNowBtn"><i class="fas fa-paper-plane"></i> Kirim info ke saluran sekarang</button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <div class="card">
-                        <div class="card-header"><h3>👀 Preview Pesan Saluran (sesuai status saat ini)</h3></div>
-                        <div class="auto-preview" id="autoPreview">-</div>
-                    </div>
-                </section>
-
                 <!-- EMAIL STORE — SPLIT FRESH / BEKAS -->
                 <section class="page-section" id="page-emailstore">
                     <div class="card">
@@ -2731,15 +2544,6 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqcHNpc3psYWR0eXBmanF3aWRjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MDY4NjI3OSwiZXhwIjoyMTA2MjYyMjc5fQ.Zj9oCRUgyFiSVbMBp3UCjBwkBwkZXZS8oBzDGPn8Y4M';
 
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // ============================================================
-        //  >>> ISI TOKEN BOT & SALURAN DI SINI (2 baris ini saja) <<<
-        //  AUTO_BOT_TOKEN : token dari @BotFather, contoh '123456789:AAxxxxxxxx'
-        //  AUTO_CHAT_ID   : '@username_saluran' atau ID angka '-1001234567890'
-        //  Otomatis dikirim ke server saat menu Pengaturan Otomatis dibuka / disimpan.
-        // ============================================================
-        const AUTO_BOT_TOKEN = '8851433921:AAEKRbFVULsZhPOg2WPnGuI017b9-KW0Jfk';
-        const AUTO_CHAT_ID   = '@teswebb';
 
         const ADMIN_TOKEN_KEY = 'storgmail_admin_token';
         const ADMIN_SESSION_KEY = 'storgmail_admin_session';
@@ -2918,9 +2722,6 @@
                     p_deposit_old_name: d.depositOldName || 'Gmail Bekas Old',
                     p_deposit_old_info: d.depositOldInfo || ''
                 }) },
-            getAutoSettings: { fn: 'get_auto_settings', needsToken: true, params: () => ({}) },
-            saveAutoSettings: { fn: 'panel_save_auto_settings', needsToken: true, params: (d) => ({ p_config: d.config, p_rules: d.rules }) },
-            autoSendNow: { fn: 'panel_auto_send_now', needsToken: true, params: () => ({}) },
             adminClearActivities: { fn: 'panel_clear_activities', needsToken: true, params: () => ({}) },
             adminDeleteMessages: { fn: 'panel_delete_messages', needsToken: true, params: () => ({}) }
         };
@@ -3022,7 +2823,6 @@
             messages: document.getElementById('page-messages'),
             'deposit-settings': document.getElementById('page-deposit-settings'),
             'withdraw-settings': document.getElementById('page-withdraw-settings'),
-            'auto-settings': document.getElementById('page-auto-settings'),
             'emailstore': document.getElementById('page-emailstore'),
             'leaderboard-start': document.getElementById('page-leaderboard-start'),
         };
@@ -3039,7 +2839,6 @@
             messages: 'Kirim Pesan',
             'deposit-settings': 'Pengaturan Storan',
             'withdraw-settings': 'Pengaturan Penarikan',
-            'auto-settings': 'Pengaturan Otomatis',
             'emailstore': 'Storan Email',
             'leaderboard-start': '🏆 Leaderboard',
         };
@@ -3097,7 +2896,6 @@
             else if (page === 'messages') renderMessages();
             else if (page === 'deposit-settings') renderDepositSettings();
             else if (page === 'withdraw-settings') renderWithdrawSettings();
-            else if (page === 'auto-settings') renderAutoSettings();
             else if (page === 'emailstore') renderEmailStore();
             else if (page === 'leaderboard-start') renderLeaderboardStart();
             updateBadges();
@@ -3117,7 +2915,6 @@
                 'messages': 'msgDot',
                 'deposit-settings': 'depSetDot',
                 'withdraw-settings': 'withSetDot',
-                'auto-settings': 'autoSetDot',
                 'emailstore': 'emailStoreDot',
                 'leaderboard-start': 'lbStartDot',
             };
@@ -4841,191 +4638,6 @@
                 hideLoading();
             }
         });
-
-
-        // ============================================================
-        //  PENGATURAN OTOMATIS (jadwal open/close + kirim ke saluran)
-        // ============================================================
-        const AUTO_KEYS = ['fresh', 'bekas', 'manual', 'biasa', 'old'];
-        const AUTO_LABEL = { fresh: 'Fresh', bekas: 'Bekas 2FA', biasa: 'Bekas Biasa', old: 'Bekas Old' };
-        let autoLoadedOnce = false;
-        let autoEditing = false;
-
-        (function markAutoDirty() {
-            const f = document.getElementById('autoSettingsForm');
-            if (!f) return;
-            ['input', 'change'].forEach((ev) => f.addEventListener(ev, () => { autoEditing = true; }));
-        })();
-
-        function autoVal(id) { return document.getElementById(id).value; }
-        function autoSet(id, v) { const el = document.getElementById(id); if (el) el.value = (v === null || v === undefined) ? '' : v; }
-        function autoChk(id) { return document.getElementById(id).checked; }
-
-        function autoFillForm(res) {
-            const c = res.config || {};
-            document.getElementById('autoEnabled').checked = !!c.autoEnabled;
-            document.getElementById('autoSendTelegram').checked = !!c.sendTelegram;
-            autoSet('autoPwFresh', c.pwFresh);
-            autoSet('autoPwBekas', c.pwBekas);
-            autoSet('autoUmumClose', c.umumClose);
-            autoSet('autoPaymentHours', c.paymentHours);
-            autoSet('autoPaymentOpen', c.paymentOpen);
-            autoSet('autoWebUrl', c.webUrl);
-            autoSet('autoLinkRules', c.linkRules);
-            autoSet('autoLinkTesti', c.linkTesti);
-            autoSet('autoLinkMonitor', c.linkMonitor);
-            autoSet('autoLinkStor', c.linkStor);
-            const th = document.getElementById('autoTokenHint');
-            const okTok = !!c.tokenSet, okChat = !!c.chatId;
-            th.innerHTML = (okTok ? '✅ Token bot terisi (berakhiran ' + c.tokenHint + ')' : '❌ Token bot belum diisi (isi AUTO_BOT_TOKEN di file admin)')
-                + ' &nbsp;·&nbsp; '
-                + (okChat ? '✅ Saluran: ' + String(c.chatId).replace(/</g, '&lt;') : '❌ Saluran belum diisi (isi AUTO_CHAT_ID di file admin)');
-
-            (res.rules || []).forEach((r) => {
-                const k = r.key;
-                const en = document.getElementById('auto_' + k + '_enabled');
-                if (!en) return;
-                en.checked = !!r.enabled;
-                autoSet('auto_' + k + '_open', r.openTime);
-                autoSet('auto_' + k + '_close', r.closeTime);
-                autoSet('auto_' + k + '_year', r.yearReq);
-                autoSet('auto_' + k + '_need', r.need || 0);
-                if (k === 'manual') {
-                    autoSet('auto_manual_rate', r.rate ? Number(r.rate).toLocaleString('id-ID') : '');
-                    autoSet('auto_manual_status', r.status);
-                } else if (k !== 'withdraw') {
-                    const note = document.getElementById('auto_' + k + '_ratenote');
-                    if (note) note.textContent = 'Rate ikut Pengaturan Storan: Rp ' + Number(r.rate || 0).toLocaleString('id-ID') + ' / email';
-                }
-            });
-        }
-
-        function autoRefreshLive(res) {
-            (res.rules || []).forEach((r) => {
-                const pill = document.getElementById('auto_' + r.key + '_now');
-                if (!pill) return;
-                pill.textContent = 'Sekarang: ' + r.status;
-                pill.className = 'auto-pill ' + (r.status === 'OPEN' ? 'open' : 'close');
-            });
-            const bar = document.getElementById('autoStatusBar');
-            let html = '<span>Jam server: ' + (res.serverTime || '-') + ' WIB</span>';
-            html += res.cronActive
-                ? '<span class="ok">Penjadwal server: AKTIF</span>'
-                : '<span class="bad">Penjadwal server: BELUM AKTIF (jalankan Database_otomatis.sql &amp; aktifkan pg_cron)</span>';
-            const lt = res.lastTelegram;
-            if (lt && lt.status) {
-                html += lt.status === 200
-                    ? '<span class="ok">Kirim saluran terakhir: berhasil</span>'
-                    : '<span class="bad">Kirim saluran terakhir gagal (kode ' + lt.status + ')</span>';
-            } else if (lt && lt.error) {
-                html += '<span class="bad">Kirim saluran terakhir error</span>';
-            }
-            bar.innerHTML = html;
-            document.getElementById('autoPreview').textContent = res.preview || '-';
-        }
-
-        async function renderAutoSettings() {
-            try {
-                const res = await apiRequest('getAutoSettings');
-                if (!autoLoadedOnce || !autoEditing) {
-                    autoFillForm(res);
-                    autoLoadedOnce = true;
-                }
-                autoRefreshLive(res);
-                // Kirim token/saluran dari file admin ke server kalau belum sama
-                const c = res.config || {};
-                const tokenSame = c.tokenSet && AUTO_BOT_FILLED && c.tokenHint === AUTO_BOT_TOKEN.trim().slice(-4);
-                const chatSame = c.chatId === (AUTO_CHAT_FILLED ? AUTO_CHAT_ID.trim() : c.chatId);
-                if ((AUTO_BOT_FILLED || AUTO_CHAT_FILLED) && !autoEditing && (!tokenSame && AUTO_BOT_FILLED || !chatSame)) {
-                    const { config, rules } = autoCollect();
-                    await apiRequest('saveAutoSettings', { config, rules });
-                    const res2 = await apiRequest('getAutoSettings');
-                    autoFillForm(res2);
-                    autoRefreshLive(res2);
-                }
-            } catch (err) {
-                toast(err.message || 'Gagal memuat pengaturan otomatis. Sudah jalankan Database_otomatis.sql?', 'error');
-            }
-        }
-
-        const AUTO_BOT_FILLED = AUTO_BOT_TOKEN && AUTO_BOT_TOKEN !== 'ISI_TOKEN_BOT_DI_SINI';
-        const AUTO_CHAT_FILLED = AUTO_CHAT_ID && AUTO_CHAT_ID !== '@ISI_USERNAME_SALURAN';
-
-        function autoCollect() {
-            const config = {
-                autoEnabled: autoChk('autoEnabled'),
-                sendTelegram: autoChk('autoSendTelegram'),
-                botToken: AUTO_BOT_FILLED ? AUTO_BOT_TOKEN.trim() : '',
-                chatId: AUTO_CHAT_FILLED ? AUTO_CHAT_ID.trim() : '',
-                pwFresh: autoVal('autoPwFresh'),
-                pwBekas: autoVal('autoPwBekas'),
-                umumClose: autoVal('autoUmumClose'),
-                paymentHours: autoVal('autoPaymentHours'),
-                paymentOpen: autoVal('autoPaymentOpen'),
-                webUrl: autoVal('autoWebUrl'),
-                linkRules: autoVal('autoLinkRules'),
-                linkTesti: autoVal('autoLinkTesti'),
-                linkMonitor: autoVal('autoLinkMonitor'),
-                linkStor: autoVal('autoLinkStor')
-            };
-            const rules = AUTO_KEYS.concat(['withdraw']).map((k) => {
-                const r = {
-                    key: k,
-                    enabled: autoChk('auto_' + k + '_enabled'),
-                    openTime: autoVal('auto_' + k + '_open'),
-                    closeTime: autoVal('auto_' + k + '_close'),
-                    yearReq: k === 'withdraw' ? '' : autoVal('auto_' + k + '_year'),
-                    need: k === 'withdraw' ? 0 : (parseInt(autoVal('auto_' + k + '_need'), 10) || 0)
-                };
-                if (k === 'manual') {
-                    r.rate = parseCurrency(autoVal('auto_manual_rate'));
-                    r.status = autoVal('auto_manual_status');
-                }
-                return r;
-            });
-            return { config, rules };
-        }
-
-        document.getElementById('autoSettingsForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            showLoading('Menyimpan...');
-            try {
-                const { config, rules } = autoCollect();
-                await apiRequest('saveAutoSettings', { config, rules });
-                autoEditing = false;
-                const res = await apiRequest('getAutoSettings');
-                autoFillForm(res);
-                autoRefreshLive(res);
-                hideLoading();
-                toast('Pengaturan otomatis berhasil disimpan!', 'success');
-            } catch (err) {
-                hideLoading();
-                toast(err.message || 'Gagal menyimpan pengaturan otomatis.', 'error');
-            }
-        });
-
-        document.getElementById('autoSendNowBtn').addEventListener('click', async () => {
-            if (autoEditing) {
-                toast('Ada perubahan yang belum disimpan. Klik Simpan dulu.', 'error');
-                return;
-            }
-            showLoading('Mengirim ke saluran...');
-            try {
-                await apiRequest('autoSendNow');
-                hideLoading();
-                toast('Info dikirim ke saluran. Cek saluranmu.', 'success');
-                setTimeout(renderAutoSettings, 3000);
-            } catch (err) {
-                hideLoading();
-                toast(err.message || 'Gagal mengirim.', 'error');
-            }
-        });
-
-        // Segarkan status "Sekarang: OPEN/CLOSE" tiap 30 detik saat menu ini dibuka
-        setInterval(() => {
-            const pg = document.getElementById('page-auto-settings');
-            if (pg && pg.classList.contains('active') && !document.hidden) renderAutoSettings();
-        }, 30000);
 
         function renderWithdrawSettings() {
             if (!dataStore) return;
