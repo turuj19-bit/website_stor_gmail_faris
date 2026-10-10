@@ -425,33 +425,48 @@
     /* ===== ADMIN CS: Telegram & WhatsApp dipisah, masing-masing 1 kotak ===== */
     .cs-stack { display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; }
     .cs-card {
+      position: relative;
+      overflow: hidden;
       display: flex;
       align-items: center;
       gap: 14px;
       padding: 14px 16px;
-      border-radius: 18px;
+      border-radius: 20px;
       background: var(--bg-card-alt);
       border: 1px solid var(--border-subtle);
       text-decoration: none;
       color: var(--text-secondary);
-      transition: transform 0.15s ease;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
+    .cs-card::after {
+      content: '';
+      position: absolute; top: 0; left: -60%;
+      width: 40%; height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255,255,255,0.35), transparent);
+      transform: skewX(-20deg);
+      animation: csShine 4.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes csShine { 0%, 60% { left: -60%; } 100% { left: 130%; } }
     .cs-card:active { transform: scale(0.98); }
-    .cs-card.is-wa { border-color: rgba(37,211,102,0.40); background: linear-gradient(135deg, rgba(37,211,102,0.10), rgba(37,211,102,0.02)); }
-    .cs-card.is-tg { border-color: rgba(34,158,217,0.40); background: linear-gradient(135deg, rgba(34,158,217,0.10), rgba(34,158,217,0.02)); }
+    .cs-card.is-wa { border-color: rgba(37,211,102,0.45); background: linear-gradient(135deg, rgba(37,211,102,0.14), rgba(37,211,102,0.03)); box-shadow: 0 8px 20px rgba(37,211,102,0.16); }
+    .cs-card.is-tg { border-color: rgba(34,158,217,0.45); background: linear-gradient(135deg, rgba(34,158,217,0.14), rgba(34,158,217,0.03)); box-shadow: 0 8px 20px rgba(34,158,217,0.16); }
     .cs-card-icon {
-      width: 46px; height: 46px; border-radius: 14px; flex-shrink: 0;
+      width: 48px; height: 48px; border-radius: 15px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 24px; color: #fff;
+      font-size: 25px; color: #fff;
     }
-    .cs-card.is-wa .cs-card-icon { background: #25D366; }
-    .cs-card.is-tg .cs-card-icon { background: #229ED9; }
-    .cs-card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+    .cs-card.is-wa .cs-card-icon { background: linear-gradient(135deg, #25D366, #128C7E); box-shadow: 0 6px 14px rgba(37,211,102,0.40); }
+    .cs-card.is-tg .cs-card-icon { background: linear-gradient(135deg, #2AABEE, #1b7fb3); box-shadow: 0 6px 14px rgba(34,158,217,0.40); }
+    .cs-card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
     .cs-card-title { font-size: 15px; font-weight: 800; color: var(--text-primary); }
-    .cs-card-sub { font-size: 12.5px; font-weight: 500; color: var(--text-secondary); }
-    .cs-card-chevron { font-size: 13px; color: var(--text-secondary); flex-shrink: 0; }
+    .cs-card-sub { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--text-secondary); }
+    .cs-card-sub::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #22C55E; box-shadow: 0 0 0 3px rgba(34,197,94,0.18); }
+    .cs-card-chevron { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text-primary); background: rgba(128,128,128,0.12); flex-shrink: 0; }
 
     /* ===== MENU REFERAL ===== */
+    #page-referral { padding-top: 22px; }
+    #page-referral .page-title { margin-top: 0; }
     .ref-banner {
       position: relative;
       overflow: hidden;
@@ -1561,7 +1576,7 @@ contoh3@gmail.com</code></li>
     </form>
   </div></div>
 
-  <div class="modal-overlay" id="modalInfo"><div class="modal"><button class="modal-close" onclick="closeModal('modalInfo')"><i class="fas fa-xmark"></i></button><div class="modal-title">Tentang STOR GMAIL FARIS</div><div class="modal-sub">Platform untuk mengelola proses stor secara sederhana, cepat, dan terorganisir.</div><div class="info-card" style="cursor:pointer;" onclick="window.open('https://wa.me/6283821406716','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-headset"></i></div><div class="ic-body"><div class="ic-title">Support</div><div class="ic-desc"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" style="color:var(--blue-bright);font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp" style="color:#25D366;"></i> Chat WA</a> <span style="color:var(--text-secondary);">·</span> <a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" style="color:#229ED9;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-telegram-plane" style="color:#229ED9;"></i> Chat Telegram</a></div></div></div><div class="info-card"><div class="ic-icon"><i class="fas fa-clock"></i></div><div class="ic-body"><div class="ic-title">Jam Operasional</div><div class="ic-desc">Senin - Jumat · 09:00 – 17:00</div></div></div><div class="info-card"><div class="ic-icon"><i class="fas fa-signal"></i></div><div class="ic-body"><div class="ic-title">Status Sistem</div><div class="ic-desc"><span class="status-online"><span class="dot"></span> ONLINE</span></div></div></div><div class="info-card" style="cursor:pointer;" onclick="window.open('https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran WhatsApp</div><div class="ic-desc"><a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp"></i> Gabung Saluran</a></div></div></div><div class="info-card" style="cursor:pointer;" onclick="window.open('https://t.me/farisgmail1','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran Telegram</div><div class="ic-desc"><a href="https://t.me/farisgmail1" target="_blank" rel="noopener noreferrer" style="color:#229ED9;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-telegram-plane"></i> Gabung Saluran</a></div></div></div><div style="text-align:center;color:var(--text-secondary);font-size:13px;margin-top:8px;">STOR GMAIL FARIS v 1.1 · &copy; 2026</div></div></div>
+  <div class="modal-overlay" id="modalInfo"><div class="modal"><button class="modal-close" onclick="closeModal('modalInfo')"><i class="fas fa-xmark"></i></button><div class="modal-title">Tentang STOR GMAIL FARIS</div><div class="modal-sub">Platform untuk mengelola proses stor secara sederhana, cepat, dan terorganisir.</div><div class="cs-stack" style="margin-bottom:12px;"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" class="cs-card is-wa"><span class="cs-card-icon"><i class="fab fa-whatsapp"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS WhatsApp</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a><a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" class="cs-card is-tg"><span class="cs-card-icon"><i class="fab fa-telegram"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS Telegram</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a></div><div class="info-card"><div class="ic-icon"><i class="fas fa-clock"></i></div><div class="ic-body"><div class="ic-title">Jam Operasional</div><div class="ic-desc">Senin - Jumat · 09:00 – 17:00</div></div></div><div class="info-card"><div class="ic-icon"><i class="fas fa-signal"></i></div><div class="ic-body"><div class="ic-title">Status Sistem</div><div class="ic-desc"><span class="status-online"><span class="dot"></span> ONLINE</span></div></div></div><div class="info-card" style="cursor:pointer;" onclick="window.open('https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran WhatsApp</div><div class="ic-desc"><a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp"></i> Gabung Saluran</a></div></div></div><div class="info-card" style="cursor:pointer;" onclick="window.open('https://t.me/farisgmail1','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran Telegram</div><div class="ic-desc"><a href="https://t.me/farisgmail1" target="_blank" rel="noopener noreferrer" style="color:#229ED9;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-telegram-plane"></i> Gabung Saluran</a></div></div></div><div style="text-align:center;color:var(--text-secondary);font-size:13px;margin-top:8px;">STOR GMAIL FARIS v 1.1 · &copy; 2026</div></div></div>
 
   <!-- ===== MODAL TARIK SALDO (UPDATED) ===== -->
   <div class="modal-overlay" id="modalTarikSaldo">
@@ -1655,7 +1670,7 @@ contoh3@gmail.com</code></li>
   <script src="js/config.js"></script>
   <script src="js/core.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=20261011"></script>
   <script src="js/profile.js"></script>
   <script src="js/withdrawal.js"></script>
   <script src="js/history.js"></script>
