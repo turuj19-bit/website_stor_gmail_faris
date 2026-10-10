@@ -243,6 +243,38 @@ function closeWelcomeToast() {
 // ============================================================
 // UPDATE UI (dengan try-catch agar tidak crash)
 // ============================================================
+// Teks keterangan bawaan database (bukan password) tidak boleh tampil di kolom "Password Hari Ini".
+const STOR_INFO_BUKAN_PASSWORD = ['bekas biasa, tanpa 2fa', 'akun lama, sudah lama dibuat'];
+function getPasswordHariIni(info) {
+  const v = String(info == null ? '' : info).trim();
+  if (!v || STOR_INFO_BUKAN_PASSWORD.indexOf(v.toLowerCase()) !== -1) return 'murah123';
+  return v;
+}
+
+// Tombol Refresh di header (antara Profil dan Inbox): muat ulang data akun, saldo, riwayat & pesan.
+let __headerRefreshBusy = false;
+async function refreshFromHeader(btn) {
+  if (__headerRefreshBusy) return;
+  __headerRefreshBusy = true;
+  const el = btn || document.getElementById('btnHeaderRefresh');
+  if (el) { el.classList.add('spinning'); el.disabled = true; }
+  const startedAt = Date.now();
+  let ok = false;
+  try {
+    ok = await refreshAppState();
+  } catch (e) {
+    ok = false;
+  }
+  // Biar animasinya terasa wajar walau koneksi super cepat (minimal ~0,7 detik)
+  const wait = Math.max(0, 700 - (Date.now() - startedAt));
+  setTimeout(function () {
+    if (el) { el.classList.remove('spinning'); el.disabled = false; }
+    __headerRefreshBusy = false;
+    if (ok) showToast('success', 'Diperbarui', 'Data terbaru berhasil dimuat.');
+    else showToast('error', 'Gagal', 'Tidak bisa memuat data. Cek koneksi lalu coba lagi.');
+  }, wait);
+}
+
 function updateUIApp() {
   try {
     const user = getCurrentUser();
@@ -322,14 +354,16 @@ function updateUIApp() {
     if (pass) pass.textContent = settings.depositInfo || 'murah123';
     const storPass = safeGet('storPassword');
     if (storPass) storPass.value = settings.depositInfo || 'murah123';
+    // Kolom "Password Hari Ini" (hanya untuk dilihat) = password yang diset admin di dashboard.
+    // Password yang dikirim ke server per-email tetap yang ditaruh user di samping emailnya.
     const storBekasPass = safeGet('storBekasPassword');
-    if (storBekasPass) storBekasPass.value = settings.depositBekasInfo || 'murah123';
+    if (storBekasPass) storBekasPass.value = getPasswordHariIni(settings.depositBekasInfo);
     const storBiasaPass = safeGet('storBiasaPassword');
-    if (storBiasaPass) storBiasaPass.value = settings.depositBiasaInfo || 'murah123';
+    if (storBiasaPass) storBiasaPass.value = getPasswordHariIni(settings.depositBiasaInfo);
     const storOldPass = safeGet('storOldPassword');
-    if (storOldPass) storOldPass.value = settings.depositOldInfo || 'murah123';
+    if (storOldPass) storOldPass.value = getPasswordHariIni(settings.depositOldInfo);
     const storCaptchaPass = safeGet('storCaptchaPassword');
-    if (storCaptchaPass) storCaptchaPass.value = settings.depositCaptchaInfo || 'murah123';
+    if (storCaptchaPass) storCaptchaPass.value = getPasswordHariIni(settings.depositCaptchaInfo);
 
     // Rules
     const rs = safeGet('rulesStatusStoran');
@@ -972,7 +1006,9 @@ function updateStorCards() {
     const freshStatus = settings.depositStatus || 'OPEN';
     const bekasStatus = settings.depositBekasStatus || 'OPEN';
     const freshName = settings.depositName || 'Gmail';
-    const bekasName = settings.depositBekasName || 'Gmail';
+    // Nama kartu oranye WAJIB memuat "2FA" (nama dari server yang cuma "Gmail Bekas" otomatis jadi "Gmail Bekas 2FA")
+    const bekasNameRaw = settings.depositBekasName || '';
+    const bekasName = /2fa/i.test(bekasNameRaw) ? bekasNameRaw : 'Gmail Bekas 2FA';
     const freshPrice = settings.depositPrice || 4000;
     const bekasPrice = settings.depositBekasPrice || 3000;
     const freshInfo = settings.depositInfo || '';
@@ -1099,7 +1135,7 @@ function initStorCards() {
       bekasCard.addEventListener('click', function(e) {
         const settings = loadSettings();
         if (settings.depositBekasStatus !== 'OPEN') {
-          showErrorModal('Ditutup', 'Storan Bekas sedang ditutup oleh admin.', false);
+          showErrorModal('Ditutup', 'Storan Bekas 2FA sedang ditutup oleh admin.', false);
           return;
         }
         showBekasForm();
@@ -1255,7 +1291,7 @@ const STOR_TYPE_FIELDS = {
   old:     { password: 'storOldPassword',     input: 'storOldInput',     counter: updateCounterOld,     submitBtn: 'storOldSubmitBtn' },
   captcha: { password: 'storCaptchaPassword', input: 'storCaptchaInput', counter: updateCounterCaptcha, submitBtn: 'storCaptchaSubmitBtn' }
 };
-const STOR_TYPE_LABELS = { fresh: 'Fresh', bekas: 'Bekas', biasa: 'Bekas Biasa', old: 'Bekas Old', captcha: 'Email Captcha' };
+const STOR_TYPE_LABELS = { fresh: 'Fresh', bekas: 'Bekas 2FA', biasa: 'Bekas Biasa', old: 'Bekas Old', captcha: 'Email Captcha' };
 
 async function submitStor(type) {
   // Jika type tidak diberikan, coba deteksi otomatis dari form yang lagi tampil
@@ -1293,7 +1329,7 @@ async function submitStor(type) {
     }
   } else if (type === 'bekas') {
     if (settings.depositBekasStatus !== 'OPEN') {
-      showErrorModal('Ditutup', 'Storan Bekas sedang ditutup oleh admin.', false);
+      showErrorModal('Ditutup', 'Storan Bekas 2FA sedang ditutup oleh admin.', false);
       return;
     }
   } else if (type === 'biasa') {
