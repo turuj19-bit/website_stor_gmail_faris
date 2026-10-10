@@ -245,8 +245,13 @@ function closeWelcomeToast() {
 // ============================================================
 // Teks keterangan bawaan database (bukan password) tidak boleh tampil di kolom "Password Hari Ini".
 const STOR_INFO_BUKAN_PASSWORD = ['bekas biasa, tanpa 2fa', 'akun lama, sudah lama dibuat'];
+// Password bawaan lama "murah123" dianggap kosong (password diatur dari dasbor admin).
+function cleanPass(v) {
+  const s = String(v == null ? '' : v).trim();
+  return s.toLowerCase() === 'murah123' ? '' : s;
+}
 function getPasswordHariIni(info) {
-  const v = String(info == null ? '' : info).trim();
+  const v = cleanPass(info);
   if (!v || STOR_INFO_BUKAN_PASSWORD.indexOf(v.toLowerCase()) !== -1) return '';
   return v;
 }
@@ -327,9 +332,9 @@ function updateUIApp() {
     const rate = safeGet('statusRate');
     if (rate) rate.textContent = 'Rp ' + formatRupiah(settings.depositPrice || 4000) + ' / email';
     const pass = safeGet('statusPass');
-    if (pass) pass.textContent = settings.depositInfo || '';
+    if (pass) pass.textContent = cleanPass(settings.depositInfo);
     const storPass = safeGet('storPassword');
-    if (storPass) storPass.value = settings.depositInfo || '';
+    if (storPass) storPass.value = cleanPass(settings.depositInfo);
     // Kolom "Password Hari Ini" (hanya untuk dilihat) = password yang diset admin di dashboard.
     // Password yang dikirim ke server per-email tetap yang ditaruh user di samping emailnya.
     const storBekasPass = safeGet('storBekasPassword');
@@ -990,8 +995,8 @@ function updateStorCards() {
     const bekasName = /2fa/i.test(bekasNameRaw) ? bekasNameRaw : 'Gmail Bekas 2FA';
     const freshPrice = settings.depositPrice || 4000;
     const bekasPrice = settings.depositBekasPrice || 3000;
-    const freshInfo = settings.depositInfo || '';
-    const bekasInfo = settings.depositBekasInfo || '';
+    const freshInfo = cleanPass(settings.depositInfo);
+    const bekasInfo = cleanPass(settings.depositBekasInfo);
 
     const freshCard = document.getElementById('storCardFresh');
     const freshStatusEl = document.getElementById('storCardFreshStatus');
@@ -1054,7 +1059,7 @@ function updateStorCards() {
       }
       if (rateEl) rateEl.textContent = 'Rp ' + formatRupiah(item.cfg.price);
       if (nameEl) nameEl.textContent = item.cfg.name;
-      if (infoEl) infoEl.textContent = item.cfg.info || '';
+      if (infoEl) infoEl.textContent = cleanPass(item.cfg.info);
       if (closedMsgEl) closedMsgEl.style.display = isOpen ? 'none' : 'block';
     });
 
