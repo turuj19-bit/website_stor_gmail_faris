@@ -247,7 +247,7 @@ function closeWelcomeToast() {
 const STOR_INFO_BUKAN_PASSWORD = ['bekas biasa, tanpa 2fa', 'akun lama, sudah lama dibuat'];
 function getPasswordHariIni(info) {
   const v = String(info == null ? '' : info).trim();
-  if (!v || STOR_INFO_BUKAN_PASSWORD.indexOf(v.toLowerCase()) !== -1) return 'murah123';
+  if (!v || STOR_INFO_BUKAN_PASSWORD.indexOf(v.toLowerCase()) !== -1) return '';
   return v;
 }
 
@@ -327,9 +327,9 @@ function updateUIApp() {
     const rate = safeGet('statusRate');
     if (rate) rate.textContent = 'Rp ' + formatRupiah(settings.depositPrice || 4000) + ' / email';
     const pass = safeGet('statusPass');
-    if (pass) pass.textContent = settings.depositInfo || 'murah123';
+    if (pass) pass.textContent = settings.depositInfo || '';
     const storPass = safeGet('storPassword');
-    if (storPass) storPass.value = settings.depositInfo || 'murah123';
+    if (storPass) storPass.value = settings.depositInfo || '';
     // Kolom "Password Hari Ini" (hanya untuk dilihat) = password yang diset admin di dashboard.
     // Password yang dikirim ke server per-email tetap yang ditaruh user di samping emailnya.
     const storBekasPass = safeGet('storBekasPassword');
@@ -682,6 +682,7 @@ function getPendingRatePerItem(h, settings) {
   if (jenis === 'bekas') return Number(settings.depositBekasPrice) || 0;
   if (jenis === 'biasa') return Number(settings.depositBiasaPrice) || 0;
   if (jenis === 'old') return Number(settings.depositOldPrice) || 0;
+  if (jenis === 'captcha') return Number(settings.depositCaptchaPrice) || 0;
   return Number(settings.depositPrice) || 0;
 }
 
@@ -814,6 +815,8 @@ function showPage(page) {
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    if (page === 'referral') loadReferral();
 
     const needRefresh = ['beranda', 'stor', 'rules', 'riwayat', 'leaderboard', 'profil'];
     if (needRefresh.includes(page) && getToken()) {
@@ -953,7 +956,7 @@ function getStorBiasaConfig() {
     status: settings.depositBiasaStatus || 'OPEN',
     name: settings.depositBiasaName || 'Gmail Bekas Biasa',
     price: settings.depositBiasaPrice || 2500,
-    info: settings.depositBiasaInfo || '-'
+    info: settings.depositBiasaInfo || ''
   };
 }
 function getStorOldConfig() {
@@ -962,7 +965,7 @@ function getStorOldConfig() {
     status: settings.depositOldStatus || 'OPEN',
     name: settings.depositOldName || 'Gmail Bekas Old',
     price: settings.depositOldPrice || 2000,
-    info: settings.depositOldInfo || '-'
+    info: settings.depositOldInfo || ''
   };
 }
 
@@ -972,7 +975,7 @@ function getStorCaptchaConfig() {
     status: settings.depositCaptchaStatus || 'OPEN',
     name: settings.depositCaptchaName || 'Email Captcha',
     price: settings.depositCaptchaPrice || 2000,
-    info: settings.depositCaptchaInfo || '-'
+    info: settings.depositCaptchaInfo || ''
   };
 }
 
@@ -1335,7 +1338,7 @@ async function submitStor(type) {
   const nama = String(user.fullname || user.username || 'User');
   const now0 = new Date();
   const tanggalStr = String(now0.getDate()).padStart(2, '0') + '/' + String(now0.getMonth() + 1).padStart(2, '0') + '/' + now0.getFullYear();
-  const password = passwordEl ? passwordEl.value : 'murah123';
+  const password = passwordEl ? passwordEl.value : '';
   const text = inputEl ? inputEl.value.trim() : '';
 
   if (!text) { showErrorModal('Gagal', 'Masukkan daftar email.'); return; }
@@ -1384,7 +1387,7 @@ async function submitStor(type) {
       kontakType,
       kontak,
       nama,
-      password: password || 'murah123',
+      password: password || '',
       emails: lines,
       tanggal: tanggalStr,
       jenis: type   // <-- PASTIKAN ADA
@@ -1583,4 +1586,126 @@ function showErrorModal(title, desc, showRulesHint) {
   if (d) { d.style.whiteSpace = ''; d.style.textAlign = ''; d.style.maxHeight = ''; d.style.overflowY = ''; }
   if (d) d.textContent = (showRulesHint === false) ? desc : desc + ' Lihat rules.';
   openModal('modalError');
+}
+
+// ============================================================
+// REFERAL
+// Kode referal = ID numerik user (sama dengan ID di halaman Profil).
+// Link = alamat web ini + ?ref=KODE. Kode dari link disimpan di
+// localStorage ('storfaris_ref') lalu ikut dikirim saat daftar.
+// Bonus saldo diproses di server saat storan pertama user baru di-ACC.
+// ============================================================
+let referralData = null;
+
+function getReferralCode() {
+  const user = getCurrentUser();
+  return user ? String(getNumericId(user.id)) : '';
+}
+
+function getReferralLink() {
+  const code = getReferralCode();
+  if (!code) return '';
+  return location.origin + location.pathname + '?ref=' + encodeURIComponent(code);
+}
+
+// Sertakan kode referal saat user baru mendaftar
+(function() {
+  const originalApiRequest = window.apiRequest;
+  if (typeof originalApiRequest !== 'function') return;
+  window.apiRequest = async function(action, data, ...rest) {
+    if (/regist|signup|sign_up|daftar/i.test(String(action || '')) && data && typeof data === 'object') {
+      try {
+        const ref = localStorage.getItem('storfaris_ref');
+        if (ref && !data.referralCode) data.referralCode = ref;
+      } catch (_) {}
+    }
+    return originalApiRequest(action, data, ...rest);
+  };
+})();
+
+async function loadReferral() {
+  renderReferral(referralData);
+  try {
+    const res = await apiRequest('getReferral', {});
+    referralData = (res && (res.data || res)) || null;
+  } catch (e) {
+    console.warn('getReferral error:', e);
+  }
+  renderReferral(referralData);
+}
+
+function renderReferral(d) {
+  try {
+    d = d || {};
+    const codeEl = safeGet('refCodeInput');
+    const linkEl = safeGet('refLinkInput');
+    if (codeEl) codeEl.value = d.code || getReferralCode();
+    if (linkEl) linkEl.value = getReferralLink();
+
+    const list = Array.isArray(d.list) ? d.list : [];
+    const balance = Number(d.balance) || 0;
+    const done = (d.totalRewarded != null) ? Number(d.totalRewarded) : list.filter(function(x) { return x && x.rewarded; }).length;
+    const balEl = safeGet('refBalance');
+    if (balEl) balEl.innerHTML = '<span class="currency">Rp</span>' + formatRupiah(balance);
+    const doneEl = safeGet('refCountDone');
+    if (doneEl) doneEl.textContent = done;
+    const bonusEl = safeGet('refBonus');
+    if (bonusEl) bonusEl.textContent = (Number(d.bonusPerUser) > 0) ? ('Rp' + formatRupiah(Number(d.bonusPerUser))) : '-';
+    const cntEl = safeGet('refListCount');
+    if (cntEl) cntEl.textContent = list.length;
+
+    const box = safeGet('refUserList');
+    if (!box) return;
+    if (list.length === 0) {
+      box.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fas fa-user-plus"></i></div><p>Belum ada yang daftar lewat link kamu.</p></div>';
+      return;
+    }
+    box.innerHTML = list.map(function(u) {
+      const name = (u && (u.fullname || u.name || u.username)) || 'User';
+      let avHtml = '', avStyle = '';
+      try {
+        const av = buildAvatarVisual({ id: u.id, avatar: u.avatar, fullname: name, username: u.username || name });
+        avHtml = av.contentHtml; avStyle = av.styleAttr;
+      } catch (_) {
+        avHtml = escapeHtml(String(name).charAt(0).toUpperCase());
+      }
+      const ok = (u && u.rewarded) ? '<i class="fas fa-circle-check ref-user-ok"></i>' : '';
+      return '<div class="ref-user"><div class="user-avatar ref-av" style="' + avStyle + '">' + avHtml + '</div>' +
+             '<div class="ref-user-name">' + escapeHtml(name) + '</div>' + ok + '</div>';
+    }).join('');
+  } catch (e) {
+    console.warn('renderReferral error:', e);
+  }
+}
+
+function copyReferral(kind) {
+  const text = (kind === 'code') ? (safeGet('refCodeInput') || {}).value : (safeGet('refLinkInput') || {}).value;
+  if (!text) return;
+  const done = function() { showToast('success', 'Tersalin', (kind === 'code' ? 'Kode' : 'Link') + ' referal berhasil disalin.'); };
+  const fallback = function() {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      done();
+    } catch (_) { showToast('error', 'Gagal', 'Tidak bisa menyalin, salin manual ya.'); }
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(fallback);
+  } else {
+    fallback();
+  }
+}
+
+function shareReferral() {
+  const link = getReferralLink();
+  if (!link) return;
+  const msg = 'Gabung STOR GMAIL FARIS lewat link referal aku ya: ' + link;
+  if (navigator.share) {
+    navigator.share({ title: 'STOR GMAIL FARIS', text: msg, url: link }).catch(function() {});
+  } else {
+    copyReferral('link');
+  }
 }
