@@ -41,16 +41,14 @@
   </script>
   <link rel="stylesheet" href="css/style.css" />
   <script>
-    // REFERAL: simpan kode referal dari link (?ref=KODE) supaya tetap
-    // tersimpan walau user baru daftar beberapa saat kemudian.
+    // REFERAL: kode dari link (?ref=KODE) hanya dipegang sementara di memori
+    // halaman ini (TIDAK disimpan di browser). Kode user sendiri & hubungan
+    // referal disimpan di Supabase.
     (function() {
       try {
         var m = /[?&]ref=([^&#]+)/i.exec(location.search || '');
-        if (m) {
-          var code = decodeURIComponent(m[1]).replace(/[^A-Za-z0-9_-]/g, '').slice(0, 40);
-          if (code) localStorage.setItem('storfaris_ref', code);
-        }
-      } catch (e) {}
+        window.__pendingRef = m ? decodeURIComponent(m[1]).replace(/[^A-Za-z0-9_-]/g, '').slice(0, 40) : '';
+      } catch (e) { window.__pendingRef = ''; }
     })();
   </script>
   <script>
@@ -722,7 +720,11 @@
           <span class="value" id="statusRate">Rp 4.000 / email</span>
         </div>
       </div>
-      <a href="https://lynk.id/infostorgmailfaris" target="_blank" rel="noopener noreferrer" class="btn-wa-masing"><i class="fab fa-whatsapp"></i> Info Storan Gmail Faris – Klik di sini</a>
+      <a href="https://lynk.id/infostorgmailfaris" target="_blank" rel="noopener noreferrer" class="cs-card is-wa" style="margin:14px 0;">
+        <span class="cs-card-icon"><i class="fas fa-circle-info"></i></span>
+        <span class="cs-card-body"><span class="cs-card-title">Info Storan Gmail Faris</span><span class="cs-card-sub">Buka halaman info lengkap</span></span>
+        <i class="fas fa-arrow-up-right-from-square cs-card-chevron"></i>
+      </a>
       <div class="stats-grid-3">
         <div class="stat-item pending"><div class="num" id="berandaStatPending">0</div><div class="lbl">Pending</div></div>
         <div class="stat-item diterima"><div class="num" id="berandaStatDiterima">0</div><div class="lbl">Diterima</div></div>
@@ -930,7 +932,7 @@ jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></
         <div class="ref-banner-nominal" id="refBalance"><span class="currency">Rp</span>0</div>
         <div class="ref-banner-chips">
           <span class="ref-chip"><i class="fas fa-user-check"></i> <b id="refCountDone">0</b> user berhasil</span>
-          <span class="ref-chip"><i class="fas fa-coins"></i> Bonus <b id="refBonus">-</b> / user</span>
+          <span class="ref-chip"><i class="fas fa-coins"></i> Bonus <b id="refBonus">-</b> / email</span>
         </div>
       </div>
 
@@ -948,13 +950,23 @@ jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></
         <button type="button" class="ref-share-btn" onclick="shareReferral()"><i class="fas fa-share-nodes"></i> Bagikan Link Referal</button>
       </div>
 
+      <div class="card" id="refEnterCard" style="display:none;">
+        <div class="card-title"><i class="fas fa-link"></i> Punya Kode Referal Teman?</div>
+        <p class="ref-rules" style="list-style:none;padding-left:0;margin-bottom:10px;">Masukkan kode referal temanmu supaya terhubung. Setelah terhubung, kolom ini hilang.</p>
+        <div class="ref-copy-row" style="margin-bottom:0;">
+          <input type="text" id="refEnterInput" placeholder="Masukkan kode referal" autocomplete="off" maxlength="40" oninput="this.value=this.value.replace(/[^A-Za-z0-9_-]/g,'')" style="cursor:text;" />
+          <button type="button" class="ref-copy-btn" onclick="submitReferralCode()"><i class="fas fa-link"></i> Hubungkan</button>
+        </div>
+      </div>
+
       <div class="card">
         <div class="card-title"><i class="fas fa-circle-info"></i> Cara Kerja</div>
         <ul class="ref-rules">
           <li>Bagikan link atau kode referal kamu ke teman.</li>
-          <li>Teman daftar lewat link kamu, lalu <strong>stor Gmail pertamanya</strong> dan diterima admin.</li>
-          <li>Kamu langsung dapat bonus saldo, otomatis masuk ke saldo utama dan bisa ditarik.</li>
-          <li>Bonus hanya <strong>1x untuk tiap teman</strong>. Stor berikutnya dari teman yang sama tidak menambah bonus, cari teman baru lagi ya.</li>
+          <li>Teman daftar lewat link kamu, atau memasukkan kode kamu di form Daftar / menu Referal.</li>
+          <li>Bonus dihitung dari <strong>storan pertama</strong> teman sesudah terhubung: setiap email yang diterima admin dalam storan itu = bonus per email untuk kamu.</li>
+          <li>Bonus otomatis masuk ke saldo utama dan bisa ditarik.</li>
+          <li>Storan berikutnya dari teman yang sama <strong>tidak menambah bonus</strong>, cari teman baru lagi ya.</li>
         </ul>
       </div>
 
@@ -1723,7 +1735,7 @@ contoh3@gmail.com</code></li>
     // (kodenya sudah terisi otomatis dari link).
     (function() {
       try {
-        var ref = localStorage.getItem('storfaris_ref');
+        var ref = window.__pendingRef;
         var g = document.getElementById('regReferralGroup');
         var i = document.getElementById('regReferral');
         if (ref && g && i) { i.value = ref; g.style.display = 'none'; }
@@ -1733,7 +1745,7 @@ contoh3@gmail.com</code></li>
   <script src="js/config.js"></script>
   <script src="js/core.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/app.js?v=20261012"></script>
+  <script src="js/app.js?v=20261014"></script>
   <script src="js/profile.js"></script>
   <script src="js/withdrawal.js"></script>
   <script src="js/history.js"></script>
