@@ -515,6 +515,50 @@
     .ref-user .ref-av { width: 42px !important; height: 42px !important; min-width: 42px; flex-shrink: 0; }
     .ref-user-name { flex: 1; min-width: 0; font-weight: 700; font-size: 14.5px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .ref-user-ok { color: #22C55E; font-size: 16px; flex-shrink: 0; }
+
+    /* ===== MODAL TENTANG: semua kotak disamakan dengan kotak Admin CS ===== */
+    #modalInfo .info-card {
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 16px; margin-bottom: 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(28,79,209,0.40);
+      background: linear-gradient(135deg, rgba(28,79,209,0.13), rgba(28,79,209,0.02));
+      box-shadow: 0 8px 20px rgba(28,79,209,0.14);
+      transition: transform 0.18s ease;
+    }
+    #modalInfo .info-card:active { transform: scale(0.98); }
+    #modalInfo .info-card::before {
+      content: ''; position: absolute; top: 0; left: -60%;
+      width: 40%; height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255,255,255,0.35), transparent);
+      transform: skewX(-20deg);
+      animation: csShine 4.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    #modalInfo .info-card .ic-icon {
+      width: 48px; height: 48px; border-radius: 15px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; color: #fff;
+      background: linear-gradient(135deg, var(--blue-primary), var(--blue-bright));
+      box-shadow: 0 6px 14px rgba(28,79,209,0.38);
+    }
+    #modalInfo .info-card .ic-body { flex: 1; min-width: 0; }
+    #modalInfo .info-card .ic-title { font-size: 15px; font-weight: 800; color: var(--text-primary); }
+    #modalInfo .info-card[onclick]::after {
+      content: '\f054'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 12px;
+      width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-primary); background: rgba(128,128,128,0.12);
+    }
+    #modalInfo .info-card.is-wa { border-color: rgba(37,211,102,0.45); background: linear-gradient(135deg, rgba(37,211,102,0.14), rgba(37,211,102,0.03)); box-shadow: 0 8px 20px rgba(37,211,102,0.16); }
+    #modalInfo .info-card.is-wa .ic-icon { background: linear-gradient(135deg, #25D366, #128C7E); box-shadow: 0 6px 14px rgba(37,211,102,0.40); }
+    #modalInfo .info-card.is-tg { border-color: rgba(34,158,217,0.45); background: linear-gradient(135deg, rgba(34,158,217,0.14), rgba(34,158,217,0.03)); box-shadow: 0 8px 20px rgba(34,158,217,0.16); }
+    #modalInfo .info-card.is-tg .ic-icon { background: linear-gradient(135deg, #2AABEE, #1b7fb3); box-shadow: 0 6px 14px rgba(34,158,217,0.40); }
+    #modalInfo .info-card.is-sys { border-color: rgba(34,197,94,0.40); background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(34,197,94,0.02)); box-shadow: 0 8px 20px rgba(34,197,94,0.13); }
+    #modalInfo .info-card.is-sys .ic-icon { background: linear-gradient(135deg, #22C55E, #15803d); box-shadow: 0 6px 14px rgba(34,197,94,0.38); }
+    #modalInfo .info-card.is-time { border-color: rgba(124,110,230,0.42); background: linear-gradient(135deg, rgba(124,110,230,0.13), rgba(124,110,230,0.02)); box-shadow: 0 8px 20px rgba(124,110,230,0.14); }
+    #modalInfo .info-card.is-time .ic-icon { background: linear-gradient(135deg, #7c6ee6, #a78bfa); box-shadow: 0 6px 14px rgba(124,110,230,0.38); }
   </style>
 </head>
 <body>
@@ -578,6 +622,7 @@
         <div class="form-group"><label>Email</label><input type="email" id="regEmailPhone" placeholder="email@contoh.com" required /></div>
         <div class="form-group"><label>Password</label><input type="password" id="regPassword" placeholder="Buat password" autocomplete="new-password" required /></div>
         <div class="form-group"><label>Konfirmasi Password</label><input type="password" id="regConfirmPassword" placeholder="Ulangi password" autocomplete="new-password" required /></div>
+        <div class="form-group" id="regReferralGroup"><label>Kode Referal <span style="font-weight:500;opacity:0.7;">(opsional)</span></label><input type="text" id="regReferral" placeholder="Masukkan kode referal jika ada" autocomplete="off" maxlength="40" oninput="this.value=this.value.replace(/[^A-Za-z0-9_-]/g,'')" /></div>
         <button type="submit" class="btn-auth" id="registerBtn"><span class="spinner"></span><span class="btn-text"><i class="fas fa-user-plus"></i> Daftar Sekarang</span></button>
         <div class="toggle-link" onclick="switchAuthTab('login')">Sudah punya akun? <span>Login</span></div>
       </form>
@@ -1257,12 +1302,18 @@ contoh3@gmail.com</code></li>
           </div>
 
           <!-- Link saluran peraturan lengkap -->
-          <a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" class="btn-wa-channel" style="display:inline-flex;width:100%;justify-content:center;margin-top:12px;">
-            <i class="fab fa-whatsapp"></i> Rules Selengkapnya – Klik di sini
-          </a>
-          <a href="https://t.me/farisgmail1" target="_blank" rel="noopener noreferrer" class="btn-wa-channel" style="display:inline-flex;width:100%;justify-content:center;margin-top:10px;background:linear-gradient(135deg,#229ED9,#1b7fb3);color:#fff;border-color:transparent;text-decoration:none;">
-            <i class="fab fa-telegram-plane"></i>&nbsp;Saluran Telegram Resmi – Klik di sini
-          </a>
+          <div class="cs-stack" style="margin-top:14px;margin-bottom:0;">
+            <a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" class="cs-card is-wa">
+              <span class="cs-card-icon"><i class="fab fa-whatsapp"></i></span>
+              <span class="cs-card-body"><span class="cs-card-title">Rules Selengkapnya</span><span class="cs-card-sub">Buka Saluran WhatsApp</span></span>
+              <i class="fas fa-chevron-right cs-card-chevron"></i>
+            </a>
+            <a href="https://t.me/rulesgmail01" target="_blank" rel="noopener noreferrer" class="cs-card is-tg">
+              <span class="cs-card-icon"><i class="fab fa-telegram"></i></span>
+              <span class="cs-card-body"><span class="cs-card-title">Rules Selengkapnya</span><span class="cs-card-sub">Buka Saluran Telegram</span></span>
+              <i class="fas fa-chevron-right cs-card-chevron"></i>
+            </a>
+          </div>
 
         </div> <!-- end rules-content -->
       </div> <!-- end card -->
@@ -1576,7 +1627,7 @@ contoh3@gmail.com</code></li>
     </form>
   </div></div>
 
-  <div class="modal-overlay" id="modalInfo"><div class="modal"><button class="modal-close" onclick="closeModal('modalInfo')"><i class="fas fa-xmark"></i></button><div class="modal-title">Tentang STOR GMAIL FARIS</div><div class="modal-sub">Platform untuk mengelola proses stor secara sederhana, cepat, dan terorganisir.</div><div class="cs-stack" style="margin-bottom:12px;"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" class="cs-card is-wa"><span class="cs-card-icon"><i class="fab fa-whatsapp"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS WhatsApp</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a><a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" class="cs-card is-tg"><span class="cs-card-icon"><i class="fab fa-telegram"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS Telegram</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a></div><div class="info-card"><div class="ic-icon"><i class="fas fa-clock"></i></div><div class="ic-body"><div class="ic-title">Jam Operasional</div><div class="ic-desc">Senin - Jumat · 09:00 – 17:00</div></div></div><div class="info-card"><div class="ic-icon"><i class="fas fa-signal"></i></div><div class="ic-body"><div class="ic-title">Status Sistem</div><div class="ic-desc"><span class="status-online"><span class="dot"></span> ONLINE</span></div></div></div><div class="info-card" style="cursor:pointer;" onclick="window.open('https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran WhatsApp</div><div class="ic-desc"><a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp"></i> Gabung Saluran</a></div></div></div><div class="info-card" style="cursor:pointer;" onclick="window.open('https://t.me/farisgmail1','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran Telegram</div><div class="ic-desc"><a href="https://t.me/farisgmail1" target="_blank" rel="noopener noreferrer" style="color:#229ED9;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-telegram-plane"></i> Gabung Saluran</a></div></div></div><div style="text-align:center;color:var(--text-secondary);font-size:13px;margin-top:8px;">STOR GMAIL FARIS v 1.1 · &copy; 2026</div></div></div>
+  <div class="modal-overlay" id="modalInfo"><div class="modal"><button class="modal-close" onclick="closeModal('modalInfo')"><i class="fas fa-xmark"></i></button><div class="modal-title">Tentang STOR GMAIL FARIS</div><div class="modal-sub">Platform untuk mengelola proses stor secara sederhana, cepat, dan terorganisir.</div><div class="cs-stack" style="margin-bottom:12px;"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" class="cs-card is-wa"><span class="cs-card-icon"><i class="fab fa-whatsapp"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS WhatsApp</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a><a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" class="cs-card is-tg"><span class="cs-card-icon"><i class="fab fa-telegram"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS Telegram</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a></div><div class="info-card is-time"><div class="ic-icon"><i class="fas fa-clock"></i></div><div class="ic-body"><div class="ic-title">Jam Operasional</div><div class="ic-desc">Senin - Jumat · 09:00 – 17:00</div></div></div><div class="info-card is-sys"><div class="ic-icon"><i class="fas fa-signal"></i></div><div class="ic-body"><div class="ic-title">Status Sistem</div><div class="ic-desc"><span class="status-online"><span class="dot"></span> ONLINE</span></div></div></div><div class="info-card is-wa" style="cursor:pointer;" onclick="window.open('https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran WhatsApp</div><div class="ic-desc"><a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp"></i> Gabung Saluran</a></div></div></div><div class="info-card is-tg" style="cursor:pointer;" onclick="window.open('https://t.me/farisgmail1','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran Telegram</div><div class="ic-desc"><a href="https://t.me/farisgmail1" target="_blank" rel="noopener noreferrer" style="color:#229ED9;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-telegram-plane"></i> Gabung Saluran</a></div></div></div><div style="text-align:center;color:var(--text-secondary);font-size:13px;margin-top:8px;">STOR GMAIL FARIS v 1.1 · &copy; 2026</div></div></div>
 
   <!-- ===== MODAL TARIK SALDO (UPDATED) ===== -->
   <div class="modal-overlay" id="modalTarikSaldo">
@@ -1667,10 +1718,22 @@ contoh3@gmail.com</code></li>
     })();
   </script>
 
+  <script>
+    // Kolom kode referal disembunyikan kalau user daftar lewat link referal
+    // (kodenya sudah terisi otomatis dari link).
+    (function() {
+      try {
+        var ref = localStorage.getItem('storfaris_ref');
+        var g = document.getElementById('regReferralGroup');
+        var i = document.getElementById('regReferral');
+        if (ref && g && i) { i.value = ref; g.style.display = 'none'; }
+      } catch (e) {}
+    })();
+  </script>
   <script src="js/config.js"></script>
   <script src="js/core.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/app.js?v=20261011"></script>
+  <script src="js/app.js?v=20261012"></script>
   <script src="js/profile.js"></script>
   <script src="js/withdrawal.js"></script>
   <script src="js/history.js"></script>
