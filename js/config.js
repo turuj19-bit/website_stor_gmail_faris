@@ -3,8 +3,8 @@
     // ============================================================
     // KONFIGURASI SUPABASE
     // ============================================================
-    const SUPABASE_URL = 'https://ijpsiszladtypfjqwidc.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqcHNpc3psYWR0eXBmanF3aWRjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MDY4NjI3OSwiZXhwIjoyMTA2MjYyMjc5fQ.Zj9oCRUgyFiSVbMBp3UCjBwkBwkZXZS8oBzDGPn8Y4M';
+    const SUPABASE_URL = 'https://vqukenaoxkxjhqziflqz.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZxdWtlbmFveGt4amhxemlmbHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE2MzgyMDgsImV4cCI6MjEwNzIxNDIwOH0.Li5NsCGxmTA4JkZ-ZzmzJ7VY6kTynyUpDZuekyINyvQ';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const ACTION_MAP = {
