@@ -184,29 +184,6 @@
     }
 
     /* ===== NOTIF MENGAMBANG: PESAN MASUK ===== */
-    /* ===== Tombol Refresh di header (antara Profil & Inbox) ===== */
-    .btn-refresh {
-      flex: 0 0 auto;
-      width: 36px; height: 36px;
-      display: inline-flex; align-items: center; justify-content: center;
-      border-radius: 50%;
-      border: 1px solid var(--border-subtle);
-      background: var(--bg-card-alt);
-      color: var(--blue-bright);
-      font-size: 14px;
-      cursor: pointer;
-      padding: 0;
-      margin: 0 6px;
-      -webkit-tap-highlight-color: transparent;
-      transition: background .2s, transform .15s, opacity .2s;
-    }
-    .btn-refresh:active { transform: scale(0.92); }
-    .btn-refresh:disabled { opacity: .7; cursor: default; }
-    .btn-refresh.spinning i { animation: btnRefreshSpin .8s linear infinite; }
-    @keyframes btnRefreshSpin { to { transform: rotate(360deg); } }
-    @media (max-width: 380px) {
-      .btn-refresh { width: 32px; height: 32px; margin: 0 4px; font-size: 13px; }
-    }
     .inbox-float-notif {
       position: fixed;
       top: 14px;
@@ -514,9 +491,6 @@
             <div class="user-avatar" id="headerAvatar">U</div>
             <span class="user-name" id="headerName">User</span>
           </div>
-          <button type="button" class="btn-refresh" id="btnHeaderRefresh" onclick="refreshFromHeader(this)" title="Refresh" aria-label="Refresh">
-            <i class="fas fa-rotate-right"></i>
-          </button>
           <button class="btn-inbox" onclick="openInbox()" title="Pesan / Inbox">
             <svg class="ib-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
               <path class="ib-arrow" d="M12 1.8v6.4M9.3 5.7 12 8.4l2.7-2.7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
@@ -603,9 +577,14 @@
         <div class="stat-item total"><div class="num" id="berandaStatTotal">0</div><div class="lbl">Total Storan</div></div>
       </div>
       <div class="price-card"><span class="label"><i class="fas fa-fire ei ei-orange"></i> Harga Saat Ini</span><span class="value" id="berandaHarga">Rp 3K - 4K - 5K</span><span class="sub">per Gmail / item · Harga dapat berubah sesuai ketentuan.</span></div>
-      <a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:block;">
-        <div class="card card-alt card-cs"><div class="card-title"><i class="fas fa-headset"></i> Admin CS</div><div style="display:flex;align-items:center;gap:10px;color:var(--text-secondary);"><i class="fab fa-whatsapp" style="font-size:40px;color:#25D366;"></i><span style="font-size:14px;">Klik untuk chat</span></div></div>
-      </a>
+      <div style="display:block;">
+        <div class="card card-alt card-cs"><div class="card-title"><i class="fas fa-headset"></i> Admin CS</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" style="flex:1;min-width:0;display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-secondary);"><i class="fab fa-whatsapp" style="font-size:36px;color:#25D366;flex-shrink:0;"></i><span style="font-size:13px;line-height:1.3;"><strong style="color:var(--text-primary);">WhatsApp</strong><br>Klik untuk chat</span></a>
+            <a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" style="flex:1;min-width:0;display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-secondary);"><i class="fab fa-telegram" style="font-size:36px;color:#229ED9;flex-shrink:0;"></i><span style="font-size:13px;line-height:1.3;"><strong style="color:var(--text-primary);">Telegram</strong><br>Klik untuk chat</span></a>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- STOR (dua pilihan di tengah layar, form full screen) -->
@@ -715,8 +694,8 @@
             <input type="text" id="storBekasPassword" readonly style="background:var(--bg-card-alt);cursor:default;" />
             <div class="helper">Terisi otomatis mengikuti password yang diset admin. Pastikan sudah sesuai rules.</div>
           </div>
-          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storBekasInput" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" style="white-space:pre;overflow-x:auto;overflow-wrap:normal;font-size:13px;" placeholder="jokopurworo@gmail.com gundulmu123 2n5a dzmc 6tiz av5l uzok vwwf mtit 7kyi
-jokopurworo2@gmail.com rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></textarea><div class="helper" id="storBekasCounter">Terdeteksi: 0 item</div></div>
+          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storBekasInput" style="font-size:13px;" placeholder="jokopurworo@gmail.com&#160;gundulmu123 2n5a dzmc 6tiz av5l uzok vwwf mtit 7kyi
+jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></textarea><div class="helper" id="storBekasCounter">Terdeteksi: 0 item</div></div>
           <button class="btn-submit" id="storBekasSubmitBtn" onclick="submitStor('bekas')"><span class="spinner"></span><span class="btn-text"><i class="fas fa-paper-plane"></i> Kirim Setoran Bekas 2FA</span></button>
           <div id="storBekasClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Bekas 2FA sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
         </div>
@@ -737,7 +716,7 @@ jokopurworo2@gmail.com rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></texta
             <input type="text" id="storBiasaPassword" readonly style="background:var(--bg-card-alt);cursor:default;" />
             <div class="helper">Terisi otomatis mengikuti password yang diset admin. Pastikan sudah sesuai rules.</div>
           </div>
-          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storBiasaInput" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" style="white-space:pre;overflow-x:auto;overflow-wrap:normal;font-size:13px;" placeholder="jokokendi@gmail.com joko123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567"></textarea><div class="helper" id="storBiasaCounter">Terdeteksi: 0 item</div></div>
+          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storBiasaInput" style="font-size:13px;" placeholder="jokokendi@gmail.com&#160;joko123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567"></textarea><div class="helper" id="storBiasaCounter">Terdeteksi: 0 item</div></div>
           <button class="btn-submit" id="storBiasaSubmitBtn" onclick="submitStor('biasa')"><span class="spinner"></span><span class="btn-text"><i class="fas fa-paper-plane"></i> Kirim Setoran Bekas Biasa</span></button>
           <div id="storBiasaClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Bekas Biasa sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
         </div>
@@ -758,7 +737,7 @@ jokopurworo2@gmail.com rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></texta
             <input type="text" id="storOldPassword" readonly style="background:var(--bg-card-alt);cursor:default;" />
             <div class="helper">Terisi otomatis mengikuti password yang diset admin. Pastikan sudah sesuai rules.</div>
           </div>
-          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storOldInput" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" style="white-space:pre;overflow-x:auto;overflow-wrap:normal;font-size:13px;" placeholder="gilang6538@gmail.com gilang123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567"></textarea><div class="helper" id="storOldCounter">Terdeteksi: 0 item</div></div>
+          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storOldInput" style="font-size:13px;" placeholder="gilang6538@gmail.com&#160;gilang123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567"></textarea><div class="helper" id="storOldCounter">Terdeteksi: 0 item</div></div>
           <button class="btn-submit" id="storOldSubmitBtn" onclick="submitStor('old')"><span class="spinner"></span><span class="btn-text"><i class="fas fa-paper-plane"></i> Kirim Setoran Bekas Old</span></button>
           <div id="storOldClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Bekas Old sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
         </div>
@@ -1126,6 +1105,9 @@ contoh3@gmail.com</code></li>
           <a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" class="btn-wa-channel" style="display:inline-flex;width:100%;justify-content:center;margin-top:12px;">
             <i class="fab fa-whatsapp"></i> Rules Selengkapnya – Klik di sini
           </a>
+          <a href="https://t.me/farisgmail1" target="_blank" rel="noopener noreferrer" class="btn-wa-channel" style="display:inline-flex;width:100%;justify-content:center;margin-top:10px;background:linear-gradient(135deg,#229ED9,#1b7fb3);color:#fff;border-color:transparent;text-decoration:none;">
+            <i class="fab fa-telegram-plane"></i>&nbsp;Saluran Telegram Resmi – Klik di sini
+          </a>
 
         </div> <!-- end rules-content -->
       </div> <!-- end card -->
@@ -1439,7 +1421,7 @@ contoh3@gmail.com</code></li>
     </form>
   </div></div>
 
-  <div class="modal-overlay" id="modalInfo"><div class="modal"><button class="modal-close" onclick="closeModal('modalInfo')"><i class="fas fa-xmark"></i></button><div class="modal-title">Tentang STOR GMAIL FARIS</div><div class="modal-sub">Platform untuk mengelola proses stor secara sederhana, cepat, dan terorganisir.</div><div class="info-card" style="cursor:pointer;" onclick="window.open('https://wa.me/6283821406716','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-headset"></i></div><div class="ic-body"><div class="ic-title">Support</div><div class="ic-desc"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" style="color:var(--blue-bright);font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp" style="color:#25D366;"></i> Chat WA</a></div></div></div><div class="info-card"><div class="ic-icon"><i class="fas fa-clock"></i></div><div class="ic-body"><div class="ic-title">Jam Operasional</div><div class="ic-desc">Senin - Jumat · 09:00 – 17:00</div></div></div><div class="info-card"><div class="ic-icon"><i class="fas fa-signal"></i></div><div class="ic-body"><div class="ic-title">Status Sistem</div><div class="ic-desc"><span class="status-online"><span class="dot"></span> ONLINE</span></div></div></div><div class="info-card" style="cursor:pointer;" onclick="window.open('https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran WhatsApp</div><div class="ic-desc"><a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp"></i> Gabung Saluran</a></div></div></div><div style="text-align:center;color:var(--text-secondary);font-size:13px;margin-top:8px;">STOR GMAIL FARIS v 1.1 · &copy; 2026</div></div></div>
+  <div class="modal-overlay" id="modalInfo"><div class="modal"><button class="modal-close" onclick="closeModal('modalInfo')"><i class="fas fa-xmark"></i></button><div class="modal-title">Tentang STOR GMAIL FARIS</div><div class="modal-sub">Platform untuk mengelola proses stor secara sederhana, cepat, dan terorganisir.</div><div class="info-card" style="cursor:pointer;" onclick="window.open('https://wa.me/6283821406716','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-headset"></i></div><div class="ic-body"><div class="ic-title">Support</div><div class="ic-desc"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" style="color:var(--blue-bright);font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp" style="color:#25D366;"></i> Chat WA</a> <span style="color:var(--text-secondary);">·</span> <a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" style="color:#229ED9;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-telegram-plane" style="color:#229ED9;"></i> Chat Telegram</a></div></div></div><div class="info-card"><div class="ic-icon"><i class="fas fa-clock"></i></div><div class="ic-body"><div class="ic-title">Jam Operasional</div><div class="ic-desc">Senin - Jumat · 09:00 – 17:00</div></div></div><div class="info-card"><div class="ic-icon"><i class="fas fa-signal"></i></div><div class="ic-body"><div class="ic-title">Status Sistem</div><div class="ic-desc"><span class="status-online"><span class="dot"></span> ONLINE</span></div></div></div><div class="info-card" style="cursor:pointer;" onclick="window.open('https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran WhatsApp</div><div class="ic-desc"><a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp"></i> Gabung Saluran</a></div></div></div><div class="info-card" style="cursor:pointer;" onclick="window.open('https://t.me/farisgmail1','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran Telegram</div><div class="ic-desc"><a href="https://t.me/farisgmail1" target="_blank" rel="noopener noreferrer" style="color:#229ED9;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-telegram-plane"></i> Gabung Saluran</a></div></div></div><div style="text-align:center;color:var(--text-secondary);font-size:13px;margin-top:8px;">STOR GMAIL FARIS v 1.1 · &copy; 2026</div></div></div>
 
   <!-- ===== MODAL TARIK SALDO (UPDATED) ===== -->
   <div class="modal-overlay" id="modalTarikSaldo">
