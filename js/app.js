@@ -1620,7 +1620,9 @@ function getReferralLink() {
   window.apiRequest = async function(action, data, ...rest) {
     if (/regist|signup|sign_up|daftar/i.test(String(action || '')) && data && typeof data === 'object') {
       try {
-        const ref = localStorage.getItem('storfaris_ref');
+        const inputEl = document.getElementById('regReferral');
+        const typed = inputEl ? inputEl.value.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 40) : '';
+        const ref = typed || localStorage.getItem('storfaris_ref');
         if (ref && !data.referralCode) data.referralCode = ref;
       } catch (_) {}
     }
@@ -1707,9 +1709,9 @@ function copyReferral(kind) {
 function shareReferral() {
   const link = getReferralLink();
   if (!link) return;
-  const msg = 'Gabung STOR GMAIL FARIS lewat link referal aku ya: ' + link;
+  const msg = 'Gabung S3L GM4IL lewat link referal aku ya: ' + link;
   if (navigator.share) {
-    navigator.share({ title: 'STOR GMAIL FARIS', text: msg, url: link }).catch(function() {});
+    navigator.share({ title: 'S3L GM4IL', text: msg, url: link }).catch(function() {});
   } else {
     copyReferral('link');
   }
