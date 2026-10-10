@@ -557,6 +557,13 @@
     #modalInfo .info-card.is-sys .ic-icon { background: linear-gradient(135deg, #22C55E, #15803d); box-shadow: 0 6px 14px rgba(34,197,94,0.38); }
     #modalInfo .info-card.is-time { border-color: rgba(124,110,230,0.42); background: linear-gradient(135deg, rgba(124,110,230,0.13), rgba(124,110,230,0.02)); box-shadow: 0 8px 20px rgba(124,110,230,0.14); }
     #modalInfo .info-card.is-time .ic-icon { background: linear-gradient(135deg, #7c6ee6, #a78bfa); box-shadow: 0 6px 14px rgba(124,110,230,0.38); }
+
+    /* ===== STATISTIK BERANDA: 4 kotak (Pending, Diterima, Ditolak, Total Storan) ===== */
+    .stats-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 14px 0; }
+    .stats-grid-4 .stat-item { min-width: 0; padding: 14px 4px 12px; text-align: center; }
+    .stats-grid-4 .stat-item .num { font-size: 24px; line-height: 1.1; }
+    .stats-grid-4 .stat-item .lbl { font-size: 10.5px; line-height: 1.25; letter-spacing: 0.2px; margin-top: 4px; word-break: normal; }
+    .stats-grid-4 .stat-item.ditolak .num { color: #EF4444; }
   </style>
 </head>
 <body>
@@ -720,17 +727,17 @@
           <span class="value" id="statusRate">Rp 4.000 / email</span>
         </div>
       </div>
+      <div class="stats-grid-4">
+        <div class="stat-item pending"><div class="num" id="berandaStatPending">0</div><div class="lbl">Pending</div></div>
+        <div class="stat-item diterima"><div class="num" id="berandaStatDiterima">0</div><div class="lbl">Diterima</div></div>
+        <div class="stat-item ditolak"><div class="num" id="berandaStatDitolak">0</div><div class="lbl">Ditolak</div></div>
+        <div class="stat-item total"><div class="num" id="berandaStatTotal">0</div><div class="lbl">Total Storan</div></div>
+      </div>
       <a href="https://lynk.id/infostorgmailfaris" target="_blank" rel="noopener noreferrer" class="cs-card is-wa" style="margin:14px 0;">
         <span class="cs-card-icon"><i class="fas fa-circle-info"></i></span>
         <span class="cs-card-body"><span class="cs-card-title">Info Storan Gmail Faris</span><span class="cs-card-sub">Buka halaman info lengkap</span></span>
         <i class="fas fa-arrow-up-right-from-square cs-card-chevron"></i>
       </a>
-      <div class="stats-grid-3">
-        <div class="stat-item pending"><div class="num" id="berandaStatPending">0</div><div class="lbl">Pending</div></div>
-        <div class="stat-item diterima"><div class="num" id="berandaStatDiterima">0</div><div class="lbl">Diterima</div></div>
-        <div class="stat-item total"><div class="num" id="berandaStatTotal">0</div><div class="lbl">Total Storan</div></div>
-      </div>
-      <div class="price-card"><span class="label"><i class="fas fa-fire ei ei-orange"></i> Harga Saat Ini</span><span class="value" id="berandaHarga">Rp 3K - 4K - 5K</span><span class="sub">per Gmail / item · Harga dapat berubah sesuai ketentuan.</span></div>
       <div class="cs-stack">
         <a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" class="cs-card is-wa">
           <span class="cs-card-icon"><i class="fab fa-whatsapp"></i></span>
@@ -803,11 +810,11 @@
           <span class="badge-status" id="storCardOldStatus">OPEN</span>
           <i class="fas fa-chevron-right stor-choice-chevron"></i>
         </div>
-        <!-- Kartu Email Captcha -->
+        <!-- Kartu Gmail Captcha -->
         <div id="storCardCaptcha" class="stor-choice-card is-captcha">
           <div class="stor-choice-icon is-captcha"><i class="fas fa-shield-halved"></i></div>
           <div class="stor-choice-body">
-            <div class="stor-choice-title" id="storCardCaptchaName">Email Captcha</div>
+            <div class="stor-choice-title" id="storCardCaptchaName">Gmail Captcha</div>
             <div class="stor-choice-desc"><span class="stor-choice-desc-label">Password:</span> <span id="storCardCaptchaInfo">-</span></div>
             <div class="stor-choice-rate">Rate: <span id="storCardCaptchaRate">Rp 0</span> / email</div>
           </div>
@@ -900,12 +907,12 @@ jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></
           <div id="storOldClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Bekas Old sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
         </div>
       </div>
-      <!-- FORM EMAIL CAPTCHA — tampil full screen -->
+      <!-- FORM GMAIL CAPTCHA — tampil full screen -->
       <div id="storFormCaptcha" class="stor-fullscreen-form">
         <div class="stor-form-topbar">
           <button id="storBackBtnCaptcha" class="stor-form-back" title="Kembali"><i class="fas fa-arrow-left"></i></button>
           <div>
-            <div class="stor-form-title">Stor Email Captcha</div>
+            <div class="stor-form-title">Stor Gmail Captcha</div>
             <div class="stor-form-sub">Masukkan email setoran di bawah ini</div>
           </div>
         </div>
@@ -915,9 +922,9 @@ jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></
             <input type="text" id="storCaptchaPassword" readonly style="background:var(--bg-card-alt);cursor:default;" />
             <div class="helper">Terisi otomatis mengikuti password yang diset admin. Pastikan sudah sesuai rules.</div>
           </div>
-          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Email Captcha (satu per baris)</label><textarea id="storCaptchaInput" placeholder="contoh1@gmail.com&#10;contoh2@gmail.com"></textarea><div class="helper" id="storCaptchaCounter">Terdeteksi: 0 item</div></div>
+          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail Captcha (satu per baris)</label><textarea id="storCaptchaInput" placeholder="contoh1@gmail.com&#10;contoh2@gmail.com"></textarea><div class="helper" id="storCaptchaCounter">Terdeteksi: 0 item</div></div>
           <button class="btn-submit" id="storCaptchaSubmitBtn" onclick="submitStor('captcha')"><span class="spinner"></span><span class="btn-text"><i class="fas fa-paper-plane"></i> Kirim Setoran Captcha</span></button>
-          <div id="storCaptchaClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Email Captcha sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
+          <div id="storCaptchaClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Gmail Captcha sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
         </div>
       </div>
     </div>
@@ -1256,8 +1263,8 @@ jokokendi9875@gmail.com kendi333 11112222 33334444 55556666 77778888 99990000 12
             <p style="margin-top:12px;font-size:13px;color:var(--text-secondary);"><i class="fas fa-paper-plane ei ei-blue"></i> Terimakasih Atas Pengertiannya<br />Created By Faris<i class="fas fa-comment-dots ei ei-blue ei-end"></i></p>
           </div>
 
-          <!-- ========== TAMBAHAN RULES BARU: EMAIL CAPTCHA ========== -->
-          <span class="section-title"><i class="fas fa-shield-halved ei ei-blue"></i> SETOR EMAIL CAPTCHA</span>
+          <!-- ========== TAMBAHAN RULES BARU: GMAIL CAPTCHA ========== -->
+          <span class="section-title"><i class="fas fa-shield-halved ei ei-blue"></i> SETOR GMAIL CAPTCHA</span>
           <div class="rule-box" style="border-left-color: #06B6D4;">
 
             <p style="font-weight:700;font-size:15px;"><i class="fas fa-key ei ei-gold"></i> Password Wajib: <span style="color:var(--blue-bright);">PASSWORD HARI INI</span></p>
@@ -1265,10 +1272,10 @@ jokokendi9875@gmail.com kendi333 11112222 33334444 55556666 77778888 99990000 12
 
             <hr style="border-color:var(--border-subtle);margin:8px 0;">
 
-            <p style="font-weight:700;font-size:15px;"><i class="fas fa-circle-question ei ei-blue"></i> APA ITU EMAIL CAPTCHA?</p>
-            <p>Email captcha adalah Gmail baru yang saat dibuat atau dicek login <strong>hanya meminta verifikasi captcha</strong> (tantangan "saya bukan robot" / gambar), <strong>tanpa meminta verifikasi nomor HP</strong>.</p>
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-circle-question ei ei-blue"></i> APA ITU GMAIL CAPTCHA?</p>
+            <p>Gmail captcha adalah Gmail baru yang saat dibuat atau dicek login <strong>hanya meminta verifikasi captcha</strong> (tantangan "saya bukan robot" / gambar), <strong>tanpa meminta verifikasi nomor HP</strong>.</p>
             <ul>
-              <li><strong><i class="fas fa-circle-check ei ei-green"></i> Email Captcha:</strong> hanya muncul captcha, <strong>tidak</strong> minta nomor HP / kode SMS.</li>
+              <li><strong><i class="fas fa-circle-check ei ei-green"></i> Gmail Captcha:</strong> hanya muncul captcha, <strong>tidak</strong> minta nomor HP / kode SMS.</li>
               <li><strong><i class="fas fa-circle-xmark ei ei-red"></i> Email Verif:</strong> wajib verifikasi nomor HP / kode SMS. <strong>Email verif TIDAK diterima</strong> di menu ini.</li>
             </ul>
 
@@ -1745,7 +1752,7 @@ contoh3@gmail.com</code></li>
   <script src="js/config.js"></script>
   <script src="js/core.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/app.js?v=20261014"></script>
+  <script src="js/app.js?v=20261015"></script>
   <script src="js/profile.js"></script>
   <script src="js/withdrawal.js"></script>
   <script src="js/history.js"></script>
