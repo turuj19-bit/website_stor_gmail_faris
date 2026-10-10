@@ -117,12 +117,12 @@
     .stor-choice-card {
       position: relative;
       border-radius: 20px;
-      padding: 22px;
+      padding: 16px 14px;
       background: var(--bg-card-alt);
       border: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
       cursor: pointer;
       overflow: hidden;
       transition: transform 0.18s ease, border-color 0.18s ease;
@@ -135,14 +135,14 @@
     .stor-choice-card.is-captcha { border-color: rgba(6,182,212,0.35); }
 
     .stor-choice-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 16px;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #fff;
-      font-size: 24px;
+      font-size: 21px;
       flex-shrink: 0;
     }
     .stor-choice-icon.is-fresh { background: linear-gradient(135deg, var(--blue-primary), var(--blue-bright)); }
@@ -154,8 +154,8 @@
     .stor-choice-icon.is-captcha { background: linear-gradient(135deg, #0891b2, #22d3ee); }
 
     .stor-choice-body { flex: 1; min-width: 0; }
-    .stor-choice-title { font-weight: 700; font-size: 17px; color: var(--text-primary); }
-    .stor-choice-desc { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+    .stor-choice-title { font-weight: 700; font-size: 15px; line-height: 1.3; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .stor-choice-desc { font-size: 12.5px; line-height: 1.35; color: var(--text-secondary); margin-top: 2px; }
     /* Label "Password:" di kartu Bekas Biasa & Bekas Old — nilainya
        otomatis terisi dari field Info yang diatur admin di dasbord. */
     .stor-choice-desc-label { color: var(--text-primary); font-weight: 700; }
@@ -174,7 +174,14 @@
       border-radius: 99px;
       margin-top: 5px;
     }
-    .stor-choice-rate { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+    .stor-choice-rate { font-size: 12.5px; color: var(--text-secondary); margin-top: 3px; white-space: nowrap; }
+    /* Badge OPEN/CLOSE & panah di kartu dibuat ramping supaya nama jenis storan muat 1 baris */
+    .stor-choice-card .badge-status { flex-shrink: 0; font-size: 11px; padding: 4px 10px; }
+    .stor-choice-card .stor-choice-chevron { flex-shrink: 0; font-size: 13px; }
+    @media (max-width: 360px) {
+      .stor-choice-title { font-size: 14px; }
+      .stor-choice-rate, .stor-choice-desc { font-size: 12px; }
+    }
 
     /* ===== NOTIF MENGAMBANG: PESAN MASUK ===== */
     /* ===== Tombol Refresh di header (antara Profil & Inbox) ===== */
@@ -708,7 +715,7 @@
             <input type="text" id="storBekasPassword" readonly style="background:var(--bg-card-alt);cursor:default;" />
             <div class="helper">Terisi otomatis mengikuti password yang diset admin. Pastikan sudah sesuai rules.</div>
           </div>
-          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storBekasInput" placeholder="jokopurworo@gmail.com gundulmu123 2n5a dzmc 6tiz av5l uzok vwwf mtit 7kyi
+          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storBekasInput" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" style="white-space:pre;overflow-x:auto;overflow-wrap:normal;font-size:13px;" placeholder="jokopurworo@gmail.com gundulmu123 2n5a dzmc 6tiz av5l uzok vwwf mtit 7kyi
 jokopurworo2@gmail.com rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></textarea><div class="helper" id="storBekasCounter">Terdeteksi: 0 item</div></div>
           <button class="btn-submit" id="storBekasSubmitBtn" onclick="submitStor('bekas')"><span class="spinner"></span><span class="btn-text"><i class="fas fa-paper-plane"></i> Kirim Setoran Bekas 2FA</span></button>
           <div id="storBekasClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Bekas 2FA sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
@@ -730,7 +737,7 @@ jokopurworo2@gmail.com rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></texta
             <input type="text" id="storBiasaPassword" readonly style="background:var(--bg-card-alt);cursor:default;" />
             <div class="helper">Terisi otomatis mengikuti password yang diset admin. Pastikan sudah sesuai rules.</div>
           </div>
-          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storBiasaInput" placeholder="jokokendi@gmail.com joko123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567"></textarea><div class="helper" id="storBiasaCounter">Terdeteksi: 0 item</div></div>
+          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storBiasaInput" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" style="white-space:pre;overflow-x:auto;overflow-wrap:normal;font-size:13px;" placeholder="jokokendi@gmail.com joko123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567"></textarea><div class="helper" id="storBiasaCounter">Terdeteksi: 0 item</div></div>
           <button class="btn-submit" id="storBiasaSubmitBtn" onclick="submitStor('biasa')"><span class="spinner"></span><span class="btn-text"><i class="fas fa-paper-plane"></i> Kirim Setoran Bekas Biasa</span></button>
           <div id="storBiasaClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Bekas Biasa sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
         </div>
@@ -751,7 +758,7 @@ jokopurworo2@gmail.com rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></texta
             <input type="text" id="storOldPassword" readonly style="background:var(--bg-card-alt);cursor:default;" />
             <div class="helper">Terisi otomatis mengikuti password yang diset admin. Pastikan sudah sesuai rules.</div>
           </div>
-          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storOldInput" placeholder="gilang6538@gmail.com gilang123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567"></textarea><div class="helper" id="storOldCounter">Terdeteksi: 0 item</div></div>
+          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storOldInput" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" style="white-space:pre;overflow-x:auto;overflow-wrap:normal;font-size:13px;" placeholder="gilang6538@gmail.com gilang123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567"></textarea><div class="helper" id="storOldCounter">Terdeteksi: 0 item</div></div>
           <button class="btn-submit" id="storOldSubmitBtn" onclick="submitStor('old')"><span class="spinner"></span><span class="btn-text"><i class="fas fa-paper-plane"></i> Kirim Setoran Bekas Old</span></button>
           <div id="storOldClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Bekas Old sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
         </div>
