@@ -177,6 +177,29 @@
     .stor-choice-rate { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
 
     /* ===== NOTIF MENGAMBANG: PESAN MASUK ===== */
+    /* ===== Tombol Refresh di header (antara Profil & Inbox) ===== */
+    .btn-refresh {
+      flex: 0 0 auto;
+      width: 36px; height: 36px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card-alt);
+      color: var(--blue-bright);
+      font-size: 14px;
+      cursor: pointer;
+      padding: 0;
+      margin: 0 6px;
+      -webkit-tap-highlight-color: transparent;
+      transition: background .2s, transform .15s, opacity .2s;
+    }
+    .btn-refresh:active { transform: scale(0.92); }
+    .btn-refresh:disabled { opacity: .7; cursor: default; }
+    .btn-refresh.spinning i { animation: btnRefreshSpin .8s linear infinite; }
+    @keyframes btnRefreshSpin { to { transform: rotate(360deg); } }
+    @media (max-width: 380px) {
+      .btn-refresh { width: 32px; height: 32px; margin: 0 4px; font-size: 13px; }
+    }
     .inbox-float-notif {
       position: fixed;
       top: 14px;
@@ -484,6 +507,9 @@
             <div class="user-avatar" id="headerAvatar">U</div>
             <span class="user-name" id="headerName">User</span>
           </div>
+          <button type="button" class="btn-refresh" id="btnHeaderRefresh" onclick="refreshFromHeader(this)" title="Refresh" aria-label="Refresh">
+            <i class="fas fa-rotate-right"></i>
+          </button>
           <button class="btn-inbox" onclick="openInbox()" title="Pesan / Inbox">
             <svg class="ib-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
               <path class="ib-arrow" d="M12 1.8v6.4M9.3 5.7 12 8.4l2.7-2.7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
@@ -604,7 +630,7 @@
         <div id="storCardBekas" class="stor-choice-card is-bekas">
           <div class="stor-choice-icon is-bekas"><i class="fas fa-recycle"></i></div>
           <div class="stor-choice-body">
-            <div class="stor-choice-title" id="storCardBekasName">Gmail Bekas</div>
+            <div class="stor-choice-title" id="storCardBekasName">Gmail Bekas 2FA</div>
             <div class="stor-choice-desc"><span class="stor-choice-desc-label">Password:</span> <span id="storCardBekasInfo">-</span></div>
             <div class="stor-choice-rate">Rate: <span id="storCardBekasRate">Rp 0</span> / email</div>
           </div>
@@ -672,7 +698,7 @@
         <div class="stor-form-topbar">
           <button id="storBackBtnBekas" class="stor-form-back" title="Kembali"><i class="fas fa-arrow-left"></i></button>
           <div>
-            <div class="stor-form-title">Stor Gmail Bekas</div>
+            <div class="stor-form-title">Stor Gmail Bekas 2FA</div>
             <div class="stor-form-sub">Masukkan email setoran di bawah ini</div>
           </div>
         </div>
@@ -684,8 +710,8 @@
           </div>
           <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storBekasInput" placeholder="jokopurworo@gmail.com gundulmu123 2n5a dzmc 6tiz av5l uzok vwwf mtit 7kyi
 jokopurworo2@gmail.com rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></textarea><div class="helper" id="storBekasCounter">Terdeteksi: 0 item</div></div>
-          <button class="btn-submit" id="storBekasSubmitBtn" onclick="submitStor('bekas')"><span class="spinner"></span><span class="btn-text"><i class="fas fa-paper-plane"></i> Kirim Setoran Bekas</span></button>
-          <div id="storBekasClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Bekas sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
+          <button class="btn-submit" id="storBekasSubmitBtn" onclick="submitStor('bekas')"><span class="spinner"></span><span class="btn-text"><i class="fas fa-paper-plane"></i> Kirim Setoran Bekas 2FA</span></button>
+          <div id="storBekasClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Bekas 2FA sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
         </div>
       </div>
 
@@ -802,7 +828,7 @@ jokopurworo2@gmail.com rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></texta
             <p style="font-weight:700;"><i class="fas fa-thumbtack ei ei-red"></i> Status Saat Ini</p>
             <div id="rulesStatusInfo">
               <p><span style="font-weight:600;">Status Storan Fresh:</span> <span id="rulesStatusFresh" class="badge-status close">CLOSE</span></p>
-              <p><span style="font-weight:600;">Status Storan Bekas:</span> <span id="rulesStatusBekas" class="badge-status open">OPEN</span></p>
+              <p><span style="font-weight:600;">Status Storan Bekas 2FA:</span> <span id="rulesStatusBekas" class="badge-status open">OPEN</span></p>
               <p><span style="font-weight:600;">Status Penarikan:</span> <span id="rulesStatusPenarikan" class="badge-status open">OPEN</span></p>
             </div>
             <!-- #rulesStatusStoran diisi untuk sinkronisasi JS, isinya sesuai foto -->
@@ -1028,6 +1054,63 @@ jokokendi9875@gmail.com kendi333 11112222 33334444 55556666 77778888 99990000 12
             </ul>
             <p style="margin-top:4px;">Dan seterusnya...</p>
             <p style="margin-top:6px;font-size:13px;color:var(--text-secondary);">Email, password, dan kode cadangan dipisah 1 spasi. Satu email per baris.</p>
+
+            <p style="margin-top:12px;font-size:13px;color:var(--text-secondary);"><i class="fas fa-paper-plane ei ei-blue"></i> Terimakasih Atas Pengertiannya<br />Created By Faris<i class="fas fa-comment-dots ei ei-blue ei-end"></i></p>
+          </div>
+
+          <!-- ========== TAMBAHAN RULES BARU: EMAIL CAPTCHA ========== -->
+          <span class="section-title"><i class="fas fa-shield-halved ei ei-blue"></i> SETOR EMAIL CAPTCHA</span>
+          <div class="rule-box" style="border-left-color: #06B6D4;">
+
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-key ei ei-gold"></i> Password Wajib: <span style="color:var(--blue-bright);">PASSWORD HARI INI</span></p>
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-lock ei ei-slate"></i> Wajib 2FA: <span style="color:#EF4444;">TIDAK</span></p>
+
+            <hr style="border-color:var(--border-subtle);margin:8px 0;">
+
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-circle-question ei ei-blue"></i> APA ITU EMAIL CAPTCHA?</p>
+            <p>Email captcha adalah Gmail baru yang saat dibuat atau dicek login <strong>hanya meminta verifikasi captcha</strong> (tantangan "saya bukan robot" / gambar), <strong>tanpa meminta verifikasi nomor HP</strong>.</p>
+            <ul>
+              <li><strong><i class="fas fa-circle-check ei ei-green"></i> Email Captcha:</strong> hanya muncul captcha, <strong>tidak</strong> minta nomor HP / kode SMS.</li>
+              <li><strong><i class="fas fa-circle-xmark ei ei-red"></i> Email Verif:</strong> wajib verifikasi nomor HP / kode SMS. <strong>Email verif TIDAK diterima</strong> di menu ini.</li>
+            </ul>
+
+            <hr style="border-color:var(--border-subtle);margin:8px 0;">
+
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-circle-exclamation ei ei-red"></i> SYARAT &amp; KETENTUAN (WAJIB DIBACA):</p>
+            <ul>
+              <li>Email <strong>baru dibuat</strong> dan belum pernah dipakai / disetor ke pihak lain.</li>
+              <li>Saat dibuka tidak meminta verifikasi nomor HP (hanya captcha). Kalau minta nomor, itu <strong>email verif</strong> dan akan ditolak.</li>
+              <li>Tidak ada nomor pemulihan dan email pemulihan.</li>
+              <li>Tidak terkena pembatasan / peringatan / penonaktifan dari Google.</li>
+              <li>Tidak nempel device: hapus semua sesi login di HP/PC lain.</li>
+              <li>Password <strong>wajib sama</strong> dengan <strong>Password Hari Ini</strong> yang tertera di halaman Stor / Inbox. Salah password = bisa ditolak.</li>
+              <li>Setelah disetor ke web, <strong>WAJIB LOG OUT / HAPUS SESI</strong> dari perangkatmu dan <strong>JANGAN LOGIN</strong> kembali.</li>
+              <li><strong>Dilarang double sell:</strong> email yang sudah disetor tidak boleh dijual lagi ke pihak lain. Ketahuan, akun dibanned dan saldo dibekukan.</li>
+              <li><strong><i class="fas fa-lightbulb ei ei-amber"></i> TIPS:</strong> Jika email ditolak oleh vendor, segera cek emailnya dan ganti password agar akun aman.</li>
+            </ul>
+
+            <hr style="border-color:var(--border-subtle);margin:12px 0;">
+
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-money-bill-wave ei ei-green"></i> PEMBAYARAN</p>
+            <p>Saldo masuk <strong>setelah</strong> email selesai dicek dan diterima admin. Selama status masih <strong>PENDING</strong>, mohon ditunggu. Hasilnya (diterima / ditolak) akan dikirim otomatis ke <strong>Pesan / Inbox</strong>.</p>
+
+            <hr style="border-color:var(--border-subtle);margin:12px 0;">
+
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-envelope-open-text ei ei-blue"></i> MASUKKAN DATA AKUN</p>
+            <p>Silakan ketik atau copy-paste ke kolom daftar email. Cukup tulis <strong>alamat email saja</strong>, password otomatis memakai Password Hari Ini.</p>
+            <p style="font-weight:700;font-size:15px;"><i class="fas fa-book-open ei"></i> TUTORIAL CARA KIRIM</p>
+            <p><strong>Formatnya:</strong><br>
+            <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">Email</code></p>
+            <p>Satu email per baris. Berikan batas enter untuk email kedua dan seterusnya.</p>
+            <ul>
+              <li><strong><i class="fas fa-thumbtack ei ei-red"></i> Untuk Satuan:</strong><br>
+              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;">contoh1@gmail.com</code></li>
+              <li style="margin-top:8px;"><strong><i class="fas fa-thumbtack ei ei-red"></i> Untuk Mode Bulk (Banyak):</strong><br>
+              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;">contoh1@gmail.com
+contoh2@gmail.com
+contoh3@gmail.com</code></li>
+            </ul>
+            <p style="margin-top:4px;">Dan seterusnya...</p>
 
             <p style="margin-top:12px;font-size:13px;color:var(--text-secondary);"><i class="fas fa-paper-plane ei ei-blue"></i> Terimakasih Atas Pengertiannya<br />Created By Faris<i class="fas fa-comment-dots ei ei-blue ei-end"></i></p>
           </div>
