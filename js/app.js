@@ -14,7 +14,10 @@
           const bekasForm = document.getElementById('storFormBekas');
           const biasaForm = document.getElementById('storFormBiasa');
           const oldForm = document.getElementById('storFormOld');
-          if (bekasForm && bekasForm.classList.contains('show')) {
+          const captchaForm = document.getElementById('storFormCaptcha');
+          if (captchaForm && captchaForm.classList.contains('show')) {
+            params.jenis = 'captcha';
+          } else if (bekasForm && bekasForm.classList.contains('show')) {
             params.jenis = 'bekas';
           } else if (biasaForm && biasaForm.classList.contains('show')) {
             params.jenis = 'biasa';
@@ -52,7 +55,10 @@
           const bekasForm = document.getElementById('storFormBekas');
           const biasaForm = document.getElementById('storFormBiasa');
           const oldForm = document.getElementById('storFormOld');
-          if (bekasForm && bekasForm.classList.contains('show')) {
+          const captchaForm = document.getElementById('storFormCaptcha');
+          if (captchaForm && captchaForm.classList.contains('show')) {
+            data.jenis = 'captcha';
+          } else if (bekasForm && bekasForm.classList.contains('show')) {
             data.jenis = 'bekas';
           } else if (biasaForm && biasaForm.classList.contains('show')) {
             data.jenis = 'biasa';
@@ -104,6 +110,11 @@
       settings.depositOldPrice    = window.appState.settings.depositOldPrice || settings.depositOldPrice || 2000;
       settings.depositOldName     = window.appState.settings.depositOldName || settings.depositOldName || 'Gmail Bekas Old';
       settings.depositOldInfo     = window.appState.settings.depositOldInfo || settings.depositOldInfo || '';
+      // Email Captcha (jenis storan baru)
+      settings.depositCaptchaStatus = window.appState.settings.depositCaptchaStatus || settings.depositCaptchaStatus || 'OPEN';
+      settings.depositCaptchaPrice  = window.appState.settings.depositCaptchaPrice || settings.depositCaptchaPrice || 2000;
+      settings.depositCaptchaName   = window.appState.settings.depositCaptchaName || settings.depositCaptchaName || 'Email Captcha';
+      settings.depositCaptchaInfo   = window.appState.settings.depositCaptchaInfo || settings.depositCaptchaInfo || '';
     }
     if (!settings.depositBekasStatus) {
       settings.depositBekasStatus = localStorage.getItem('depositBekasStatus') || 'OPEN';
@@ -140,6 +151,18 @@
     }
     if (!settings.depositOldInfo) {
       settings.depositOldInfo = localStorage.getItem('depositOldInfo') || '';
+    }
+    if (!settings.depositCaptchaStatus) {
+      settings.depositCaptchaStatus = localStorage.getItem('depositCaptchaStatus') || 'OPEN';
+    }
+    if (!settings.depositCaptchaPrice) {
+      settings.depositCaptchaPrice = parseInt(localStorage.getItem('depositCaptchaPrice')) || 2000;
+    }
+    if (!settings.depositCaptchaName) {
+      settings.depositCaptchaName = localStorage.getItem('depositCaptchaName') || 'Email Captcha';
+    }
+    if (!settings.depositCaptchaInfo) {
+      settings.depositCaptchaInfo = localStorage.getItem('depositCaptchaInfo') || '';
     }
     return settings;
   };
@@ -305,6 +328,8 @@ function updateUIApp() {
     if (storBiasaPass) storBiasaPass.value = settings.depositBiasaInfo || 'murah123';
     const storOldPass = safeGet('storOldPassword');
     if (storOldPass) storOldPass.value = settings.depositOldInfo || 'murah123';
+    const storCaptchaPass = safeGet('storCaptchaPassword');
+    if (storCaptchaPass) storCaptchaPass.value = settings.depositCaptchaInfo || 'murah123';
 
     // Rules
     const rs = safeGet('rulesStatusStoran');
@@ -825,7 +850,7 @@ function switchRiwayatTab(tab) {
 // ============================================================
 // FIX: daftar semua ID form full-screen Stor, dipakai bareng supaya nambah
 // jenis storan baru (Biasa, Old) tidak perlu ubah banyak tempat.
-const STOR_FORM_IDS = ['storFormFresh', 'storFormBekas', 'storFormBiasa', 'storFormOld'];
+const STOR_FORM_IDS = ['storFormFresh', 'storFormBekas', 'storFormBiasa', 'storFormOld', 'storFormCaptcha'];
 
 function showStorChoice() {
   showChoiceMode = true;
@@ -877,6 +902,13 @@ function showOldForm() {
   pushOverlayHistoryGuard();
 }
 
+// Jenis storan baru: Email Captcha (pola sama seperti Bekas Biasa/Old)
+function showCaptchaForm() {
+  openStorForm('storFormCaptcha');
+  updateCounterCaptcha();
+  pushOverlayHistoryGuard();
+}
+
 function goBackToStorChoice() {
   showChoiceMode = true;
   showStorChoice();
@@ -921,6 +953,16 @@ function getStorOldConfig() {
     name: settings.depositOldName || 'Gmail Bekas Old',
     price: settings.depositOldPrice || 2000,
     info: settings.depositOldInfo || '-'
+  };
+}
+
+function getStorCaptchaConfig() {
+  const settings = loadSettings();
+  return {
+    status: settings.depositCaptchaStatus || 'OPEN',
+    name: settings.depositCaptchaName || 'Email Captcha',
+    price: settings.depositCaptchaPrice || 2000,
+    info: settings.depositCaptchaInfo || '-'
   };
 }
 
@@ -977,7 +1019,8 @@ function updateStorCards() {
     // getStorBiasaConfig() / getStorOldConfig() di atas)
     [
       { cfg: getStorBiasaConfig(), prefix: 'storCardBiasa', closedMsg: 'storBiasaClosedMsg' },
-      { cfg: getStorOldConfig(), prefix: 'storCardOld', closedMsg: 'storOldClosedMsg' }
+      { cfg: getStorOldConfig(), prefix: 'storCardOld', closedMsg: 'storOldClosedMsg' },
+      { cfg: getStorCaptchaConfig(), prefix: 'storCardCaptcha', closedMsg: 'storCaptchaClosedMsg' }
     ].forEach(function(item) {
       const card = document.getElementById(item.prefix);
       const statusEl = document.getElementById(item.prefix + 'Status');
@@ -1038,6 +1081,8 @@ function initStorCards() {
     const backBtnBekas = document.getElementById('storBackBtnBekas');
     const backBtnBiasa = document.getElementById('storBackBtnBiasa');
     const backBtnOld = document.getElementById('storBackBtnOld');
+    const captchaCard = document.getElementById('storCardCaptcha');
+    const backBtnCaptcha = document.getElementById('storBackBtnCaptcha');
 
     if (freshCard) {
       freshCard.addEventListener('click', function(e) {
@@ -1081,6 +1126,21 @@ function initStorCards() {
       });
     }
 
+    if (captchaCard) {
+      captchaCard.addEventListener('click', function(e) {
+        if (getStorCaptchaConfig().status !== 'OPEN') {
+          showErrorModal('Ditutup', 'Storan Email Captcha sedang ditutup oleh admin.', false);
+          return;
+        }
+        showCaptchaForm();
+      });
+    }
+    if (backBtnCaptcha) {
+      backBtnCaptcha.addEventListener('click', function(e) {
+        confirmGoBackStor();
+      });
+    }
+
     if (backBtnFresh) {
       backBtnFresh.addEventListener('click', function(e) {
         confirmGoBackStor();
@@ -1110,6 +1170,8 @@ function initStorCards() {
     if (biasaInput) biasaInput.addEventListener('input', updateCounterBiasa);
     const oldInput = document.getElementById('storOldInput');
     if (oldInput) oldInput.addEventListener('input', updateCounterOld);
+    const captchaInput = document.getElementById('storCaptchaInput');
+    if (captchaInput) captchaInput.addEventListener('input', updateCounterCaptcha);
 
     storCardsInitialized = true;
   } catch (e) {
@@ -1173,18 +1235,27 @@ function updateCounterOld() {
   counter.textContent = 'Terdeteksi: ' + lines.length + ' item';
 }
 
+function updateCounterCaptcha() {
+  const input = document.getElementById('storCaptchaInput');
+  const counter = document.getElementById('storCaptchaCounter');
+  if (!input || !counter) return;
+  const lines = input.value.trim() ? input.value.split('\n').filter(s => s.trim().length > 0) : [];
+  counter.textContent = 'Terdeteksi: ' + lines.length + ' item';
+}
+
 // ============================================================
 // SUBMIT STOR — DIPERBAIKI dengan pengecekan & logging lebih kuat
 // ============================================================
 // FIX: peta ID elemen per jenis storan, supaya nambah jenis baru (Biasa,
 // Old) tidak perlu bikin banyak percabangan if/else terpisah lagi.
 const STOR_TYPE_FIELDS = {
-  fresh: { kontakType: 'storKontakType', kontak: 'storKontak', nama: 'storNama', password: 'storPassword', input: 'storInput', tanggal: 'storTanggal', counter: updateCounterFresh, submitBtn: 'storSubmitBtn' },
-  bekas: { kontakType: 'storBekasKontakType', kontak: 'storBekasKontak', nama: 'storBekasNama', password: 'storBekasPassword', input: 'storBekasInput', tanggal: 'storBekasTanggal', counter: updateCounterBekas, submitBtn: 'storBekasSubmitBtn' },
-  biasa: { kontakType: 'storBiasaKontakType', kontak: 'storBiasaKontak', nama: 'storBiasaNama', password: 'storBiasaPassword', input: 'storBiasaInput', tanggal: 'storBiasaTanggal', counter: updateCounterBiasa, submitBtn: 'storBiasaSubmitBtn' },
-  old:   { kontakType: 'storOldKontakType',   kontak: 'storOldKontak',   nama: 'storOldNama',   password: 'storOldPassword',   input: 'storOldInput',   tanggal: 'storOldTanggal',   counter: updateCounterOld,   submitBtn: 'storOldSubmitBtn' }
+  fresh:   { password: 'storPassword',        input: 'storInput',        counter: updateCounterFresh,   submitBtn: 'storSubmitBtn' },
+  bekas:   { password: 'storBekasPassword',   input: 'storBekasInput',   counter: updateCounterBekas,   submitBtn: 'storBekasSubmitBtn' },
+  biasa:   { password: 'storBiasaPassword',   input: 'storBiasaInput',   counter: updateCounterBiasa,   submitBtn: 'storBiasaSubmitBtn' },
+  old:     { password: 'storOldPassword',     input: 'storOldInput',     counter: updateCounterOld,     submitBtn: 'storOldSubmitBtn' },
+  captcha: { password: 'storCaptchaPassword', input: 'storCaptchaInput', counter: updateCounterCaptcha, submitBtn: 'storCaptchaSubmitBtn' }
 };
-const STOR_TYPE_LABELS = { fresh: 'Fresh', bekas: 'Bekas', biasa: 'Bekas Biasa', old: 'Bekas Old' };
+const STOR_TYPE_LABELS = { fresh: 'Fresh', bekas: 'Bekas', biasa: 'Bekas Biasa', old: 'Bekas Old', captcha: 'Email Captcha' };
 
 async function submitStor(type) {
   // Jika type tidak diberikan, coba deteksi otomatis dari form yang lagi tampil
@@ -1197,6 +1268,7 @@ async function submitStor(type) {
     else if (found === 'storFormBiasa') type = 'biasa';
     else if (found === 'storFormOld') type = 'old';
     else if (found === 'storFormFresh') type = 'fresh';
+    else if (found === 'storFormCaptcha') type = 'captcha';
     else {
       showToast('error', 'Error', 'Tidak ada form storan yang aktif.');
       return;
@@ -1234,25 +1306,29 @@ async function submitStor(type) {
       showErrorModal('Ditutup', 'Storan Bekas Old sedang ditutup oleh admin.', false);
       return;
     }
+  } else if (type === 'captcha') {
+    if ((settings.depositCaptchaStatus || 'OPEN') !== 'OPEN') {
+      showErrorModal('Ditutup', 'Storan Email Captcha sedang ditutup oleh admin.', false);
+      return;
+    }
   }
 
-  const kontakTypeEl = document.getElementById(fields.kontakType);
-  const kontakEl = document.getElementById(fields.kontak);
-  const namaEl = document.getElementById(fields.nama);
   const passwordEl = document.getElementById(fields.password);
   const inputEl = document.getElementById(fields.input);
-  const tanggalEl = document.getElementById(fields.tanggal);
 
-  const kontakType = kontakTypeEl ? kontakTypeEl.value : 'WA';
-  const kontak = kontakEl ? kontakEl.value.trim() : '';
-  const nama = namaEl ? namaEl.value.trim() : '';
+  // Kolom kontak, nama, dan tanggal sudah dihapus dari form. Nilainya diisi
+  // otomatis dari akun yang login supaya data ke server tetap lengkap.
+  const kontakType = 'WA';
+  const kontak = String(user.emailPhone || user.username || '-');
+  const nama = String(user.fullname || user.username || 'User');
+  const now0 = new Date();
+  const tanggalStr = String(now0.getDate()).padStart(2, '0') + '/' + String(now0.getMonth() + 1).padStart(2, '0') + '/' + now0.getFullYear();
   const password = passwordEl ? passwordEl.value : 'murah123';
   const text = inputEl ? inputEl.value.trim() : '';
 
-  if (!kontak || !nama) { showErrorModal('Data Tidak Lengkap', 'Isi kontak dan nama.'); return; }
   if (!text) { showErrorModal('Gagal', 'Masukkan daftar email.'); return; }
 
-  const lines = text.split('\n').map(s => s.trim()).filter(Boolean);
+  let lines = text.split('\n').map(s => s.trim()).filter(Boolean);
 
   if (type === 'fresh') {
     const invalid = lines.filter(e => !e.toLowerCase().endsWith('@gmail.com'));
@@ -1268,8 +1344,18 @@ async function submitStor(type) {
         if (local.includes(w)) { showErrorModal('Gagal', 'Kata terlarang: ' + email); return; }
       if ((local.match(/\d/g) || []).length > 2) { showErrorModal('Gagal', 'Angka >2: ' + email); return; }
     }
+  } else if (type === 'bekas' || type === 'biasa' || type === 'old') {
+    // Bekas 2FA, Bekas Biasa & Bekas Old: format WAJIB sesuai rules, kalau beda sedikit
+    // pun ditolak dan user dikasih tahu apa yang salah + cara memperbaikinya.
+    const entries = text.split('\n')
+      .map(function(s, i) { return { n: i + 1, v: normalizeStorLine(s) }; })
+      .filter(function(e) { return e.v; });
+    const problems = validateStorFormat(type, entries);
+    if (problems.length > 0) { showStorFormatError(type, problems); return; }
+    // Kirim versi yang sudah dirapikan (spasi tunggal, tanpa spasi tak terlihat)
+    lines = entries.map(function(e) { return e.v; });
   } else {
-    // Bekas / Biasa / Old: tanpa validasi khusus, cukup pastikan tidak ada baris kosong
+    // Captcha: tanpa validasi khusus, cukup pastikan tidak ada baris kosong
     if (lines.some(e => e.length < 1)) {
       showErrorModal('Gagal', 'Ada baris kosong.');
       return;
@@ -1288,7 +1374,7 @@ async function submitStor(type) {
       nama,
       password: password || 'murah123',
       emails: lines,
-      tanggal: tanggalEl ? tanggalEl.value : '',
+      tanggal: tanggalStr,
       jenis: type   // <-- PASTIKAN ADA
     };
     console.log('[submitStor] payload dikirim:', payload);
@@ -1316,8 +1402,6 @@ ${lines.join('\n')}`;
     updatePaymentEstimate();
     openModal('modalStorSuccess');
     if (inputEl) inputEl.value = '';
-    if (kontakEl) kontakEl.value = '';
-    if (namaEl) namaEl.value = '';
     if (fields.counter) fields.counter();
     renderHistory();
     updateStats();
@@ -1361,10 +1445,130 @@ function updateCounter() {
   updateCounterFresh();
 }
 
+// ============================================================
+// VALIDASI FORMAT STORAN BEKAS 2FA & BEKAS BIASA (sesuai Rules)
+//   Bekas 2FA   : email password 2fakey   (2fakey = 8 blok x 4 karakter)
+//   Bekas Biasa : email password kode-cadangan (10 kode x 8 angka)
+//   Bekas Old   : sama persis dengan Bekas Biasa
+// Ubah angka di bawah kalau aturan berubah.
+// ============================================================
+const STOR_FORMAT = {
+  key2faBlok: 8,        // jumlah blok 2FA key
+  key2faPanjang: 4,     // panjang tiap blok 2FA key
+  kodeJumlah: 10,       // jumlah kode cadangan Google
+  kodePanjang: 8        // jumlah angka tiap kode cadangan
+};
+const STOR_EMAIL_RE = /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)*\.[A-Za-z]{2,}$/;
+
+// Rapikan baris: buang spasi tak terlihat, spasi ganda/tab jadi 1 spasi
+function normalizeStorLine(s) {
+  return String(s || '').replace(/[\u200B-\u200D\u2060]/g, '').replace(/\s+/g, ' ').trim();
+}
+
+// entries: [{ n: nomorBaris, v: teksBaris }] -> [{ n, email, msgs: [..] }]
+function validateStorFormat(type, entries) {
+  const out = [];
+  const K = STOR_FORMAT;
+  entries.forEach(function(e) {
+    const msgs = [];
+    const tok = e.v.split(' ');
+    const email = tok[0];
+    const rest = tok.slice(2);
+
+    if (!STOR_EMAIL_RE.test(email)) {
+      msgs.push('Email "' + email + '" tidak valid. Perbaiki: tulis email lengkap, contoh nama@gmail.com.');
+    }
+    if (tok.length < 2) {
+      msgs.push('Password belum ada. Perbaiki: tulis password setelah email, dipisah 1 spasi.');
+    }
+
+    if (type === 'bekas') {
+      if (tok.length >= 2 && rest.length === 0) {
+        msgs.push('2FA key belum ada. Perbaiki: tambahkan 2FA key (' + K.key2faBlok + ' blok x ' + K.key2faPanjang + ' karakter) setelah password.');
+      } else if (rest.length > 0) {
+        if (rest.length !== K.key2faBlok) {
+          msgs.push('2FA key harus ' + K.key2faBlok + ' blok (tiap blok ' + K.key2faPanjang + ' karakter), sekarang ' + rest.length + ' blok. Perbaiki: pastikan email, password, 2FA key dipisah 1 spasi, password tanpa spasi, dan tidak ada blok kurang/lebih.');
+        }
+        rest.forEach(function(b, i) {
+          if (msgs.length >= 4) return;
+          if (b.length !== K.key2faPanjang) {
+            msgs.push('Blok 2FA ke-' + (i + 1) + ' ("' + b + '") harus ' + K.key2faPanjang + ' karakter, sekarang ' + b.length + '. Perbaiki: cek lagi blok itu.');
+          } else if (!/^[A-Za-z2-7]+$/.test(b)) {
+            const bad = (b.match(/[^A-Za-z2-7]/g) || []).join(' ');
+            msgs.push('Blok 2FA ke-' + (i + 1) + ' ("' + b + '") ada karakter tidak valid: ' + bad + '. Perbaiki: 2FA key hanya huruf a-z dan angka 2-7.');
+          }
+        });
+      }
+    } else if (type === 'biasa' || type === 'old') {
+      if (tok.length >= 2 && rest.length === 0) {
+        msgs.push('Kode cadangan belum ada. Perbaiki: tambahkan ' + K.kodeJumlah + ' kode cadangan (tiap kode ' + K.kodePanjang + ' angka) di samping password.');
+      } else if (rest.length > 0) {
+        let bentukOK = true;
+        rest.forEach(function(b, i) {
+          if (msgs.length >= 4) return;
+          if (!/^\d+$/.test(b)) {
+            bentukOK = false;
+            msgs.push('Bagian kode ke-' + (i + 1) + ' ("' + b + '") bukan angka. Perbaiki: kode cadangan hanya berisi angka 0-9 (password tanpa spasi).');
+          } else if (b.length !== K.kodePanjang && b.length !== K.kodePanjang / 2) {
+            bentukOK = false;
+            msgs.push('Kode ke-' + (i + 1) + ' ("' + b + '") harus ' + K.kodePanjang + ' angka, sekarang ' + b.length + ' angka. Perbaiki: lengkapi angka yang kurang/lebih.');
+          }
+        });
+        if (bentukOK) {
+          const semuaPenuh = rest.every(function(b) { return b.length === K.kodePanjang; });
+          const semuaSetengah = rest.every(function(b) { return b.length === K.kodePanjang / 2; });
+          if (!semuaPenuh && !semuaSetengah) {
+            msgs.push('Format kode tidak konsisten. Perbaiki: tulis semua kode ' + K.kodePanjang + ' angka rapat, atau semua dipisah ' + (K.kodePanjang / 2) + '+' + (K.kodePanjang / 2) + ' angka.');
+          } else if (semuaSetengah && rest.length % 2 !== 0) {
+            msgs.push('Ada blok ' + (K.kodePanjang / 2) + ' angka yang tidak punya pasangan. Perbaiki: tiap kode terdiri dari 2 blok ' + (K.kodePanjang / 2) + ' angka.');
+          } else {
+            const jumlah = semuaPenuh ? rest.length : rest.length / 2;
+            if (jumlah !== K.kodeJumlah) {
+              msgs.push('Jumlah kode cadangan harus ' + K.kodeJumlah + ', sekarang ' + jumlah + '. Perbaiki: ' + (jumlah < K.kodeJumlah ? 'tambahkan ' + (K.kodeJumlah - jumlah) + ' kode lagi.' : 'kurangi ' + (jumlah - K.kodeJumlah) + ' kode.'));
+            }
+          }
+        }
+      }
+    }
+
+    if (msgs.length > 0) out.push({ n: e.n, email: email, msgs: msgs });
+  });
+  return out;
+}
+
+function showStorFormatError(type, problems) {
+  const MAX_BARIS = 5;
+  const contoh = (type === 'bekas')
+    ? 'email password 2fakey\nContoh: jokopurworo@gmail.com gundulmu123 2n5a dzmc 6tiz av5l uzok vwwf mtit 7kyi'
+    : 'email password kode-cadangan\nContoh: jokokendi@gmail.com joko123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567';
+  let teks = 'Format belum sesuai rules, jadi belum bisa disetor. Perbaiki dulu:\n';
+  problems.slice(0, MAX_BARIS).forEach(function(p) {
+    teks += '\nBaris ' + p.n + ' (' + p.email + '):\n';
+    p.msgs.forEach(function(m) { teks += '• ' + m + '\n'; });
+  });
+  if (problems.length > MAX_BARIS) {
+    teks += '\n...dan ' + (problems.length - MAX_BARIS) + ' baris lain juga bermasalah.\n';
+  }
+  teks += '\nFormat yang benar: ' + contoh;
+  const t = safeGet('errorTitle');
+  const d = safeGet('errorDesc');
+  if (t) t.textContent = 'Format Tidak Sesuai Rules';
+  if (d) {
+    d.textContent = teks;
+    d.style.whiteSpace = 'pre-line';
+    d.style.textAlign = 'left';
+    d.style.maxHeight = '55vh';
+    d.style.overflowY = 'auto';
+  }
+  openModal('modalError');
+}
+
 function showErrorModal(title, desc, showRulesHint) {
   const t = safeGet('errorTitle');
   const d = safeGet('errorDesc');
   if (t) t.textContent = title;
+  // reset gaya khusus dari showStorFormatError supaya notif biasa tetap normal
+  if (d) { d.style.whiteSpace = ''; d.style.textAlign = ''; d.style.maxHeight = ''; d.style.overflowY = ''; }
   if (d) d.textContent = (showRulesHint === false) ? desc : desc + ' Lihat rules.';
   openModal('modalError');
 }

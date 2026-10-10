@@ -154,7 +154,10 @@
             // Fallback: cek form mana yang aktif
             const bekasForm = document.getElementById('storFormBekas');
             const freshForm = document.getElementById('storFormFresh');
-            if (bekasForm && bekasForm.classList.contains('show')) {
+            const captchaForm = document.getElementById('storFormCaptcha');
+            if (captchaForm && captchaForm.classList.contains('show')) {
+              params.p_jenis = 'captcha';
+            } else if (bekasForm && bekasForm.classList.contains('show')) {
               params.p_jenis = 'bekas';
             } else if (freshForm && freshForm.classList.contains('show')) {
               params.p_jenis = 'fresh';
