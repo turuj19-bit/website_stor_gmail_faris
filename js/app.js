@@ -110,10 +110,10 @@
       settings.depositOldPrice    = window.appState.settings.depositOldPrice || settings.depositOldPrice || 2000;
       settings.depositOldName     = window.appState.settings.depositOldName || settings.depositOldName || 'Gmail Bekas Old';
       settings.depositOldInfo     = window.appState.settings.depositOldInfo || settings.depositOldInfo || '';
-      // Email Captcha (jenis storan baru)
+      // Gmail Captcha (jenis storan baru)
       settings.depositCaptchaStatus = window.appState.settings.depositCaptchaStatus || settings.depositCaptchaStatus || 'OPEN';
       settings.depositCaptchaPrice  = window.appState.settings.depositCaptchaPrice || settings.depositCaptchaPrice || 2000;
-      settings.depositCaptchaName   = window.appState.settings.depositCaptchaName || settings.depositCaptchaName || 'Email Captcha';
+      settings.depositCaptchaName   = window.appState.settings.depositCaptchaName || settings.depositCaptchaName || 'Gmail Captcha';
       settings.depositCaptchaInfo   = window.appState.settings.depositCaptchaInfo || settings.depositCaptchaInfo || '';
     }
     if (!settings.depositBekasStatus) {
@@ -159,7 +159,7 @@
       settings.depositCaptchaPrice = parseInt(localStorage.getItem('depositCaptchaPrice')) || 2000;
     }
     if (!settings.depositCaptchaName) {
-      settings.depositCaptchaName = localStorage.getItem('depositCaptchaName') || 'Email Captcha';
+      settings.depositCaptchaName = localStorage.getItem('depositCaptchaName') || 'Gmail Captcha';
     }
     if (!settings.depositCaptchaInfo) {
       settings.depositCaptchaInfo = localStorage.getItem('depositCaptchaInfo') || '';
@@ -664,6 +664,8 @@ function updateStatsBeranda() {
   if (p) p.textContent = pending;
   const d = safeGet('berandaStatDiterima');
   if (d) d.textContent = diterima;
+  const dt = safeGet('berandaStatDitolak');
+  if (dt) dt.textContent = mine.filter(h => h.status === 'ditolak').length;
   const t = safeGet('berandaStatTotal');
   if (t) t.textContent = total;
   updatePendingSaldo();
@@ -921,7 +923,7 @@ function showOldForm() {
   pushOverlayHistoryGuard();
 }
 
-// Jenis storan baru: Email Captcha (pola sama seperti Bekas Biasa/Old)
+// Jenis storan baru: Gmail Captcha (pola sama seperti Bekas Biasa/Old)
 function showCaptchaForm() {
   openStorForm('storFormCaptcha');
   updateCounterCaptcha();
@@ -979,7 +981,7 @@ function getStorCaptchaConfig() {
   const settings = loadSettings();
   return {
     status: settings.depositCaptchaStatus || 'OPEN',
-    name: settings.depositCaptchaName || 'Email Captcha',
+    name: settings.depositCaptchaName || 'Gmail Captcha',
     price: settings.depositCaptchaPrice || 2000,
     info: settings.depositCaptchaInfo || ''
   };
@@ -1059,7 +1061,7 @@ function updateStorCards() {
         statusEl.className = 'badge-status ' + (isOpen ? 'open' : 'close');
       }
       if (rateEl) rateEl.textContent = 'Rp ' + formatRupiah(item.cfg.price);
-      if (nameEl) nameEl.textContent = item.cfg.name;
+      if (nameEl) nameEl.textContent = (item.prefix === 'storCardCaptcha') ? String(item.cfg.name).replace(/\bemail\b/i, 'Gmail') : item.cfg.name;
       if (infoEl) infoEl.textContent = cleanPass(item.cfg.info);
       if (closedMsgEl) closedMsgEl.style.display = isOpen ? 'none' : 'block';
     });
@@ -1150,7 +1152,7 @@ function initStorCards() {
     if (captchaCard) {
       captchaCard.addEventListener('click', function(e) {
         if (getStorCaptchaConfig().status !== 'OPEN') {
-          showErrorModal('Ditutup', 'Storan Email Captcha sedang ditutup oleh admin.', false);
+          showErrorModal('Ditutup', 'Storan Gmail Captcha sedang ditutup oleh admin.', false);
           return;
         }
         showCaptchaForm();
@@ -1276,7 +1278,7 @@ const STOR_TYPE_FIELDS = {
   old:     { password: 'storOldPassword',     input: 'storOldInput',     counter: updateCounterOld,     submitBtn: 'storOldSubmitBtn' },
   captcha: { password: 'storCaptchaPassword', input: 'storCaptchaInput', counter: updateCounterCaptcha, submitBtn: 'storCaptchaSubmitBtn' }
 };
-const STOR_TYPE_LABELS = { fresh: 'Fresh', bekas: 'Bekas 2FA', biasa: 'Bekas Biasa', old: 'Bekas Old', captcha: 'Email Captcha' };
+const STOR_TYPE_LABELS = { fresh: 'Fresh', bekas: 'Bekas 2FA', biasa: 'Bekas Biasa', old: 'Bekas Old', captcha: 'Gmail Captcha' };
 
 async function submitStor(type) {
   // Jika type tidak diberikan, coba deteksi otomatis dari form yang lagi tampil
@@ -1329,7 +1331,7 @@ async function submitStor(type) {
     }
   } else if (type === 'captcha') {
     if ((settings.depositCaptchaStatus || 'OPEN') !== 'OPEN') {
-      showErrorModal('Ditutup', 'Storan Email Captcha sedang ditutup oleh admin.', false);
+      showErrorModal('Ditutup', 'Storan Gmail Captcha sedang ditutup oleh admin.', false);
       return;
     }
   }
