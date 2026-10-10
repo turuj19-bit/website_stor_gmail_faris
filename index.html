@@ -41,6 +41,19 @@
   </script>
   <link rel="stylesheet" href="css/style.css" />
   <script>
+    // REFERAL: simpan kode referal dari link (?ref=KODE) supaya tetap
+    // tersimpan walau user baru daftar beberapa saat kemudian.
+    (function() {
+      try {
+        var m = /[?&]ref=([^&#]+)/i.exec(location.search || '');
+        if (m) {
+          var code = decodeURIComponent(m[1]).replace(/[^A-Za-z0-9_-]/g, '').slice(0, 40);
+          if (code) localStorage.setItem('storfaris_ref', code);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <script>
     // FIX: cegah "kedip" ke menu login saat halaman di-refresh padahal
     // sesi login masih valid. Dicek sesinkron di sini (sebelum authPage
     // sempat ke-render/terlihat), lalu kelas "has-session" dipakai oleh
@@ -408,6 +421,85 @@
     #page-rules .badge-status.close {
       color: #EF4444 !important; /* merah untuk CLOSE */
     }
+
+    /* ===== ADMIN CS: Telegram & WhatsApp dipisah, masing-masing 1 kotak ===== */
+    .cs-stack { display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; }
+    .cs-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border-subtle);
+      text-decoration: none;
+      color: var(--text-secondary);
+      transition: transform 0.15s ease;
+    }
+    .cs-card:active { transform: scale(0.98); }
+    .cs-card.is-wa { border-color: rgba(37,211,102,0.40); background: linear-gradient(135deg, rgba(37,211,102,0.10), rgba(37,211,102,0.02)); }
+    .cs-card.is-tg { border-color: rgba(34,158,217,0.40); background: linear-gradient(135deg, rgba(34,158,217,0.10), rgba(34,158,217,0.02)); }
+    .cs-card-icon {
+      width: 46px; height: 46px; border-radius: 14px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; color: #fff;
+    }
+    .cs-card.is-wa .cs-card-icon { background: #25D366; }
+    .cs-card.is-tg .cs-card-icon { background: #229ED9; }
+    .cs-card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+    .cs-card-title { font-size: 15px; font-weight: 800; color: var(--text-primary); }
+    .cs-card-sub { font-size: 12.5px; font-weight: 500; color: var(--text-secondary); }
+    .cs-card-chevron { font-size: 13px; color: var(--text-secondary); flex-shrink: 0; }
+
+    /* ===== MENU REFERAL ===== */
+    .ref-banner {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      padding: 20px 20px 18px;
+      margin-bottom: 14px;
+      color: #fff;
+      background: linear-gradient(135deg, #6d28d9 0%, #2f55d4 55%, #0e8fb3 100%);
+      box-shadow: 0 14px 34px rgba(79,70,229,0.30);
+    }
+    .ref-banner::after {
+      content: '';
+      position: absolute; right: -40px; top: -40px;
+      width: 150px; height: 150px; border-radius: 50%;
+      background: rgba(255,255,255,0.10);
+    }
+    .ref-banner-head { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: 0.4px; font-size: 14px; position: relative; z-index: 1; }
+    .ref-banner-icon { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,255,255,0.20); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    .ref-banner-nominal { font-size: 36px; font-weight: 900; margin: 10px 0 12px; position: relative; z-index: 1; }
+    .ref-banner-nominal .currency { font-size: 18px; font-weight: 700; margin-right: 3px; opacity: 0.9; }
+    .ref-banner-chips { display: flex; flex-wrap: wrap; gap: 8px; position: relative; z-index: 1; }
+    .ref-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; padding: 6px 12px; border-radius: 99px; background: rgba(255,255,255,0.18); }
+    .ref-label { font-size: 12.5px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; display: block; }
+    .ref-copy-row { display: flex; gap: 8px; align-items: stretch; margin-bottom: 14px; }
+    .ref-copy-row input {
+      flex: 1; min-width: 0; padding: 12px 14px; border-radius: 12px;
+      border: 1px solid var(--border-subtle); background: var(--bg-card-alt);
+      color: var(--text-primary); font-size: 13.5px; font-weight: 600; outline: none;
+    }
+    .ref-copy-btn {
+      flex-shrink: 0; border: none; border-radius: 12px; padding: 0 16px;
+      font-size: 13px; font-weight: 700; cursor: pointer; color: #fff;
+      background: linear-gradient(135deg, var(--blue-primary), var(--blue-bright));
+    }
+    .ref-copy-btn:active { transform: scale(0.96); }
+    .ref-share-btn {
+      width: 100%; border: none; border-radius: 14px; padding: 13px 16px;
+      font-size: 14.5px; font-weight: 700; cursor: pointer; color: #fff;
+      background: linear-gradient(135deg, #6d28d9, #2f55d4);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .ref-rules { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.65; color: var(--text-secondary); }
+    .ref-rules strong { color: var(--text-primary); }
+    .ref-user { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border-subtle); }
+    .ref-user:last-child { border-bottom: none; }
+    .ref-user .ref-av { width: 42px !important; height: 42px !important; min-width: 42px; flex-shrink: 0; }
+    .ref-user-name { flex: 1; min-width: 0; font-weight: 700; font-size: 14.5px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ref-user-ok { color: #22C55E; font-size: 16px; flex-shrink: 0; }
   </style>
 </head>
 <body>
@@ -545,9 +637,9 @@
           <span class="menu-icon"><i class="fas fa-trophy"></i></span>
           <span class="menu-label">Leaderboard</span>
         </button>
-        <button class="menu-item" onclick="showPage('riwayat'); switchRiwayatTab('pendapatan')">
-          <span class="menu-icon"><i class="fas fa-chart-simple"></i></span>
-          <span class="menu-label">Laporan</span>
+        <button class="menu-item" onclick="showPage('referral')">
+          <span class="menu-icon"><i class="fas fa-gift"></i></span>
+          <span class="menu-label">Referal</span>
         </button>
       </div>
 
@@ -563,7 +655,7 @@
         <!-- Password dan Rate disembunyikan (tetap dipertahankan) -->
         <div class="status-row" style="display:none;">
           <div class="status-row-top"><span class="status-icon ic-amber"><i class="fas fa-key"></i></span><span class="label">Password Hari Ini</span></div>
-          <span class="value" id="statusPass">murah123</span>
+          <span class="value" id="statusPass"></span>
         </div>
         <div class="status-row" style="display:none;">
           <div class="status-row-top"><span class="status-icon ic-green"><i class="fas fa-tags"></i></span><span class="label">Rate Hari Ini</span></div>
@@ -577,13 +669,17 @@
         <div class="stat-item total"><div class="num" id="berandaStatTotal">0</div><div class="lbl">Total Storan</div></div>
       </div>
       <div class="price-card"><span class="label"><i class="fas fa-fire ei ei-orange"></i> Harga Saat Ini</span><span class="value" id="berandaHarga">Rp 3K - 4K - 5K</span><span class="sub">per Gmail / item · Harga dapat berubah sesuai ketentuan.</span></div>
-      <div style="display:block;">
-        <div class="card card-alt card-cs"><div class="card-title"><i class="fas fa-headset"></i> Admin CS</div>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" style="flex:1;min-width:0;display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-secondary);"><i class="fab fa-whatsapp" style="font-size:36px;color:#25D366;flex-shrink:0;"></i><span style="font-size:13px;line-height:1.3;"><strong style="color:var(--text-primary);">WhatsApp</strong><br>Klik untuk chat</span></a>
-            <a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" style="flex:1;min-width:0;display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-secondary);"><i class="fab fa-telegram" style="font-size:36px;color:#229ED9;flex-shrink:0;"></i><span style="font-size:13px;line-height:1.3;"><strong style="color:var(--text-primary);">Telegram</strong><br>Klik untuk chat</span></a>
-          </div>
-        </div>
+      <div class="cs-stack">
+        <a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" class="cs-card is-wa">
+          <span class="cs-card-icon"><i class="fab fa-whatsapp"></i></span>
+          <span class="cs-card-body"><span class="cs-card-title">Admin CS WhatsApp</span><span class="cs-card-sub">Klik untuk chat</span></span>
+          <i class="fas fa-chevron-right cs-card-chevron"></i>
+        </a>
+        <a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" class="cs-card is-tg">
+          <span class="cs-card-icon"><i class="fab fa-telegram"></i></span>
+          <span class="cs-card-body"><span class="cs-card-title">Admin CS Telegram</span><span class="cs-card-sub">Klik untuk chat</span></span>
+          <i class="fas fa-chevron-right cs-card-chevron"></i>
+        </a>
       </div>
     </div>
 
@@ -761,6 +857,50 @@ jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></
           <button class="btn-submit" id="storCaptchaSubmitBtn" onclick="submitStor('captcha')"><span class="spinner"></span><span class="btn-text"><i class="fas fa-paper-plane"></i> Kirim Setoran Captcha</span></button>
           <div id="storCaptchaClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Email Captcha sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
         </div>
+      </div>
+    </div>
+
+    <!-- REFERAL -->
+    <div class="page" id="page-referral">
+      <h2 class="page-title"><i class="fas fa-gift"></i> Referal</h2>
+      <p class="page-sub">Ajak teman daftar, dapat bonus saldo saat teman berhasil stor pertama kali.</p>
+
+      <div class="ref-banner">
+        <div class="ref-banner-head"><span class="ref-banner-icon"><i class="fas fa-gift"></i></span><span>SALDO REFERAL</span></div>
+        <div class="ref-banner-nominal" id="refBalance"><span class="currency">Rp</span>0</div>
+        <div class="ref-banner-chips">
+          <span class="ref-chip"><i class="fas fa-user-check"></i> <b id="refCountDone">0</b> user berhasil</span>
+          <span class="ref-chip"><i class="fas fa-coins"></i> Bonus <b id="refBonus">-</b> / user</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="ref-label"><i class="fas fa-ticket"></i> Kode Referal</span>
+        <div class="ref-copy-row">
+          <input type="text" id="refCodeInput" readonly />
+          <button type="button" class="ref-copy-btn" onclick="copyReferral('code')"><i class="fas fa-copy"></i> Salin</button>
+        </div>
+        <span class="ref-label"><i class="fas fa-link"></i> Link Referal</span>
+        <div class="ref-copy-row">
+          <input type="text" id="refLinkInput" readonly />
+          <button type="button" class="ref-copy-btn" onclick="copyReferral('link')"><i class="fas fa-copy"></i> Salin</button>
+        </div>
+        <button type="button" class="ref-share-btn" onclick="shareReferral()"><i class="fas fa-share-nodes"></i> Bagikan Link Referal</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="fas fa-circle-info"></i> Cara Kerja</div>
+        <ul class="ref-rules">
+          <li>Bagikan link atau kode referal kamu ke teman.</li>
+          <li>Teman daftar lewat link kamu, lalu <strong>stor Gmail pertamanya</strong> dan diterima admin.</li>
+          <li>Kamu langsung dapat bonus saldo, otomatis masuk ke saldo utama dan bisa ditarik.</li>
+          <li>Bonus hanya <strong>1x untuk tiap teman</strong>. Stor berikutnya dari teman yang sama tidak menambah bonus, cari teman baru lagi ya.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="fas fa-users"></i> User Terdaftar (<span id="refListCount">0</span>)</div>
+        <div id="refUserList"><div class="empty-state"><div class="empty-icon"><i class="fas fa-user-plus"></i></div><p>Belum ada yang daftar lewat link kamu.</p></div></div>
       </div>
     </div>
 
