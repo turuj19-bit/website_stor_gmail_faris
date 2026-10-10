@@ -230,6 +230,7 @@ function enterApp() {
     updateUIApp();
     showPage('beranda');
     startInboxFloatNotifLoop();
+    try { tryLinkPendingReferral(); } catch (_) {}
   } catch (e) {
     console.warn('enterApp error:', e);
   }
@@ -1596,15 +1597,15 @@ function showErrorModal(title, desc, showRulesHint) {
 // ============================================================
 // REFERAL
 // Kode referal = ID numerik user (sama dengan ID di halaman Profil).
-// Link = alamat web ini + ?ref=KODE. Kode dari link disimpan di
-// localStorage ('storfaris_ref') lalu ikut dikirim saat daftar.
+// Link = alamat web ini + ?ref=KODE. Kode dari link dipegang sementara di
+// memori halaman (window.__pendingRef), tidak disimpan di browser.
 // Bonus saldo diproses di server saat storan pertama user baru di-ACC.
 // ============================================================
 let referralData = null;
 
+// Kode referal milik user disimpan & dibuat di Supabase (referral_get).
 function getReferralCode() {
-  const user = getCurrentUser();
-  return user ? String(getNumericId(user.id)) : '';
+  return (referralData && referralData.code) ? String(referralData.code) : '';
 }
 
 function getReferralLink() {
@@ -1613,22 +1614,102 @@ function getReferralLink() {
   return location.origin + location.pathname + '?ref=' + encodeURIComponent(code);
 }
 
-// Sertakan kode referal saat user baru mendaftar
+// Hapus ?ref= dari alamat setelah kode terhubung
+function stripRefFromUrl() {
+  try {
+    if (/[?&]ref=/i.test(location.search)) history.replaceState(history.state, '', location.pathname + location.hash);
+  } catch (_) {}
+}
+
+// Saat daftar, kode referal (dari link atau diketik di form Daftar) ikut
+// dikirim ke server sebagai p_referral_code. Hanya ditambahkan kalau ada kode,
+// jadi pendaftaran tanpa kode tidak terpengaruh.
 (function() {
   const originalApiRequest = window.apiRequest;
   if (typeof originalApiRequest !== 'function') return;
   window.apiRequest = async function(action, data, ...rest) {
-    if (/regist|signup|sign_up|daftar/i.test(String(action || '')) && data && typeof data === 'object') {
+    if (action === 'register' && data && typeof data === 'object') {
       try {
         const inputEl = document.getElementById('regReferral');
         const typed = inputEl ? inputEl.value.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 40) : '';
-        const ref = typed || localStorage.getItem('storfaris_ref');
-        if (ref && !data.referralCode) data.referralCode = ref;
+        const code = typed || window.__pendingRef || '';
+        if (code && !data.referralCode) data.referralCode = code;
       } catch (_) {}
     }
-    return originalApiRequest(action, data, ...rest);
+    const res = await originalApiRequest(action, data, ...rest);
+    if (action === 'register') { window.__pendingRef = ''; stripRefFromUrl(); }
+    return res;
   };
 })();
+
+// Daftarkan 2 aksi baru ke ACTION_MAP (nama fungsi RPC di Supabase:
+// referral_get dan referral_link; parameter p_token + p_code).
+(function() {
+  try {
+    if (typeof ACTION_MAP === 'object' && ACTION_MAP) {
+      if (ACTION_MAP.register && typeof ACTION_MAP.register.params === 'function' && !ACTION_MAP.register.__refPatched) {
+        const origParams = ACTION_MAP.register.params;
+        ACTION_MAP.register.params = function(d) {
+          const p = origParams(d) || {};
+          if (d && d.referralCode) p.p_referral_code = String(d.referralCode);
+          return p;
+        };
+        ACTION_MAP.register.__refPatched = true;
+      }
+      if (!ACTION_MAP.getReferral) ACTION_MAP.getReferral = { fn: 'referral_get', needsToken: true, params: function() { return {}; } };
+      if (!ACTION_MAP.linkReferral) ACTION_MAP.linkReferral = { fn: 'referral_link', needsToken: true, params: function(d) { return { p_code: String((d && d.code) || '') }; } };
+    }
+  } catch (e) { console.warn('ACTION_MAP referal gagal:', e); }
+})();
+
+function isReferralNetworkError(e) {
+  return /timeout|koneksi|network|fetch|failed to/i.test((e && e.message) || '');
+}
+
+// User yang sudah login membuka link referal -> hubungkan ke server.
+let referralLinkBusy = false;
+async function tryLinkPendingReferral() {
+  if (referralLinkBusy || !getToken()) return;
+  const code = window.__pendingRef || '';
+  if (!code) return;
+  referralLinkBusy = true;
+  try {
+    await apiRequest('linkReferral', { code: code });
+    window.__pendingRef = '';
+    stripRefFromUrl();
+    referralData = null;
+    showToast('success', 'Referal Terhubung', 'Kode referal berhasil dihubungkan.');
+  } catch (e) {
+    if (!isReferralNetworkError(e)) {
+      window.__pendingRef = '';
+      stripRefFromUrl();
+      if (!/Aksi tidak dikenal|function|schema cache/i.test(e.message || '')) showToast('error', 'Referal', e.message);
+    }
+  } finally {
+    referralLinkBusy = false;
+  }
+}
+
+// Hubungkan kode referal lewat kolom di menu Referal
+async function submitReferralCode() {
+  const input = safeGet('refEnterInput');
+  const code = input ? input.value.replace(/[^A-Za-z0-9_-]/g, '').trim() : '';
+  if (!code) { showToast('error', 'Gagal', 'Masukkan kode referal dulu.'); return; }
+  showLoading('Menghubungkan...');
+  try {
+    await apiRequest('linkReferral', { code: code });
+    window.__pendingRef = '';
+    stripRefFromUrl();
+    if (input) input.value = '';
+    showToast('success', 'Berhasil', 'Kode referal berhasil dihubungkan.');
+    referralData = null;
+    await loadReferral();
+  } catch (e) {
+    showToast('error', 'Gagal', e.message);
+  } finally {
+    hideLoading();
+  }
+}
 
 async function loadReferral() {
   renderReferral(referralData);
@@ -1646,7 +1727,7 @@ function renderReferral(d) {
     d = d || {};
     const codeEl = safeGet('refCodeInput');
     const linkEl = safeGet('refLinkInput');
-    if (codeEl) codeEl.value = d.code || getReferralCode();
+    if (codeEl) codeEl.value = getReferralCode();
     if (linkEl) linkEl.value = getReferralLink();
 
     const list = Array.isArray(d.list) ? d.list : [];
@@ -1657,7 +1738,10 @@ function renderReferral(d) {
     const doneEl = safeGet('refCountDone');
     if (doneEl) doneEl.textContent = done;
     const bonusEl = safeGet('refBonus');
-    if (bonusEl) bonusEl.textContent = (Number(d.bonusPerUser) > 0) ? ('Rp' + formatRupiah(Number(d.bonusPerUser))) : '-';
+    const bonusVal = Number(d.bonusPerEmail != null ? d.bonusPerEmail : d.bonusPerUser) || 0;
+    if (bonusEl) bonusEl.textContent = (bonusVal > 0) ? ('Rp' + formatRupiah(bonusVal)) : '-';
+    const enterCard = safeGet('refEnterCard');
+    if (enterCard) enterCard.style.display = (d.linked || d.referredBy) ? 'none' : 'block';
     const cntEl = safeGet('refListCount');
     if (cntEl) cntEl.textContent = list.length;
 
