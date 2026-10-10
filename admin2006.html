@@ -23,30 +23,30 @@
             text-size-adjust: 100%;
         }
         :root {
-            --bg-primary: #f0f2f8;
-            --bg-secondary: #e4e7ef;
-            --bg-card: #ffffff;
-            --bg-card-hover: #f5f7fc;
-            --bg-input: #eef1f7;
-            --bg-sidebar: #ffffff;
-            --bg-sidebar-hover: #eef2f9;
-            --text-primary: #0a0a1a;
-            --text-secondary: #3a3a5a;
-            --text-muted: #7a7a9a;
-            --border-color: #d0d5e0;
+            --bg-primary: #060e2e;
+            --bg-secondary: #091545;
+            --bg-card: #0e1c55;
+            --bg-card-hover: #142766;
+            --bg-input: #0a1745;
+            --bg-sidebar: #071035;
+            --bg-sidebar-hover: rgba(59, 130, 246, 0.14);
+            --text-primary: #eaf1ff;
+            --text-secondary: #b4c6f2;
+            --text-muted: #7d92c8;
+            --border-color: #1f3380;
             --blue-primary: #3b82f6;
-            --blue-light: #2563eb;
+            --blue-light: #60a5fa;
             --blue-dark: #1d4ed8;
-            --blue-glow: rgba(59, 130, 246, 0.18);
-            --green: #16a34a;
-            --green-bg: rgba(22, 163, 74, 0.12);
-            --red: #dc2626;
-            --red-bg: rgba(220, 38, 38, 0.12);
-            --orange: #d97706;
-            --orange-bg: rgba(217, 119, 6, 0.12);
+            --blue-glow: rgba(59, 130, 246, 0.24);
+            --green: #34d399;
+            --green-bg: rgba(52, 211, 153, 0.14);
+            --red: #f87171;
+            --red-bg: rgba(248, 113, 113, 0.14);
+            --orange: #fbbf24;
+            --orange-bg: rgba(251, 191, 36, 0.14);
             --radius: 14px;
             --radius-sm: 10px;
-            --shadow: 0 8px 32px rgba(20, 30, 60, 0.08);
+            --shadow: 0 10px 40px rgba(0, 5, 30, 0.45);
             --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             --sidebar-width: 280px;
             --header-height: 68px;
@@ -1932,6 +1932,165 @@
                 align-items: flex-start;
             }
         }
+
+        /* ============================================================
+           V4 — BIRU PEKAT PROFESIONAL (override, ditaruh paling akhir)
+           ============================================================ */
+        :root { color-scheme: dark; }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(900px 480px at 88% -8%, rgba(37, 99, 235, 0.30), transparent 60%),
+                radial-gradient(800px 520px at -8% 108%, rgba(29, 78, 216, 0.32), transparent 58%);
+        }
+        select option { background: #0e1c55; color: #eaf1ff; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #3b82f6, #1d4ed8); }
+
+        #loginScreen {
+            background: radial-gradient(900px 520px at 50% 0%, rgba(37, 99, 235, 0.38), transparent 62%),
+                linear-gradient(135deg, #040a24, #0a1a55, #040a24);
+        }
+        .particle { background: rgba(96, 165, 250, 0.45); box-shadow: 0 0 14px rgba(96, 165, 250, 0.35); }
+        .login-box {
+            background: rgba(10, 22, 70, 0.86);
+            border: 1px solid rgba(96, 165, 250, 0.30);
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55), 0 0 70px rgba(37, 99, 235, 0.22);
+        }
+        .login-box .btn-login { box-shadow: 0 6px 22px rgba(37, 99, 235, 0.5); }
+
+        .sidebar {
+            background: linear-gradient(180deg, #0a1649 0%, #060d30 100%);
+            border-right: 1px solid rgba(96, 165, 250, 0.14);
+            box-shadow: 6px 0 34px rgba(0, 0, 0, 0.35);
+        }
+        .sidebar .brand { border-bottom: 1px solid rgba(96, 165, 250, 0.16); }
+        .sidebar .brand i { color: #60a5fa; filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.7)); }
+        .sidebar .nav-item:hover { transform: translateX(3px); color: #fff; }
+        .sidebar .nav-item.active {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.34), rgba(59, 130, 246, 0.05));
+            color: #fff;
+            box-shadow: inset 3px 0 0 #60a5fa, 0 0 20px rgba(59, 130, 246, 0.18);
+        }
+        .sidebar .nav-item.active i { color: #93c5fd; }
+        .sidebar .sidebar-footer { border-top: 1px solid rgba(96, 165, 250, 0.16); }
+
+        .top-header {
+            background: rgba(7, 16, 53, 0.82);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(96, 165, 250, 0.16);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+        }
+        .top-header .right .admin-badge {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.28), rgba(29, 78, 216, 0.18));
+            color: #bfdbfe;
+            border: 1px solid rgba(96, 165, 250, 0.35);
+        }
+
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(150deg, rgba(20, 39, 102, 0.95), rgba(10, 21, 64, 0.95));
+            border: 1px solid rgba(96, 165, 250, 0.18);
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; top: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #22d3ee);
+            opacity: 0.85;
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(96, 165, 250, 0.6);
+            box-shadow: 0 16px 42px rgba(37, 99, 235, 0.30);
+        }
+        .stat-card .label i { color: #60a5fa; }
+        .stat-card .value { color: #fff; text-shadow: 0 0 22px rgba(96, 165, 250, 0.35); }
+
+        .chart-container, .card {
+            background: linear-gradient(160deg, rgba(16, 32, 90, 0.96), rgba(9, 19, 60, 0.96));
+            border: 1px solid rgba(96, 165, 250, 0.16);
+        }
+        .card:hover { border-color: rgba(96, 165, 250, 0.30); }
+        .chart-bar {
+            background: linear-gradient(180deg, #7dd3fc, #3b82f6 45%, #1d4ed8);
+            box-shadow: 0 0 16px rgba(59, 130, 246, 0.55);
+        }
+
+        table th { color: #8fb0ff; border-bottom: 1px solid rgba(96, 165, 250, 0.22); }
+        table td { border-bottom: 1px solid rgba(96, 165, 250, 0.10); }
+        table tbody tr { transition: background 0.2s; }
+        table tbody tr:hover td { background: rgba(59, 130, 246, 0.08); }
+
+        .btn { letter-spacing: 0.1px; }
+        .btn:active { transform: scale(0.97); }
+        .btn-primary { background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 4px 16px rgba(37, 99, 235, 0.45); }
+        .btn-primary:hover { background: linear-gradient(135deg, #60a5fa, #2563eb); box-shadow: 0 6px 22px rgba(37, 99, 235, 0.6); }
+        .btn-success { background: linear-gradient(135deg, #10b981, #047857); }
+        .btn-success:hover { background: linear-gradient(135deg, #34d399, #059669); }
+        .btn-danger { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+        .btn-danger:hover { background: linear-gradient(135deg, #f87171, #dc2626); }
+        .btn-outline { border-color: rgba(96, 165, 250, 0.38); color: #c7d7ff; }
+        .btn-outline:hover { background: rgba(59, 130, 246, 0.12); border-color: #60a5fa; color: #fff; }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus,
+        .deposit-form-row input:focus, .login-box input:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.28);
+        }
+
+        .modal-overlay { background: rgba(2, 6, 26, 0.80); }
+        .modal-box {
+            background: linear-gradient(160deg, #11235f, #0a1640);
+            border: 1px solid rgba(96, 165, 250, 0.32);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(37, 99, 235, 0.22);
+        }
+        .toast { background: #0f1f5c; border: 1px solid rgba(96, 165, 250, 0.3); }
+        .user-detail-card { background: rgba(10, 23, 69, 0.7); border-color: rgba(96, 165, 250, 0.2); }
+        .leaderboard-preview { border-color: rgba(96, 165, 250, 0.2); }
+
+        /* jenis Captcha */
+        .status-badge.captcha { background: rgba(34, 211, 238, 0.14); color: #22d3ee; }
+        .email-store-box .box-header .title .badge.captcha { background: rgba(34, 211, 238, 0.14); color: #22d3ee; }
+
+        /* gabungan storan (admin) */
+        .group-chip {
+            display: inline-block;
+            margin-top: 4px;
+            font-size: 10.5px;
+            font-weight: 600;
+            padding: 1px 9px;
+            border-radius: 20px;
+            background: rgba(96, 165, 250, 0.18);
+            color: #93c5fd;
+            white-space: nowrap;
+        }
+        .group-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .es-group { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px dashed rgba(96, 165, 250, 0.22); }
+        .es-group:last-child { border-bottom: none; margin-bottom: 0; }
+        .es-group-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: #93c5fd;
+            margin-bottom: 4px;
+        }
+        .es-group-meta { font-weight: 500; color: var(--text-muted); }
+        .es-group-emails { white-space: pre-wrap; }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+        }
     </style>
 </head>
 <body>
@@ -1995,6 +2154,11 @@
                     <span class="nav-label">Pending Bekas Old</span>
                     <span class="badge-dot" id="pendingOldDot"></span>
                 </button>
+                <button class="nav-item" data-page="pending-captcha">
+                    <i class="fas fa-clock"></i>
+                    <span class="nav-label">Pending Email Captcha</span>
+                    <span class="badge-dot" id="pendingCaptchaDot"></span>
+                </button>
                 <button class="nav-item" data-page="withdrawals">
                     <i class="fas fa-credit-card"></i>
                     <span class="nav-label">Penarikan</span>
@@ -2045,7 +2209,7 @@
                     <span class="nav-label">Logout</span>
                 </button>
             </nav>
-            <div class="sidebar-footer">v3.0 · Supabase</div>
+            <div class="sidebar-footer">v4.0 · Supabase</div>
         </aside>
 
         <main class="main-content">
@@ -2071,6 +2235,7 @@
                         <div class="stat-card"><div class="top"><span class="label"><i class="fas fa-clock"></i> Pending Bekas 2fa</span></div><div class="value" id="statPendingBekas">0</div></div>
                         <div class="stat-card"><div class="top"><span class="label"><i class="fas fa-clock"></i> Pending Bekas Biasa</span></div><div class="value" id="statPendingBiasa">0</div></div>
                         <div class="stat-card"><div class="top"><span class="label"><i class="fas fa-clock"></i> Pending Bekas Old</span></div><div class="value" id="statPendingOld">0</div></div>
+                        <div class="stat-card"><div class="top"><span class="label"><i class="fas fa-clock"></i> Pending Captcha</span></div><div class="value" id="statPendingCaptcha">0</div></div>
                         <div class="stat-card"><div class="top"><span class="label"><i class="fas fa-check-circle"></i> Storan Diterima</span></div><div class="value" id="statAccepted">0</div></div>
                         <div class="stat-card"><div class="top"><span class="label"><i class="fas fa-wallet"></i> Total Saldo User</span></div><div class="value"><span class="currency">Rp</span><span id="statBalance">0</span></div></div>
                         <div class="stat-card"><div class="top"><span class="label"><i class="fas fa-coins"></i> Total Storan</span></div><div class="value" id="statTotalDeposits">0</div></div>
@@ -2192,6 +2357,31 @@
                             <table>
                                 <thead><tr><th class="col-no">No</th><th class="col-user">User</th><th class="col-jenis">Jenis</th><th class="col-type">Tipe</th><th class="col-detail">Detail</th><th class="col-time">Waktu</th><th class="col-status">Status</th><th class="col-action">Aksi</th></tr></thead>
                                 <tbody id="pendingOldTableBody"><tr><td colspan="8" class="text-muted" style="text-align:center;padding:32px 0;">Tidak ada data pending Bekas Old</td></tr></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PENDING EMAIL CAPTCHA -->
+                <section class="page-section" id="page-pending-captcha">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-clock" style="color:#22d3ee;margin-right:8px;"></i> Pending Email Captcha</h3>
+                            <div style="display:flex;align-items:center;gap:12px;">
+                                <span class="badge" id="pendingCaptchaCount">0</span>
+                                <button class="btn btn-primary btn-sm" id="addNoteCaptchaBtn"><i class="fas fa-plus"></i> Catatan</button>
+                            </div>
+                        </div>
+
+                        <div class="filter-bar">
+                            <input type="text" id="pendingCaptchaEmailSearch" placeholder="Cari email dalam daftar..." />
+                            <span class="filter-hint">🔍 Cari email di semua pending Captcha</span>
+                        </div>
+
+                        <div class="table-wrap">
+                            <table>
+                                <thead><tr><th class="col-no">No</th><th class="col-user">User</th><th class="col-jenis">Jenis</th><th class="col-type">Tipe</th><th class="col-detail">Detail</th><th class="col-time">Waktu</th><th class="col-status">Status</th><th class="col-action">Aksi</th></tr></thead>
+                                <tbody id="pendingCaptchaTableBody"><tr><td colspan="8" class="text-muted" style="text-align:center;padding:32px 0;">Tidak ada data pending Captcha</td></tr></tbody>
                             </table>
                         </div>
                     </div>
@@ -2380,6 +2570,28 @@
                                 </div>
                             </div>
 
+                            <!-- ===== CAPTCHA SETTINGS ===== -->
+                            <div style="border-left:3px solid #22d3ee;padding-left:14px;margin-bottom:18px;">
+                                <h4 style="font-size:14px;font-weight:600;color:#22d3ee;margin-bottom:10px;">🧩 Captcha</h4>
+                                <div class="form-group"><label>Status Storan Captcha</label>
+                                    <select id="depositCaptchaStatus">
+                                        <option value="OPEN">OPEN — Tersedia</option>
+                                        <option value="CLOSE">CLOSE — Ditutup</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group"><label>Nama / Jenis Storan Captcha</label>
+                                        <input type="text" id="depositCaptchaName" placeholder="Contoh: Gmail Captcha" />
+                                    </div>
+                                    <div class="form-group"><label>Harga Storan Captcha (Rp)</label>
+                                        <input type="text" id="depositCaptchaPrice" placeholder="3.000" class="currency-input" />
+                                    </div>
+                                </div>
+                                <div class="form-group"><label>Info Storan Captcha</label>
+                                    <textarea id="depositCaptchaInfo" placeholder="Contoh: Stor Gmail captcha, input bebas."></textarea>
+                                </div>
+                            </div>
+
                             <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Pengaturan</button>
                         </form>
                     </div>
@@ -2400,7 +2612,7 @@
                 <section class="page-section" id="page-emailstore">
                     <div class="card">
                         <div class="card-header">
-                            <h3><i class="fas fa-envelope-open-text" style="color:var(--blue-primary);margin-right:8px;"></i> Storan Email Fresh, Bekas 2FA, Bekas Biasa &amp; Bekas Old</h3>
+                            <h3><i class="fas fa-envelope-open-text" style="color:var(--blue-primary);margin-right:8px;"></i> Storan Email Fresh, Bekas 2FA, Bekas Biasa, Bekas Old &amp; Captcha</h3>
                             <span class="badge" id="emailStoreLastUpdate">-</span>
                         </div>
 
@@ -2480,6 +2692,25 @@
                             </div>
                         </div>
 
+                        <!-- ===== BOX CAPTCHA ===== -->
+                        <div class="email-store-box" id="emailStoreCaptchaBox">
+                            <div class="box-header">
+                                <div class="title">
+                                    <i class="fas fa-puzzle-piece" style="color:#22d3ee;"></i> STORAN EMAIL CAPTCHA
+                                    <span class="badge captcha">Captcha</span>
+                                </div>
+                                <span class="badge-count" id="emailStoreCaptchaTotal">Total: 0 email</span>
+                            </div>
+                            <div class="email-store-area" id="emailStoreCaptchaArea">
+                                <div class="empty-msg">Belum ada email Captcha pending.</div>
+                            </div>
+                            <div class="email-store-actions">
+                                <button class="btn btn-primary" id="emailStoreCaptchaCopyBtn"><i class="fas fa-copy"></i> Salin Semua</button>
+                                <button class="btn btn-danger" id="emailStoreCaptchaClearBtn"><i class="fas fa-trash"></i> Hapus Riwayat</button>
+                                <button class="btn btn-outline" id="emailStoreCaptchaRefreshBtn"><i class="fas fa-sync"></i> Refresh</button>
+                            </div>
+                        </div>
+
                         <div style="font-size:12px;color:var(--text-muted);margin-top:4px;border-top:1px solid var(--border-color);padding-top:10px;">
                             <i class="fas fa-info-circle"></i> Data yang sudah dihapus dari tampilan tidak akan muncul lagi. Email pending baru tetap masuk.
                             Data lama tanpa jenis diperlakukan sebagai <strong>Fresh</strong>.
@@ -2540,8 +2771,8 @@
         // ============================================================
         //  SUPABASE CONFIG
         // ============================================================
-        const SUPABASE_URL = 'https://ijpsiszladtypfjqwidc.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqcHNpc3psYWR0eXBmanF3aWRjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MDY4NjI3OSwiZXhwIjoyMTA2MjYyMjc5fQ.Zj9oCRUgyFiSVbMBp3UCjBwkBwkZXZS8oBzDGPn8Y4M';
+        const SUPABASE_URL = 'https://vqukenaoxkxjhqziflqz.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZxdWtlbmFveGt4amhxemlmbHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE2MzgyMDgsImV4cCI6MjEwNzIxNDIwOH0.Li5NsCGxmTA4JkZ-ZzmzJ7VY6kTynyUpDZuekyINyvQ';
 
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -2625,7 +2856,7 @@
 
         function playNotificationSound() {
             try {
-                const ctx = new(window.AudioContext || window.webkitAudioContext)();
+                const ctx = getAudioCtx();
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.connect(gain);
@@ -2695,6 +2926,8 @@
             // ===== FIX: tambahkan p_items =====
             adminAcceptDeposit: { fn: 'panel_accept_deposit', needsToken: true, params: (d) => ({ p_history_id: d.historyId, p_user_id: d.userId, p_amount: d.amount || 0, p_note: d.note || '', p_items: d.items || null }) },
             adminRejectDeposit: { fn: 'panel_reject_deposit', needsToken: true, params: (d) => ({ p_history_id: d.historyId, p_user_id: d.userId || null }) },
+            adminAcceptDepositGroup: { fn: 'panel_accept_deposit_group', needsToken: true, params: (d) => ({ p_entries: d.entries }) },
+            adminRejectDepositGroup: { fn: 'panel_reject_deposit_group', needsToken: true, params: (d) => ({ p_entries: d.entries }) },
             adminAcceptWithdrawal: { fn: 'panel_accept_withdrawal', needsToken: true, params: (d) => ({ p_withdrawal_id: d.withdrawalId, p_user_id: d.userId || null }) },
             adminRejectWithdrawal: { fn: 'panel_reject_withdrawal', needsToken: true, params: (d) => ({ p_withdrawal_id: d.withdrawalId, p_user_id: d.userId || null }) },
             adminSendMessage: { fn: 'panel_send_message', needsToken: true, params: (d) => ({ p_title: d.title, p_content: d.content, p_sent_to: d.sentTo || 'all' }) },
@@ -2720,8 +2953,12 @@
                     p_deposit_old_status: d.depositOldStatus || 'OPEN',
                     p_deposit_old_price: d.depositOldPrice || 2000,
                     p_deposit_old_name: d.depositOldName || 'Gmail Bekas Old',
-                    p_deposit_old_info: d.depositOldInfo || ''
-                }) },
+                    p_deposit_old_info: d.depositOldInfo || '',
+                    p_deposit_captcha_status: d.depositCaptchaStatus || 'OPEN',
+                    p_deposit_captcha_price: d.depositCaptchaPrice || 3000,
+                    p_deposit_captcha_name: d.depositCaptchaName || 'Gmail Captcha',
+                    p_deposit_captcha_info: d.depositCaptchaInfo || ''
+                }), optionalKeys: ['p_deposit_captcha_status', 'p_deposit_captcha_price', 'p_deposit_captcha_name', 'p_deposit_captcha_info'] },
             adminClearActivities: { fn: 'panel_clear_activities', needsToken: true, params: () => ({}) },
             adminDeleteMessages: { fn: 'panel_delete_messages', needsToken: true, params: () => ({}) }
         };
@@ -2737,14 +2974,22 @@
                 params.p_token = token;
             }
 
-            const { data: json, error } = await supabase.rpc(map.fn, params);
+            if (action === 'adminUpdateSettings') legacySettingsMode = false;
+            let { data: json, error } = await supabase.rpc(map.fn, params);
+            if (error && map.optionalKeys && isMissingFunctionError(error)) {
+                map.optionalKeys.forEach(k => { delete params[k]; });
+                legacySettingsMode = true;
+                ({ data: json, error } = await supabase.rpc(map.fn, params));
+            }
 
             if (error) {
                 const msg = error.message || 'Server error.';
                 if (map.needsToken && /sesi|session|kedaluwarsa|expired/i.test(msg)) {
                     clearAdminToken();
                 }
-                throw new Error(msg);
+                const ex = new Error(msg);
+                ex.code = error.code;
+                throw ex;
             }
             if (!json || json.success === false) {
                 throw new Error(json?.message || 'Server error.');
@@ -2765,10 +3010,260 @@
             fresh: { label: 'Fresh', cls: 'fresh' },
             bekas: { label: 'Bekas 2FA', cls: 'bekas' },
             biasa: { label: 'Bekas Biasa', cls: 'biasa' },
-            old:   { label: 'Bekas Old', cls: 'old' }
+            old:   { label: 'Bekas Old', cls: 'old' },
+            captcha: { label: 'Captcha', cls: 'captcha' }
         };
         function getJenisMeta(jenis) {
             return JENIS_META[jenis] || JENIS_META.fresh;
+        }
+
+
+        // ============================================================
+        //  V4 — Captcha, penggabungan storan per user/hari, performa
+        // ============================================================
+        const PENDING_JENIS = ['fresh', 'bekas', 'biasa', 'old', 'captcha'];
+        let dataChanged = true;
+        let lastDataSig = '';
+        let groupCache = null;
+        let refreshInFlight = false;
+        let legacySettingsMode = false;
+
+        function esc(v) {
+            return String(v === undefined || v === null ? '' : v)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        function debounce(fn, ms) {
+            let t;
+            return function(...a) {
+                clearTimeout(t);
+                t = setTimeout(() => fn.apply(this, a), ms);
+            };
+        }
+
+        let _audioCtx = null;
+        function getAudioCtx() {
+            if (!_audioCtx) _audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+            if (_audioCtx.state === 'suspended') _audioCtx.resume().catch(() => {});
+            return _audioCtx;
+        }
+
+        function currentPage() {
+            const a = document.querySelector('.nav-item.active[data-page]');
+            return a ? a.dataset.page : 'dashboard';
+        }
+
+        function isMissingFunctionError(err) {
+            const msg = String((err && err.message) || '');
+            return !!err && (err.code === 'PGRST202' || /could not find the function/i.test(msg));
+        }
+
+        function localDayKey(ts) {
+            const d = new Date(ts);
+            if (isNaN(d.getTime())) return 'x';
+            return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+        }
+
+        function hashStr(s) {
+            let h = 5381;
+            for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+            return (h >>> 0).toString(36);
+        }
+
+        function depositEmailList(d) {
+            if (Array.isArray(d.data)) return d.data.map(e => String(e).trim()).filter(Boolean);
+            if (typeof d.data === 'string') return d.data.split(/[,\n]+/).map(e => e.trim()).filter(Boolean);
+            return [];
+        }
+
+        function depositCount(d) {
+            if (Array.isArray(d.data)) return d.data.length;
+            const n = parseInt(d.items, 10) || parseInt(d.jumlah, 10) || 0;
+            return n || depositEmailList(d).length;
+        }
+
+        function depTs(d) {
+            return new Date(d.date).getTime() || 0;
+        }
+
+        // Gabungkan storan pending dengan user (id + nama) + jenis + hari yang sama.
+        // Hanya untuk tampilan admin; data user tetap terpisah.
+        function getPendingGroups() {
+            if (groupCache) return groupCache;
+            const byJenis = {};
+            PENDING_JENIS.forEach(j => { byJenis[j] = []; });
+            const byId = new Map();
+            const byKey = new Map();
+            ((dataStore && dataStore.deposits) || []).forEach(d => {
+                if (d.status !== 'pending') return;
+                const jenis = depositJenis(d);
+                const key = [jenis, d.userId || '', d.username || '', localDayKey(d.date)].join('|');
+                let g = byKey.get(key);
+                if (!g) {
+                    let gid = 'g' + hashStr(key);
+                    while (byId.has(gid)) gid += 'x';
+                    g = { gid, jenis, userId: d.userId, username: d.username, type: d.type, deposits: [] };
+                    byKey.set(key, g);
+                    byId.set(gid, g);
+                    if (!byJenis[jenis]) byJenis[jenis] = [];
+                    byJenis[jenis].push(g);
+                }
+                g.deposits.push(d);
+            });
+            byId.forEach(g => {
+                g.deposits.sort((a, b) => depTs(a) - depTs(b));
+                g.ids = g.deposits.map(d => d.id);
+                g.data = [];
+                g.deposits.forEach(d => depositEmailList(d).forEach(e => g.data.push(e)));
+                g.count = g.deposits.reduce((s, d) => s + depositCount(d), 0);
+                const last = g.deposits[g.deposits.length - 1];
+                g.date = last.date;
+                g.firstDate = g.deposits[0].date;
+                g.timestamp = depTs(last);
+            });
+            Object.keys(byJenis).forEach(j => byJenis[j].sort((a, b) => a.timestamp - b.timestamp));
+            groupCache = { byJenis, byId };
+            return groupCache;
+        }
+
+        function groupIdsOf(id) {
+            const g = getPendingGroups().byId.get(id);
+            return g ? g.ids : [id];
+        }
+
+        function distributeInt(total, weights) {
+            const n = weights.length;
+            if (!n) return [];
+            const sum = weights.reduce((a, b) => a + b, 0);
+            const w = sum > 0 ? weights : weights.map(() => 1);
+            const wsum = sum > 0 ? sum : n;
+            const out = [];
+            let acc = 0;
+            for (let i = 0; i < n; i++) {
+                if (i === n - 1) out.push(total - acc);
+                else {
+                    const v = Math.floor(total * w[i] / wsum);
+                    out.push(v);
+                    acc += v;
+                }
+            }
+            return out;
+        }
+
+        function effectiveRate(d) {
+            lockPendingRate(d);
+            const lockedRate = getRateLock(d.id);
+            const resolved = resolveBaseRate(d);
+            const baseRate = lockedRate !== null ? lockedRate : resolved.baseRate;
+            const rateSource = lockedRate !== null ? 'rate terkunci saat storan masuk' : resolved.rateSource;
+            const override = getRateOverride(d.id);
+            return {
+                rate: override !== null ? override : baseRate,
+                source: override !== null ? 'Override manual oleh admin' : rateSource,
+                overridden: override !== null
+            };
+        }
+
+        function groupRateInfo(g) {
+            const infos = g.deposits.map(d => Object.assign({ d, count: depositCount(d) }, effectiveRate(d)));
+            const totalCount = infos.reduce((s, i) => s + i.count, 0);
+            const totalAmount = infos.reduce((s, i) => s + i.count * i.rate, 0);
+            const rates = [...new Set(infos.map(i => i.rate))];
+            const uniform = rates.length === 1;
+            const rate = uniform ? rates[0] : (totalCount ? Math.round(totalAmount / totalCount) : 0);
+            return {
+                infos, totalCount, totalAmount, uniform, rate, rates,
+                overridden: infos.some(i => i.overridden),
+                source: infos[0] ? infos[0].source : ''
+            };
+        }
+
+        // Proses banyak storan sekaligus: pakai fungsi grup di server (atomik) kalau ada,
+        // kalau belum ada otomatis dijalankan satu per satu.
+        async function submitGroupAction(groupAction, singleAction, entries) {
+            try {
+                return await apiRequest(groupAction, { entries });
+            } catch (err) {
+                if (!isMissingFunctionError(err)) throw err;
+            }
+            let done = 0;
+            for (const e of entries) {
+                try {
+                    await apiRequest(singleAction, e);
+                    done++;
+                } catch (err) {
+                    if (done > 0) err.message = `${done} dari ${entries.length} storan sudah diproses, sisanya gagal: ${err.message}`;
+                    throw err;
+                }
+            }
+        }
+
+        // ----- Captcha: catatan, render, pengaturan -----
+        const NOTES_CAPTCHA_KEY = 'storgmail_pending_notes_captcha';
+        function getNotesCaptcha() {
+            try {
+                const data = localStorage.getItem(NOTES_CAPTCHA_KEY);
+                const arr = data ? JSON.parse(data) : [];
+                return arr.map(n => (typeof n === 'string' ? { text: n, timestamp: 0 } : n));
+            } catch { return []; }
+        }
+        function saveNotesCaptcha(notes) {
+            localStorage.setItem(NOTES_CAPTCHA_KEY, JSON.stringify(notes));
+        }
+        function renderPendingCaptcha() { renderPendingByJenis('captcha'); }
+
+        function setSettingField(id, value) {
+            const el = document.getElementById(id);
+            if (el && document.activeElement !== el && !depositSettingsDirtyFields.has(id)) el.value = value;
+        }
+        function renderDepositCaptchaSettings(s) {
+            setSettingField('depositCaptchaStatus', s.depositCaptchaStatus || 'OPEN');
+            setSettingField('depositCaptchaName', s.depositCaptchaName || 'Gmail Captcha');
+            const p = parseCurrency(s.depositCaptchaPrice) || 3000;
+            setSettingField('depositCaptchaPrice', p.toLocaleString('id-ID'));
+            setSettingField('depositCaptchaInfo', s.depositCaptchaInfo || '');
+        }
+
+        document.getElementById('addNoteCaptchaBtn').addEventListener('click', async () => {
+            const existing = getNotesCaptcha();
+            const result = await openModal(
+                'Tambah Catatan Captcha',
+                'Tulis keterangan untuk pembatas / rekap storan Captcha.',
+                `<div class="form-group">
+                    <label>Isi Catatan</label>
+                    <textarea id="noteInputCaptcha" rows="2" placeholder="Contoh: Storan Captcha 21 Agustus 2026"></textarea>
+                </div>`,
+                'Simpan',
+                'Batal'
+            );
+            if (result) {
+                const text = document.getElementById('noteInputCaptcha').value.trim();
+                if (!text) { toast('Catatan tidak boleh kosong.', 'error'); return; }
+                existing.push({ text: text, timestamp: Date.now() });
+                saveNotesCaptcha(existing);
+                renderPendingCaptcha();
+                toast('Catatan Captcha berhasil ditambahkan.', 'success');
+            }
+        });
+        document.getElementById('pendingCaptchaEmailSearch').addEventListener('input', debounce(renderPendingCaptcha, 150));
+
+        const dotLastCounts = {};
+        function applyDot(dotId, page, count) {
+            const dot = document.getElementById(dotId);
+            if (!dot) return;
+            const prev = dotLastCounts[dotId] || 0;
+            const isActive = currentPage() === page;
+            if (isActive) sessionStorage.setItem('viewed_' + page, 'true');
+            else if (count > prev) sessionStorage.removeItem('viewed_' + page);
+            dotLastCounts[dotId] = count;
+            const viewed = sessionStorage.getItem('viewed_' + page) === 'true';
+            if (count > 0 && !viewed && !isActive) {
+                dot.classList.add('show');
+                dot.textContent = count;
+            } else {
+                dot.classList.remove('show');
+            }
         }
 
         let previousPendingCount = 0;
@@ -2788,7 +3283,12 @@
         async function loadData() {
             try {
                 const result = await apiRequest('getAdminData');
-                dataStore = normalizeAdminData(result);
+                const nextData = normalizeAdminData(result);
+                const nextSig = JSON.stringify(nextData);
+                dataChanged = nextSig !== lastDataSig;
+                lastDataSig = nextSig;
+                dataStore = nextData;
+                groupCache = null;
                 return dataStore;
             } catch (err) {
                 const msg = String(err?.message || '').toLowerCase();
@@ -2816,6 +3316,7 @@
             'pending-bekas': document.getElementById('page-pending-bekas'),
             'pending-biasa': document.getElementById('page-pending-biasa'),
             'pending-old': document.getElementById('page-pending-old'),
+            'pending-captcha': document.getElementById('page-pending-captcha'),
             withdrawals: document.getElementById('page-withdrawals'),
             accepted: document.getElementById('page-accepted'),
             users: document.getElementById('page-users'),
@@ -2832,6 +3333,7 @@
             'pending-bekas': 'Pending Email Bekas 2FA',
             'pending-biasa': 'Pending Bekas Biasa',
             'pending-old': 'Pending Bekas Old',
+            'pending-captcha': 'Pending Email Captcha',
             withdrawals: 'Penarikan',
             accepted: 'Storan Diterima',
             users: 'Semua User',
@@ -2889,6 +3391,7 @@
             else if (page === 'pending-bekas') renderPendingBekas();
             else if (page === 'pending-biasa') renderPendingBiasa();
             else if (page === 'pending-old') renderPendingOld();
+            else if (page === 'pending-captcha') renderPendingCaptcha();
             else if (page === 'withdrawals') renderWithdrawals();
             else if (page === 'accepted') renderAccepted();
             else if (page === 'users') renderUsers();
@@ -2908,6 +3411,7 @@
                 'pending-bekas': 'pendingBekasDot',
                 'pending-biasa': 'pendingBiasaDot',
                 'pending-old': 'pendingOldDot',
+                'pending-captcha': 'pendingCaptchaDot',
                 'withdrawals': 'withdrawDot',
                 'accepted': 'acceptedDot',
                 'users': 'usersDot',
@@ -2926,7 +3430,6 @@
             if (page === 'dashboard') {
                 const bellDot = document.getElementById('bellDot');
                 if (bellDot) bellDot.classList.remove('show');
-                previousPendingCount = 0;
             }
             sessionStorage.setItem('viewed_' + page, 'true');
         }
@@ -3097,21 +3600,34 @@
         // ============================================================
         //  RENDER FUNCTIONS
         // ============================================================
+        const PAGE_RENDERERS = {
+            'dashboard': () => renderDashboard(),
+            'pending': () => renderPending(),
+            'pending-bekas': () => renderPendingBekas(),
+            'pending-biasa': () => renderPendingBiasa(),
+            'pending-old': () => renderPendingOld(),
+            'pending-captcha': () => renderPendingCaptcha(),
+            'withdrawals': () => renderWithdrawals(),
+            'accepted': () => renderAccepted(),
+            'users': () => renderUsers(),
+            'banuser': () => renderBanUsers(),
+            'messages': () => renderMessages(),
+            'deposit-settings': () => renderDepositSettings(),
+            'withdraw-settings': () => renderWithdrawSettings(),
+            'emailstore': () => renderEmailStore(),
+            'leaderboard-start': () => renderLeaderboardStart()
+        };
+
+        function renderPage(page) {
+            const fn = PAGE_RENDERERS[page];
+            if (fn) fn();
+        }
+
+        // Hanya render halaman yang sedang dibuka (halaman lain dirender saat dibuka).
+        // Rate storan pending tetap dikunci untuk semua jenis supaya tidak ikut berubah.
         function renderAll() {
-            renderDashboard();
-            renderPending();
-            renderPendingBekas();
-            renderPendingBiasa();
-            renderPendingOld();
-            renderWithdrawals();
-            renderAccepted();
-            renderUsers();
-            renderBanUsers();
-            renderMessages();
-            renderDepositSettings();
-            renderWithdrawSettings();
-            renderEmailStore();
-            renderLeaderboardStart();
+            lockAllPendingRates(dataStore.deposits.filter(d => d.status === 'pending'));
+            renderPage(currentPage());
             updateBadges();
             checkNotifications();
         }
@@ -3123,78 +3639,33 @@
         }
 
         function updateBadges() {
-            const countFresh = dataStore.deposits.filter(d => d.status === 'pending' && depositJenis(d) === 'fresh').length;
-            const dotFresh = document.getElementById('pendingDot');
-            const viewedFresh = sessionStorage.getItem('viewed_pending') === 'true';
-            if (countFresh > 0 && !viewedFresh) {
-                dotFresh.classList.add('show');
-                dotFresh.textContent = countFresh;
-            } else {
-                dotFresh.classList.remove('show');
-            }
-
-            const countBekas = dataStore.deposits.filter(d => d.status === 'pending' && depositJenis(d) === 'bekas').length;
-            const dotBekas = document.getElementById('pendingBekasDot');
-            const viewedBekas = sessionStorage.getItem('viewed_pending-bekas') === 'true';
-            if (countBekas > 0 && !viewedBekas) {
-                dotBekas.classList.add('show');
-                dotBekas.textContent = countBekas;
-            } else {
-                dotBekas.classList.remove('show');
-            }
-
-            const countBiasa = dataStore.deposits.filter(d => d.status === 'pending' && depositJenis(d) === 'biasa').length;
-            const dotBiasa = document.getElementById('pendingBiasaDot');
-            const viewedBiasa = sessionStorage.getItem('viewed_pending-biasa') === 'true';
-            if (countBiasa > 0 && !viewedBiasa) {
-                dotBiasa.classList.add('show');
-                dotBiasa.textContent = countBiasa;
-            } else {
-                dotBiasa.classList.remove('show');
-            }
-
-            const countOld = dataStore.deposits.filter(d => d.status === 'pending' && depositJenis(d) === 'old').length;
-            const dotOld = document.getElementById('pendingOldDot');
-            const viewedOld = sessionStorage.getItem('viewed_pending-old') === 'true';
-            if (countOld > 0 && !viewedOld) {
-                dotOld.classList.add('show');
-                dotOld.textContent = countOld;
-            } else {
-                dotOld.classList.remove('show');
-            }
-
-            const wd = dataStore.withdrawals.filter(w => w.status === 'pending');
-            const wdCount = wd.length;
-            const wdDot = document.getElementById('withdrawDot');
-            const viewedWd = sessionStorage.getItem('viewed_withdrawals') === 'true';
-            if (wdCount > 0 && !viewedWd) {
-                wdDot.classList.add('show');
-                wdDot.textContent = wdCount;
-            } else {
-                wdDot.classList.remove('show');
-            }
-
-            const total = countFresh + countBekas + countBiasa + countOld + wdCount;
+            const g = getPendingGroups();
+            const map = [
+                ['fresh', 'pendingDot', 'pending'],
+                ['bekas', 'pendingBekasDot', 'pending-bekas'],
+                ['biasa', 'pendingBiasaDot', 'pending-biasa'],
+                ['old', 'pendingOldDot', 'pending-old'],
+                ['captcha', 'pendingCaptchaDot', 'pending-captcha']
+            ];
+            let total = 0;
+            map.forEach(([jenis, dotId, page]) => {
+                const c = (g.byJenis[jenis] || []).length;
+                total += c;
+                applyDot(dotId, page, c);
+            });
+            const wdCount = dataStore.withdrawals.filter(w => w.status === 'pending').length;
+            applyDot('withdrawDot', 'withdrawals', wdCount);
+            total += wdCount;
+            applyDot('dashDot', 'dashboard', total);
             const bellDot = document.getElementById('bellDot');
             const dashDot = document.getElementById('dashDot');
-            const viewedDash = sessionStorage.getItem('viewed_dashboard') === 'true';
-            if (total > 0 && !viewedDash) {
-                bellDot.classList.add('show');
-                dashDot.classList.add('show');
-                dashDot.textContent = total;
-            } else {
-                bellDot.classList.remove('show');
-                dashDot.classList.remove('show');
-            }
+            if (bellDot && dashDot) bellDot.classList.toggle('show', dashDot.classList.contains('show'));
         }
 
         function checkNotifications() {
-            const pendingFresh = dataStore.deposits.filter(d => d.status === 'pending' && depositJenis(d) === 'fresh').length;
-            const pendingBekas = dataStore.deposits.filter(d => d.status === 'pending' && depositJenis(d) === 'bekas').length;
-            const pendingBiasa = dataStore.deposits.filter(d => d.status === 'pending' && depositJenis(d) === 'biasa').length;
-            const pendingOld = dataStore.deposits.filter(d => d.status === 'pending' && depositJenis(d) === 'old').length;
+            const pendingDeposits = dataStore.deposits.filter(d => d.status === 'pending').length;
             const wd = dataStore.withdrawals.filter(w => w.status === 'pending').length;
-            const total = pendingFresh + pendingBekas + pendingBiasa + pendingOld + wd;
+            const total = pendingDeposits + wd;
             if (total > previousPendingCount && total > 0) {
                 playNotificationSound();
                 toast(`🔔 Ada ${total} transaksi pending baru!`, 'info');
@@ -3212,10 +3683,11 @@
             const pendingBiasa = deposits.filter(d => d.status === 'pending' && depositJenis(d) === 'biasa').length;
             const pendingOld = deposits.filter(d => d.status === 'pending' && depositJenis(d) === 'old').length;
             const accepted = deposits.filter(d => d.status === 'diterima').length;
-            document.getElementById('statPendingFresh').textContent = pendingFresh;
-            document.getElementById('statPendingBekas').textContent = pendingBekas;
-            document.getElementById('statPendingBiasa').textContent = pendingBiasa;
-            document.getElementById('statPendingOld').textContent = pendingOld;
+            document.getElementById('statPendingFresh').textContent = getPendingGroups().byJenis.fresh.length;
+            document.getElementById('statPendingBekas').textContent = getPendingGroups().byJenis.bekas.length;
+            document.getElementById('statPendingBiasa').textContent = getPendingGroups().byJenis.biasa.length;
+            document.getElementById('statPendingOld').textContent = getPendingGroups().byJenis.old.length;
+            document.getElementById('statPendingCaptcha').textContent = getPendingGroups().byJenis.captcha.length;
             document.getElementById('statAccepted').textContent = accepted;
             const totalBalance = users.reduce((s, u) => s + (parseInt(u.saldo) || 0), 0);
             document.getElementById('statBalance').textContent = formatRupiah(totalBalance);
@@ -3243,11 +3715,11 @@
             }
             feed.innerHTML = list.slice(-8).reverse().map(a => `
                     <div class="activity-item">
-                        <div class="av">${(a.username || '?')[0].toUpperCase()}</div>
+                        <div class="av">${esc((a.username || '?')[0].toUpperCase())}</div>
                         <div class="info">
-                            <div class="title">${a.username || 'User'} <span class="text-secondary">${a.action || 'aktivitas'}</span></div>
+                            <div class="title">${esc(a.username || 'User')} <span class="text-secondary">${esc(a.action || 'aktivitas')}</span></div>
                             <div class="time">${formatTime(a.date || Date.now())}</div>
-                            ${a.detail ? `<div class="desc">${a.detail}</div>` : ''}
+                            ${a.detail ? `<div class="desc">${esc(a.detail)}</div>` : ''}
                         </div>
                     </div>
                 `).join('');
@@ -3260,13 +3732,13 @@
             for (let i = 6; i >= 0; i--) {
                 const d = new Date(now);
                 d.setDate(d.getDate() - i);
-                const key = d.toISOString().slice(0, 10);
+                const key = localDayKey(d);
                 days.push({ date: d, key, count: 0 });
             }
             deposits.forEach(d => {
                 if (!d.date) return;
                 const dDate = new Date(d.date);
-                const key = dDate.toISOString().slice(0, 10);
+                const key = localDayKey(dDate);
                 const found = days.find(x => x.key === key);
                 if (found) found.count++;
             });
@@ -3320,53 +3792,44 @@
         function formatEmailCell(data) {
             const arr = Array.isArray(data) ? data : (data ? [data] : []);
             if (arr.length === 0) return '-';
-            if (arr.length === 1) return arr[0];
-            return `${arr[0]} <span class="badge-email-count" title="Total ${arr.length} email">+${arr.length - 1} lainnya</span>`;
+            if (arr.length === 1) return esc(arr[0]);
+            return `${esc(arr[0])} <span class="badge-email-count" title="Total ${arr.length} email">+${arr.length - 1} lainnya</span>`;
         }
 
         const PENDING_TYPE_CONFIG = {
             fresh: { tbody: 'pendingTableBody', count: 'pendingCount', search: 'pendingEmailSearch', getNotes: getNotes, emptyLabel: 'Fresh' },
             bekas: { tbody: 'pendingBekasTableBody', count: 'pendingBekasCount', search: 'pendingBekasEmailSearch', getNotes: getNotesBekas, emptyLabel: 'Bekas' },
             biasa: { tbody: 'pendingBiasaTableBody', count: 'pendingBiasaCount', search: 'pendingBiasaEmailSearch', getNotes: getNotesBiasa, emptyLabel: 'Bekas Biasa' },
-            old:   { tbody: 'pendingOldTableBody', count: 'pendingOldCount', search: 'pendingOldEmailSearch', getNotes: getNotesOld, emptyLabel: 'Bekas Old' }
+            old:   { tbody: 'pendingOldTableBody', count: 'pendingOldCount', search: 'pendingOldEmailSearch', getNotes: getNotesOld, emptyLabel: 'Bekas Old' },
+            captcha: { tbody: 'pendingCaptchaTableBody', count: 'pendingCaptchaCount', search: 'pendingCaptchaEmailSearch', getNotes: getNotesCaptcha, emptyLabel: 'Captcha' }
         };
 
         function renderPendingByJenis(jenis) {
             if (!dataStore) return;
             const cfg = PENDING_TYPE_CONFIG[jenis];
-            const pending = dataStore.deposits.filter(d => d.status === 'pending' && depositJenis(d) === jenis);
-            lockAllPendingRates(pending);
-            document.getElementById(cfg.count).textContent = pending.length;
+            const groups = (getPendingGroups().byJenis[jenis]) || [];
+            lockAllPendingRates(groups.reduce((a, g) => a.concat(g.deposits), []));
+            document.getElementById(cfg.count).textContent = groups.length;
 
             const searchEmail = document.getElementById(cfg.search).value.toLowerCase().trim();
 
             const buildNotes = () => cfg.getNotes().map((note, idx) => ({
                 id: 'note_' + idx,
-                type: 'note',
+                isNote: true,
                 text: note.text,
-                timestamp: note.timestamp,
-                username: '📝 Catatan',
-                date: new Date(note.timestamp || 0).toISOString(),
-                status: 'note'
+                timestamp: note.timestamp || 0
             }));
 
-            let items = [...pending, ...buildNotes()];
+            let items = [...groups, ...buildNotes()];
 
             if (searchEmail) {
-                items = items.filter(item => {
-                    if (item.type === 'note') return false;
-                    if (!item.data || !Array.isArray(item.data)) return false;
-                    return item.data.some(email => email.toLowerCase().includes(searchEmail));
-                });
+                items = items.filter(item => !item.isNote && item.data.some(email => email.toLowerCase().includes(searchEmail)));
                 const notesToShow = buildNotes();
                 items = items.length > 0 ? [...items, ...notesToShow] : notesToShow;
             }
 
-            items.sort((a, b) => {
-                const ta = a.timestamp || new Date(a.date).getTime() || 0;
-                const tb = b.timestamp || new Date(b.date).getTime() || 0;
-                return ta - tb; // urut naik: lama di atas, baru di bawah -> storan baru numpuk di bawah Catatan
-            });
+            // urut naik: lama di atas, baru di bawah -> storan baru numpuk di bawah Catatan
+            items.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
 
             const tbody = document.getElementById(cfg.tbody);
             if (items.length === 0) {
@@ -3377,12 +3840,12 @@
 
             let rowIndex = 0;
             tbody.innerHTML = items.map((item) => {
-                if (item.type === 'note') {
+                if (item.isNote) {
                     return `
                             <tr class="note-row">
                                 <td>${++rowIndex}</td>
                                 <td colspan="7" style="font-style:italic; color:var(--text-secondary);">
-                                    <i class="fas fa-sticky-note note-icon"></i> ${item.text}
+                                    <i class="fas fa-sticky-note note-icon"></i> ${esc(item.text)}
                                     <span style="margin-left:12px;font-size:11px;color:var(--text-muted);">
                                         <i class="fas fa-clock"></i> ${formatTime(item.timestamp)}
                                     </span>
@@ -3394,29 +3857,30 @@
                         `;
                 }
 
-                const d = item;
+                const g = item;
+                const multi = g.deposits.length > 1;
                 let matchCount = 0;
-                if (searchEmail && Array.isArray(d.data)) {
-                    matchCount = d.data.filter(email => email.toLowerCase().includes(searchEmail)).length;
-                }
+                if (searchEmail) matchCount = g.data.filter(email => email.toLowerCase().includes(searchEmail)).length;
                 const badgeHtml = matchCount > 0 ? `<span class="badge-email-count">${matchCount}</span>` : '';
-
-                const meta = getJenisMeta(depositJenis(d));
+                const meta = getJenisMeta(g.jenis);
+                const timeCell = multi
+                    ? `<div>${formatTime(g.date)}</div><div class="group-sub">${g.deposits.length} storan · ${formatTimeOnly(g.firstDate)} – ${formatTimeOnly(g.date)}</div>`
+                    : formatTime(g.date);
 
                 return `
                         <tr>
                             <td>${++rowIndex}</td>
-                            <td><strong>${d.username}</strong></td>
+                            <td><strong>${esc(g.username)}</strong>${multi ? `<div><span class="group-chip" title="Storan user ini di hari yang sama digabung">⚡ ${g.deposits.length} storan digabung</span></div>` : ''}</td>
                             <td><span class="status-badge ${meta.cls}">${meta.label}</span></td>
-                            <td><span class="status-badge open">${d.type || 'Gmail'}</span></td>
-                            <td>${formatEmailCell(d.data)} ${badgeHtml}</td>
-                            <td>${formatTime(d.date)}</td>
+                            <td><span class="status-badge open">${esc(g.type || 'Gmail')}</span></td>
+                            <td>${formatEmailCell(g.data)} ${badgeHtml}</td>
+                            <td>${timeCell}</td>
                             <td><span class="status-badge pending">Pending</span></td>
                             <td>
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" onclick="viewPending('${d.id}')"><i class="fas fa-eye"></i></button>
-                                    <button class="btn btn-success btn-xs" onclick="acceptDeposit('${d.id}')"><i class="fas fa-check"></i></button>
-                                    <button class="btn btn-danger btn-xs" onclick="rejectDeposit('${d.id}')"><i class="fas fa-times"></i></button>
+                                    <button class="btn btn-primary btn-xs" onclick="viewPending('${g.gid}')"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-success btn-xs" onclick="acceptDeposit('${g.gid}')"><i class="fas fa-check"></i></button>
+                                    <button class="btn btn-danger btn-xs" onclick="rejectDeposit('${g.gid}')"><i class="fas fa-times"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -3435,6 +3899,7 @@
                 bekas: { get: getNotesBekas, save: saveNotesBekas, render: renderPendingBekas, label: 'Bekas 2FA' },
                 biasa: { get: getNotesBiasa, save: saveNotesBiasa, render: renderPendingBiasa, label: 'Bekas Biasa' },
                 old:   { get: getNotesOld, save: saveNotesOld, render: renderPendingOld, label: 'Bekas Old' },
+                captcha: { get: getNotesCaptcha, save: saveNotesCaptcha, render: renderPendingCaptcha, label: 'Captcha' },
                 fresh: { get: getNotes, save: saveNotes, render: renderPending, label: 'Fresh' }
             };
             const m = map[type] || map.fresh;
@@ -3547,10 +4012,10 @@
             }
         });
 
-        document.getElementById('pendingEmailSearch').addEventListener('input', renderPending);
-        document.getElementById('pendingBekasEmailSearch').addEventListener('input', renderPendingBekas);
-        document.getElementById('pendingBiasaEmailSearch').addEventListener('input', renderPendingBiasa);
-        document.getElementById('pendingOldEmailSearch').addEventListener('input', renderPendingOld);
+        document.getElementById('pendingEmailSearch').addEventListener('input', debounce(renderPending, 150));
+        document.getElementById('pendingBekasEmailSearch').addEventListener('input', debounce(renderPendingBekas, 150));
+        document.getElementById('pendingBiasaEmailSearch').addEventListener('input', debounce(renderPendingBiasa, 150));
+        document.getElementById('pendingOldEmailSearch').addEventListener('input', debounce(renderPendingOld, 150));
 
         // ============================================================
         //  VIEW PENDING DETAIL + RATE OVERRIDE
@@ -3605,6 +4070,7 @@
             if (jenis === 'bekas') return parseCurrency(dataStore.settings?.depositBekasPrice) || 3000;
             if (jenis === 'biasa') return parseCurrency(dataStore.settings?.depositBiasaPrice) || 2500;
             if (jenis === 'old') return parseCurrency(dataStore.settings?.depositOldPrice) || 2000;
+            if (jenis === 'captcha') return parseCurrency(dataStore.settings?.depositCaptchaPrice) || 3000;
             return parseCurrency(dataStore.settings?.depositPrice) || 4000;
         }
 
@@ -3634,6 +4100,9 @@
                 } else if (jenis === 'old') {
                     baseRate = parseCurrency(dataStore.settings.depositOldPrice) || 2000;
                     rateSource = 'pengaturan rate Bekas Old saat storan masuk';
+                } else if (jenis === 'captcha') {
+                    baseRate = parseCurrency(dataStore.settings.depositCaptchaPrice) || 3000;
+                    rateSource = 'pengaturan rate Captcha saat storan masuk';
                 } else {
                     baseRate = parseCurrency(dataStore.settings.depositPrice) || 4000;
                     rateSource = 'pengaturan rate Fresh saat storan masuk';
@@ -3649,7 +4118,8 @@
             if (serverRate.rateSource !== 'pengaturan rate Fresh saat storan masuk' &&
                 serverRate.rateSource !== 'pengaturan rate Bekas 2FA saat storan masuk' &&
                 serverRate.rateSource !== 'pengaturan rate Bekas Biasa saat storan masuk' &&
-                serverRate.rateSource !== 'pengaturan rate Bekas Old saat storan masuk') {
+                serverRate.rateSource !== 'pengaturan rate Bekas Old saat storan masuk' &&
+                serverRate.rateSource !== 'pengaturan rate Captcha saat storan masuk') {
                 setRateLock(d.id, serverRate.baseRate);
                 return;
             }
@@ -3660,51 +4130,48 @@
             (pending || []).forEach(lockPendingRate);
         }
 
-        window.viewPending = async function(id) {
-            const d = dataStore.deposits.find(x => x.id === id);
-            if (!d) return toast('Data tidak ditemukan.', 'error');
-            const emailList = Array.isArray(d.data) ? d.data : (d.data ? [d.data] : []);
-
-            lockPendingRate(d);
-            const lockedRate = getRateLock(id);
-            const resolved = resolveBaseRate(d);
-            const baseRate = lockedRate !== null ? lockedRate : resolved.baseRate;
-            const rateSource = lockedRate !== null ? 'rate terkunci saat storan masuk' : resolved.rateSource;
-
-            const override = getRateOverride(id);
-            let currentRate = override !== null ? override : baseRate;
-            let currentSource = override !== null ? 'Override manual oleh admin' : rateSource;
-
-            let count = 0;
-            if (Array.isArray(d.data)) count = d.data.length;
-            else if (d.items) count = parseInt(d.items) || 0;
-            else if (d.jumlah) count = parseInt(d.jumlah) || 0;
-
-            const defaultAmount = count * currentRate;
-
-            const jenisMeta = getJenisMeta(depositJenis(d));
+        window.viewPending = async function(gid) {
+            const g = getPendingGroups().byId.get(gid);
+            if (!g) return toast('Data tidak ditemukan.', 'error');
+            const emailList = g.data;
+            const ri = groupRateInfo(g);
+            const jenisMeta = getJenisMeta(g.jenis);
             const jenisLabel = jenisMeta.label;
+            const multi = g.deposits.length > 1;
+            const uniq = (arr) => [...new Set(arr.filter(Boolean))];
+            const passwords = uniq(g.deposits.map(d => d.password));
+            const kontaks = uniq(g.deposits.map(d => `${d.kontakType || 'WA'} - ${d.kontak || '-'}`));
+            const first = g.deposits[0];
+            const rateText = ri.uniform
+                ? `Rp ${formatRupiah(ri.rate)} <span style="font-size:11px;color:var(--text-muted);font-weight:400;">(${esc(ri.source)})</span>`
+                : `Bervariasi (rata-rata Rp ${formatRupiah(ri.rate)})`;
+            const breakdown = multi ? `
+                        <div style="margin-top:10px;background:var(--bg-input);padding:8px 12px;border-radius:var(--radius-sm);font-size:12.5px;">
+                            <strong>Rincian ${g.deposits.length} storan digabung:</strong>
+                            ${ri.infos.map((i, n) => `<div style="display:flex;justify-content:space-between;gap:8px;padding:2px 0;"><span>${n + 1}. ${formatTimeOnly(i.d.date)}</span><span>${i.count} email · @Rp${formatRupiah(i.rate)}</span></div>`).join('')}
+                        </div>` : '';
 
             const html = `
                     <div class="compact">
                         <div class="detail-row"><span class="label">Jenis</span><span class="value"><span class="status-badge ${jenisMeta.cls}">${jenisLabel}</span></span></div>
-                        <div class="detail-row"><span class="label">ID User</span><span class="value">${d.userId || '-'}</span></div>
-                        <div class="detail-row"><span class="label">Jumlah</span><span class="value">${count} email</span></div>
-                        <div class="detail-row"><span class="label">Password</span><span class="value">${d.password || '-'}</span></div>
-                        <div class="detail-row"><span class="label">Kontak</span><span class="value">${d.kontakType || 'WA'} - ${d.kontak || '-'}</span></div>
-                        <div class="detail-row"><span class="label">Tanggal</span><span class="value highlight-date">${d.tanggal || formatTime(d.date)}</span></div>
-                        <div class="detail-row"><span class="label">Waktu</span><span class="value highlight-date">${formatFull(d.date)}</span></div>
-                        <div class="detail-row"><span class="label">Rate per Email</span><span class="value highlight-rate">Rp ${formatRupiah(currentRate)} <span style="font-size:11px;color:var(--text-muted);font-weight:400;">(${currentSource})</span></span></div>
+                        <div class="detail-row"><span class="label">ID User</span><span class="value">${esc(g.userId || '-')}</span></div>
+                        <div class="detail-row"><span class="label">Jumlah</span><span class="value">${ri.totalCount} email${multi ? ` (${g.deposits.length} storan)` : ''}</span></div>
+                        <div class="detail-row"><span class="label">Password</span><span class="value">${esc(passwords.join(' / ') || '-')}</span></div>
+                        <div class="detail-row"><span class="label">Kontak</span><span class="value">${esc(kontaks.join(' / ') || '-')}</span></div>
+                        <div class="detail-row"><span class="label">Tanggal</span><span class="value highlight-date">${esc(first.tanggal || formatDateFull(first.date))}</span></div>
+                        <div class="detail-row"><span class="label">Waktu</span><span class="value highlight-date">${multi ? `${formatTimeOnly(g.firstDate)} – ${formatTimeOnly(g.date)}` : formatFull(g.date)}</span></div>
+                        <div class="detail-row"><span class="label">Rate per Email</span><span class="value highlight-rate">${rateText}</span></div>
                         <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;">
-                            <button class="btn btn-outline btn-xs" onclick="openRateOverride('${id}', ${currentRate})"><i class="fas fa-pen"></i> Ubah Rate</button>
-                            ${override !== null ? `<button class="btn btn-danger btn-xs" onclick="clearRateOverride('${id}')"><i class="fas fa-undo"></i> Reset ke Default</button>` : ''}
+                            <button class="btn btn-outline btn-xs" onclick="openRateOverride('${g.gid}', ${ri.rate})"><i class="fas fa-pen"></i> Ubah Rate</button>
+                            ${ri.overridden ? `<button class="btn btn-danger btn-xs" onclick="clearRateOverride('${g.gid}')"><i class="fas fa-undo"></i> Reset ke Default</button>` : ''}
                         </div>
+                        ${breakdown}
                         <div style="margin-top:10px;background:var(--bg-input);padding:8px 12px;border-radius:var(--radius-sm);max-height:120px;overflow-y:auto;font-size:13px;">
                             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
                                 <strong>Daftar Email:</strong>
-                                <button class="btn-copy" onclick="copyText('${emailList.join('\\n')}')"><i class="fas fa-copy"></i> Salin</button>
+                                <button class="btn-copy" data-copy="${esc(emailList.join('\n')).replace(/\n/g, '&#10;')}" onclick="copyText(this.dataset.copy)"><i class="fas fa-copy"></i> Salin</button>
                             </div>
-                            ${emailList.map(e => `• ${e}`).join('<br>') || '-'}
+                            ${emailList.map(e => `• ${esc(e)}`).join('<br>') || '-'}
                         </div>
                         <div style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px;">
                             <h4 style="font-size:14px;font-weight:600;margin-bottom:8px;">Kirim Pesan Pribadi ke User</h4>
@@ -3716,11 +4183,11 @@
                                 <label>Isi Pesan</label>
                                 <textarea id="privateMsgBodyPending" rows="3" placeholder="Tulis pesan khusus untuk user ini..."></textarea>
                             </div>
-                            <button class="btn btn-primary" onclick="sendPrivateMessageFromPending('${d.userId}', '${d.username}')"><i class="fas fa-paper-plane"></i> Kirim Pesan</button>
+                            <button class="btn btn-primary" data-uid="${esc(g.userId)}" data-uname="${esc(g.username)}" onclick="sendPrivateMessageFromPending(this.dataset.uid, this.dataset.uname)"><i class="fas fa-paper-plane"></i> Kirim Pesan</button>
                         </div>
                     </div>
                 `;
-            await openModal('Detail Storan', `User: ${d.username} · ${jenisLabel}`, html, 'Tutup');
+            await openModal('Detail Storan', `User: ${g.username} · ${jenisLabel}`, html, 'Tutup');
         };
 
         window.openRateOverride = async function(id, currentRate) {
@@ -3740,7 +4207,7 @@
             if (result) {
                 const newRate = getCurrencyValue('newRateInput');
                 if (!newRate || newRate <= 0) { toast('Rate harus lebih dari 0.', 'error'); return; }
-                setRateOverride(id, newRate);
+                groupIdsOf(id).forEach(i => setRateOverride(i, newRate));
                 toast('Rate berhasil diubah (override lokal).', 'success');
                 closeModal();
                 viewPending(id);
@@ -3748,7 +4215,7 @@
         };
 
         window.clearRateOverride = function(id) {
-            setRateOverride(id, null);
+            groupIdsOf(id).forEach(i => setRateOverride(i, null));
             toast('Rate dikembalikan ke default.', 'info');
             viewPending(id);
         };
@@ -3791,43 +4258,30 @@
         // ============================================================
         //  ACCEPT DEPOSIT — FIX: tambahkan items pada payload
         // ============================================================
-        window.acceptDeposit = async function(id) {
-            const d = dataStore.deposits.find(x => x.id === id);
-            if (!d) return toast('Data tidak ditemukan.', 'error');
+        window.acceptDeposit = async function(gid) {
+            const g = getPendingGroups().byId.get(gid);
+            if (!g) return toast('Data tidak ditemukan.', 'error');
 
-            lockPendingRate(d);
-            const lockedRate = getRateLock(id);
-            const resolved = resolveBaseRate(d);
-            const baseRate = lockedRate !== null ? lockedRate : resolved.baseRate;
-            const rateSource = lockedRate !== null ? 'rate terkunci saat storan masuk' : resolved.rateSource;
-
-            const override = getRateOverride(id);
-            let finalRate = override !== null ? override : baseRate;
-            let finalSource = override !== null ? 'Override manual oleh admin' : rateSource;
-
-            let count = 0;
-            if (Array.isArray(d.data)) count = d.data.length;
-            else if (d.items) count = parseInt(d.items) || 0;
-            else if (d.jumlah) count = parseInt(d.jumlah) || 0;
-
-            const defaultAmount = count * finalRate;
-
-            const acceptJenisMeta = getJenisMeta(depositJenis(d));
+            const ri = groupRateInfo(g);
+            const multi = g.deposits.length > 1;
+            const defaultAmount = ri.totalAmount;
+            const acceptJenisMeta = getJenisMeta(g.jenis);
             const jenisLabel = acceptJenisMeta.label;
 
             const html = `
                 <div class="compact">
                     <div style="margin-bottom:8px;font-size:13px;color:var(--text-secondary);">
-                        <strong>${d.username}</strong> · <span class="status-badge ${acceptJenisMeta.cls}">${jenisLabel}</span> · ${formatTime(d.date)}
+                        <strong>${esc(g.username)}</strong> · <span class="status-badge ${acceptJenisMeta.cls}">${jenisLabel}</span> · ${formatTime(g.date)}
+                        ${multi ? `<div><span class="group-chip">⚡ ${g.deposits.length} storan hari ini digabung jadi satu</span></div>` : ''}
                     </div>
                     <div class="deposit-form-row">
                         <label for="modalEmailCount">Jumlah Email</label>
-                        <input type="text" id="modalEmailCount" value="${count}" class="currency-input" style="text-align:left;" oninput="updateAcceptDepositCalc()" />
+                        <input type="text" id="modalEmailCount" value="${ri.totalCount}" class="currency-input" style="text-align:left;" oninput="updateAcceptDepositCalc()" />
                     </div>
                     <div class="deposit-form-row">
                         <label for="modalRate">Rate per Email (Rp)</label>
-                        <input type="text" id="modalRate" value="${finalRate.toLocaleString('id-ID')}" 
-                               class="currency-input" style="text-align:left;" 
+                        <input type="text" id="modalRate" value="${ri.rate.toLocaleString('id-ID')}"
+                               class="currency-input" style="text-align:left;"
                                oninput="updateAcceptDepositCalc()" />
                     </div>
                     <div class="deposit-total-row">
@@ -3836,45 +4290,52 @@
                     </div>
                     <div class="deposit-form-row">
                         <label for="modalNominal">Nominal Saldo (Rp)</label>
-                        <input type="text" id="modalNominal" value="${defaultAmount ? defaultAmount.toLocaleString('id-ID') : '0'}" 
+                        <input type="text" id="modalNominal" value="${defaultAmount ? defaultAmount.toLocaleString('id-ID') : '0'}"
                                class="currency-input" style="text-align:left;" />
                     </div>
                     <div style="font-size:11px;color:var(--text-muted);margin-top:8px;text-align:center;background:var(--bg-input);padding:6px 10px;border-radius:6px;">
                         🔒 Rate storan ini <strong>terkunci</strong> dan tidak ikut berubah saat Pengaturan Rate diubah.
                         <br>✏️ Rate di atas boleh kamu ubah khusus untuk storan ini.
-                        ${override !== null ? '<br>⚠️ Rate ini telah di-override manual oleh admin.' : ''}
+                        ${ri.uniform ? '' : '<br>ℹ️ Rate tiap storan berbeda; angka di atas adalah rata-rata, total awal dihitung per storan.'}
+                        ${ri.overridden ? '<br>⚠️ Rate ini telah di-override manual oleh admin.' : ''}
                     </div>
                 </div>
             `;
 
-            const confirmed = await openModal('Terima Storan', `Terima storan ${jenisLabel} dari ${d.username}?`, html, 'Terima', 'Batal');
+            const confirmed = await openModal('Terima Storan', `Terima storan ${jenisLabel} dari ${g.username}?`, html, 'Terima', 'Batal');
             if (!confirmed) return;
 
             const selectedRate = getCurrencyValue('modalRate');
             if (!selectedRate || selectedRate <= 0) { toast('Rate per email harus lebih dari 0.', 'error'); return; }
             const nominal = getCurrencyValue('modalNominal');
             if (!nominal || nominal <= 0) { toast('Nominal harus lebih dari 0.', 'error'); return; }
-
-            // Ambil jumlah email yang dimasukkan admin
             const emailCount = getCurrencyValue('modalEmailCount') || 0;
 
-            setRateOverride(id, selectedRate);
-            finalRate = selectedRate;
+            const rateChanged = selectedRate !== ri.rate;
+            if (ri.uniform || rateChanged) g.ids.forEach(i => setRateOverride(i, selectedRate));
+
+            const amounts = distributeInt(nominal, ri.infos.map(i => i.count * i.rate));
+            const itemsDist = distributeInt(emailCount, ri.infos.map(i => i.count));
+            const entries = ri.infos.map((info, i) => {
+                const noteRate = (ri.uniform || rateChanged) ? selectedRate : info.rate;
+                return {
+                    historyId: info.d.id,
+                    userId: info.d.userId,
+                    amount: amounts[i],
+                    items: itemsDist[i],
+                    note: `Rp${formatRupiah(amounts[i])} (${itemsDist[i]} email @ Rp${formatRupiah(noteRate)})${ri.overridden ? ' [override manual]' : ''}${multi ? ` [gabungan ${g.deposits.length} storan]` : ''}`
+                };
+            });
 
             showLoading('Memproses...');
             try {
-                // ===== FIX: kirim items =====
-                await apiRequest('adminAcceptDeposit', {
-                    historyId: id,
-                    userId: d.userId,
-                    amount: nominal,
-                    note: `Rp${formatRupiah(nominal)} (${emailCount} email @ Rp${formatRupiah(finalRate)})${override !== null ? ' [override manual]' : ''}`,
-                    items: emailCount   // <--- TAMBAHKAN INI
-                });
+                if (entries.length === 1) await apiRequest('adminAcceptDeposit', entries[0]);
+                else await submitGroupAction('adminAcceptDepositGroup', 'adminAcceptDeposit', entries);
                 await refreshAfterMutation();
-                toast(`Storan ${d.username} diterima! Saldo +Rp${formatRupiah(nominal)}`, 'success');
+                toast(`Storan ${g.username} diterima! Saldo +Rp${formatRupiah(nominal)}`, 'success');
                 hideLoading();
             } catch (err) {
+                try { await refreshAfterMutation(); } catch (_) {}
                 toast(err.message || 'Gagal menerima storan.', 'error');
                 hideLoading();
             }
@@ -3895,19 +4356,23 @@
             nominalInput.value = total ? total.toLocaleString('id-ID') : '0';
         };
 
-        window.rejectDeposit = async function(id) {
-            const d = dataStore.deposits.find(x => x.id === id);
-            if (!d) return toast('Data tidak ditemukan.', 'error');
-            const confirmed = await openModal('Tolak Storan', `Yakin menolak storan dari ${d.username}?`, '', 'Tolak',
+        window.rejectDeposit = async function(gid) {
+            const g = getPendingGroups().byId.get(gid);
+            if (!g) return toast('Data tidak ditemukan.', 'error');
+            const n = g.deposits.length;
+            const confirmed = await openModal('Tolak Storan', n > 1 ? `Yakin menolak ${n} storan (digabung) dari ${g.username}?` : `Yakin menolak storan dari ${g.username}?`, '', 'Tolak',
                 'Batal');
             if (!confirmed) return;
+            const entries = g.deposits.map(d => ({ historyId: d.id, userId: d.userId }));
             showLoading('Memproses...');
             try {
-                await apiRequest('adminRejectDeposit', { historyId: id, userId: d.userId });
+                if (entries.length === 1) await apiRequest('adminRejectDeposit', entries[0]);
+                else await submitGroupAction('adminRejectDepositGroup', 'adminRejectDeposit', entries);
                 await refreshAfterMutation();
-                toast(`Storan ${d.username} ditolak.`, 'error');
+                toast(`Storan ${g.username} ditolak.`, 'error');
                 hideLoading();
             } catch (err) {
+                try { await refreshAfterMutation(); } catch (_) {}
                 toast(err.message || 'Gagal menolak storan.', 'error');
                 hideLoading();
             }
@@ -3929,10 +4394,10 @@
             tbody.innerHTML = pending.map((w, idx) => `
                     <tr>
                         <td>${idx + 1}</td>
-                        <td><strong>${w.username}</strong></td>
+                        <td><strong>${esc(w.username)}</strong></td>
                         <td><strong>Rp${formatRupiah(w.nominal)}</strong></td>
-                        <td>${w.metode || '-'}</td>
-                        <td>${w.akun || '-'}</td>
+                        <td>${esc(w.metode || '-')}</td>
+                        <td>${esc(w.akun || '-')}</td>
                         <td>${formatTime(w.date)}</td>
                         <td><span class="status-badge pending">Pending</span></td>
                         <td>
@@ -3956,7 +4421,7 @@
             const html = `
                     <div class="compact">
                         <div class="detail-row"><span class="label">ID Transaksi</span><span class="value">${w.id}</span></div>
-                        <div class="detail-row"><span class="label">User</span><span class="value"><strong>${w.username}</strong> (${w.userId})</span></div>
+                        <div class="detail-row"><span class="label">User</span><span class="value"><strong>${esc(w.username)}</strong> (${esc(w.userId)})</span></div>
                         <div class="detail-row"><span class="label">Nominal</span><span class="value" style="font-size:18px;font-weight:700;color:var(--blue-light);">Rp${formatRupiah(w.nominal)}</span></div>
                         <div class="detail-row"><span class="label">Metode Pembayaran</span><span class="value">${w.metode || '-'}</span></div>
                         <div class="detail-row"><span class="label">Fee Penarikan</span><span class="value">Rp${formatRupiah(fee)}</span></div>
@@ -4059,10 +4524,10 @@
                 return `
                         <tr>
                             <td>${idx + 1}</td>
-                            <td><strong>${d.username}</strong></td>
+                            <td><strong>${esc(d.username)}</strong></td>
                             <td><span class="status-badge ${jenisClass}">${jenisLabel}</span></td>
                             <td><span class="status-badge open">${d.type || 'Gmail'}</span></td>
-                            <td>${d.data ? (Array.isArray(d.data) ? d.data.join(', ') : d.data) : '-'}</td>
+                            <td>${d.data ? esc(Array.isArray(d.data) ? d.data.join(', ') : d.data) : '-'}</td>
                             <td><strong>Rp${formatRupiah(nominal)}</strong></td>
                             <td>${formatTime(d.date)}</td>
                             <td><span class="status-badge diterima">Diterima</span></td>
@@ -4089,7 +4554,7 @@
             tbody.innerHTML = filtered.map((u, idx) => `
                     <tr>
                         <td>${idx + 1}</td>
-                        <td><div class="admin-avatar-wrap">${buildAdminAvatarHtml(u, 32, 'sm')}<strong>${u.username}</strong>${buildVerifiedBadgeHtml(u)}</div></td>
+                        <td><div class="admin-avatar-wrap">${buildAdminAvatarHtml(u, 32, 'sm')}<strong>${esc(u.username)}</strong>${buildVerifiedBadgeHtml(u)}</div></td>
                         <td>Rp${formatRupiah(u.saldo || 0)}</td>
                         <td>${u.totalDeposits || 0}</td>
                         <td><span class="status-badge ${u.status==='aktif'?'diterima':'pending'}">${u.status||'aktif'}</span></td>
@@ -4128,7 +4593,7 @@
                         <div style="display:flex;align-items:center;gap:16px;padding:4px 0 14px;border-bottom:1px solid var(--border-color);margin-bottom:14px;">
                             ${avatar}
                             <div style="flex:1;min-width:0;">
-                                <div style="font-size:20px;font-weight:700;letter-spacing:-0.3px;">${u.username}${buildVerifiedBadgeHtml(u)}</div>
+                                <div style="font-size:20px;font-weight:700;letter-spacing:-0.3px;">${esc(u.username)}${buildVerifiedBadgeHtml(u)}</div>
                                 <div style="font-size:13px;color:var(--text-secondary);">ID: ${u.id}</div>
                                 <div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;">
                                     <span class="status-badge ${u.status === 'aktif' ? 'diterima' : 'pending'}">${u.status || 'aktif'}</span>
@@ -4305,7 +4770,7 @@
                 if (preset) return { contentHtml: '<span class="avatar-fill" style="background:' + preset.bg + ';">' +
                         preset.emoji + '</span>', styleAttr: '' };
             }
-            if (u && u.avatar) return { contentHtml: '<span class="avatar-fill"><img src="' + u.avatar +
+            if (u && u.avatar) return { contentHtml: '<span class="avatar-fill"><img src="' + esc(u.avatar) +
                     '" alt="avatar" /></span>', styleAttr: '' };
             return { contentHtml: '<span class="avatar-fill" style="background:var(--blue-glow);color:var(--blue-light);">' +
                     nameFallback + '</span>', styleAttr: '' };
@@ -4373,7 +4838,7 @@
                 return `
                     <tr>
                         <td>${idx + 1}</td>
-                        <td><div class="admin-avatar-wrap">${buildAdminAvatarHtml(u, 32, 'sm')}<strong>${u.username}</strong>${buildVerifiedBadgeHtml(u)}</div></td>
+                        <td><div class="admin-avatar-wrap">${buildAdminAvatarHtml(u, 32, 'sm')}<strong>${esc(u.username)}</strong>${buildVerifiedBadgeHtml(u)}</div></td>
                         <td><span class="ban-status-badge ${banned ? 'banned' : 'aktif'}">${banned ? '🚫 Di-ban' : '✅ Aktif'}</span></td>
                         <td style="font-size:12.5px;">${ket}</td>
                         <td>${actionBtn}</td>
@@ -4514,7 +4979,8 @@
             'depositStatus', 'depositName', 'depositPrice', 'depositInfo',
             'depositBekasStatus', 'depositBekasName', 'depositBekasPrice', 'depositBekasInfo',
             'depositBiasaStatus', 'depositBiasaName', 'depositBiasaPrice', 'depositBiasaInfo',
-            'depositOldStatus', 'depositOldName', 'depositOldPrice', 'depositOldInfo'
+            'depositOldStatus', 'depositOldName', 'depositOldPrice', 'depositOldInfo',
+            'depositCaptchaStatus', 'depositCaptchaName', 'depositCaptchaPrice', 'depositCaptchaInfo'
         ];
         DEPOSIT_SETTINGS_FIELD_IDS.forEach((id) => {
             const el = document.getElementById(id);
@@ -4603,6 +5069,7 @@
             if (document.activeElement !== oldInfoInput && !depositSettingsDirtyFields.has('depositOldInfo')) {
                 oldInfoInput.value = s.depositOldInfo || '';
             }
+            renderDepositCaptchaSettings(s);
         }
 
         document.getElementById('depositSettingsForm').addEventListener('submit', async (e) => {
@@ -4627,11 +5094,17 @@
                     depositOldStatus: document.getElementById('depositOldStatus').value,
                     depositOldPrice: getCurrencyValue('depositOldPrice') || 2000,
                     depositOldName: document.getElementById('depositOldName').value.trim() || 'Gmail Bekas Old',
-                    depositOldInfo: document.getElementById('depositOldInfo').value.trim()
+                    depositOldInfo: document.getElementById('depositOldInfo').value.trim(),
+                    depositCaptchaStatus: document.getElementById('depositCaptchaStatus').value,
+                    depositCaptchaPrice: getCurrencyValue('depositCaptchaPrice') || 3000,
+                    depositCaptchaName: document.getElementById('depositCaptchaName').value.trim() || 'Gmail Captcha',
+                    depositCaptchaInfo: document.getElementById('depositCaptchaInfo').value.trim()
                 });
                 depositSettingsDirtyFields.clear();
                 await refreshAfterMutation();
-                toast('Pengaturan storan berhasil disimpan!', 'success');
+                if (legacySettingsMode) toast('Pengaturan lain tersimpan, tapi pengaturan Captcha belum didukung server. Jalankan SQL update dulu.', 'info');
+                else toast('Pengaturan storan berhasil disimpan!', 'success');
+                legacySettingsMode = false;
                 hideLoading();
             } catch (err) {
                 toast(err.message || 'Gagal menyimpan pengaturan.', 'error');
@@ -4666,10 +5139,15 @@
                     depositOldStatus: currentSettings.depositOldStatus || 'OPEN',
                     depositOldPrice: currentSettings.depositOldPrice || 2000,
                     depositOldName: currentSettings.depositOldName || 'Gmail Bekas Old',
-                    depositOldInfo: currentSettings.depositOldInfo || ''
+                    depositOldInfo: currentSettings.depositOldInfo || '',
+                    depositCaptchaStatus: currentSettings.depositCaptchaStatus || 'OPEN',
+                    depositCaptchaPrice: currentSettings.depositCaptchaPrice || 3000,
+                    depositCaptchaName: currentSettings.depositCaptchaName || 'Gmail Captcha',
+                    depositCaptchaInfo: currentSettings.depositCaptchaInfo || ''
                 });
                 await refreshAfterMutation();
                 toast('Pengaturan penarikan berhasil disimpan!', 'success');
+                legacySettingsMode = false;
                 hideLoading();
             } catch (err) {
                 toast(err.message || 'Gagal menyimpan pengaturan.', 'error');
@@ -4684,7 +5162,8 @@
             fresh: 'storgmail_email_store_hidden_fresh_v1',
             bekas: 'storgmail_email_store_hidden_bekas_v1',
             biasa: 'storgmail_email_store_hidden_biasa_v1',
-            old: 'storgmail_email_store_hidden_old_v1'
+            old: 'storgmail_email_store_hidden_old_v1',
+            captcha: 'storgmail_email_store_hidden_captcha_v1'
         };
 
         function getHiddenEmailKeys(type) {
@@ -4714,38 +5193,31 @@
 
         function collectPendingEmailEntriesByType(type) {
             if (!dataStore) return [];
-
-            const pending = (dataStore.deposits || []).filter(d => {
-                if (d.status !== 'pending') return false;
-                return depositJenis(d) === type;
-            });
-
+            const groups = getPendingGroups().byJenis[type] || [];
             const entries = [];
-            pending.forEach((deposit) => {
-                let emails = [];
-                if (Array.isArray(deposit.data)) {
-                    emails = deposit.data;
-                } else if (typeof deposit.data === 'string') {
-                    emails = deposit.data.split(/[,\n]+/);
-                }
-
-                emails.map(e => String(e).trim()).filter(Boolean).forEach(email => {
-                    entries.push({
-                        email,
-                        key: makeEmailStoreKey(deposit, email),
-                        depositId: deposit?.id || deposit?.historyId || ''
+            groups.forEach((g) => {
+                g.deposits.forEach((deposit) => {
+                    depositEmailList(deposit).forEach(email => {
+                        entries.push({
+                            email,
+                            key: makeEmailStoreKey(deposit, email),
+                            depositId: deposit?.id || deposit?.historyId || '',
+                            groupId: g.gid,
+                            username: g.username,
+                            date: g.date
+                        });
                     });
                 });
             });
-
             return entries;
         }
 
         const EMAIL_STORE_TYPE_CONFIG = {
-            fresh: { total: 'emailStoreFreshTotal', area: 'emailStoreFreshArea', clearBtn: 'emailStoreFreshClearBtn', label: 'Fresh' },
-            bekas: { total: 'emailStoreBekasTotal', area: 'emailStoreBekasArea', clearBtn: 'emailStoreBekasClearBtn', label: 'Bekas 2FA' },
-            biasa: { total: 'emailStoreBiasaTotal', area: 'emailStoreBiasaArea', clearBtn: 'emailStoreBiasaClearBtn', label: 'Bekas Biasa' },
-            old: { total: 'emailStoreOldTotal', area: 'emailStoreOldArea', clearBtn: 'emailStoreOldClearBtn', label: 'Bekas Old' }
+            fresh: { total: 'emailStoreFreshTotal', area: 'emailStoreFreshArea', clearBtn: 'emailStoreFreshClearBtn', prefix: 'emailStoreFresh', label: 'Fresh' },
+            bekas: { total: 'emailStoreBekasTotal', area: 'emailStoreBekasArea', clearBtn: 'emailStoreBekasClearBtn', prefix: 'emailStoreBekas', label: 'Bekas 2FA' },
+            biasa: { total: 'emailStoreBiasaTotal', area: 'emailStoreBiasaArea', clearBtn: 'emailStoreBiasaClearBtn', prefix: 'emailStoreBiasa', label: 'Bekas Biasa' },
+            old: { total: 'emailStoreOldTotal', area: 'emailStoreOldArea', clearBtn: 'emailStoreOldClearBtn', prefix: 'emailStoreOld', label: 'Bekas Old' },
+            captcha: { total: 'emailStoreCaptchaTotal', area: 'emailStoreCaptchaArea', clearBtn: 'emailStoreCaptchaClearBtn', prefix: 'emailStoreCaptcha', label: 'Captcha' }
         };
 
         function renderEmailStore() {
@@ -4758,41 +5230,49 @@
                 const visible = entries.filter(item => !hidden.has(item.key));
                 const emails = visible.map(item => item.email);
 
+                // kelompokkan per user (storan user yang sama di hari yang sama jadi satu blok)
+                const blocks = [];
+                const byGroup = new Map();
+                visible.forEach(item => {
+                    let b = byGroup.get(item.groupId);
+                    if (!b) {
+                        b = { username: item.username, date: item.date, emails: [] };
+                        byGroup.set(item.groupId, b);
+                        blocks.push(b);
+                    }
+                    b.emails.push(item.email);
+                });
+
                 const totalEl = document.getElementById(cfg.total);
                 const areaEl = document.getElementById(cfg.area);
-                totalEl.textContent = `Total: ${emails.length} email`;
+                totalEl.textContent = `Total: ${emails.length} email · ${blocks.length} user`;
+                areaEl.dataset.emails = emails.join('\n');
 
                 if (emails.length === 0) {
                     areaEl.innerHTML = `<div class="empty-msg">📭 Tidak ada email ${cfg.label} pending.</div>`;
                 } else {
-                    areaEl.textContent = emails.join('\n');
+                    areaEl.innerHTML = blocks.map(b =>
+                        `<div class="es-group"><div class="es-group-head"><span>👤 ${esc(b.username)}</span><span class="es-group-meta">${b.emails.length} email · ${esc(formatDateFull(b.date))}</span></div><div class="es-group-emails">${b.emails.map(esc).join('\n')}</div></div>`
+                    ).join('');
                 }
 
                 document.getElementById(cfg.clearBtn).style.display = emails.length > 0 ? 'inline-flex' : 'none';
             });
 
-            // Last update
             const now = new Date();
-            const dateStr = now.toLocaleDateString('id-ID', {
-                day: '2-digit', month: 'long', year: 'numeric'
-            });
-            const timeStr = now.toLocaleTimeString('id-ID', {
-                hour: '2-digit', minute: '2-digit'
-            });
+            const dateStr = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+            const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
             document.getElementById('emailStoreLastUpdate').textContent = `📅 ${dateStr} ${timeStr}`;
         }
 
-        // Tombol Salin/Hapus/Refresh untuk 4 jenis (Fresh, Bekas, Bekas Biasa, Bekas Old)
-        // — pola & alur kerja sama persis untuk keempatnya.
+        // Tombol Salin/Hapus/Refresh untuk semua jenis
         Object.keys(EMAIL_STORE_TYPE_CONFIG).forEach((type) => {
             const cfg = EMAIL_STORE_TYPE_CONFIG[type];
-            const prefix = type === 'fresh' ? 'emailStoreFresh' : type === 'bekas' ? 'emailStoreBekas' :
-                type === 'biasa' ? 'emailStoreBiasa' : 'emailStoreOld';
+            const prefix = cfg.prefix;
 
             document.getElementById(prefix + 'CopyBtn').addEventListener('click', function() {
-                const area = document.getElementById(cfg.area);
-                const text = area.textContent.trim();
-                if (!text || text.includes(`Tidak ada email ${cfg.label}`)) {
+                const text = (document.getElementById(cfg.area).dataset.emails || '').trim();
+                if (!text) {
                     toast(`Tidak ada email ${cfg.label} untuk disalin.`, 'error');
                     return;
                 }
@@ -4813,8 +5293,7 @@
                     '', 'Hapus', 'Batal'
                 );
                 if (!confirmed) return;
-                const newHidden = getHiddenEmailKeys(type);
-                const newSet = new Set(newHidden);
+                const newSet = new Set(getHiddenEmailKeys(type));
                 visible.forEach(item => newSet.add(item.key));
                 saveHiddenEmailKeys(type, [...newSet]);
                 renderEmailStore();
@@ -4911,7 +5390,7 @@
                 else if (rank === 2) rankClass = 'silver';
                 else if (rank === 3) rankClass = 'bronze';
                 const avatarHtml = item.avatar ?
-                    `<img src="${item.avatar}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:6px;" />` :
+                    `<img src="${esc(item.avatar)}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:6px;" />` :
                     '';
                 return `
                         <div class="lb-preview-item">
@@ -4986,38 +5465,13 @@
                 }
                 hideLoading();
                 setInterval(async () => {
-                    if (checkAuth()) {
-                        try {
-                            await loadData();
-                            renderAll();
-                            const activeNav = document.querySelector('.nav-item.active');
-                            if (activeNav) {
-                                const page = activeNav.dataset.page;
-                                const dotMap = {
-                                    'dashboard': 'dashDot',
-                                    'pending': 'pendingDot',
-                                    'pending-bekas': 'pendingBekasDot',
-                                    'withdrawals': 'withdrawDot',
-                                    'accepted': 'acceptedDot',
-                                    'users': 'usersDot',
-                                    'banuser': 'banDot',
-                                    'messages': 'msgDot',
-                                    'deposit-settings': 'depSetDot',
-                                    'withdraw-settings': 'withSetDot',
-                                    'emailstore': 'emailStoreDot',
-                                    'leaderboard-start': 'lbStartDot',
-                                };
-                                const dotId = dotMap[page];
-                                if (dotId) {
-                                    const dot = document.getElementById(dotId);
-                                    if (dot) dot.classList.remove('show');
-                                }
-                                if (page === 'dashboard') {
-                                    const bellDot = document.getElementById('bellDot');
-                                    if (bellDot) bellDot.classList.remove('show');
-                                }
-                            }
-                        } catch (e) { /* silent */ }
+                    if (!checkAuth() || refreshInFlight) return;
+                    refreshInFlight = true;
+                    try {
+                        await loadData();
+                        if (dataChanged) renderAll();
+                    } catch (e) { /* silent */ } finally {
+                        refreshInFlight = false;
                     }
                 }, 10000);
             } catch (err) {
@@ -5032,7 +5486,7 @@
         }
 
         init();
-        console.log('🚀 STOR GMAIL Admin Dashboard v3.0 — Supabase Native');
+        console.log('🚀 STOR GMAIL Admin Dashboard v4.0 — Supabase Native');
         console.log('📦 Data store:', dataStore);
         console.log('🔗 Supabase URL:', SUPABASE_URL);
     </script>
