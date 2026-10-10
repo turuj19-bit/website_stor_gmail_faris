@@ -319,7 +319,10 @@ function updateUIApp() {
     // Status Storan (gabungan)
     const freshOpen = (settings.depositStatus === 'OPEN');
     const bekasOpen = (settings.depositBekasStatus === 'OPEN');
-    const overallOpen = (freshOpen || bekasOpen);
+    const overallOpen = (freshOpen || bekasOpen ||
+      settings.depositBiasaStatus === 'OPEN' ||
+      settings.depositOldStatus === 'OPEN' ||
+      settings.depositCaptchaStatus === 'OPEN');
     const stor = safeGet('statusStoran');
     if (stor) stor.innerHTML =
       `<span class="badge-status ${overallOpen?'open':'close'}">${overallOpen?'OPEN':'CLOSE'}</span>`;
@@ -1623,24 +1626,44 @@ function stripRefFromUrl() {
   } catch (_) {}
 }
 
-// Saat daftar, kode referal (dari link atau diketik di form Daftar) ikut
-// dikirim ke server sebagai p_referral_code. Hanya ditambahkan kalau ada kode,
-// jadi pendaftaran tanpa kode tidak terpengaruh.
+// Saat daftar dengan kode referal (dari link atau diketik di form Daftar),
+// dipanggil fungsi SQL register_user_ref. Kalau fungsi itu belum ada di
+// database, otomatis memakai pendaftaran biasa supaya daftar tidak pernah rusak.
 (function() {
   const originalApiRequest = window.apiRequest;
   if (typeof originalApiRequest !== 'function') return;
   window.apiRequest = async function(action, data, ...rest) {
     if (action === 'register' && data && typeof data === 'object') {
+      let code = '';
       try {
         const inputEl = document.getElementById('regReferral');
         const typed = inputEl ? inputEl.value.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 40) : '';
-        const code = typed || window.__pendingRef || '';
-        if (code && !data.referralCode) data.referralCode = code;
+        code = typed || window.__pendingRef || '';
       } catch (_) {}
+
+      if (code && typeof supabaseClient !== 'undefined' && supabaseClient && supabaseClient.rpc) {
+        const username = String(data.username || '').trim();
+        const emailPhone = String(data.emailPhone || data.email || data.email_phone || '').trim();
+        const password = String(data.password || '');
+        const { data: json, error } = await supabaseClient.rpc('register_user_ref', {
+          p_username: username,
+          p_email_phone: emailPhone,
+          p_password: password,
+          p_referral_code: code
+        });
+        if (error) {
+          // fungsi belum ada di database -> pakai daftar biasa
+          if (/register_user_ref|schema cache|could not find/i.test(error.message || '')) {
+            return originalApiRequest(action, data, ...rest);
+          }
+          throw new Error(error.message || 'Gagal mendaftar.');
+        }
+        window.__pendingRef = '';
+        stripRefFromUrl();
+        return json;
+      }
     }
-    const res = await originalApiRequest(action, data, ...rest);
-    if (action === 'register') { window.__pendingRef = ''; stripRefFromUrl(); }
-    return res;
+    return originalApiRequest(action, data, ...rest);
   };
 })();
 
@@ -1649,15 +1672,6 @@ function stripRefFromUrl() {
 (function() {
   try {
     if (typeof ACTION_MAP === 'object' && ACTION_MAP) {
-      if (ACTION_MAP.register && typeof ACTION_MAP.register.params === 'function' && !ACTION_MAP.register.__refPatched) {
-        const origParams = ACTION_MAP.register.params;
-        ACTION_MAP.register.params = function(d) {
-          const p = origParams(d) || {};
-          if (d && d.referralCode) p.p_referral_code = String(d.referralCode);
-          return p;
-        };
-        ACTION_MAP.register.__refPatched = true;
-      }
       if (!ACTION_MAP.getReferral) ACTION_MAP.getReferral = { fn: 'referral_get', needsToken: true, params: function() { return {}; } };
       if (!ACTION_MAP.linkReferral) ACTION_MAP.linkReferral = { fn: 'referral_link', needsToken: true, params: function(d) { return { p_code: String((d && d.code) || '') }; } };
     }
