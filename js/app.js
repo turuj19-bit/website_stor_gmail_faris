@@ -251,30 +251,6 @@ function getPasswordHariIni(info) {
   return v;
 }
 
-// Tombol Refresh di header (antara Profil dan Inbox): muat ulang data akun, saldo, riwayat & pesan.
-let __headerRefreshBusy = false;
-async function refreshFromHeader(btn) {
-  if (__headerRefreshBusy) return;
-  __headerRefreshBusy = true;
-  const el = btn || document.getElementById('btnHeaderRefresh');
-  if (el) { el.classList.add('spinning'); el.disabled = true; }
-  const startedAt = Date.now();
-  let ok = false;
-  try {
-    ok = await refreshAppState();
-  } catch (e) {
-    ok = false;
-  }
-  // Biar animasinya terasa wajar walau koneksi super cepat (minimal ~0,7 detik)
-  const wait = Math.max(0, 700 - (Date.now() - startedAt));
-  setTimeout(function () {
-    if (el) { el.classList.remove('spinning'); el.disabled = false; }
-    __headerRefreshBusy = false;
-    if (ok) showToast('success', 'Diperbarui', 'Data terbaru berhasil dimuat.');
-    else showToast('error', 'Gagal', 'Tidak bisa memuat data. Cek koneksi lalu coba lagi.');
-  }, wait);
-}
-
 function updateUIApp() {
   try {
     const user = getCurrentUser();
