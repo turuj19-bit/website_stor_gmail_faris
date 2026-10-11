@@ -3050,7 +3050,7 @@
                 params.p_token = token;
             }
 
-            if (action === 'adminUpdateSettings') { legacySettingsMode = false; window.__preSnap = statusSnapshot(); }
+            if (action === 'adminUpdateSettings') { legacySettingsMode = false; window.__preSnap = statusSnapshot(); window.__manualUntil = Date.now() + 20000; }
             let { data: json, error } = await supabase.rpc(map.fn, params);
             if (error && map.optionalKeys && isMissingFunctionError(error)) {
                 map.optionalKeys.forEach(k => { delete params[k]; });
@@ -5662,9 +5662,12 @@
         }
         // Setelah admin menyimpan status storan/penarikan: kirim format sesuai perubahan.
         // Penyematan (pin/unpin) diatur server berdasarkan "kind".
-        async function announceAfterChange() {
+        async function announceAfterChange(pre, now) {
             try {
-                const b = window.__preSnap, n = statusSnapshot();
+                // Tanpa argumen = dari simpan manual (pakai __preSnap). Dengan (sebelum, sesudah) = dari pemantau jadwal.
+                const manual = !pre;
+                const b = pre || window.__preSnap, n = now || statusSnapshot();
+                if (manual) { window.__manualUntil = 0; watchSnap = n; if (b) watchClaim(b, n); } // samakan pemantau jadwal agar perubahan manual tidak terkirim dobel
                 if (!b) return;
                 if (!autoCfg) { try { await auLoad(); } catch (_) { autoCfg = auCacheGet(); } }
                 if (!autoCfg || !autoCfg.enabled) return;
@@ -5684,6 +5687,33 @@
             } catch (err) {
                 toast('Gagal kirim ke Telegram: ' + (err.message || ''), 'error');
             }
+        }
+
+        // ===== Notif Telegram saat status berubah karena JADWAL OTOMATIS =====
+        // Jadwal jalan di server (pg_cron) dan hanya mengubah status. Halaman admin memantau status tiap polling
+        // lalu mengirim format yang sama seperti simpan manual. Hanya jalan selama halaman admin terbuka.
+        let watchSnap = null;
+        function watchClaim(b, n) { // true = kita yang kirim; false = tab lain di browser ini sudah mengirim perubahan yang sama
+            const sig = JSON.stringify(b) + '>' + JSON.stringify(n);
+            try {
+                const c = JSON.parse(localStorage.getItem('au_watch_claim_v1')) || {};
+                if (c.sig === sig && Date.now() - c.t < 120000) return false;
+                localStorage.setItem('au_watch_claim_v1', JSON.stringify({ sig, t: Date.now() }));
+            } catch (_) {}
+            return true;
+        }
+        async function watchScheduleChange() {
+            try {
+                const s = dataStore && dataStore.settings;
+                if (!s || !s.depositStatus) return;                         // data belum lengkap: jangan dibandingkan
+                const n = statusSnapshot();
+                if (!watchSnap) { watchSnap = n; return; }                  // pertama kali: hanya catat status awal
+                if (JSON.stringify(watchSnap) === JSON.stringify(n)) return;
+                if (Date.now() < (window.__manualUntil || 0)) return;       // simpan manual sedang diproses: biar yang manual yang kirim
+                const b = watchSnap; watchSnap = n;
+                if (!watchClaim(b, n)) return;
+                await announceAfterChange(b, n);
+            } catch (_) {}
         }
 
         // ============================================================
@@ -5984,6 +6014,7 @@
                 showLoading('Memuat data...');
                 await loadData();
                 renderAll();
+                watchScheduleChange(); // catat status awal untuk pemantau jadwal
                 const activeNav = document.querySelector('.nav-item.active');
                 if (activeNav) {
                     const page = activeNav.dataset.page;
@@ -5996,6 +6027,7 @@
                     try {
                         await loadData();
                         if (dataChanged) renderAll();
+                        watchScheduleChange(); // kirim notif Telegram kalau status berubah karena jadwal otomatis
                     } catch (e) { /* silent */ } finally {
                         refreshInFlight = false;
                     }
