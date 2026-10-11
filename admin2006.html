@@ -2047,6 +2047,23 @@
         .switch input:checked + .slider { background: #dc2626; }
         .switch input:checked + .slider::before { transform: translateX(24px); }
 
+
+        /* penarikan = kartu */
+        #page-withdrawals thead { display: none; }
+        #page-withdrawals table, #page-withdrawals tbody { display: block; width: 100%; min-width: 0 !important; }
+        #page-withdrawals .table-wrap { overflow-x: visible; }
+        .pc-kv { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 16px; }
+        .pc-kv > div { background: #f8fafd; border: 1px solid var(--border-color); border-radius: 10px; padding: 8px 12px; min-width: 0; }
+        .pc-kv span { display: block; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .4px; }
+        .pc-kv b { font-size: 14px; word-break: break-all; }
+        .pc-kv b.amt { font-size: 18px; color: var(--blue-dark); }
+        /* pengaturan otomatis */
+        .au-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+        .au-prev { background: #f8fafd; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; font-size: 12.5px; white-space: pre-wrap; word-break: break-word; max-height: 360px; overflow-y: auto; font-family: ui-monospace, Menlo, monospace; }
+        .au-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+        .au-cur { font-size: 12px; margin-bottom: 8px; color: var(--text-secondary); }
+        @media (max-width: 640px) { .au-grid { grid-template-columns: 1fr; } }
+
         @media (prefers-reduced-motion: reduce) {
             * { animation: none !important; transition: none !important; }
         }
@@ -2162,6 +2179,11 @@
                     <i class="fas fa-screwdriver-wrench"></i>
                     <span class="nav-label">Maintenance</span>
                     <span class="badge-dot" id="mtDot"></span>
+                </button>
+                <button class="nav-item" data-page="auto-settings">
+                    <i class="fas fa-robot"></i>
+                    <span class="nav-label">Pengaturan Otomatis</span>
+                    <span class="badge-dot" id="autoDot"></span>
                 </button>
                 <button class="nav-item" data-page="emailstore">
                     <i class="fas fa-envelope-open-text"></i>
@@ -2624,6 +2646,43 @@
                     </div>
                 </section>
 
+                <!-- PENGATURAN OTOMATIS -->
+                <section class="page-section" id="page-auto-settings">
+                    <div class="card">
+                        <div class="card-header"><h3><i class="fas fa-robot" style="color:var(--blue-primary);margin-right:8px;"></i> Pengaturan Otomatis <span class="ref-status off" id="auBadge">OFF</span></h3></div>
+                        <div class="ref-sec">
+                            <h4>Channel Telegram</h4>
+                            <div class="mt-row" style="margin-bottom:12px;"><div><b>Kirim info otomatis</b><div class="ref-note" style="margin:2px 0 0;">Info terkirim saat status storan/penarikan berubah (manual atau jadwal).</div></div><label class="switch"><input type="checkbox" id="auEnabled" /><span class="slider"></span></label></div>
+                            <div class="au-grid">
+                                <div class="form-group"><label>Channel</label><input type="text" id="auChat" placeholder="@teswebb" /></div>
+                                <div class="form-group"><label>Token Bot</label><input type="password" id="auBotToken" placeholder="Tempel token, tersimpan di Supabase" autocomplete="off" /></div>
+                            </div>
+                            <div class="ref-note" id="auTokenNote">Token tidak ditampilkan lagi setelah disimpan.</div>
+                        </div>
+                        <div class="ref-sec"><h4>Info Umum (dipakai di format channel)</h4><div class="au-grid" id="auInfoBox"></div></div>
+                        <div id="auTypesBox"></div>
+                        <div class="ref-sec">
+                            <h4>Penarikan</h4>
+                            <div class="au-cur" id="auWdCur"></div>
+                            <div class="mt-row" style="margin-bottom:12px;"><b>Jadwal otomatis open/close</b><label class="switch"><input type="checkbox" id="au_wd_auto" /><span class="slider"></span></label></div>
+                            <div class="au-grid">
+                                <div class="form-group"><label>Jam Open (WIB)</label><input type="time" id="au_wd_open" /></div>
+                                <div class="form-group"><label>Jam Close (WIB)</label><input type="time" id="au_wd_close" /></div>
+                            </div>
+                        </div>
+                        <div class="ref-sec">
+                            <h4>Preview Format Storan</h4><div class="au-prev" id="auPrevStor"></div>
+                            <h4 style="margin-top:14px;">Preview Format Penarikan</h4><div class="au-prev" id="auPrevWd"></div>
+                            <div class="au-btns">
+                                <button type="button" class="btn btn-outline" id="auSendStor"><i class="fas fa-paper-plane"></i> Kirim Info Storan</button>
+                                <button type="button" class="btn btn-outline" id="auSendWd"><i class="fas fa-paper-plane"></i> Kirim Info Penarikan</button>
+                            </div>
+                        </div>
+                        <div class="ref-note" id="auLoadNote" style="margin-bottom:10px;"></div>
+                        <button type="button" class="btn btn-primary" id="auSaveBtn"><i class="fas fa-save"></i> Simpan Pengaturan</button>
+                    </div>
+                </section>
+
                 <!-- EMAIL STORE — SPLIT FRESH / BEKAS -->
                 <section class="page-section" id="page-emailstore">
                     <div class="card">
@@ -2979,6 +3038,9 @@
             adminSaveReferralSettings: { fn: 'panel_update_referral_settings', needsToken: true, params: (d) => ({ p_enabled: !!d.enabled, p_bonus_per_email: d.bonusPerEmail || 0 }) },
             adminGetMaintenance: { fn: 'panel_get_maintenance', needsToken: true, params: () => ({}) },
             adminSetMaintenance: { fn: 'panel_set_maintenance', needsToken: true, params: (d) => ({ p_enabled: !!d.enabled, p_message: d.message || '' }) },
+            adminGetAutoSettings: { fn: 'panel_get_auto_settings', needsToken: true, params: () => ({}) },
+            adminSaveAutoSettings: { fn: 'panel_save_auto_settings', needsToken: true, params: (d) => ({ p_settings: d.settings, p_bot_token: d.botToken || null }) },
+            adminSendTelegram: { fn: 'panel_send_telegram', needsToken: true, params: (d) => ({ p_text: d.text, p_kind: d.kind || 'deposit' }) },
             adminClearActivities: { fn: 'panel_clear_activities', needsToken: true, params: () => ({}) },
             adminDeleteMessages: { fn: 'panel_delete_messages', needsToken: true, params: () => ({}) }
         };
@@ -2994,7 +3056,7 @@
                 params.p_token = token;
             }
 
-            if (action === 'adminUpdateSettings') legacySettingsMode = false;
+            if (action === 'adminUpdateSettings') { legacySettingsMode = false; window.__preSnap = statusSnapshot(); }
             let { data: json, error } = await supabase.rpc(map.fn, params);
             if (error && map.optionalKeys && isMissingFunctionError(error)) {
                 map.optionalKeys.forEach(k => { delete params[k]; });
@@ -3362,6 +3424,7 @@
             'withdraw-settings': document.getElementById('page-withdraw-settings'),
             'referral-settings': document.getElementById('page-referral-settings'),
             'maintenance': document.getElementById('page-maintenance'),
+            'auto-settings': document.getElementById('page-auto-settings'),
             'emailstore': document.getElementById('page-emailstore'),
             'leaderboard-start': document.getElementById('page-leaderboard-start'),
         };
@@ -3381,6 +3444,7 @@
             'withdraw-settings': 'Pengaturan Penarikan',
             'referral-settings': 'Seting Referal',
             'maintenance': 'Maintenance',
+            'auto-settings': 'Pengaturan Otomatis',
             'emailstore': 'Storan Email',
             'leaderboard-start': 'Leaderboard',
         };
@@ -3441,6 +3505,7 @@
             else if (page === 'withdraw-settings') renderWithdrawSettings();
             else if (page === 'referral-settings') renderReferralSettings();
             else if (page === 'maintenance') renderMaintenance();
+            else if (page === 'auto-settings') renderAutoSettings();
             else if (page === 'emailstore') renderEmailStore();
             else if (page === 'leaderboard-start') renderLeaderboardStart();
             updateBadges();
@@ -3463,6 +3528,7 @@
                 'withdraw-settings': 'withSetDot',
                 'referral-settings': 'refSetDot',
                 'maintenance': 'mtDot',
+                'auto-settings': 'autoDot',
                 'emailstore': 'emailStoreDot',
                 'leaderboard-start': 'lbStartDot',
             };
@@ -3660,6 +3726,7 @@
             'withdraw-settings': () => renderWithdrawSettings(),
             'referral-settings': () => renderReferralSettings(),
             'maintenance': () => renderMaintenance(),
+            'auto-settings': () => renderAutoSettings(),
             'emailstore': () => renderEmailStore(),
             'leaderboard-start': () => renderLeaderboardStart()
         };
@@ -4203,9 +4270,11 @@
                             <div class="dp-actions">
                                 <button class="btn btn-success btn-xs" onclick="acceptOne('${esc(String(i.d.id))}','${g.gid}')"><i class="fas fa-check"></i> Terima</button>
                                 <button class="btn btn-danger btn-xs" onclick="rejectOne('${esc(String(i.d.id))}','${g.gid}')"><i class="fas fa-times"></i> Tolak</button>
+                                <button class="btn btn-outline btn-xs" data-copy="${esc(em.join('\n')).replace(/\n/g, '&#10;')}" onclick="copyText(this.dataset.copy)"><i class="fas fa-copy"></i> Salin</button>
                             </div>
                         </div>`;
             }).join('') : '';
+            const allCopy = multi ? `<div style="margin-top:10px;"><button class="btn btn-outline btn-xs" data-copy="${esc(emailList.join('\n')).replace(/\n/g, '&#10;')}" onclick="copyText(this.dataset.copy)"><i class="fas fa-copy"></i> Salin Semua Email</button></div>` : '';
             const breakdown = multi ? `
                         <div style="margin-top:10px;background:var(--bg-input);padding:8px 12px;border-radius:var(--radius-sm);font-size:12.5px;">
                             <strong>Rincian ${g.deposits.length} storan digabung:</strong>
@@ -4226,7 +4295,7 @@
                             <button class="btn btn-outline btn-xs" onclick="openRateOverride('${g.gid}', ${ri.rate})"><i class="fas fa-pen"></i> Ubah Rate</button>
                             ${ri.overridden ? `<button class="btn btn-danger btn-xs" onclick="clearRateOverride('${g.gid}')"><i class="fas fa-undo"></i> Reset ke Default</button>` : ''}
                         </div>
-                        ${perDep}
+                        ${allCopy}${perDep}
                         ${multi ? '' : `
                         <div style="margin-top:10px;background:var(--bg-input);padding:8px 12px;border-radius:var(--radius-sm);max-height:120px;overflow-y:auto;font-size:13px;">
                             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
@@ -4464,27 +4533,26 @@
             const tbody = document.getElementById('withdrawTableBody');
             if (pending.length === 0) {
                 tbody.innerHTML =
-                    `<tr><td colspan="8" class="text-muted" style="text-align:center;padding:32px 0;">Tidak ada penarikan pending</td></tr>`;
+                    `<tr class="pc-row"><td colspan="8"><div class="pc-empty">Tidak ada penarikan pending</div></td></tr>`;
                 return;
             }
-            tbody.innerHTML = pending.map((w, idx) => `
-                    <tr>
-                        <td>${idx + 1}</td>
-                        <td><strong>${esc(w.username)}</strong></td>
-                        <td><strong>Rp${formatRupiah(w.nominal)}</strong></td>
-                        <td>${esc(w.metode || '-')}</td>
-                        <td>${esc(w.akun || '-')}</td>
-                        <td>${formatTime(w.date)}</td>
-                        <td><span class="status-badge pending">Pending</span></td>
-                        <td>
-                            <div class="btn-group">
-                                <button class="btn btn-primary btn-xs" onclick="viewWithdrawal('${w.id}')"><i class="fas fa-info-circle"></i> Detail</button>
-                                <button class="btn btn-success btn-xs" onclick="acceptWithdraw('${w.id}','${w.userId}')"><i class="fas fa-check"></i> Terima</button>
-                                <button class="btn btn-danger btn-xs" onclick="rejectWithdraw('${w.id}','${w.userId}')"><i class="fas fa-times"></i> Tolak</button>
-                            </div>
-                        </td>
-                    </tr>
-                `).join('');
+            tbody.innerHTML = pending.map((w) => `<tr class="pc-row"><td colspan="8"><div class="pc">
+                        <div class="pc-head">
+                            <div class="pc-av">${esc(((w.username || '?')[0] || '?').toUpperCase())}</div>
+                            <div class="pc-who"><strong>${esc(w.username)}</strong><span><i class="fas fa-clock"></i> ${formatTime(w.date)}</span></div>
+                            <div class="pc-badges"><span class="status-badge open">${esc(w.metode || '-')}</span><span class="status-badge pending">Pending</span></div>
+                        </div>
+                        <div class="pc-kv">
+                            <div><span>Nominal</span><b class="amt">Rp${formatRupiah(w.nominal)}</b></div>
+                            <div><span>Akun / Rekening</span><b>${esc(w.akun || '-')} ${w.akun ? `<button class="btn-copy" data-copy="${esc(w.akun)}" onclick="copyText(this.dataset.copy)"><i class="fas fa-copy"></i></button>` : ''}</b></div>
+                            ${w.namaPemilik ? `<div><span>Nama Pemilik</span><b>${esc(w.namaPemilik)}</b></div>` : ''}
+                        </div>
+                        <div class="pc-actions">
+                            <button class="btn btn-outline btn-sm" onclick="viewWithdrawal('${w.id}')"><i class="fas fa-info-circle"></i> Detail</button>
+                            <button class="btn btn-success btn-sm" onclick="acceptWithdraw('${w.id}','${w.userId}')"><i class="fas fa-check"></i> Terima</button>
+                            <button class="btn btn-danger btn-sm" onclick="rejectWithdraw('${w.id}','${w.userId}')"><i class="fas fa-times"></i> Tolak</button>
+                        </div>
+                    </div></td></tr>`).join('');
         }
 
         window.viewWithdrawal = async function(id) {
@@ -5178,6 +5246,7 @@
                 await refreshAfterMutation();
                 if (legacySettingsMode) toast('Pengaturan lain tersimpan, tapi pengaturan Captcha belum didukung server. Jalankan SQL update dulu.', 'info');
                 else toast('Pengaturan storan berhasil disimpan!', 'success');
+                announceAfterChange();
                 legacySettingsMode = false;
                 hideLoading();
             } catch (err) {
@@ -5221,6 +5290,7 @@
                 });
                 await refreshAfterMutation();
                 toast('Pengaturan penarikan berhasil disimpan!', 'success');
+                announceAfterChange();
                 legacySettingsMode = false;
                 hideLoading();
             } catch (err) {
@@ -5332,6 +5402,207 @@
             saveMaintenance(on);
         });
         document.getElementById('mtSaveBtn').addEventListener('click', () => saveMaintenance(document.getElementById('mtToggle').checked));
+
+        // ============================================================
+        //  PENGATURAN OTOMATIS + INFO CHANNEL TELEGRAM
+        //  (Supabase: panel_get_auto_settings / panel_save_auto_settings / panel_send_telegram)
+        //  Token bot disimpan di server Supabase, tidak ada di file ini.
+        // ============================================================
+        const AU_TYPES = [
+            { k: 'fresh', label: 'GMAIL FRESH', sKey: 'depositStatus', pKey: 'depositPrice' },
+            { k: 'bekas', label: 'GMAIL BEKAS 2FA', sKey: 'depositBekasStatus', pKey: 'depositBekasPrice' },
+            { k: 'manual', label: 'GMAIL BEKAS MANUAL ( fast pay )', manual: true },
+            { k: 'biasa', label: 'GMAIL BEKAS BIASA', sKey: 'depositBiasaStatus', pKey: 'depositBiasaPrice' },
+            { k: 'old', label: 'GMAIL BEKAS OLD', sKey: 'depositOldStatus', pKey: 'depositOldPrice' },
+            { k: 'captcha', label: 'GMAIL CAPTCHA', sKey: 'depositCaptchaStatus', pKey: 'depositCaptchaPrice' }
+        ];
+        const AU_INFO = [['pwFresh', 'Password Wajib Fresh'], ['pwBekas', 'Password Wajib Bekas'], ['closeUmum', 'Close Umum (WIB)'], ['payment', 'Payment'],
+            ['wdWeb', 'Withdraw Web (WIB)'], ['link', 'Link Web'], ['rules', 'Rules'], ['testi', 'Testi Manual'], ['monitor', 'Monitor Withdraw'], ['manual', 'Stor Manual']];
+        function autoDefaults() {
+            const t = {};
+            AU_TYPES.forEach(x => { t[x.k] = { auto: false, open: '', close: '', year: '', need: '' }; });
+            t.fresh.year = '1990 - 2000'; t.fresh.need = '10000'; t.fresh.close = '17:00';
+            t.bekas.need = '10000'; t.manual.need = '...'; t.manual.status = 'CLOSE'; t.manual.rate = 2000;
+            return {
+                enabled: false, autoPostOnChange: true, chat: '@teswebb',
+                info: { pwFresh: '', pwBekas: '', closeUmum: '22.00', payment: '24 / 48 jam', wdWeb: '20.00 - 00.00', link: 'www.webterbaru.my.id',
+                    rules: '@rulesgmail01', testi: '@testimanual', monitor: '@faristesti', manual: '@farishost1' },
+                types: t, withdraw: { auto: false, open: '20:00', close: '00:00' }
+            };
+        }
+        let autoCfg = null, autoBuilt = false, autoHasToken = false;
+        function tgEsc(v) { return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+        function wibDate() {
+            const p = new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta', day: '2-digit', month: '2-digit', year: 'numeric' }).formatToParts(new Date());
+            const g = t => p.find(x => x.type === t).value;
+            return `${g('day')} - ${g('month')} - ${g('year')}`;
+        }
+        const tHm = v => v ? String(v).replace(':', '.') : '';
+        function auStatus(t, cfg, st) { return String(t.manual ? (cfg.types.manual.status || 'CLOSE') : (st[t.sKey] || 'OPEN')).toUpperCase(); }
+        const AU_LINE = '━━━━━━━━━━━━━━━━━━';
+        function buildStorAnnouncement(cfg, st) {
+            const i = cfg.info, L = [];
+            const anyOpen = AU_TYPES.some(t => auStatus(t, cfg, st) === 'OPEN');
+            L.push('🎉 <b>INFO STORAN &amp; RATE HARI INI</b> 🎉', AU_LINE,
+                `📌 STATUS : ${anyOpen ? 'OPEN ✅' : 'CLOSE ❌'}`, `📆 TANGGAL : ${wibDate()}`, AU_LINE, '');
+            if (!anyOpen) L.push('🔒 Storan sedang ditutup. Pantau channel ini untuk info open berikutnya.', '');
+            AU_TYPES.forEach(t => {
+                const c = cfg.types[t.k] || {}, open = auStatus(t, cfg, st) === 'OPEN';
+                const rate = t.manual ? c.rate : st[t.pKey];
+                L.push(`📧 <b>${tgEsc(t.label)}</b>`, `   ${open ? '✅ OPEN' : '❌ CLOSE'}`);
+                if (rate) L.push(`   💰 Rate : Rp ${formatRupiah(rate)} / email`);
+                if (c.year) L.push(`   📅 Tahun wajib : ${tgEsc(c.year)}`);
+                if (open && c.close) L.push(`   ⏰ Close : ${tHm(c.close)} WIB`);
+                if (!open && c.auto && c.open) L.push(`   ⏰ Open lagi : ${tHm(c.open)} WIB`);
+                if (c.need) L.push(`   📦 Need : ${tgEsc(c.need)}${/^\d+$/.test(c.need) ? ' email' : ''}`);
+                L.push('');
+            });
+            L.push(AU_LINE, '🔐 <b>PASSWORD WEBSITE WAJIB</b>');
+            if (i.pwFresh) L.push(`   • Fresh : ( ${tgEsc(i.pwFresh)} )`);
+            if (i.pwBekas) L.push(`   • Bekas : ( ${tgEsc(i.pwBekas)} )`);
+            L.push(AU_LINE, '', '🌐 <b>MAU STOR?</b> Klik web di bawah 👇', tgEsc(i.link), '',
+                `📜 Rules : ${tgEsc(i.rules)}`, `💸 Testi manual : ${tgEsc(i.testi)}`, `🔔 Monitor withdraw : ${tgEsc(i.monitor)}`, `📥 Stor manual : ${tgEsc(i.manual)}`,
+                AU_LINE, `⏰ Close Umum : ${tgEsc(i.closeUmum)} WIB`, `💳 Payment : ${tgEsc(i.payment)}`, `💰 Withdraw web : ${tgEsc(i.wdWeb)} WIB`);
+            return L.join('\n');
+        }
+        function buildWdAnnouncement(cfg, st) {
+            const i = cfg.info, w = cfg.withdraw, open = String(st.withdrawStatus || 'OPEN').toUpperCase() === 'OPEN';
+            const L = ['💸 <b>INFO PENARIKAN</b> 💸', AU_LINE, `📌 STATUS : ${open ? 'OPEN ✅' : 'CLOSE ❌'}`, `📆 TANGGAL : ${wibDate()}`, AU_LINE, ''];
+            if (open) {
+                L.push('✅ Penarikan saldo sedang dibuka.');
+                if (w.close) L.push(`⏰ Close : ${tHm(w.close)} WIB`);
+            } else {
+                L.push('❌ Penarikan saldo sedang ditutup.');
+                if (w.auto && w.open) L.push(`⏰ Open lagi : ${tHm(w.open)} WIB`);
+            }
+            L.push(`💰 Jam withdraw web : ${tgEsc(i.wdWeb)} WIB`, `💳 Payment : ${tgEsc(i.payment)}`, AU_LINE, '',
+                `🌐 ${tgEsc(i.link)}`, `🔔 Monitor withdraw : ${tgEsc(i.monitor)}`, `📜 Rules : ${tgEsc(i.rules)}`);
+            return L.join('\n');
+        }
+        function auBuild() {
+            const A = document.getElementById('auTypesBox');
+            document.getElementById('auInfoBox').innerHTML = AU_INFO.map(([k, l]) =>
+                `<div class="form-group"><label>${l}</label><input type="text" id="au_info_${k}" /></div>`).join('');
+            A.innerHTML = AU_TYPES.map(t => `<div class="ref-sec"><h4>${t.label}</h4>
+                <div class="au-cur" id="au_${t.k}_cur"></div>
+                ${t.manual ? `<div class="au-grid"><div class="form-group"><label>Status</label><select id="au_manual_status"><option value="OPEN">OPEN</option><option value="CLOSE">CLOSE</option></select></div>
+                    <div class="form-group"><label>Rate (Rp / email)</label><input type="text" id="au_manual_rate" class="currency-input" /></div></div>` : ''}
+                <div class="mt-row" style="margin-bottom:12px;"><b>Jadwal otomatis open/close</b><label class="switch"><input type="checkbox" id="au_${t.k}_auto" /><span class="slider"></span></label></div>
+                <div class="au-grid">
+                    <div class="form-group"><label>Jam Open (WIB)</label><input type="time" id="au_${t.k}_open" /></div>
+                    <div class="form-group"><label>Jam Close (WIB)</label><input type="time" id="au_${t.k}_close" /></div>
+                    <div class="form-group"><label>Tahun / Syarat</label><input type="text" id="au_${t.k}_year" placeholder="Contoh: 1990 - 2000" /></div>
+                    <div class="form-group"><label>Need (email)</label><input type="text" id="au_${t.k}_need" placeholder="10000" /></div>
+                </div></div>`).join('');
+            const box = document.getElementById('page-auto-settings');
+            box.addEventListener('input', auPreview);
+            box.addEventListener('change', auPreview);
+            autoBuilt = true;
+        }
+        function auFill(cfg) {
+            const $ = id => document.getElementById(id);
+            $('auEnabled').checked = !!cfg.enabled; $('auChat').value = cfg.chat || '';
+            AU_INFO.forEach(([k]) => { $('au_info_' + k).value = cfg.info[k] || ''; });
+            AU_TYPES.forEach(t => {
+                const c = cfg.types[t.k] || {};
+                $(`au_${t.k}_auto`).checked = !!c.auto; $(`au_${t.k}_open`).value = c.open || ''; $(`au_${t.k}_close`).value = c.close || '';
+                $(`au_${t.k}_year`).value = c.year || ''; $(`au_${t.k}_need`).value = c.need || '';
+            });
+            $('au_manual_status').value = cfg.types.manual.status || 'CLOSE';
+            $('au_manual_rate').value = Number(cfg.types.manual.rate || 0).toLocaleString('id-ID');
+            $('au_wd_auto').checked = !!cfg.withdraw.auto; $('au_wd_open').value = cfg.withdraw.open || ''; $('au_wd_close').value = cfg.withdraw.close || '';
+        }
+        function auCollect() {
+            const $ = id => document.getElementById(id), cfg = autoDefaults();
+            cfg.enabled = $('auEnabled').checked; cfg.chat = $('auChat').value.trim();
+            AU_INFO.forEach(([k]) => { cfg.info[k] = $('au_info_' + k).value.trim(); });
+            AU_TYPES.forEach(t => {
+                cfg.types[t.k] = { auto: $(`au_${t.k}_auto`).checked, open: $(`au_${t.k}_open`).value, close: $(`au_${t.k}_close`).value,
+                    year: $(`au_${t.k}_year`).value.trim(), need: $(`au_${t.k}_need`).value.trim() };
+            });
+            cfg.types.manual.status = $('au_manual_status').value; cfg.types.manual.rate = getCurrencyValue('au_manual_rate');
+            cfg.withdraw = { auto: $('au_wd_auto').checked, open: $('au_wd_open').value, close: $('au_wd_close').value };
+            cfg.autoPostOnChange = true;
+            return cfg;
+        }
+        function auPreview() {
+            const st = (dataStore && dataStore.settings) || {}, cfg = auCollect();
+            const strip = h => h.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+            document.getElementById('auPrevStor').textContent = strip(buildStorAnnouncement(cfg, st));
+            document.getElementById('auPrevWd').textContent = strip(buildWdAnnouncement(cfg, st));
+            const b = document.getElementById('auBadge'); b.textContent = cfg.enabled ? 'AKTIF' : 'OFF'; b.className = 'ref-status ' + (cfg.enabled ? 'on' : 'off');
+            AU_TYPES.forEach(t => { if (!t.manual) document.getElementById(`au_${t.k}_cur`).textContent = 'Status sekarang (dari Pengaturan Storan): ' + auStatus(t, cfg, st); });
+            document.getElementById('auWdCur').textContent = 'Status sekarang (dari Pengaturan Penarikan): ' + String(st.withdrawStatus || 'OPEN').toUpperCase();
+        }
+        async function auLoad() {
+            const res = await apiRequest('adminGetAutoSettings');
+            const r = res.data || res || {}, d = autoDefaults(), l = r.settings || {};
+            autoCfg = Object.assign(d, l, { info: Object.assign(d.info, l.info || {}), types: Object.assign(d.types, l.types || {}), withdraw: Object.assign(d.withdraw, l.withdraw || {}) });
+            autoHasToken = !!(r.has_token || r.hasToken);
+            return autoCfg;
+        }
+        async function renderAutoSettings() {
+            if (!autoBuilt) auBuild();
+            const note = document.getElementById('auLoadNote');
+            if (!autoCfg) {
+                try { await auLoad(); note.textContent = ''; }
+                catch (err) {
+                    autoCfg = autoDefaults();
+                    note.textContent = isMissingFunctionError(err) ? 'Fungsi Supabase pengaturan otomatis belum dipasang (SQL menyusul). Form sudah siap dipakai.' : (err.message || 'Gagal memuat pengaturan.');
+                }
+                auFill(autoCfg);
+            }
+            document.getElementById('auTokenNote').textContent = autoHasToken ? 'Token bot sudah tersimpan. Isi hanya kalau mau menggantinya.' : 'Token belum tersimpan. Token tidak ditampilkan lagi setelah disimpan.';
+            auPreview();
+        }
+        async function auSend(kind) {
+            const cfg = auCollect(), st = dataStore.settings || {};
+            const ok = await openModal('Kirim ke Channel', `Kirim info ${kind === 'withdraw' ? 'penarikan' : 'storan'} ke ${cfg.chat || 'channel'} sekarang?`, '', 'Kirim', 'Batal');
+            if (!ok) return;
+            showLoading('Mengirim...');
+            try {
+                await apiRequest('adminSendTelegram', { text: kind === 'withdraw' ? buildWdAnnouncement(cfg, st) : buildStorAnnouncement(cfg, st), kind });
+                toast('Info terkirim ke channel Telegram.', 'success');
+            } catch (err) {
+                toast(isMissingFunctionError(err) ? 'Fungsi Supabase kirim Telegram belum dipasang.' : (err.message || 'Gagal kirim ke Telegram.'), 'error');
+            }
+            hideLoading();
+        }
+        document.getElementById('auSendStor').addEventListener('click', () => auSend('deposit'));
+        document.getElementById('auSendWd').addEventListener('click', () => auSend('withdraw'));
+        document.getElementById('auSaveBtn').addEventListener('click', async () => {
+            const cfg = auCollect(), tok = document.getElementById('auBotToken').value.trim();
+            showLoading('Menyimpan...');
+            try {
+                await apiRequest('adminSaveAutoSettings', { settings: cfg, botToken: tok });
+                autoCfg = cfg; if (tok) { autoHasToken = true; document.getElementById('auBotToken').value = ''; }
+                document.getElementById('auLoadNote').textContent = '';
+                renderAutoSettings();
+                toast('Pengaturan otomatis berhasil disimpan!', 'success');
+            } catch (err) {
+                toast(isMissingFunctionError(err) ? 'Fungsi Supabase pengaturan otomatis belum dipasang.' : (err.message || 'Gagal menyimpan.'), 'error');
+            }
+            hideLoading();
+        });
+        function statusSnapshot() {
+            const s = (dataStore && dataStore.settings) || {};
+            return JSON.stringify(['depositStatus', 'depositBekasStatus', 'depositBiasaStatus', 'depositOldStatus', 'depositCaptchaStatus'].map(k => s[k] || 'OPEN')) + '|' + (s.withdrawStatus || 'OPEN');
+        }
+        // Setelah admin menyimpan pengaturan storan/penarikan: kalau status berubah, kirim format ke channel
+        async function announceAfterChange() {
+            try {
+                const before = window.__preSnap, now = statusSnapshot();
+                if (!before || before === now) return;
+                if (!autoCfg) { try { await auLoad(); } catch (_) { return; } }
+                if (!autoCfg.enabled || !autoCfg.autoPostOnChange) return;
+                const [bd, bw] = before.split('|'), [nd, nw] = now.split('|'), st = dataStore.settings || {};
+                if (bd !== nd) await apiRequest('adminSendTelegram', { text: buildStorAnnouncement(autoCfg, st), kind: 'deposit' });
+                if (bw !== nw) await apiRequest('adminSendTelegram', { text: buildWdAnnouncement(autoCfg, st), kind: 'withdraw' });
+                toast('Info status terkirim ke channel Telegram.', 'success');
+            } catch (err) {
+                if (!isMissingFunctionError(err)) toast('Gagal kirim ke Telegram: ' + (err.message || ''), 'error');
+            }
+        }
 
         // ============================================================
         //  EMAIL STORE — SPLIT FRESH / BEKAS
