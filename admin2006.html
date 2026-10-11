@@ -5671,8 +5671,18 @@
                 const b = pre || window.__preSnap, n = now || statusSnapshot();
                 if (manual) { window.__manualUntil = 0; watchSnap = n; if (b) watchClaim(b, n); } // samakan pemantau jadwal agar perubahan manual tidak terkirim dobel
                 if (!b) return;
-                if (!autoCfg) { try { await auLoad(); } catch (_) { autoCfg = auCacheGet(); } }
-                if (!autoCfg || !autoCfg.enabled) return 'off';
+                // selalu ambil pengaturan terbaru dari Supabase (jangan pakai salinan lama di memori);
+                // kalau server kosong/gagal, pakai salinan tersimpan di perangkat ini
+                const keep = autoCfg;
+                try {
+                    const res = await apiRequest('adminGetAutoSettings'), r = (res && res.data) || res || {};
+                    if (r.settings && Object.keys(r.settings).length) autoCfg = auMerge(r.settings);
+                    else autoCfg = auCacheGet() || keep || autoCfg;
+                } catch (_) { autoCfg = keep || auCacheGet(); }
+                if (!autoCfg || !autoCfg.enabled) {
+                    if (manual) toast('Format TIDAK dikirim ke channel: saklar "Kirim info otomatis" di Pengaturan Otomatis masih OFF (atau belum disimpan).', 'info');
+                    return 'off';
+                }
                 const cfg = autoCfg, st = dataStore.settings || {}, jobs = [], keys = ['fresh', 'bekas', 'biasa', 'old', 'captcha'];
                 const opened = keys.filter(k => b[k] !== 'OPEN' && n[k] === 'OPEN');
                 const closed = keys.filter(k => b[k] === 'OPEN' && n[k] !== 'OPEN');
