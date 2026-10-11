@@ -23,30 +23,30 @@
             text-size-adjust: 100%;
         }
         :root {
-            --bg-primary: #060e2e;
-            --bg-secondary: #091545;
-            --bg-card: #0e1c55;
-            --bg-card-hover: #142766;
-            --bg-input: #0a1745;
-            --bg-sidebar: #071035;
-            --bg-sidebar-hover: rgba(59, 130, 246, 0.14);
-            --text-primary: #eaf1ff;
-            --text-secondary: #b4c6f2;
-            --text-muted: #7d92c8;
-            --border-color: #1f3380;
-            --blue-primary: #3b82f6;
-            --blue-light: #60a5fa;
+            --bg-primary: #f3f5fa;
+            --bg-secondary: #eceff6;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f8faff;
+            --bg-input: #f5f7fb;
+            --bg-sidebar: #ffffff;
+            --bg-sidebar-hover: rgba(37, 99, 235, 0.07);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #8492a6;
+            --border-color: #e2e8f0;
+            --blue-primary: #2563eb;
+            --blue-light: #3b82f6;
             --blue-dark: #1d4ed8;
-            --blue-glow: rgba(59, 130, 246, 0.24);
-            --green: #34d399;
-            --green-bg: rgba(52, 211, 153, 0.14);
-            --red: #f87171;
-            --red-bg: rgba(248, 113, 113, 0.14);
-            --orange: #fbbf24;
-            --orange-bg: rgba(251, 191, 36, 0.14);
+            --blue-glow: rgba(37, 99, 235, 0.10);
+            --green: #059669;
+            --green-bg: rgba(16, 185, 129, 0.12);
+            --red: #dc2626;
+            --red-bg: rgba(239, 68, 68, 0.11);
+            --orange: #d97706;
+            --orange-bg: rgba(245, 158, 11, 0.14);
             --radius: 14px;
             --radius-sm: 10px;
-            --shadow: 0 10px 40px rgba(0, 5, 30, 0.45);
+            --shadow: 0 4px 18px rgba(15, 23, 42, 0.07);
             --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             --sidebar-width: 280px;
             --header-height: 68px;
@@ -1934,159 +1934,96 @@
         }
 
         /* ============================================================
-           V4 — BIRU PEKAT PROFESIONAL (override, ditaruh paling akhir)
+           V5 — TERANG PROFESIONAL (override, ditaruh paling akhir)
            ============================================================ */
-        :root { color-scheme: dark; }
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            pointer-events: none;
-            background:
-                radial-gradient(900px 480px at 88% -8%, rgba(37, 99, 235, 0.30), transparent 60%),
-                radial-gradient(800px 520px at -8% 108%, rgba(29, 78, 216, 0.32), transparent 58%);
-        }
-        select option { background: #0e1c55; color: #eaf1ff; }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #3b82f6, #1d4ed8); }
-
-        #loginScreen {
-            background: radial-gradient(900px 520px at 50% 0%, rgba(37, 99, 235, 0.38), transparent 62%),
-                linear-gradient(135deg, #040a24, #0a1a55, #040a24);
-        }
-        .particle { background: rgba(96, 165, 250, 0.45); box-shadow: 0 0 14px rgba(96, 165, 250, 0.35); }
-        .login-box {
-            background: rgba(10, 22, 70, 0.86);
-            border: 1px solid rgba(96, 165, 250, 0.30);
-            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55), 0 0 70px rgba(37, 99, 235, 0.22);
-        }
-        .login-box .btn-login { box-shadow: 0 6px 22px rgba(37, 99, 235, 0.5); }
-
-        .sidebar {
-            background: linear-gradient(180deg, #0a1649 0%, #060d30 100%);
-            border-right: 1px solid rgba(96, 165, 250, 0.14);
-            box-shadow: 6px 0 34px rgba(0, 0, 0, 0.35);
-        }
-        .sidebar .brand { border-bottom: 1px solid rgba(96, 165, 250, 0.16); }
-        .sidebar .brand i { color: #60a5fa; filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.7)); }
-        .sidebar .nav-item:hover { transform: translateX(3px); color: #fff; }
-        .sidebar .nav-item.active {
-            background: linear-gradient(90deg, rgba(59, 130, 246, 0.34), rgba(59, 130, 246, 0.05));
-            color: #fff;
-            box-shadow: inset 3px 0 0 #60a5fa, 0 0 20px rgba(59, 130, 246, 0.18);
-        }
-        .sidebar .nav-item.active i { color: #93c5fd; }
-        .sidebar .sidebar-footer { border-top: 1px solid rgba(96, 165, 250, 0.16); }
-
-        .top-header {
-            background: rgba(7, 16, 53, 0.82);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(96, 165, 250, 0.16);
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
-        }
-        .top-header .right .admin-badge {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.28), rgba(29, 78, 216, 0.18));
-            color: #bfdbfe;
-            border: 1px solid rgba(96, 165, 250, 0.35);
-        }
-
-        .stat-card {
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(150deg, rgba(20, 39, 102, 0.95), rgba(10, 21, 64, 0.95));
-            border: 1px solid rgba(96, 165, 250, 0.18);
-        }
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            left: 0; right: 0; top: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #3b82f6, #22d3ee);
-            opacity: 0.85;
-        }
-        .stat-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(96, 165, 250, 0.6);
-            box-shadow: 0 16px 42px rgba(37, 99, 235, 0.30);
-        }
-        .stat-card .label i { color: #60a5fa; }
-        .stat-card .value { color: #fff; text-shadow: 0 0 22px rgba(96, 165, 250, 0.35); }
-
-        .chart-container, .card {
-            background: linear-gradient(160deg, rgba(16, 32, 90, 0.96), rgba(9, 19, 60, 0.96));
-            border: 1px solid rgba(96, 165, 250, 0.16);
-        }
-        .card:hover { border-color: rgba(96, 165, 250, 0.30); }
-        .chart-bar {
-            background: linear-gradient(180deg, #7dd3fc, #3b82f6 45%, #1d4ed8);
-            box-shadow: 0 0 16px rgba(59, 130, 246, 0.55);
-        }
-
-        table th { color: #8fb0ff; border-bottom: 1px solid rgba(96, 165, 250, 0.22); }
-        table td { border-bottom: 1px solid rgba(96, 165, 250, 0.10); }
-        table tbody tr { transition: background 0.2s; }
-        table tbody tr:hover td { background: rgba(59, 130, 246, 0.08); }
-
-        .btn { letter-spacing: 0.1px; }
-        .btn:active { transform: scale(0.97); }
-        .btn-primary { background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 4px 16px rgba(37, 99, 235, 0.45); }
-        .btn-primary:hover { background: linear-gradient(135deg, #60a5fa, #2563eb); box-shadow: 0 6px 22px rgba(37, 99, 235, 0.6); }
-        .btn-success { background: linear-gradient(135deg, #10b981, #047857); }
-        .btn-success:hover { background: linear-gradient(135deg, #34d399, #059669); }
-        .btn-danger { background: linear-gradient(135deg, #ef4444, #b91c1c); }
-        .btn-danger:hover { background: linear-gradient(135deg, #f87171, #dc2626); }
-        .btn-outline { border-color: rgba(96, 165, 250, 0.38); color: #c7d7ff; }
-        .btn-outline:hover { background: rgba(59, 130, 246, 0.12); border-color: #60a5fa; color: #fff; }
-
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus,
-        .deposit-form-row input:focus, .login-box input:focus {
-            border-color: #60a5fa;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.28);
-        }
-
-        .modal-overlay { background: rgba(2, 6, 26, 0.80); }
-        .modal-box {
-            background: linear-gradient(160deg, #11235f, #0a1640);
-            border: 1px solid rgba(96, 165, 250, 0.32);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(37, 99, 235, 0.22);
-        }
-        .toast { background: #0f1f5c; border: 1px solid rgba(96, 165, 250, 0.3); }
-        .user-detail-card { background: rgba(10, 23, 69, 0.7); border-color: rgba(96, 165, 250, 0.2); }
-        .leaderboard-preview { border-color: rgba(96, 165, 250, 0.2); }
+        :root { color-scheme: light; }
+        .sidebar { background: #fff; border-right: 1px solid var(--border-color); box-shadow: 2px 0 18px rgba(15,23,42,.04); }
+        .sidebar .brand { border-bottom: 1px solid var(--border-color); color: var(--text-primary); }
+        .sidebar .brand i { color: var(--blue-primary); }
+        .sidebar .nav-item { color: var(--text-secondary); }
+        .sidebar .nav-item:hover { background: var(--bg-sidebar-hover); color: var(--blue-dark); }
+        .sidebar .nav-item.active { background: #eff4ff; color: var(--blue-dark); font-weight: 600; box-shadow: inset 3px 0 0 var(--blue-primary); }
+        .sidebar .nav-item.active i { color: var(--blue-primary); }
+        .sidebar .sidebar-footer { border-top: 1px solid var(--border-color); }
+        .top-header { background: rgba(255,255,255,.92); border-bottom: 1px solid var(--border-color); box-shadow: 0 2px 12px rgba(15,23,42,.04); }
+        .top-header .right .admin-badge { background: #eff4ff; color: var(--blue-dark); border: 1px solid #dbe6ff; }
+        .stat-card, .chart-container, .card { background: #fff; border: 1px solid var(--border-color); box-shadow: var(--shadow); }
+        .stat-card::before { background: var(--blue-primary); height: 3px; opacity: .9; }
+        .stat-card:hover, .card:hover { border-color: #c7d6f5; }
+        .stat-card .label i { color: var(--blue-primary); }
+        .stat-card .value { color: var(--text-primary); text-shadow: none; }
+        .chart-bar { background: linear-gradient(180deg, #60a5fa, #2563eb); box-shadow: none; }
+        table th { color: var(--text-muted); border-bottom: 1px solid var(--border-color); font-size: 11.5px; letter-spacing: .5px; text-transform: uppercase; }
+        table td { border-bottom: 1px solid #eef1f6; }
+        table tbody tr:hover td { background: #f8faff; }
+        .btn-primary { background: var(--blue-primary); box-shadow: 0 2px 8px rgba(37,99,235,.25); }
+        .btn-primary:hover { background: var(--blue-dark); }
+        .btn-success { background: #059669; } .btn-success:hover { background: #047857; }
+        .btn-danger { background: #dc2626; } .btn-danger:hover { background: #b91c1c; }
+        .btn-outline { background: #fff; border-color: #cfd8e8; color: var(--text-secondary); }
+        .btn-outline:hover { background: #f5f8ff; border-color: var(--blue-primary); color: var(--blue-dark); }
+        input, select, textarea { background: #fff; color: var(--text-primary); }
+        .deposit-form-row input:focus, .login-box input:focus, .form-group input:focus, .form-group select:focus, .form-group textarea:focus, .filter-bar input:focus { border-color: var(--blue-primary); box-shadow: 0 0 0 3px rgba(37,99,235,.14); }
+        .modal-overlay { background: rgba(15,23,42,.45); }
+        .modal-box { background: #fff; border: 1px solid var(--border-color); box-shadow: 0 24px 60px rgba(15,23,42,.22); color: var(--text-primary); }
+        .toast { background: #fff; color: var(--text-primary); border: 1px solid var(--border-color); box-shadow: 0 8px 24px rgba(15,23,42,.14); }
+        .user-detail-card { background: #fff; border-color: var(--border-color); }
+        .leaderboard-preview { background: #fff; border-color: var(--border-color); }
+        .lb-preview-item { border-bottom: 1px solid #eef1f6; }
 
         /* jenis Captcha */
-        .status-badge.captcha { background: rgba(34, 211, 238, 0.14); color: #22d3ee; }
-        .email-store-box .box-header .title .badge.captcha { background: rgba(34, 211, 238, 0.14); color: #22d3ee; }
+        .status-badge.captcha, .email-store-box .box-header .title .badge.captcha { background: rgba(8,145,178,.12); color: #0891b2; }
 
         /* gabungan storan (admin) */
-        .group-chip {
-            display: inline-block;
-            margin-top: 4px;
-            font-size: 10.5px;
-            font-weight: 600;
-            padding: 1px 9px;
-            border-radius: 20px;
-            background: rgba(96, 165, 250, 0.18);
-            color: #93c5fd;
-            white-space: nowrap;
-        }
+        .group-chip { display: inline-block; margin-top: 4px; font-size: 10.5px; font-weight: 600; padding: 1px 9px; border-radius: 20px; background: #eff4ff; color: var(--blue-dark); white-space: nowrap; }
         .group-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-        .es-group { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px dashed rgba(96, 165, 250, 0.22); }
+        .es-group { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px dashed var(--border-color); }
         .es-group:last-child { border-bottom: none; margin-bottom: 0; }
-        .es-group-head {
-            display: flex;
-            justify-content: space-between;
-            gap: 8px;
-            flex-wrap: wrap;
-            font-family: 'Inter', sans-serif;
-            font-size: 12px;
-            font-weight: 700;
-            color: #93c5fd;
-            margin-bottom: 4px;
-        }
+        .es-group-head { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 12px; font-weight: 700; color: var(--blue-dark); margin-bottom: 4px; }
         .es-group-meta { font-weight: 500; color: var(--text-muted); }
         .es-group-emails { white-space: pre-wrap; }
+
+        /* ===== KARTU PENDING (email disatukan dalam satu kotak) ===== */
+        #page-pending thead, #page-pending-bekas thead, #page-pending-biasa thead, #page-pending-old thead, #page-pending-captcha thead { display: none; }
+        #page-pending table, #page-pending-bekas table, #page-pending-biasa table, #page-pending-old table, #page-pending-captcha table,
+        #page-pending tbody, #page-pending-bekas tbody, #page-pending-biasa tbody, #page-pending-old tbody, #page-pending-captcha tbody { display: block; width: 100%; }
+        tr.pc-row { display: block; margin-bottom: 14px; }
+        tr.pc-row > td { display: block; padding: 0 !important; border: 0 !important; background: transparent !important; }
+        .pc { background: #fff; border: 1px solid var(--border-color); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; }
+        .pc-head { display: flex; align-items: center; gap: 12px; padding: 14px 16px; flex-wrap: wrap; }
+        .pc-av { width: 40px; height: 40px; border-radius: 12px; background: #eff4ff; color: var(--blue-dark); font-weight: 700; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .pc-who { flex: 1; min-width: 120px; display: flex; flex-direction: column; gap: 2px; }
+        .pc-who strong { font-size: 15px; color: var(--text-primary); word-break: break-word; }
+        .pc-who span { font-size: 12px; color: var(--text-muted); }
+        .pc-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+        .pc-merge { margin: 0 16px 10px; font-size: 12px; color: var(--blue-dark); background: #eff4ff; border-radius: 8px; padding: 6px 10px; }
+        .pc-box { margin: 0 16px; border: 1px solid var(--border-color); border-radius: 12px; background: #f8fafd; overflow: hidden; }
+        .pc-box-head { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #f1f5fb; border-bottom: 1px solid var(--border-color); font-size: 12.5px; font-weight: 600; color: var(--text-secondary); }
+        .pc-list { list-style: none; max-height: 190px; overflow-y: auto; margin: 0; padding: 4px 0; counter-reset: pc; }
+        .pc-list li { counter-increment: pc; display: flex; gap: 10px; padding: 6px 12px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; color: var(--text-primary); word-break: break-all; border-bottom: 1px dashed #e6ebf3; }
+        .pc-list li:last-child { border-bottom: 0; }
+        .pc-list li::before { content: counter(pc); min-width: 22px; color: var(--text-muted); font-size: 11px; padding-top: 1px; }
+        .pc-list li.hit { background: #fff8db; }
+        .pc-actions { display: flex; gap: 8px; padding: 12px 16px 14px; flex-wrap: wrap; }
+        .pc-actions .btn { flex: 1; justify-content: center; min-width: 90px; }
+        .pc-note { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: #fffbea; border: 1px solid #f6e7a8; color: #7a5b00; border-radius: 12px; padding: 10px 14px; font-size: 13px; }
+        .pc-note .t { font-size: 11px; color: var(--text-muted); }
+        .pc-empty { text-align: center; padding: 32px 0; color: var(--text-muted); }
+
+        /* ===== Storan email & leaderboard lebih rapi ===== */
+        .email-store-box { background: #fff; border: 1px solid var(--border-color); border-radius: 14px; box-shadow: var(--shadow); }
+        .email-store-area { background: #f8fafd; border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-primary); }
+        .lb-preview-item { border-radius: 10px; }
+
+        /* ===== Seting Referal ===== */
+        .ref-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+        .ref-sec { border: 1px solid var(--border-color); border-radius: 12px; padding: 14px; background: #fafbfe; margin-bottom: 14px; }
+        .ref-sec h4 { font-size: 14px; margin-bottom: 10px; color: var(--text-primary); }
+        .ref-note { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+        .ref-status { display: inline-block; margin-left: 8px; font-size: 11px; padding: 2px 10px; border-radius: 20px; font-weight: 600; }
+        .ref-status.on { background: var(--green-bg); color: var(--green); }
+        .ref-status.off { background: var(--red-bg); color: var(--red); }
+        @media (max-width: 640px) { .ref-grid { grid-template-columns: 1fr; } .pc-actions .btn { min-width: 0; } }
 
         @media (prefers-reduced-motion: reduce) {
             * { animation: none !important; transition: none !important; }
@@ -2193,6 +2130,11 @@
                     <i class="fas fa-credit-card"></i>
                     <span class="nav-label">Pengaturan Penarikan</span>
                     <span class="badge-dot" id="withSetDot"></span>
+                </button>
+                <button class="nav-item" data-page="referral-settings">
+                    <i class="fas fa-user-plus"></i>
+                    <span class="nav-label">Seting Referal</span>
+                    <span class="badge-dot" id="refSetDot"></span>
                 </button>
                 <button class="nav-item" data-page="emailstore">
                     <i class="fas fa-envelope-open-text"></i>
@@ -2608,6 +2550,37 @@
                     </div>
                 </section>
 
+                <!-- REFERAL SETTINGS -->
+                <section class="page-section" id="page-referral-settings">
+                    <div class="card">
+                        <div class="card-header"><h3><i class="fas fa-user-plus" style="color:var(--blue-primary);margin-right:8px;"></i> Seting Referal <span class="ref-status off" id="refStatusBadge">OFF</span></h3></div>
+                        <form id="referralSettingsForm">
+                            <div class="ref-sec">
+                                <h4>Status Program</h4>
+                                <div class="form-group"><select id="refEnabled"><option value="true">AKTIF — User bisa ajak teman</option><option value="false">NONAKTIF — Program referal ditutup</option></select></div>
+                            </div>
+                            <div class="ref-sec">
+                                <h4>Bonus untuk Pengajak</h4>
+                                <div class="ref-grid">
+                                    <div class="form-group"><label>Jenis Bonus</label><select id="refRewardType"><option value="fixed">Nominal tetap (Rp)</option><option value="percent">Persen dari storan teman (%)</option></select></div>
+                                    <div class="form-group"><label id="refRewardLabel">Nilai Bonus (Rp)</label><input type="text" id="refRewardValue" class="currency-input" placeholder="1.000" /></div>
+                                </div>
+                                <div class="form-group"><label>Minimal Email Diterima dari Teman</label><input type="text" id="refMinItems" class="currency-input" placeholder="1" /><div class="ref-note">Bonus baru cair setelah teman punya storan diterima sebanyak ini.</div></div>
+                            </div>
+                            <div class="ref-sec">
+                                <h4>Bonus untuk Teman Baru</h4>
+                                <div class="form-group"><label>Bonus Saat Daftar (Rp)</label><input type="text" id="refInviteeBonus" class="currency-input" placeholder="0" /></div>
+                            </div>
+                            <div class="ref-sec">
+                                <h4>Info untuk User</h4>
+                                <div class="form-group"><textarea id="refInfo" placeholder="Contoh: Ajak teman, dapat bonus setiap teman storan."></textarea></div>
+                            </div>
+                            <div class="ref-note" id="refLoadNote" style="margin-bottom:10px;"></div>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Pengaturan</button>
+                        </form>
+                    </div>
+                </section>
+
                 <!-- EMAIL STORE — SPLIT FRESH / BEKAS -->
                 <section class="page-section" id="page-emailstore">
                     <div class="card">
@@ -2959,6 +2932,11 @@
                     p_deposit_captcha_name: d.depositCaptchaName || 'Gmail Captcha',
                     p_deposit_captcha_info: d.depositCaptchaInfo || ''
                 }), optionalKeys: ['p_deposit_captcha_status', 'p_deposit_captcha_price', 'p_deposit_captcha_name', 'p_deposit_captcha_info'] },
+            adminGetReferralSettings: { fn: 'panel_get_referral_settings', needsToken: true, params: () => ({}) },
+            adminSaveReferralSettings: { fn: 'panel_update_referral_settings', needsToken: true, params: (d) => ({
+                    p_enabled: !!d.enabled, p_reward_type: d.rewardType || 'fixed', p_reward_value: d.rewardValue || 0,
+                    p_invitee_bonus: d.inviteeBonus || 0, p_min_items: d.minItems || 1, p_info: d.info || ''
+                }) },
             adminClearActivities: { fn: 'panel_clear_activities', needsToken: true, params: () => ({}) },
             adminDeleteMessages: { fn: 'panel_delete_messages', needsToken: true, params: () => ({}) }
         };
@@ -3081,6 +3059,22 @@
             if (Array.isArray(d.data)) return d.data.length;
             const n = parseInt(d.items, 10) || parseInt(d.jumlah, 10) || 0;
             return n || depositEmailList(d).length;
+        }
+
+        // Jumlah email yang benar-benar DITERIMA admin (items dari ACC parsial),
+        // bukan jumlah email asli yang disetor user.
+        function acceptedEmailCount(d) {
+            const it = parseInt(d.items, 10);
+            if (d.status === 'diterima' && it > 0) return it;
+            return depositCount(d);
+        }
+
+        function acceptedDetailCell(d) {
+            const list = d.data ? (Array.isArray(d.data) ? d.data : String(d.data).split(/[,\n]+/).map(x => x.trim()).filter(Boolean)) : [];
+            const ok = acceptedEmailCount(d);
+            const note = list.length > ok && ok > 0
+                ? `<div><span class="group-chip">${ok} dari ${list.length} email diterima</span></div>` : '';
+            return (list.length ? esc(list.join(', ')) : '-') + note;
         }
 
         function depTs(d) {
@@ -3324,6 +3318,7 @@
             messages: document.getElementById('page-messages'),
             'deposit-settings': document.getElementById('page-deposit-settings'),
             'withdraw-settings': document.getElementById('page-withdraw-settings'),
+            'referral-settings': document.getElementById('page-referral-settings'),
             'emailstore': document.getElementById('page-emailstore'),
             'leaderboard-start': document.getElementById('page-leaderboard-start'),
         };
@@ -3341,6 +3336,7 @@
             messages: 'Kirim Pesan',
             'deposit-settings': 'Pengaturan Storan',
             'withdraw-settings': 'Pengaturan Penarikan',
+            'referral-settings': 'Seting Referal',
             'emailstore': 'Storan Email',
             'leaderboard-start': '🏆 Leaderboard',
         };
@@ -3399,6 +3395,7 @@
             else if (page === 'messages') renderMessages();
             else if (page === 'deposit-settings') renderDepositSettings();
             else if (page === 'withdraw-settings') renderWithdrawSettings();
+            else if (page === 'referral-settings') renderReferralSettings();
             else if (page === 'emailstore') renderEmailStore();
             else if (page === 'leaderboard-start') renderLeaderboardStart();
             updateBadges();
@@ -3419,6 +3416,7 @@
                 'messages': 'msgDot',
                 'deposit-settings': 'depSetDot',
                 'withdraw-settings': 'withSetDot',
+                'referral-settings': 'refSetDot',
                 'emailstore': 'emailStoreDot',
                 'leaderboard-start': 'lbStartDot',
             };
@@ -3614,6 +3612,7 @@
             'messages': () => renderMessages(),
             'deposit-settings': () => renderDepositSettings(),
             'withdraw-settings': () => renderWithdrawSettings(),
+            'referral-settings': () => renderReferralSettings(),
             'emailstore': () => renderEmailStore(),
             'leaderboard-start': () => renderLeaderboardStart()
         };
@@ -3689,6 +3688,9 @@
             document.getElementById('statPendingOld').textContent = getPendingGroups().byJenis.old.length;
             document.getElementById('statPendingCaptcha').textContent = getPendingGroups().byJenis.captcha.length;
             document.getElementById('statAccepted').textContent = accepted;
+            const accSub = document.getElementById('statAccepted');
+            const accEmails = deposits.filter(d => d.status === 'diterima').reduce((t, d) => t + acceptedEmailCount(d), 0);
+            accSub.title = accEmails + ' email diterima';
             const totalBalance = users.reduce((s, u) => s + (parseInt(u.saldo) || 0), 0);
             document.getElementById('statBalance').textContent = formatRupiah(totalBalance);
             document.getElementById('statTotalDeposits').textContent = deposits.length;
@@ -3834,57 +3836,51 @@
             const tbody = document.getElementById(cfg.tbody);
             if (items.length === 0) {
                 tbody.innerHTML =
-                    `<tr><td colspan="8" class="text-muted" style="text-align:center;padding:32px 0;">Tidak ada data pending ${cfg.emptyLabel}</td></tr>`;
+                    `<tr class="pc-row"><td colspan="8"><div class="pc-empty">Tidak ada data pending ${cfg.emptyLabel}</div></td></tr>`;
                 return;
             }
 
-            let rowIndex = 0;
             tbody.innerHTML = items.map((item) => {
                 if (item.isNote) {
-                    return `
-                            <tr class="note-row">
-                                <td>${++rowIndex}</td>
-                                <td colspan="7" style="font-style:italic; color:var(--text-secondary);">
-                                    <i class="fas fa-sticky-note note-icon"></i> ${esc(item.text)}
-                                    <span style="margin-left:12px;font-size:11px;color:var(--text-muted);">
-                                        <i class="fas fa-clock"></i> ${formatTime(item.timestamp)}
-                                    </span>
-                                    <button class="btn btn-danger btn-xs" style="margin-left:12px;" onclick="deleteNoteFromTable('${item.id}','${jenis}')">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        `;
+                    return `<tr class="pc-row"><td colspan="8"><div class="pc-note">
+                                <i class="fas fa-sticky-note"></i><span style="flex:1;font-style:italic;">${esc(item.text)}</span>
+                                <span class="t"><i class="fas fa-clock"></i> ${formatTime(item.timestamp)}</span>
+                                <button class="btn btn-danger btn-xs" onclick="deleteNoteFromTable('${item.id}','${jenis}')"><i class="fas fa-times"></i></button>
+                            </div></td></tr>`;
                 }
-
                 const g = item;
                 const multi = g.deposits.length > 1;
-                let matchCount = 0;
-                if (searchEmail) matchCount = g.data.filter(email => email.toLowerCase().includes(searchEmail)).length;
-                const badgeHtml = matchCount > 0 ? `<span class="badge-email-count">${matchCount}</span>` : '';
                 const meta = getJenisMeta(g.jenis);
-                const timeCell = multi
-                    ? `<div>${formatTime(g.date)}</div><div class="group-sub">${g.deposits.length} storan · ${formatTimeOnly(g.firstDate)} – ${formatTimeOnly(g.date)}</div>`
+                const timeTxt = multi
+                    ? `${formatTime(g.date)} · ${formatTimeOnly(g.firstDate)} – ${formatTimeOnly(g.date)}`
                     : formatTime(g.date);
-
-                return `
-                        <tr>
-                            <td>${++rowIndex}</td>
-                            <td><strong>${esc(g.username)}</strong>${multi ? `<div><span class="group-chip" title="Storan user ini di hari yang sama digabung">⚡ ${g.deposits.length} storan digabung</span></div>` : ''}</td>
-                            <td><span class="status-badge ${meta.cls}">${meta.label}</span></td>
-                            <td><span class="status-badge open">${esc(g.type || 'Gmail')}</span></td>
-                            <td>${formatEmailCell(g.data)} ${badgeHtml}</td>
-                            <td>${timeCell}</td>
-                            <td><span class="status-badge pending">Pending</span></td>
-                            <td>
-                                <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" onclick="viewPending('${g.gid}')"><i class="fas fa-eye"></i></button>
-                                    <button class="btn btn-success btn-xs" onclick="acceptDeposit('${g.gid}')"><i class="fas fa-check"></i></button>
-                                    <button class="btn btn-danger btn-xs" onclick="rejectDeposit('${g.gid}')"><i class="fas fa-times"></i></button>
+                const lis = g.data.map(e => {
+                    const hit = searchEmail && e.toLowerCase().includes(searchEmail);
+                    return `<li${hit ? ' class="hit"' : ''}>${esc(e)}</li>`;
+                }).join('') || '<li>-</li>';
+                const copyData = esc(g.data.join('\n')).replace(/\n/g, '&#10;');
+                return `<tr class="pc-row"><td colspan="8"><div class="pc">
+                            <div class="pc-head">
+                                <div class="pc-av">${esc(((g.username || '?')[0] || '?').toUpperCase())}</div>
+                                <div class="pc-who"><strong>${esc(g.username)}</strong><span><i class="fas fa-clock"></i> ${timeTxt}</span></div>
+                                <div class="pc-badges">
+                                    <span class="status-badge ${meta.cls}">${meta.label}</span>
+                                    <span class="status-badge open">${esc(g.type || 'Gmail')}</span>
+                                    <span class="status-badge pending">Pending</span>
                                 </div>
-                            </td>
-                        </tr>
-                    `;
+                            </div>
+                            ${multi ? `<div class="pc-merge">⚡ ${g.deposits.length} storan hari ini digabung jadi satu</div>` : ''}
+                            <div class="pc-box">
+                                <div class="pc-box-head"><span><i class="fas fa-envelope"></i> ${g.data.length} email</span>
+                                    <button class="btn-copy" data-copy="${copyData}" onclick="copyText(this.dataset.copy)"><i class="fas fa-copy"></i> Salin</button></div>
+                                <ul class="pc-list">${lis}</ul>
+                            </div>
+                            <div class="pc-actions">
+                                <button class="btn btn-outline btn-sm" onclick="viewPending('${g.gid}')"><i class="fas fa-eye"></i> Detail</button>
+                                <button class="btn btn-success btn-sm" onclick="acceptDeposit('${g.gid}')"><i class="fas fa-check"></i> Terima</button>
+                                <button class="btn btn-danger btn-sm" onclick="rejectDeposit('${g.gid}')"><i class="fas fa-times"></i> Tolak</button>
+                            </div>
+                        </div></td></tr>`;
             }).join('');
         }
 
@@ -4510,9 +4506,7 @@
                     }
                 }
                 if (nominal === 0) {
-                    let count = 0;
-                    if (Array.isArray(d.data)) count = d.data.length;
-                    else if (d.items) count = parseInt(d.items) || 0;
+                    const count = acceptedEmailCount(d);
                     const jenis = depositJenis(d);
                     const rate = parseCurrency(d.rate || d.ratePerEmail || d.harga || d.price ||
                         defaultRateForJenis(jenis));
@@ -4527,7 +4521,7 @@
                             <td><strong>${esc(d.username)}</strong></td>
                             <td><span class="status-badge ${jenisClass}">${jenisLabel}</span></td>
                             <td><span class="status-badge open">${d.type || 'Gmail'}</span></td>
-                            <td>${d.data ? esc(Array.isArray(d.data) ? d.data.join(', ') : d.data) : '-'}</td>
+                            <td>${acceptedDetailCell(d)}</td>
                             <td><strong>Rp${formatRupiah(nominal)}</strong></td>
                             <td>${formatTime(d.date)}</td>
                             <td><span class="status-badge diterima">Diterima</span></td>
@@ -5156,6 +5150,68 @@
         });
 
         // ============================================================
+        //  SETING REFERAL (Supabase: panel_get_referral_settings / panel_update_referral_settings)
+        // ============================================================
+        let referralLoaded = false;
+        function refPick(o, a, b, def) { return o && o[a] !== undefined ? o[a] : (o && o[b] !== undefined ? o[b] : def); }
+        function refUpdateLabels() {
+            const pct = document.getElementById('refRewardType').value === 'percent';
+            document.getElementById('refRewardLabel').textContent = pct ? 'Nilai Bonus (%)' : 'Nilai Bonus (Rp)';
+            const on = document.getElementById('refEnabled').value === 'true';
+            const b = document.getElementById('refStatusBadge');
+            b.textContent = on ? 'AKTIF' : 'OFF';
+            b.className = 'ref-status ' + (on ? 'on' : 'off');
+        }
+        async function renderReferralSettings() {
+            const note = document.getElementById('refLoadNote');
+            refUpdateLabels();
+            if (referralLoaded) return;
+            try {
+                const res = await apiRequest('adminGetReferralSettings');
+                const r = res.data || res.settings || res || {};
+                document.getElementById('refEnabled').value = String(!!refPick(r, 'enabled', 'referralEnabled', false));
+                document.getElementById('refRewardType').value = refPick(r, 'reward_type', 'rewardType', 'fixed');
+                document.getElementById('refRewardValue').value = Number(refPick(r, 'reward_value', 'rewardValue', 0)).toLocaleString('id-ID');
+                document.getElementById('refMinItems').value = Number(refPick(r, 'min_items', 'minItems', 1)).toLocaleString('id-ID');
+                document.getElementById('refInviteeBonus').value = Number(refPick(r, 'invitee_bonus', 'inviteeBonus', 0)).toLocaleString('id-ID');
+                document.getElementById('refInfo').value = refPick(r, 'info', 'referralInfo', '') || '';
+                referralLoaded = true;
+                note.textContent = '';
+                refUpdateLabels();
+            } catch (err) {
+                note.textContent = isMissingFunctionError(err)
+                    ? 'Fungsi Supabase referal belum dipasang (SQL menyusul). Form sudah siap dipakai.'
+                    : (err.message || 'Gagal memuat pengaturan referal.');
+            }
+        }
+        document.getElementById('refEnabled').addEventListener('change', refUpdateLabels);
+        document.getElementById('refRewardType').addEventListener('change', refUpdateLabels);
+        document.getElementById('referralSettingsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const type = document.getElementById('refRewardType').value;
+            const value = getCurrencyValue('refRewardValue');
+            if (type === 'percent' && value > 100) { toast('Persen bonus maksimal 100.', 'error'); return; }
+            showLoading('Menyimpan...');
+            try {
+                await apiRequest('adminSaveReferralSettings', {
+                    enabled: document.getElementById('refEnabled').value === 'true',
+                    rewardType: type,
+                    rewardValue: value,
+                    inviteeBonus: getCurrencyValue('refInviteeBonus'),
+                    minItems: getCurrencyValue('refMinItems') || 1,
+                    info: document.getElementById('refInfo').value.trim()
+                });
+                referralLoaded = true;
+                document.getElementById('refLoadNote').textContent = '';
+                toast('Pengaturan referal berhasil disimpan!', 'success');
+                hideLoading();
+            } catch (err) {
+                toast(isMissingFunctionError(err) ? 'Fungsi Supabase referal belum dipasang.' : (err.message || 'Gagal menyimpan pengaturan referal.'), 'error');
+                hideLoading();
+            }
+        });
+
+        // ============================================================
         //  EMAIL STORE — SPLIT FRESH / BEKAS
         // ============================================================
         const EMAIL_STORE_HIDDEN_KEYS = {
@@ -5339,10 +5395,7 @@
                     });
                 }
                 const user = leaderboardMap.get(userId);
-                let count = 0;
-                if (Array.isArray(d.data)) count = d.data.length;
-                else if (d.items) count = parseInt(d.items) || 0;
-                else if (d.jumlah) count = parseInt(d.jumlah) || 0;
+                const count = acceptedEmailCount(d);
                 let nominal = 0;
                 if (d.amount) {
                     nominal = parseCurrency(d.amount);
