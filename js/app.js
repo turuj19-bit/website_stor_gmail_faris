@@ -1816,3 +1816,100 @@ function shareReferral() {
     copyReferral('link');
   }
 }
+
+
+// ============================================================
+// MAINTENANCE (sisi user)
+// - Admin menyalakan maintenance dari dasbor (panel_set_maintenance).
+// - User yang BELUM centang biru ditutup oleh layar maintenance.
+// - User centang biru tetap bisa masuk (hanya muncul info kecil).
+// Supabase: fungsi RPC "user_get_maintenance" (p_token) -> { enabled, message, verified }
+// Kalau fungsi belum dipasang, web tetap normal (tidak menutup siapa pun).
+// ============================================================
+(function() {
+  try {
+    if (typeof ACTION_MAP === 'object' && ACTION_MAP && !ACTION_MAP.getMaintenance) {
+      ACTION_MAP.getMaintenance = { fn: 'user_get_maintenance', needsToken: true, params: function() { return {}; } };
+    }
+  } catch (e) { console.warn('ACTION_MAP maintenance gagal:', e); }
+})();
+
+const MT_DEFAULT_MSG = 'Website sedang kami tingkatkan agar lebih cepat dan nyaman. Mohon tunggu sebentar.';
+let mtBusy = false;
+let mtBlockedNow = false;
+
+function mtPick(o, a, b, fallback) {
+  if (o && o[a] !== undefined && o[a] !== null) return o[a];
+  if (o && o[b] !== undefined && o[b] !== null) return o[b];
+  return fallback;
+}
+
+function mtRender(enabled, message, verified) {
+  const ov = document.getElementById('mtOverlay');
+  if (!ov) return;
+  const blocked = !!enabled && !verified;
+  const msg = document.getElementById('mtMsg');
+  if (msg) msg.textContent = (message && String(message).trim()) || MT_DEFAULT_MSG;
+  ov.classList.toggle('show', blocked);
+  document.documentElement.classList.toggle('mt-locked', blocked);
+  const app = document.getElementById('appPage');
+  if (app) { try { app.inert = blocked; } catch (_) {} }
+  const pill = document.getElementById('mtVipPill');
+  if (pill) {
+    const showPill = !!enabled && !!verified;
+    if (showPill && !mtVipShown) { pill.classList.remove('show'); void pill.offsetWidth; pill.classList.add('show'); mtVipShown = true; }
+    if (!showPill) { pill.classList.remove('show'); mtVipShown = false; }
+  }
+  mtBlockedNow = blocked;
+}
+let mtVipShown = false;
+
+async function checkMaintenance(manual) {
+  if (mtBusy) return;
+  const btn = document.getElementById('mtRetryBtn');
+  // Belum login -> tidak ada yang ditutup (halaman login tetap bisa dibuka).
+  if (typeof getToken !== 'function' || !getToken()) { mtRender(false, '', true); return; }
+  mtBusy = true;
+  if (manual && btn) { btn.disabled = true; btn.classList.add('is-busy'); }
+  try {
+    const res = await apiRequest('getMaintenance', {});
+    const r = (res && (res.data || res.settings)) || res || {};
+    const enabled = !!mtPick(r, 'enabled', 'maintenance', false);
+    const message = mtPick(r, 'message', 'maintenanceMessage', '') || '';
+    let verified;
+    if (typeof r.verified === 'boolean') verified = r.verified;
+    else { try { const u = getCurrentUser(); verified = !!(u && u.verified); } catch (_) { verified = false; } }
+    mtRender(enabled, message, verified);
+    if (manual && enabled && !verified && typeof showToast === 'function') {
+      showToast('info', 'Masih Maintenance', 'Silakan coba lagi beberapa saat lagi.');
+    }
+  } catch (e) {
+    const m = String((e && e.message) || '');
+    // Fungsi Supabase belum dipasang -> jangan tutup website.
+    if (/could not find the function|does not exist|schema cache|PGRST202|404|belum dipasang/i.test(m)) {
+      mtRender(false, '', true);
+    } else {
+      console.warn('checkMaintenance gagal:', m);
+    }
+  } finally {
+    mtBusy = false;
+    if (btn) { btn.disabled = false; btn.classList.remove('is-busy'); }
+  }
+}
+
+// Cek saat masuk app (login / sesi dipulihkan).
+(function() {
+  const orig = window.enterApp;
+  if (typeof orig === 'function') {
+    window.enterApp = function() {
+      const r = orig.apply(this, arguments);
+      try { checkMaintenance(false); } catch (_) {}
+      return r;
+    };
+  }
+})();
+
+// Cek berkala + saat tab kembali aktif, supaya layar hilang/muncul otomatis.
+setInterval(function() { if (!document.hidden) checkMaintenance(false); }, 20000);
+document.addEventListener('visibilitychange', function() { if (!document.hidden) checkMaintenance(false); });
+window.addEventListener('load', function() { setTimeout(function() { checkMaintenance(false); }, 1500); });
