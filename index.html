@@ -609,6 +609,91 @@
     }
     .about-foot i { color: var(--blue-bright); }
   </style>
+
+  <style>
+    /* ===== MAINTENANCE (user belum centang biru) ===== */
+    html.mt-locked, html.mt-locked body { overflow: hidden !important; }
+    #mtOverlay {
+      position: fixed; inset: 0; z-index: 2147483000;
+      display: none; align-items: center; justify-content: center;
+      padding: calc(20px + env(safe-area-inset-top, 0px)) 20px calc(20px + env(safe-area-inset-bottom, 0px));
+      background: var(--bg-body, #0b0f1a);
+      overflow-y: auto; -webkit-overflow-scrolling: touch;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+    #mtOverlay.show { display: flex; animation: mtFade .35s ease both; }
+    #mtOverlay::before, #mtOverlay::after {
+      content: ''; position: absolute; width: 360px; height: 360px; border-radius: 50%;
+      filter: blur(90px); opacity: .45; pointer-events: none;
+    }
+    #mtOverlay::before { top: -120px; left: -100px; background: var(--blue-primary, #1C4FD1); }
+    #mtOverlay::after { bottom: -140px; right: -110px; background: var(--blue-bright, #5aa8ff); opacity: .28; }
+    .mt-card {
+      position: relative; z-index: 1; width: 100%; max-width: 400px; margin: auto;
+      padding: 30px 24px 24px; text-align: center; border-radius: 26px;
+      background: var(--bg-card-alt, #171c2b);
+      border: 1px solid var(--border-subtle, rgba(255,255,255,.09));
+      box-shadow: 0 24px 70px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.05);
+      animation: mtRise .5s cubic-bezier(.2,.8,.2,1) both;
+    }
+    .mt-gears { position: relative; width: 132px; height: 112px; margin: 0 auto 18px; }
+    .mt-gear { position: absolute; display: block; }
+    .mt-gear svg { width: 100%; height: 100%; display: block; }
+    .mt-gear.g1 { width: 82px; height: 82px; left: 8px; top: 4px; color: var(--blue-primary, #1C4FD1); animation: mtSpin 9s linear infinite; }
+    .mt-gear.g2 { width: 58px; height: 58px; right: 8px; bottom: 2px; color: var(--blue-bright, #5aa8ff); animation: mtSpin 6.5s linear infinite reverse; }
+    .mt-chip {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 13px; border-radius: 999px;
+      font-size: 11px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase;
+      color: #ffb54d; background: rgba(255,170,50,.12); border: 1px solid rgba(255,170,50,.32);
+    }
+    .mt-chip i { width: 7px; height: 7px; border-radius: 50%; background: #ffb54d; box-shadow: 0 0 0 0 rgba(255,181,77,.6); animation: mtPulse 1.6s infinite; }
+    .mt-title { margin: 14px 0 8px; font-size: 24px; line-height: 1.2; font-weight: 900; color: var(--text-primary, #fff); }
+    .mt-msg {
+      margin: 0 0 18px; font-size: 14px; line-height: 1.6; color: var(--text-secondary, #9aa4b8);
+      white-space: pre-line; word-break: break-word;
+    }
+    .mt-bar { height: 6px; border-radius: 99px; background: rgba(255,255,255,.07); overflow: hidden; margin: 0 4px 16px; }
+    .mt-bar span {
+      display: block; height: 100%; width: 42%; border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue-primary, #1C4FD1), var(--blue-bright, #5aa8ff));
+      animation: mtSlide 1.7s ease-in-out infinite;
+    }
+    .mt-note {
+      display: flex; align-items: center; gap: 10px; text-align: left; padding: 11px 13px; margin-bottom: 18px;
+      border-radius: 14px; font-size: 12.5px; line-height: 1.45; color: var(--text-secondary, #9aa4b8);
+      background: rgba(255,255,255,.04); border: 1px solid var(--border-subtle, rgba(255,255,255,.08));
+    }
+    .mt-note i { color: var(--blue-bright, #5aa8ff); font-size: 15px; flex-shrink: 0; }
+    .mt-btn {
+      width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+      padding: 13px 16px; border: 0; border-radius: 14px; cursor: pointer;
+      font: inherit; font-size: 14px; font-weight: 800; color: #fff;
+      background: linear-gradient(135deg, var(--blue-primary, #1C4FD1), var(--blue-bright, #5aa8ff));
+      box-shadow: 0 10px 26px rgba(28,79,209,.38); transition: transform .15s ease, opacity .15s ease;
+    }
+    .mt-btn:active { transform: scale(.98); }
+    .mt-btn[disabled] { opacity: .65; cursor: default; }
+    .mt-btn.is-busy i { animation: mtSpin 0.8s linear infinite; }
+    .mt-foot { margin-top: 14px; font-size: 11.5px; color: var(--text-secondary, #9aa4b8); opacity: .8; }
+    #mtVipPill {
+      position: fixed; left: 50%; top: calc(8px + env(safe-area-inset-top, 0px)); transform: translate(-50%, -140%);
+      z-index: 3500; display: none; align-items: center; gap: 7px; max-width: calc(100vw - 24px);
+      padding: 7px 14px; border-radius: 999px; pointer-events: none; white-space: nowrap;
+      font-size: 11.5px; font-weight: 700; color: var(--text-primary, #fff);
+      background: rgba(23,28,43,.94); border: 1px solid rgba(90,168,255,.4); box-shadow: 0 8px 24px rgba(0,0,0,.35);
+    }
+    #mtVipPill i { color: var(--blue-bright, #5aa8ff); }
+    #mtVipPill.show { display: inline-flex; animation: mtPill 6.5s ease both; }
+    @keyframes mtFade { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes mtRise { from { opacity: 0; transform: translateY(18px) scale(.98); } to { opacity: 1; transform: none; } }
+    @keyframes mtSpin { to { transform: rotate(360deg); } }
+    @keyframes mtPulse { 70% { box-shadow: 0 0 0 8px rgba(255,181,77,0); } 100% { box-shadow: 0 0 0 0 rgba(255,181,77,0); } }
+    @keyframes mtSlide { 0% { transform: translateX(-110%); } 100% { transform: translateX(260%); } }
+    @keyframes mtPill { 0% { transform: translate(-50%, -140%); } 8%, 88% { transform: translate(-50%, 0); } 100% { transform: translate(-50%, -140%); } }
+    @media (prefers-reduced-motion: reduce) {
+      .mt-gear, .mt-chip i, .mt-bar span, #mtOverlay.show, .mt-card { animation: none !important; }
+    }
+  </style>
 </head>
 <body>
 
@@ -1793,10 +1878,29 @@ contoh3@gmail.com</code></li>
       } catch (e) {}
     })();
   </script>
+
+  <!-- ===== MAINTENANCE (tampil untuk user yang belum centang biru saat maintenance ON) ===== -->
+  <div id="mtOverlay" role="alertdialog" aria-modal="true" aria-labelledby="mtTitle" aria-describedby="mtMsg">
+    <div class="mt-card">
+      <div class="mt-gears" aria-hidden="true">
+        <span class="mt-gear g1"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96a7.03 7.03 0 0 0-1.62-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96a.5.5 0 0 0-.61.22L2.7 8.84a.5.5 0 0 0 .12.64l2.03 1.58c-.04.31-.07.63-.07.94s.03.63.07.94L2.82 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.31.61.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.04.24.25.42.5.42h3.84c.25 0 .46-.18.5-.42l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.09.48 0 .61-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/></svg></span>
+        <span class="mt-gear g2"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96a7.03 7.03 0 0 0-1.62-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96a.5.5 0 0 0-.61.22L2.7 8.84a.5.5 0 0 0 .12.64l2.03 1.58c-.04.31-.07.63-.07.94s.03.63.07.94L2.82 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.31.61.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.04.24.25.42.5.42h3.84c.25 0 .46-.18.5-.42l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.09.48 0 .61-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/></svg></span>
+      </div>
+      <span class="mt-chip"><i></i> Maintenance</span>
+      <h2 class="mt-title" id="mtTitle">Sedang Dalam Perbaikan</h2>
+      <p class="mt-msg" id="mtMsg">Website sedang kami tingkatkan agar lebih cepat dan nyaman. Mohon tunggu sebentar.</p>
+      <div class="mt-bar" aria-hidden="true"><span></span></div>
+      <div class="mt-note"><i class="fas fa-circle-info"></i><span>Halaman ini akan terbuka otomatis begitu maintenance selesai. Saldo dan data kamu tetap aman.</span></div>
+      <button type="button" class="mt-btn" id="mtRetryBtn" onclick="checkMaintenance(true)"><i class="fas fa-rotate"></i><span>Cek Ulang</span></button>
+      <div class="mt-foot">Terima kasih atas kesabaran kamu 🙏</div>
+    </div>
+  </div>
+  <div id="mtVipPill"><i class="fas fa-circle-check"></i><span>Maintenance aktif &middot; akses khusus akun centang biru</span></div>
+
   <script src="js/config.js"></script>
   <script src="js/core.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/app.js?v=20261017"></script>
+  <script src="js/app.js?v=20261018"></script>
   <script src="js/profile.js"></script>
   <script src="js/withdrawal.js"></script>
   <script src="js/history.js"></script>
