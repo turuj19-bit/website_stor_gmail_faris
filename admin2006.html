@@ -2025,6 +2025,28 @@
         .ref-status.off { background: var(--red-bg); color: var(--red); }
         @media (max-width: 640px) { .ref-grid { grid-template-columns: 1fr; } .pc-actions .btn { min-width: 0; } }
 
+
+        /* perbaikan lebar kartu pending + daftar ringkas */
+        #page-pending .table-wrap, #page-pending-bekas .table-wrap, #page-pending-biasa .table-wrap, #page-pending-old .table-wrap, #page-pending-captcha .table-wrap { overflow-x: visible; }
+        #page-pending table, #page-pending-bekas table, #page-pending-biasa table, #page-pending-old table, #page-pending-captcha table { min-width: 0 !important; }
+        tr.pc-row, tr.pc-row > td, .pc { max-width: 100%; min-width: 0; }
+        .pc-list.collapsed { max-height: 108px; overflow: hidden; }
+        .pc-more { display: block; width: 100%; border: 0; border-top: 1px solid var(--border-color); background: #f1f5fb; color: var(--blue-dark); font-weight: 600; font-size: 12.5px; padding: 8px; cursor: pointer; }
+        .pc-actions .btn { white-space: nowrap; }
+        .dp-block { margin-top: 10px; border: 1px solid var(--border-color); border-radius: 10px; background: #f8fafd; padding: 10px 12px; }
+        .dp-head { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 12.5px; margin-bottom: 6px; }
+        .dp-head span { color: var(--text-muted); }
+        .dp-emails { font-family: ui-monospace, Menlo, monospace; font-size: 12.5px; word-break: break-all; max-height: 110px; overflow-y: auto; }
+        .dp-actions { display: flex; gap: 6px; margin-top: 8px; }
+        .ref-how { padding-left: 18px; font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+        .mt-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+        .switch { position: relative; width: 54px; height: 30px; flex-shrink: 0; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; inset: 0; background: #cbd5e1; border-radius: 30px; cursor: pointer; transition: .25s; }
+        .slider::before { content: ''; position: absolute; width: 24px; height: 24px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .25s; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+        .switch input:checked + .slider { background: #dc2626; }
+        .switch input:checked + .slider::before { transform: translateX(24px); }
+
         @media (prefers-reduced-motion: reduce) {
             * { animation: none !important; transition: none !important; }
         }
@@ -2053,7 +2075,7 @@
                 </div>
                 <button type="submit" class="btn-login"><i class="fas fa-lock" style="margin-right:8px;"></i> Masuk</button>
             </form>
-            <div class="login-footer">⛅ Akses terbatas · Admin only</div>
+            <div class="login-footer"><i class="fas fa-lock"></i> Akses terbatas · Admin only</div>
         </div>
     </div>
 
@@ -2136,6 +2158,11 @@
                     <span class="nav-label">Seting Referal</span>
                     <span class="badge-dot" id="refSetDot"></span>
                 </button>
+                <button class="nav-item" data-page="maintenance">
+                    <i class="fas fa-screwdriver-wrench"></i>
+                    <span class="nav-label">Maintenance</span>
+                    <span class="badge-dot" id="mtDot"></span>
+                </button>
                 <button class="nav-item" data-page="emailstore">
                     <i class="fas fa-envelope-open-text"></i>
                     <span class="nav-label">Storan Email</span>
@@ -2143,7 +2170,7 @@
                 </button>
                 <button class="nav-item" data-page="leaderboard-start">
                     <i class="fas fa-trophy"></i>
-                    <span class="nav-label">🏆 Leaderboard</span>
+                    <span class="nav-label">Leaderboard</span>
                     <span class="badge-dot" id="lbStartDot"></span>
                 </button>
                 <button class="nav-item logout" id="logoutBtn">
@@ -2217,7 +2244,7 @@
 
                         <div class="filter-bar">
                             <input type="text" id="pendingEmailSearch" placeholder="Cari email dalam daftar..." />
-                            <span class="filter-hint">🔍 Cari email di semua pending Fresh</span>
+                            <span class="filter-hint"><i class="fas fa-search"></i> Cari email di semua pending Fresh</span>
                         </div>
 
                         <div class="table-wrap">
@@ -2242,7 +2269,7 @@
 
                         <div class="filter-bar">
                             <input type="text" id="pendingBekasEmailSearch" placeholder="Cari email dalam daftar..." />
-                            <span class="filter-hint">🔍 Cari email di semua pending Bekas 2FA</span>
+                            <span class="filter-hint"><i class="fas fa-search"></i> Cari email di semua pending Bekas 2FA</span>
                         </div>
 
                         <div class="table-wrap">
@@ -2267,7 +2294,7 @@
 
                         <div class="filter-bar">
                             <input type="text" id="pendingBiasaEmailSearch" placeholder="Cari email dalam daftar..." />
-                            <span class="filter-hint">🔍 Cari email di semua pending Bekas Biasa</span>
+                            <span class="filter-hint"><i class="fas fa-search"></i> Cari email di semua pending Bekas Biasa</span>
                         </div>
 
                         <div class="table-wrap">
@@ -2292,7 +2319,7 @@
 
                         <div class="filter-bar">
                             <input type="text" id="pendingOldEmailSearch" placeholder="Cari email dalam daftar..." />
-                            <span class="filter-hint">🔍 Cari email di semua pending Bekas Old</span>
+                            <span class="filter-hint"><i class="fas fa-search"></i> Cari email di semua pending Bekas Old</span>
                         </div>
 
                         <div class="table-wrap">
@@ -2317,7 +2344,7 @@
 
                         <div class="filter-bar">
                             <input type="text" id="pendingCaptchaEmailSearch" placeholder="Cari email dalam daftar..." />
-                            <span class="filter-hint">🔍 Cari email di semua pending Captcha</span>
+                            <span class="filter-hint"><i class="fas fa-search"></i> Cari email di semua pending Captcha</span>
                         </div>
 
                         <div class="table-wrap">
@@ -2434,7 +2461,7 @@
                         <form id="depositSettingsForm">
                             <!-- ===== FRESH SETTINGS ===== -->
                             <div style="border-left:3px solid var(--blue-primary);padding-left:14px;margin-bottom:22px;">
-                                <h4 style="font-size:14px;font-weight:600;color:var(--blue-primary);margin-bottom:10px;">🍃 Fresh</h4>
+                                <h4 style="font-size:14px;font-weight:600;color:var(--blue-primary);margin-bottom:10px;"><i class="fas fa-leaf"></i> Fresh</h4>
                                 <div class="form-group"><label>Status Storan Fresh</label><select id="depositStatus"><option value="OPEN">OPEN — Tersedia</option><option value="CLOSE">CLOSE — Ditutup</option></select></div>
                                 <div class="form-row">
                                     <div class="form-group"><label>Nama / Jenis Storan Fresh</label><input type="text" id="depositName" placeholder="Contoh: Gmail Fresh" /></div>
@@ -2445,7 +2472,7 @@
 
                             <!-- ===== BEKAS SETTINGS (lengkap) ===== -->
                             <div style="border-left:3px solid #d97706;padding-left:14px;margin-bottom:6px;">
-                                <h4 style="font-size:14px;font-weight:600;color:#d97706;margin-bottom:10px;">🔄 Bekas 2FA</h4>
+                                <h4 style="font-size:14px;font-weight:600;color:#d97706;margin-bottom:10px;"><i class="fas fa-sync-alt"></i> Bekas 2FA</h4>
                                 <div class="form-group"><label>Status Storan Bekas 2FA</label>
                                     <select id="depositBekasStatus">
                                         <option value="OPEN">OPEN — Tersedia</option>
@@ -2470,7 +2497,7 @@
 
                             <!-- ===== BEKAS BIASA SETTINGS (lengkap) ===== -->
                             <div style="border-left:3px solid #10b981;padding-left:14px;margin-bottom:6px;">
-                                <h4 style="font-size:14px;font-weight:600;color:#10b981;margin-bottom:10px;">🔁 Bekas Biasa</h4>
+                                <h4 style="font-size:14px;font-weight:600;color:#10b981;margin-bottom:10px;"><i class="fas fa-redo"></i> Bekas Biasa</h4>
                                 <div class="form-group"><label>Status Storan Bekas Biasa</label>
                                     <select id="depositBiasaStatus">
                                         <option value="OPEN">OPEN — Tersedia</option>
@@ -2492,7 +2519,7 @@
 
                             <!-- ===== BEKAS OLD SETTINGS (lengkap) ===== -->
                             <div style="border-left:3px solid #7c6ee6;padding-left:14px;margin-bottom:6px;">
-                                <h4 style="font-size:14px;font-weight:600;color:#7c6ee6;margin-bottom:10px;">📥 Bekas Old</h4>
+                                <h4 style="font-size:14px;font-weight:600;color:#7c6ee6;margin-bottom:10px;"><i class="fas fa-download"></i> Bekas Old</h4>
                                 <div class="form-group"><label>Status Storan Bekas Old</label>
                                     <select id="depositOldStatus">
                                         <option value="OPEN">OPEN — Tersedia</option>
@@ -2514,7 +2541,7 @@
 
                             <!-- ===== CAPTCHA SETTINGS ===== -->
                             <div style="border-left:3px solid #22d3ee;padding-left:14px;margin-bottom:18px;">
-                                <h4 style="font-size:14px;font-weight:600;color:#22d3ee;margin-bottom:10px;">🧩 Captcha</h4>
+                                <h4 style="font-size:14px;font-weight:600;color:#22d3ee;margin-bottom:10px;"><i class="fas fa-puzzle-piece"></i> Captcha</h4>
                                 <div class="form-group"><label>Status Storan Captcha</label>
                                     <select id="depositCaptchaStatus">
                                         <option value="OPEN">OPEN — Tersedia</option>
@@ -2560,24 +2587,40 @@
                                 <div class="form-group"><select id="refEnabled"><option value="true">AKTIF — User bisa ajak teman</option><option value="false">NONAKTIF — Program referal ditutup</option></select></div>
                             </div>
                             <div class="ref-sec">
-                                <h4>Bonus untuk Pengajak</h4>
-                                <div class="ref-grid">
-                                    <div class="form-group"><label>Jenis Bonus</label><select id="refRewardType"><option value="fixed">Nominal tetap (Rp)</option><option value="percent">Persen dari storan teman (%)</option></select></div>
-                                    <div class="form-group"><label id="refRewardLabel">Nilai Bonus (Rp)</label><input type="text" id="refRewardValue" class="currency-input" placeholder="1.000" /></div>
-                                </div>
-                                <div class="form-group"><label>Minimal Email Diterima dari Teman</label><input type="text" id="refMinItems" class="currency-input" placeholder="1" /><div class="ref-note">Bonus baru cair setelah teman punya storan diterima sebanyak ini.</div></div>
+                                <h4>Bonus per Email</h4>
+                                <div class="form-group"><label>Bonus untuk Pengajak (Rp / email)</label><input type="text" id="refBonus" class="currency-input" placeholder="500" /><div class="ref-note">Tampil di web user sebagai "Bonus Rp... / email".</div></div>
                             </div>
                             <div class="ref-sec">
-                                <h4>Bonus untuk Teman Baru</h4>
-                                <div class="form-group"><label>Bonus Saat Daftar (Rp)</label><input type="text" id="refInviteeBonus" class="currency-input" placeholder="0" /></div>
-                            </div>
-                            <div class="ref-sec">
-                                <h4>Info untuk User</h4>
-                                <div class="form-group"><textarea id="refInfo" placeholder="Contoh: Ajak teman, dapat bonus setiap teman storan."></textarea></div>
+                                <h4>Cara Kerja (sama seperti di web user)</h4>
+                                <ul class="ref-how">
+                                    <li>Bonus dihitung dari <b>storan pertama</b> teman setelah terhubung.</li>
+                                    <li>Setiap email yang diterima admin di storan itu = bonus per email untuk pengajak.</li>
+                                    <li>Bonus otomatis masuk ke saldo utama dan bisa ditarik.</li>
+                                    <li>Storan berikutnya dari teman yang sama tidak menambah bonus.</li>
+                                </ul>
                             </div>
                             <div class="ref-note" id="refLoadNote" style="margin-bottom:10px;"></div>
                             <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Pengaturan</button>
                         </form>
+                    </div>
+                </section>
+
+                <!-- MAINTENANCE -->
+                <section class="page-section" id="page-maintenance">
+                    <div class="card">
+                        <div class="card-header"><h3><i class="fas fa-screwdriver-wrench" style="color:var(--blue-primary);margin-right:8px;"></i> Maintenance Website <span class="ref-status off" id="mtBadge">OFF</span></h3></div>
+                        <div class="ref-sec">
+                            <div class="mt-row">
+                                <div><h4 style="margin:0;">Mode Maintenance</h4><div class="ref-note" style="margin:2px 0 0;">Kalau ON, website user tidak bisa dibuka dan tampil tulisan Maintenance di tengah layar.</div></div>
+                                <label class="switch"><input type="checkbox" id="mtToggle" /><span class="slider"></span></label>
+                            </div>
+                        </div>
+                        <div class="ref-sec">
+                            <h4>Tulisan di Layar User</h4>
+                            <div class="form-group"><textarea id="mtMessage" placeholder="Website sedang maintenance. Silakan kembali beberapa saat lagi."></textarea></div>
+                            <button type="button" class="btn btn-primary" id="mtSaveBtn"><i class="fas fa-save"></i> Simpan</button>
+                        </div>
+                        <div class="ref-note" id="mtLoadNote"></div>
                     </div>
                 </section>
 
@@ -2706,14 +2749,14 @@
                                 Data diambil dari storan yang sudah <strong>diterima</strong>.
                                 <br><br>
                                 <span style="font-size:14px;color:var(--text-muted);">
-                                    📌 <strong id="lbPendingCount">0</strong> storan diterima.
-                                    <br>💡 User yang sudah menerima saldo otomatis masuk peringkat.
+                                    <i class="fas fa-thumbtack"></i> <strong id="lbPendingCount">0</strong> storan diterima.
+                                    <br><i class="fas fa-lightbulb"></i> User yang sudah menerima saldo otomatis masuk peringkat.
                                 </span>
                             </div>
 
                             <div class="leaderboard-preview" id="lbPreview">
                                 <div class="preview-title">
-                                    <span>📊 Preview Peringkat (Top 5)</span>
+                                    <span><i class="fas fa-chart-bar"></i> Preview Peringkat (Top 5)</span>
                                     <span class="count" id="lbPreviewCount">0 user</span>
                                 </div>
                                 <div id="lbPreviewList">
@@ -2933,10 +2976,9 @@
                     p_deposit_captcha_info: d.depositCaptchaInfo || ''
                 }), optionalKeys: ['p_deposit_captcha_status', 'p_deposit_captcha_price', 'p_deposit_captcha_name', 'p_deposit_captcha_info'] },
             adminGetReferralSettings: { fn: 'panel_get_referral_settings', needsToken: true, params: () => ({}) },
-            adminSaveReferralSettings: { fn: 'panel_update_referral_settings', needsToken: true, params: (d) => ({
-                    p_enabled: !!d.enabled, p_reward_type: d.rewardType || 'fixed', p_reward_value: d.rewardValue || 0,
-                    p_invitee_bonus: d.inviteeBonus || 0, p_min_items: d.minItems || 1, p_info: d.info || ''
-                }) },
+            adminSaveReferralSettings: { fn: 'panel_update_referral_settings', needsToken: true, params: (d) => ({ p_enabled: !!d.enabled, p_bonus_per_email: d.bonusPerEmail || 0 }) },
+            adminGetMaintenance: { fn: 'panel_get_maintenance', needsToken: true, params: () => ({}) },
+            adminSetMaintenance: { fn: 'panel_set_maintenance', needsToken: true, params: (d) => ({ p_enabled: !!d.enabled, p_message: d.message || '' }) },
             adminClearActivities: { fn: 'panel_clear_activities', needsToken: true, params: () => ({}) },
             adminDeleteMessages: { fn: 'panel_delete_messages', needsToken: true, params: () => ({}) }
         };
@@ -3319,6 +3361,7 @@
             'deposit-settings': document.getElementById('page-deposit-settings'),
             'withdraw-settings': document.getElementById('page-withdraw-settings'),
             'referral-settings': document.getElementById('page-referral-settings'),
+            'maintenance': document.getElementById('page-maintenance'),
             'emailstore': document.getElementById('page-emailstore'),
             'leaderboard-start': document.getElementById('page-leaderboard-start'),
         };
@@ -3337,8 +3380,9 @@
             'deposit-settings': 'Pengaturan Storan',
             'withdraw-settings': 'Pengaturan Penarikan',
             'referral-settings': 'Seting Referal',
+            'maintenance': 'Maintenance',
             'emailstore': 'Storan Email',
-            'leaderboard-start': '🏆 Leaderboard',
+            'leaderboard-start': 'Leaderboard',
         };
 
         let pageGuardActive = false;
@@ -3396,6 +3440,7 @@
             else if (page === 'deposit-settings') renderDepositSettings();
             else if (page === 'withdraw-settings') renderWithdrawSettings();
             else if (page === 'referral-settings') renderReferralSettings();
+            else if (page === 'maintenance') renderMaintenance();
             else if (page === 'emailstore') renderEmailStore();
             else if (page === 'leaderboard-start') renderLeaderboardStart();
             updateBadges();
@@ -3417,6 +3462,7 @@
                 'deposit-settings': 'depSetDot',
                 'withdraw-settings': 'withSetDot',
                 'referral-settings': 'refSetDot',
+                'maintenance': 'mtDot',
                 'emailstore': 'emailStoreDot',
                 'leaderboard-start': 'lbStartDot',
             };
@@ -3613,6 +3659,7 @@
             'deposit-settings': () => renderDepositSettings(),
             'withdraw-settings': () => renderWithdrawSettings(),
             'referral-settings': () => renderReferralSettings(),
+            'maintenance': () => renderMaintenance(),
             'emailstore': () => renderEmailStore(),
             'leaderboard-start': () => renderLeaderboardStart()
         };
@@ -3667,7 +3714,7 @@
             const total = pendingDeposits + wd;
             if (total > previousPendingCount && total > 0) {
                 playNotificationSound();
-                toast(`🔔 Ada ${total} transaksi pending baru!`, 'info');
+                toast(`<i class="fas fa-bell"></i> Ada ${total} transaksi pending baru!`, 'info');
             }
             previousPendingCount = total;
         }
@@ -3759,9 +3806,9 @@
             if (days.length >= 2) {
                 const last = days[days.length - 1].count;
                 const prev = days[days.length - 2].count;
-                if (last > prev) trendEl.textContent = '📈 Naik';
-                else if (last < prev) trendEl.textContent = '📉 Turun';
-                else trendEl.textContent = '➡️ Stabil';
+                if (last > prev) trendEl.innerHTML = '<i class="fas fa-arrow-trend-up"></i> Naik';
+                else if (last < prev) trendEl.innerHTML = '<i class="fas fa-arrow-trend-down"></i> Turun';
+                else trendEl.innerHTML = '<i class="fas fa-minus"></i> Stabil';
             } else { trendEl.textContent = 'Stabil'; }
         }
 
@@ -3869,11 +3916,12 @@
                                     <span class="status-badge pending">Pending</span>
                                 </div>
                             </div>
-                            ${multi ? `<div class="pc-merge">⚡ ${g.deposits.length} storan hari ini digabung jadi satu</div>` : ''}
+                            ${multi ? `<div class="pc-merge"><i class="fas fa-bolt"></i> ${g.deposits.length} storan hari ini digabung jadi satu</div>` : ''}
                             <div class="pc-box">
                                 <div class="pc-box-head"><span><i class="fas fa-envelope"></i> ${g.data.length} email</span>
                                     <button class="btn-copy" data-copy="${copyData}" onclick="copyText(this.dataset.copy)"><i class="fas fa-copy"></i> Salin</button></div>
-                                <ul class="pc-list">${lis}</ul>
+                                <ul class="pc-list${g.data.length > 3 && !searchEmail ? ' collapsed' : ''}">${lis}</ul>
+                                ${g.data.length > 3 ? `<button type="button" class="pc-more" onclick="togglePcList(this)">${searchEmail ? 'Ciutkan' : `Lihat semua ${g.data.length} email`}</button>` : ''}
                             </div>
                             <div class="pc-actions">
                                 <button class="btn btn-outline btn-sm" onclick="viewPending('${g.gid}')"><i class="fas fa-eye"></i> Detail</button>
@@ -3883,6 +3931,12 @@
                         </div></td></tr>`;
             }).join('');
         }
+
+        window.togglePcList = function(btn) {
+            const ul = btn.previousElementSibling;
+            const c = ul.classList.toggle('collapsed');
+            btn.textContent = c ? `Lihat semua ${ul.children.length} email` : 'Ciutkan';
+        };
 
         function renderPending() { renderPendingByJenis('fresh'); }
         function renderPendingBekas() { renderPendingByJenis('bekas'); }
@@ -4141,6 +4195,17 @@
             const rateText = ri.uniform
                 ? `Rp ${formatRupiah(ri.rate)} <span style="font-size:11px;color:var(--text-muted);font-weight:400;">(${esc(ri.source)})</span>`
                 : `Bervariasi (rata-rata Rp ${formatRupiah(ri.rate)})`;
+            const perDep = multi ? ri.infos.map((i, n) => {
+                const em = depositEmailList(i.d);
+                return `<div class="dp-block">
+                            <div class="dp-head"><strong>Storan ${n + 1}</strong><span>${formatTimeOnly(i.d.date)} · ${i.count} email · @Rp${formatRupiah(i.rate)}</span></div>
+                            <div class="dp-emails">${em.map(e => esc(e)).join('<br>') || '-'}</div>
+                            <div class="dp-actions">
+                                <button class="btn btn-success btn-xs" onclick="acceptOne('${esc(String(i.d.id))}','${g.gid}')"><i class="fas fa-check"></i> Terima</button>
+                                <button class="btn btn-danger btn-xs" onclick="rejectOne('${esc(String(i.d.id))}','${g.gid}')"><i class="fas fa-times"></i> Tolak</button>
+                            </div>
+                        </div>`;
+            }).join('') : '';
             const breakdown = multi ? `
                         <div style="margin-top:10px;background:var(--bg-input);padding:8px 12px;border-radius:var(--radius-sm);font-size:12.5px;">
                             <strong>Rincian ${g.deposits.length} storan digabung:</strong>
@@ -4161,7 +4226,8 @@
                             <button class="btn btn-outline btn-xs" onclick="openRateOverride('${g.gid}', ${ri.rate})"><i class="fas fa-pen"></i> Ubah Rate</button>
                             ${ri.overridden ? `<button class="btn btn-danger btn-xs" onclick="clearRateOverride('${g.gid}')"><i class="fas fa-undo"></i> Reset ke Default</button>` : ''}
                         </div>
-                        ${breakdown}
+                        ${perDep}
+                        ${multi ? '' : `
                         <div style="margin-top:10px;background:var(--bg-input);padding:8px 12px;border-radius:var(--radius-sm);max-height:120px;overflow-y:auto;font-size:13px;">
                             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
                                 <strong>Daftar Email:</strong>
@@ -4169,6 +4235,7 @@
                             </div>
                             ${emailList.map(e => `• ${esc(e)}`).join('<br>') || '-'}
                         </div>
+                        `}
                         <div style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px;">
                             <h4 style="font-size:14px;font-weight:600;margin-bottom:8px;">Kirim Pesan Pribadi ke User</h4>
                             <div class="form-group">
@@ -4185,6 +4252,19 @@
                 `;
             await openModal('Detail Storan', `User: ${g.username} · ${jenisLabel}`, html, 'Tutup');
         };
+
+        function singleGroupOf(id, gid) {
+            const g = getPendingGroups().byId.get(gid);
+            const d = g && g.deposits.find(x => String(x.id) === String(id));
+            if (!d) { toast('Data tidak ditemukan.', 'error'); return null; }
+            const one = { gid: 'one_' + id, jenis: g.jenis, userId: g.userId, username: g.username, type: g.type,
+                deposits: [d], ids: [d.id], data: depositEmailList(d), count: depositCount(d),
+                date: d.date, firstDate: d.date, timestamp: depTs(d) };
+            getPendingGroups().byId.set(one.gid, one);
+            return one.gid;
+        }
+        window.acceptOne = function(id, gid) { const k = singleGroupOf(id, gid); if (k) { closeModal(); setTimeout(() => acceptDeposit(k), 120); } };
+        window.rejectOne = function(id, gid) { const k = singleGroupOf(id, gid); if (k) { closeModal(); setTimeout(() => rejectDeposit(k), 120); } };
 
         window.openRateOverride = async function(id, currentRate) {
             const result = await openModal(
@@ -4268,7 +4348,7 @@
                 <div class="compact">
                     <div style="margin-bottom:8px;font-size:13px;color:var(--text-secondary);">
                         <strong>${esc(g.username)}</strong> · <span class="status-badge ${acceptJenisMeta.cls}">${jenisLabel}</span> · ${formatTime(g.date)}
-                        ${multi ? `<div><span class="group-chip">⚡ ${g.deposits.length} storan hari ini digabung jadi satu</span></div>` : ''}
+                        ${multi ? `<div><span class="group-chip"><i class="fas fa-bolt"></i> ${g.deposits.length} storan hari ini digabung jadi satu</span></div>` : ''}
                     </div>
                     <div class="deposit-form-row">
                         <label for="modalEmailCount">Jumlah Email</label>
@@ -4290,10 +4370,10 @@
                                class="currency-input" style="text-align:left;" />
                     </div>
                     <div style="font-size:11px;color:var(--text-muted);margin-top:8px;text-align:center;background:var(--bg-input);padding:6px 10px;border-radius:6px;">
-                        🔒 Rate storan ini <strong>terkunci</strong> dan tidak ikut berubah saat Pengaturan Rate diubah.
-                        <br>✏️ Rate di atas boleh kamu ubah khusus untuk storan ini.
-                        ${ri.uniform ? '' : '<br>ℹ️ Rate tiap storan berbeda; angka di atas adalah rata-rata, total awal dihitung per storan.'}
-                        ${ri.overridden ? '<br>⚠️ Rate ini telah di-override manual oleh admin.' : ''}
+                        <i class="fas fa-lock"></i> Rate storan ini <strong>terkunci</strong> dan tidak ikut berubah saat Pengaturan Rate diubah.
+                        <br><i class="fas fa-pen"></i> Rate di atas boleh kamu ubah khusus untuk storan ini.
+                        ${ri.uniform ? '' : '<br><i class="fas fa-circle-info"></i> Rate tiap storan berbeda; angka di atas adalah rata-rata, total awal dihitung per storan.'}
+                        ${ri.overridden ? '<br><i class="fas fa-triangle-exclamation"></i> Rate ini telah di-override manual oleh admin.' : ''}
                     </div>
                 </div>
             `;
@@ -4434,7 +4514,7 @@
                 `;
 
             await openModal(
-                `📋 Detail Penarikan — ${w.username}`,
+                `Detail Penarikan — ${w.username}`,
                 `Nominal: Rp${formatRupiah(w.nominal)} · ${w.metode || '-'}`,
                 html,
                 'Tutup'
@@ -4570,7 +4650,7 @@
             const depositHistory = userDeposits.slice(-5).map(d => {
                 const detail = d.data ? (Array.isArray(d.data) ? `${d.data.length} email` : d.data) : '-';
                 const statusClass = d.status === 'diterima' ? 'diterima' : 'pending';
-                const statusLabel = d.status === 'diterima' ? '✅ Diterima' : '⏳ Pending';
+                const statusLabel = d.status === 'diterima' ? '<i class="fas fa-check-circle"></i> Diterima' : '<i class="fas fa-hourglass-half"></i> Pending';
                 const userMeta = getJenisMeta(depositJenis(d));
                 return `
                         <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border-color);font-size:13px;">
@@ -4591,7 +4671,7 @@
                                 <div style="font-size:13px;color:var(--text-secondary);">ID: ${u.id}</div>
                                 <div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;">
                                     <span class="status-badge ${u.status === 'aktif' ? 'diterima' : 'pending'}">${u.status || 'aktif'}</span>
-                                    <span class="ban-status-badge ${isUserBanned(u) ? 'banned' : 'aktif'}">${isUserBanned(u) ? '🚫 Di-ban' : '✅ Akun Aktif'}</span>
+                                    <span class="ban-status-badge ${isUserBanned(u) ? 'banned' : 'aktif'}">${isUserBanned(u) ? '<i class="fas fa-ban"></i> Di-ban' : '<i class="fas fa-check-circle"></i> Akun Aktif'}</span>
                                 </div>
                             </div>
                         </div>
@@ -4662,7 +4742,7 @@
                 `;
 
             await openModal(
-                `👤 ${u.username}`,
+                `${u.username}`,
                 `Saldo: Rp${formatRupiah(u.saldo||0)} · Total Storan: ${u.totalDeposits||0}`,
                 html,
                 'Tutup'
@@ -4728,7 +4808,7 @@
                 await apiRequest('adminToggleVerified', { userId, verified: nextVerified });
                 u.verified = nextVerified;
                 await refreshAfterMutation();
-                toast(nextVerified ? `${u.username} sekarang terverifikasi ✅` : `Centang biru ${u.username} dihapus`, 'success');
+                toast(nextVerified ? `${u.username} sekarang terverifikasi <i class="fas fa-check-circle"></i>` : `Centang biru ${u.username} dihapus`, 'success');
                 closeModal();
                 viewUser(userId);
                 hideLoading();
@@ -4824,7 +4904,7 @@
             tbody.innerHTML = filtered.map((u, idx) => {
                 const banned = isUserBanned(u);
                 const ket = banned ?
-                    `🚫 Di-ban ${formatBanLabel(u.ban)}${u.ban && u.ban.reason ? ' — ' + u.ban.reason : ''}` :
+                    `<i class="fas fa-ban"></i> Di-ban ${formatBanLabel(u.ban)}${u.ban && u.ban.reason ? ' — ' + u.ban.reason : ''}` :
                     'Akun berjalan normal';
                 const actionBtn = banned ?
                     `<button class="btn btn-success btn-xs" onclick="unbanUser('${u.id}')"><i class="fas fa-unlock"></i> Buka Ban</button>` :
@@ -4833,7 +4913,7 @@
                     <tr>
                         <td>${idx + 1}</td>
                         <td><div class="admin-avatar-wrap">${buildAdminAvatarHtml(u, 32, 'sm')}<strong>${esc(u.username)}</strong>${buildVerifiedBadgeHtml(u)}</div></td>
-                        <td><span class="ban-status-badge ${banned ? 'banned' : 'aktif'}">${banned ? '🚫 Di-ban' : '✅ Aktif'}</span></td>
+                        <td><span class="ban-status-badge ${banned ? 'banned' : 'aktif'}">${banned ? '<i class="fas fa-ban"></i> Di-ban' : '<i class="fas fa-check-circle"></i> Aktif'}</span></td>
                         <td style="font-size:12.5px;">${ket}</td>
                         <td>${actionBtn}</td>
                     </tr>
@@ -5155,8 +5235,6 @@
         let referralLoaded = false;
         function refPick(o, a, b, def) { return o && o[a] !== undefined ? o[a] : (o && o[b] !== undefined ? o[b] : def); }
         function refUpdateLabels() {
-            const pct = document.getElementById('refRewardType').value === 'percent';
-            document.getElementById('refRewardLabel').textContent = pct ? 'Nilai Bonus (%)' : 'Nilai Bonus (Rp)';
             const on = document.getElementById('refEnabled').value === 'true';
             const b = document.getElementById('refStatusBadge');
             b.textContent = on ? 'AKTIF' : 'OFF';
@@ -5169,12 +5247,8 @@
             try {
                 const res = await apiRequest('adminGetReferralSettings');
                 const r = res.data || res.settings || res || {};
-                document.getElementById('refEnabled').value = String(!!refPick(r, 'enabled', 'referralEnabled', false));
-                document.getElementById('refRewardType').value = refPick(r, 'reward_type', 'rewardType', 'fixed');
-                document.getElementById('refRewardValue').value = Number(refPick(r, 'reward_value', 'rewardValue', 0)).toLocaleString('id-ID');
-                document.getElementById('refMinItems').value = Number(refPick(r, 'min_items', 'minItems', 1)).toLocaleString('id-ID');
-                document.getElementById('refInviteeBonus').value = Number(refPick(r, 'invitee_bonus', 'inviteeBonus', 0)).toLocaleString('id-ID');
-                document.getElementById('refInfo').value = refPick(r, 'info', 'referralInfo', '') || '';
+                document.getElementById('refEnabled').value = String(!!refPick(r, 'enabled', 'referralEnabled', true));
+                document.getElementById('refBonus').value = Number(refPick(r, 'bonus_per_email', 'bonusPerEmail', 500)).toLocaleString('id-ID');
                 referralLoaded = true;
                 note.textContent = '';
                 refUpdateLabels();
@@ -5185,21 +5259,15 @@
             }
         }
         document.getElementById('refEnabled').addEventListener('change', refUpdateLabels);
-        document.getElementById('refRewardType').addEventListener('change', refUpdateLabels);
         document.getElementById('referralSettingsForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const type = document.getElementById('refRewardType').value;
-            const value = getCurrencyValue('refRewardValue');
-            if (type === 'percent' && value > 100) { toast('Persen bonus maksimal 100.', 'error'); return; }
+            const bonus = getCurrencyValue('refBonus');
+            if (!bonus || bonus <= 0) { toast('Bonus per email harus lebih dari 0.', 'error'); return; }
             showLoading('Menyimpan...');
             try {
                 await apiRequest('adminSaveReferralSettings', {
                     enabled: document.getElementById('refEnabled').value === 'true',
-                    rewardType: type,
-                    rewardValue: value,
-                    inviteeBonus: getCurrencyValue('refInviteeBonus'),
-                    minItems: getCurrencyValue('refMinItems') || 1,
-                    info: document.getElementById('refInfo').value.trim()
+                    bonusPerEmail: bonus
                 });
                 referralLoaded = true;
                 document.getElementById('refLoadNote').textContent = '';
@@ -5210,6 +5278,60 @@
                 hideLoading();
             }
         });
+
+        // ============================================================
+        //  MAINTENANCE (Supabase: panel_get_maintenance / panel_set_maintenance)
+        // ============================================================
+        let maintenanceLoaded = false;
+        function mtBadgeUpdate() {
+            const on = document.getElementById('mtToggle').checked;
+            const b = document.getElementById('mtBadge');
+            b.textContent = on ? 'ON' : 'OFF';
+            b.className = 'ref-status ' + (on ? 'on' : 'off');
+        }
+        async function renderMaintenance() {
+            const note = document.getElementById('mtLoadNote');
+            mtBadgeUpdate();
+            if (maintenanceLoaded) return;
+            try {
+                const res = await apiRequest('adminGetMaintenance');
+                const r = res.data || res.settings || res || {};
+                document.getElementById('mtToggle').checked = !!refPick(r, 'enabled', 'maintenance', false);
+                document.getElementById('mtMessage').value = refPick(r, 'message', 'maintenanceMessage', '') || '';
+                maintenanceLoaded = true;
+                note.textContent = '';
+                mtBadgeUpdate();
+            } catch (err) {
+                note.textContent = isMissingFunctionError(err)
+                    ? 'Fungsi Supabase maintenance belum dipasang (SQL menyusul). Tombol sudah siap dipakai.'
+                    : (err.message || 'Gagal memuat status maintenance.');
+            }
+        }
+        async function saveMaintenance(enabled) {
+            showLoading('Menyimpan...');
+            try {
+                await apiRequest('adminSetMaintenance', { enabled, message: document.getElementById('mtMessage').value.trim() });
+                maintenanceLoaded = true;
+                document.getElementById('mtLoadNote').textContent = '';
+                mtBadgeUpdate();
+                toast(enabled ? 'Maintenance ON — website user ditutup.' : 'Maintenance OFF — website user dibuka.', 'success');
+            } catch (err) {
+                document.getElementById('mtToggle').checked = !enabled;
+                mtBadgeUpdate();
+                toast(isMissingFunctionError(err) ? 'Fungsi Supabase maintenance belum dipasang.' : (err.message || 'Gagal menyimpan maintenance.'), 'error');
+            }
+            hideLoading();
+        }
+        document.getElementById('mtToggle').addEventListener('change', async (e) => {
+            const on = e.target.checked;
+            if (on) {
+                const ok = await openModal('Aktifkan Maintenance', 'Website user akan tidak bisa dibuka sampai kamu matikan lagi.', '', 'Aktifkan', 'Batal');
+                if (!ok) { e.target.checked = false; mtBadgeUpdate(); return; }
+            }
+            mtBadgeUpdate();
+            saveMaintenance(on);
+        });
+        document.getElementById('mtSaveBtn').addEventListener('click', () => saveMaintenance(document.getElementById('mtToggle').checked));
 
         // ============================================================
         //  EMAIL STORE — SPLIT FRESH / BEKAS
@@ -5305,11 +5427,9 @@
                 areaEl.dataset.emails = emails.join('\n');
 
                 if (emails.length === 0) {
-                    areaEl.innerHTML = `<div class="empty-msg">📭 Tidak ada email ${cfg.label} pending.</div>`;
+                    areaEl.innerHTML = `<div class="empty-msg"><i class="fas fa-inbox"></i> Tidak ada email ${cfg.label} pending.</div>`;
                 } else {
-                    areaEl.innerHTML = blocks.map(b =>
-                        `<div class="es-group"><div class="es-group-head"><span>👤 ${esc(b.username)}</span><span class="es-group-meta">${b.emails.length} email · ${esc(formatDateFull(b.date))}</span></div><div class="es-group-emails">${b.emails.map(esc).join('\n')}</div></div>`
-                    ).join('');
+                    areaEl.innerHTML = `<div class="es-group-emails">${emails.map(esc).join('\n')}</div>`;
                 }
 
                 document.getElementById(cfg.clearBtn).style.display = emails.length > 0 ? 'inline-flex' : 'none';
@@ -5318,7 +5438,7 @@
             const now = new Date();
             const dateStr = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
             const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('emailStoreLastUpdate').textContent = `📅 ${dateStr} ${timeStr}`;
+            document.getElementById('emailStoreLastUpdate').textContent = `${dateStr} ${timeStr}`;
         }
 
         // Tombol Salin/Hapus/Refresh untuk semua jenis
@@ -5377,7 +5497,7 @@
                 statusEl.style.background = 'var(--green-bg)';
                 statusEl.style.color = 'var(--green)';
             } else {
-                statusEl.textContent = '✅ Belum ada storan diterima';
+                statusEl.textContent = 'Belum ada storan diterima';
                 statusEl.style.background = 'var(--blue-glow)';
                 statusEl.style.color = 'var(--blue-light)';
             }
@@ -5534,14 +5654,14 @@
         }
 
         if (SUPABASE_URL === 'https://YOUR_PROJECT.supabase.co' || SUPABASE_ANON_KEY === 'YOUR_ANON_KEY') {
-            toast('⚠️ Konfigurasi Supabase belum diisi. Edit SUPABASE_URL dan SUPABASE_ANON_KEY di script.', 'error');
+            toast('<i class="fas fa-triangle-exclamation"></i> Konfigurasi Supabase belum diisi. Edit SUPABASE_URL dan SUPABASE_ANON_KEY di script.', 'error');
             console.error('Harap isi SUPABASE_URL dan SUPABASE_ANON_KEY dengan kredensial Supabase Anda.');
         }
 
         init();
-        console.log('🚀 STOR GMAIL Admin Dashboard v4.0 — Supabase Native');
-        console.log('📦 Data store:', dataStore);
-        console.log('🔗 Supabase URL:', SUPABASE_URL);
+        console.log('STOR GMAIL Admin Dashboard v4.0 — Supabase Native');
+        console.log('Data store:', dataStore);
+        console.log('Supabase URL:', SUPABASE_URL);
     </script>
 </body>
 </html>
