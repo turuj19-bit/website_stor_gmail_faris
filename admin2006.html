@@ -5734,6 +5734,9 @@
                 if (Date.now() < (window.__manualUntil || 0)) return;       // simpan manual sedang diproses: biar yang manual yang kirim
                 const b = watchSnap; watchSnap = n;
                 const what = Object.keys(n).filter(k => b[k] !== n[k]).map(k => k + ' ' + b[k] + '->' + n[k]).join(', ');
+                // Perubahan karena JADWAL otomatis kini dikirim ke Telegram oleh SERVER (Database.sql blok 19.8),
+                // jadi browser tidak ikut mengirim supaya tidak dobel dan tetap jalan walau halaman admin tertutup.
+                watchDiag({ last: { t: Date.now(), what, res: 'status berubah karena jadwal; format dikirim oleh server' } }); return;
                 if (!watchClaim(b, n)) { watchDiag({ last: { t: Date.now(), what, res: 'dilewati (tab lain di browser ini sudah kirim)' } }); return; }
                 const r = await announceAfterChange(b, n);
                 watchDiag({ last: { t: Date.now(), what, res: r === 'off' ? 'TIDAK dikirim: saklar "Kirim info otomatis" OFF' : r === 'terkirim' ? 'terkirim ke Telegram' : r === 'tanpa-pesan' ? 'tidak ada pesan untuk perubahan ini' : String(r || 'selesai') } });
