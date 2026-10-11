@@ -2654,6 +2654,7 @@
                             <h4>Channel Telegram</h4>
                             <div class="mt-row" style="margin-bottom:12px;"><div><b>Kirim info otomatis</b><div class="ref-note" style="margin:2px 0 0;">Info terkirim saat status storan/penarikan berubah (manual atau jadwal).</div></div><label class="switch"><input type="checkbox" id="auEnabled" /><span class="slider"></span></label></div>
                         </div>
+                        <div class="ref-note" id="auWatchInfo" style="margin:0 0 12px;"></div>
                         <div class="ref-sec"><h4>Info Umum (dipakai di format channel)</h4><div class="au-grid" id="auInfoBox"></div></div>
                         <div id="auTypesBox"></div>
                         <div class="ref-sec">
@@ -5626,6 +5627,7 @@
                 auFill(autoCfg);
             }
             auPreview();
+            watchDiag();
         }
         document.getElementById('auSendBtn').addEventListener('click', async () => {
             const cfg = auCollect(), st = dataStore.settings || {}, it = AU_PREVIEWS.find(x => x.id === document.getElementById('auPrevSel').value) || AU_PREVIEWS[0];
@@ -5670,7 +5672,7 @@
                 if (manual) { window.__manualUntil = 0; watchSnap = n; if (b) watchClaim(b, n); } // samakan pemantau jadwal agar perubahan manual tidak terkirim dobel
                 if (!b) return;
                 if (!autoCfg) { try { await auLoad(); } catch (_) { autoCfg = auCacheGet(); } }
-                if (!autoCfg || !autoCfg.enabled) return;
+                if (!autoCfg || !autoCfg.enabled) return 'off';
                 const cfg = autoCfg, st = dataStore.settings || {}, jobs = [], keys = ['fresh', 'bekas', 'biasa', 'old', 'captcha'];
                 const opened = keys.filter(k => b[k] !== 'OPEN' && n[k] === 'OPEN');
                 const closed = keys.filter(k => b[k] === 'OPEN' && n[k] !== 'OPEN');
@@ -5684,8 +5686,10 @@
                 if (b.wd === 'OPEN' && n.wd !== 'OPEN') jobs.push({ kind: 'wd_close', text: buildWdAnnouncement(cfg, st, false) });
                 for (const j of jobs) await tgDispatch(j);
                 if (jobs.length) toast('Info status terkirim ke channel Telegram.', 'success');
+                return jobs.length ? 'terkirim' : 'tanpa-pesan';
             } catch (err) {
                 toast('Gagal kirim ke Telegram: ' + (err.message || ''), 'error');
+                return 'gagal: ' + (err.message || '');
             }
         }
 
@@ -5702,8 +5706,16 @@
             } catch (_) {}
             return true;
         }
+        function watchDiag(patch) { // indikator "Pemantau jadwal" di menu Pengaturan Otomatis
+            let d = {}; try { d = JSON.parse(localStorage.getItem('au_watch_diag_v1')) || {}; } catch (_) {}
+            if (patch) { Object.assign(d, patch); try { localStorage.setItem('au_watch_diag_v1', JSON.stringify(d)); } catch (_) {} }
+            const el = document.getElementById('auWatchInfo'); if (!el) return;
+            const hm = t => t ? new Date(t).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false }) : '-';
+            el.textContent = 'Pemantau jadwal: cek terakhir ' + hm(d.tick) + (d.last ? ' | perubahan terakhir ' + hm(d.last.t) + ' ' + d.last.what + ' -> ' + d.last.res : ' | belum ada perubahan terdeteksi');
+        }
         async function watchScheduleChange() {
             try {
+                watchDiag({ tick: Date.now() });
                 const s = dataStore && dataStore.settings;
                 if (!s || !s.depositStatus) return;                         // data belum lengkap: jangan dibandingkan
                 const n = statusSnapshot();
@@ -5711,9 +5723,11 @@
                 if (JSON.stringify(watchSnap) === JSON.stringify(n)) return;
                 if (Date.now() < (window.__manualUntil || 0)) return;       // simpan manual sedang diproses: biar yang manual yang kirim
                 const b = watchSnap; watchSnap = n;
-                if (!watchClaim(b, n)) return;
-                await announceAfterChange(b, n);
-            } catch (_) {}
+                const what = Object.keys(n).filter(k => b[k] !== n[k]).map(k => k + ' ' + b[k] + '->' + n[k]).join(', ');
+                if (!watchClaim(b, n)) { watchDiag({ last: { t: Date.now(), what, res: 'dilewati (tab lain di browser ini sudah kirim)' } }); return; }
+                const r = await announceAfterChange(b, n);
+                watchDiag({ last: { t: Date.now(), what, res: r === 'off' ? 'TIDAK dikirim: saklar "Kirim info otomatis" OFF' : r === 'terkirim' ? 'terkirim ke Telegram' : r === 'tanpa-pesan' ? 'tidak ada pesan untuk perubahan ini' : String(r || 'selesai') } });
+            } catch (e) { try { watchDiag({ last: { t: Date.now(), what: '-', res: 'error: ' + ((e && e.message) || e) } }); } catch (_) {} }
         }
 
         // ============================================================
