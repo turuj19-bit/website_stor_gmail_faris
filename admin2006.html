@@ -5671,6 +5671,11 @@
                 const b = pre || window.__preSnap, n = now || statusSnapshot();
                 if (manual) { window.__manualUntil = 0; watchSnap = n; if (b) watchClaim(b, n); } // samakan pemantau jadwal agar perubahan manual tidak terkirim dobel
                 if (!b) return;
+                // Format Telegram untuk SEMUA perubahan open/close (manual maupun jadwal) kini dikirim oleh SERVER
+                // lewat pemicu di Database.sql blok 19.8, jadi browser tidak mengirim lagi (tidak dobel).
+                const chg = Object.keys(n).some(k => b[k] !== n[k]);
+                if (chg) toast('Status berubah, format dikirim ke channel Telegram oleh server.', 'success');
+                return chg ? 'server' : 'tanpa-pesan';
                 // selalu ambil pengaturan terbaru dari Supabase (jangan pakai salinan lama di memori);
                 // kalau server kosong/gagal, pakai salinan tersimpan di perangkat ini
                 const keep = autoCfg;
