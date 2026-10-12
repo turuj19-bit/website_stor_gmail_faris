@@ -2182,7 +2182,7 @@
                 </button>
                 <button class="nav-item" data-page="auto-settings">
                     <i class="fas fa-robot"></i>
-                    <span class="nav-label">Pengaturan Otomatis</span>
+                    <span class="nav-label">Format Storan & Penarikan</span>
                     <span class="badge-dot" id="autoDot"></span>
                 </button>
                 <button class="nav-item" data-page="emailstore">
@@ -2583,6 +2583,18 @@
                                 </div>
                             </div>
 
+                            <div class="ref-sec" style="margin-top:8px;">
+                                <h4><i class="fas fa-clock"></i> Close Otomatis Storan</h4>
+                                <div class="ref-note" style="margin-bottom:12px;">Atur jam close otomatis per jenis. Saat jam close tercapai, status berubah ke CLOSE. Open tetap dilakukan manual dan format utama tetap dipakai seperti sekarang.</div>
+                                <div class="au-grid">
+                                    <div class="form-group"><label>Fresh — Close otomatis</label><div class="mt-row"><input type="time" id="closeAuto_fresh_close" /><label class="switch"><input type="checkbox" id="closeAuto_fresh_auto" /><span class="slider"></span></label></div></div>
+                                    <div class="form-group"><label>Bekas 2FA — Close otomatis</label><div class="mt-row"><input type="time" id="closeAuto_bekas_close" /><label class="switch"><input type="checkbox" id="closeAuto_bekas_auto" /><span class="slider"></span></label></div></div>
+                                    <div class="form-group"><label>Bekas Biasa — Close otomatis</label><div class="mt-row"><input type="time" id="closeAuto_biasa_close" /><label class="switch"><input type="checkbox" id="closeAuto_biasa_auto" /><span class="slider"></span></label></div></div>
+                                    <div class="form-group"><label>Bekas Old — Close otomatis</label><div class="mt-row"><input type="time" id="closeAuto_old_close" /><label class="switch"><input type="checkbox" id="closeAuto_old_auto" /><span class="slider"></span></label></div></div>
+                                    <div class="form-group"><label>Captcha — Close otomatis</label><div class="mt-row"><input type="time" id="closeAuto_captcha_close" /><label class="switch"><input type="checkbox" id="closeAuto_captcha_auto" /><span class="slider"></span></label></div></div>
+                                </div>
+                            </div>
+
                             <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Pengaturan</button>
                         </form>
                     </div>
@@ -2594,6 +2606,11 @@
                         <div class="card-header"><h3><i class="fas fa-credit-card" style="color:var(--blue-primary);margin-right:8px;"></i> Pengaturan Penarikan</h3></div>
                         <form id="withdrawSettingsForm">
                             <div class="form-group"><label>Status Penarikan</label><select id="withdrawStatus"><option value="OPEN">OPEN — User dapat tarik</option><option value="CLOSE">CLOSE — Penarikan ditutup</option></select></div>
+                            <div class="ref-sec">
+                                <h4><i class="fas fa-clock"></i> Close Otomatis Penarikan</h4>
+                                <div class="ref-note" style="margin-bottom:12px;">Open penarikan tetap manual. Jika close otomatis aktif, sistem hanya menutup penarikan pada jam yang dipilih.</div>
+                                <div class="form-group"><label>Jam Close (WIB)</label><div class="mt-row"><input type="time" id="closeAuto_withdraw_close" /><label class="switch"><input type="checkbox" id="closeAuto_withdraw_auto" /><span class="slider"></span></label></div></div>
+                            </div>
                             <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Pengaturan</button>
                         </form>
                     </div>
@@ -2646,25 +2663,17 @@
                     </div>
                 </section>
 
-                <!-- PENGATURAN OTOMATIS -->
+                <!-- FORMAT STORAN & PENARIKAN -->
                 <section class="page-section" id="page-auto-settings">
                     <div class="card">
-                        <div class="card-header"><h3><i class="fas fa-robot" style="color:var(--blue-primary);margin-right:8px;"></i> Pengaturan Otomatis <span class="ref-status off" id="auBadge">OFF</span></h3></div>
-                        <div class="ref-sec">
-                            <h4>Channel Telegram</h4>
-                            <div class="mt-row" style="margin-bottom:12px;"><div><b>Kirim info otomatis</b><div class="ref-note" style="margin:2px 0 0;">Info terkirim saat status storan/penarikan berubah (manual atau jadwal).</div></div><label class="switch"><input type="checkbox" id="auEnabled" /><span class="slider"></span></label></div>
-                        </div>
+                        <div class="card-header"><h3><i class="fas fa-robot" style="color:var(--blue-primary);margin-right:8px;"></i> Format Storan & Penarikan</h3></div>
                         <div class="ref-note" id="auWatchInfo" style="margin:0 0 12px;"></div>
                         <div class="ref-sec"><h4>Info Umum (dipakai di format channel)</h4><div class="au-grid" id="auInfoBox"></div></div>
                         <div id="auTypesBox"></div>
                         <div class="ref-sec">
                             <h4>Penarikan</h4>
                             <div class="au-cur" id="auWdCur"></div>
-                            <div class="mt-row" style="margin-bottom:12px;"><b>Jadwal otomatis open/close</b><label class="switch"><input type="checkbox" id="au_wd_auto" /><span class="slider"></span></label></div>
-                            <div class="au-grid">
-                                <div class="form-group"><label>Jam Open (WIB)</label><input type="time" id="au_wd_open" /></div>
-                                <div class="form-group"><label>Jam Close (WIB)</label><input type="time" id="au_wd_close" /></div>
-                            </div>
+                            <div class="ref-note">Pengaturan jam close otomatis penarikan ada langsung di menu Pengaturan Penarikan.</div>
                         </div>
                         <div class="ref-sec">
                             <h4>Preview &amp; Kirim Manual</h4>
@@ -3439,7 +3448,7 @@
             'withdraw-settings': 'Pengaturan Penarikan',
             'referral-settings': 'Seting Referal',
             'maintenance': 'Maintenance',
-            'auto-settings': 'Pengaturan Otomatis',
+            'auto-settings': 'Format Storan & Penarikan',
             'emailstore': 'Storan Email',
             'leaderboard-start': 'Leaderboard',
         };
@@ -5207,6 +5216,7 @@
                 oldInfoInput.value = s.depositOldInfo || '';
             }
             renderDepositCaptchaSettings(s);
+            loadAutoForScheduleUI();
         }
 
         document.getElementById('depositSettingsForm').addEventListener('submit', async (e) => {
@@ -5237,6 +5247,7 @@
                     depositCaptchaName: document.getElementById('depositCaptchaName').value.trim() || 'Gmail Captcha',
                     depositCaptchaInfo: document.getElementById('depositCaptchaInfo').value.trim()
                 });
+                await saveCloseScheduleFromSettings();
                 depositSettingsDirtyFields.clear();
                 await refreshAfterMutation();
                 if (legacySettingsMode) toast('Pengaturan lain tersimpan, tapi pengaturan Captcha belum didukung server. Jalankan SQL update dulu.', 'info');
@@ -5254,6 +5265,7 @@
             if (!dataStore) return;
             const s = dataStore.settings || {};
             document.getElementById('withdrawStatus').value = s.withdrawStatus || 'OPEN';
+            loadAutoForScheduleUI();
         }
         document.getElementById('withdrawSettingsForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -5283,6 +5295,7 @@
                     depositCaptchaName: currentSettings.depositCaptchaName || 'Gmail Captcha',
                     depositCaptchaInfo: currentSettings.depositCaptchaInfo || ''
                 });
+                await saveCloseScheduleFromSettings();
                 await refreshAfterMutation();
                 toast('Pengaturan penarikan berhasil disimpan!', 'success');
                 announceAfterChange();
@@ -5411,16 +5424,16 @@
             { k: 'old', label: 'GMAIL BEKAS OLD', sKey: 'depositOldStatus', pKey: 'depositOldPrice' },
             { k: 'captcha', label: 'GMAIL CAPTCHA', sKey: 'depositCaptchaStatus', pKey: 'depositCaptchaPrice' }
         ];
-        const AU_INFO = [['pwFresh', 'Password Wajib Fresh'], ['pwBekas', 'Password Wajib Bekas'], ['closeUmum', 'Close Umum (WIB)'], ['payment', 'Payment'],
+        const AU_INFO = [['closeAllTitle', 'Judul Close Semua Storan'], ['pwFresh', 'Password Wajib Fresh'], ['pwBekas', 'Password Wajib Bekas'], ['closeUmum', 'Close Umum (WIB)'], ['payment', 'Payment'],
             ['wdWeb', 'Withdraw Web (WIB)'], ['link', 'Link Web'], ['wdPayment', 'Payment Penarikan'], ['rules', 'Rules'], ['testi', 'Testi Manual'], ['monitor', 'Monitor Withdraw'], ['manual', 'Stor Manual']];
         function autoDefaults() {
             const t = {};
             AU_TYPES.forEach(x => { t[x.k] = { auto: false, open: '', close: '', year: '', need: '' }; });
-            t.fresh.year = '1990 - 2000'; t.fresh.need = '10000'; t.fresh.close = '17:00';
-            t.bekas.need = '10000'; t.manual.need = '...'; t.manual.status = 'CLOSE'; t.manual.rate = 2000;
+            t.fresh.year = '1990 - 2000'; t.fresh.need = '10000'; t.fresh.close = '17:00'; t.fresh.closeTitle = 'STORAN FRESH DI TUTUP';
+            t.bekas.need = '10000'; t.bekas.closeTitle = 'STORAN 2FA DI TUTUP'; t.manual.need = '...'; t.manual.status = 'CLOSE'; t.manual.rate = 2000; t.manual.closeTitle = 'STORAN MANUAL DI TUTUP'; t.biasa.closeTitle = 'STORAN BIASA DI TUTUP'; t.old.closeTitle = 'STORAN OLD DI TUTUP'; t.captcha.closeTitle = 'STORAN CAPTCHA DI TUTUP';
             return {
-                enabled: false, autoPostOnChange: true,
-                info: { pwFresh: '', pwBekas: '', closeUmum: '22.00', payment: '24 / 48 jam', wdPayment: 'Proses paling lama 24 jam', wdWeb: '20.00 - 00.00', link: 'www.webterbaru.my.id',
+                enabled: true, autoPostOnChange: true,
+                info: { closeAllTitle: 'STORAN DI TUTUP', pwFresh: '', pwBekas: '', closeUmum: '22.00', payment: '24 / 48 jam', wdPayment: 'Proses paling lama 24 jam', wdWeb: '20.00 - 00.00', link: 'www.webterbaru.my.id',
                     rules: '@rulesgmail01', testi: '@testimanual', monitor: '@faristesti', manual: '@farishost1' },
                 types: t, withdraw: { auto: false, open: '20:00', close: '00:00' }
             };
@@ -5474,7 +5487,7 @@
         }
         function auMerge(l) {
             const d = autoDefaults(); l = l || {};
-            return Object.assign(d, l, { info: Object.assign(d.info, l.info || {}), types: Object.assign(d.types, l.types || {}), withdraw: Object.assign(d.withdraw, l.withdraw || {}) });
+            const types = {}; AU_TYPES.forEach(t => { types[t.k] = Object.assign({}, d.types[t.k] || {}, (l.types && l.types[t.k]) || {}); }); return Object.assign(d, l, { info: Object.assign(d.info, l.info || {}), types, withdraw: Object.assign(d.withdraw, l.withdraw || {}) });
         }
         function auCacheGet() { try { const c = JSON.parse(localStorage.getItem(AU_CACHE_KEY)); return c ? auMerge(c) : null; } catch (_) { return null; } }
         let autoCfg = null, autoBuilt = false;
@@ -5530,7 +5543,7 @@
         }
         // Format kecil: satu jenis storan close (tidak disematkan)
         function buildCloseItemAnnouncement(cfg, st, t) {
-            const c = cfg.types[t.k] || {}, L = ['🔴 <b>STORAN DITUTUP</b>', AU_LINE, `📧 <b>${tgEsc(t.label)}</b>`, '   ❌ CLOSE', `📆 TANGGAL : ${wibDate()}`];
+            const c = cfg.types[t.k] || {}, defaults = { fresh: 'STORAN FRESH DI TUTUP', bekas: 'STORAN 2FA DI TUTUP', manual: 'STORAN MANUAL DI TUTUP', biasa: 'STORAN BIASA DI TUTUP', old: 'STORAN OLD DI TUTUP', captcha: 'STORAN CAPTCHA DI TUTUP' }, title = c.closeTitle || defaults[t.k] || 'STORAN DI TUTUP', L = [`🔴 <b>${tgEsc(title)}</b>`, AU_LINE, `📧 <b>${tgEsc(t.label)}</b>`, '   ❌ CLOSE', `📆 TANGGAL : ${wibDate()}`];
             if (c.auto && c.open) L.push(`⏰ Open lagi : ${tHm(c.open)} WIB`);
             L.push(AU_LINE, '🙏 Storan yang masuk sebelum close tetap diproses.');
             return L.join('\n');
@@ -5538,7 +5551,8 @@
         // Format umum: semua storan sudah close (disematkan, menggantikan format utama)
         function buildCloseAllAnnouncement(cfg, st) {
             const i = cfg.info, opens = AU_TYPES.map(t => cfg.types[t.k]).filter(c => c && c.auto && c.open).map(c => c.open).sort();
-            const L = ['🔒 <b>STORAN HARI INI SUDAH DITUTUP</b> 🔒', AU_LINE, '📌 STATUS : CLOSE ❌', `📆 TANGGAL : ${wibDate()}`, AU_LINE, ''];
+            const title = i.closeAllTitle || 'STORAN DI TUTUP';
+            const L = [`🔒 <b>${tgEsc(title)}</b> 🔒`, AU_LINE, '📌 STATUS : CLOSE ❌', `📆 TANGGAL : ${wibDate()}`, AU_LINE, ''];
             AU_TYPES.forEach(t => L.push(`📧 ${tgEsc(t.label)} : ❌ CLOSE`));
             L.push('', AU_LINE, '🙏 Terima kasih sudah stor hari ini.', 'Storan yang sudah masuk tetap diproses admin.', `💳 Payment : ${tgEsc(i.payment)}`);
             if (opens.length) L.push(`⏰ Open berikutnya : ${tHm(opens[0])} WIB`);
@@ -5560,10 +5574,8 @@
                 <div class="au-cur" id="au_${t.k}_cur"></div>
                 ${t.manual ? `<div class="au-grid"><div class="form-group"><label>Status</label><select id="au_manual_status"><option value="OPEN">OPEN</option><option value="CLOSE">CLOSE</option></select></div>
                     <div class="form-group"><label>Rate (Rp / email)</label><input type="text" id="au_manual_rate" class="currency-input" /></div></div>` : ''}
-                <div class="mt-row" style="margin-bottom:12px;"><b>Jadwal otomatis open/close</b><label class="switch"><input type="checkbox" id="au_${t.k}_auto" /><span class="slider"></span></label></div>
                 <div class="au-grid">
-                    <div class="form-group"><label>Jam Open (WIB)</label><input type="time" id="au_${t.k}_open" /></div>
-                    <div class="form-group"><label>Jam Close (WIB)</label><input type="time" id="au_${t.k}_close" /></div>
+                    <div class="form-group"><label>Judul Format Close</label><input type="text" id="au_${t.k}_closeTitle" placeholder="Contoh: STORAN 2FA DI TUTUP" /></div>
                     <div class="form-group"><label>Tahun / Syarat</label><input type="text" id="au_${t.k}_year" placeholder="Contoh: 1990 - 2000" /></div>
                     <div class="form-group"><label>Need (email)</label><input type="text" id="au_${t.k}_need" placeholder="10000" /></div>
                 </div></div>`).join('');
@@ -5572,29 +5584,87 @@
             box.addEventListener('change', auPreview);
             autoBuilt = true;
         }
+        function fillCloseAutoControls(cfg) {
+            cfg = auMerge(cfg || autoDefaults());
+            const set = (id, val) => { const e = document.getElementById(id); if (e) e.value = val || ''; };
+            const chk = (id, val) => { const e = document.getElementById(id); if (e) e.checked = !!val; };
+            AU_TYPES.filter(t => !t.manual).forEach(t => {
+                const c = cfg.types[t.k] || {};
+                set(`closeAuto_${t.k}_close`, c.close);
+                chk(`closeAuto_${t.k}_auto`, c.auto);
+            });
+            set('closeAuto_withdraw_close', cfg.withdraw.close);
+            chk('closeAuto_withdraw_auto', cfg.withdraw.auto);
+        }
+        function collectCloseAutoInto(cfg) {
+            cfg = auMerge(cfg || autoDefaults());
+            const get = id => { const e = document.getElementById(id); return e ? e.value : ''; };
+            const checked = id => { const e = document.getElementById(id); return !!(e && e.checked); };
+            AU_TYPES.filter(t => !t.manual).forEach(t => {
+                if (!cfg.types[t.k]) cfg.types[t.k] = {};
+                cfg.types[t.k].auto = checked(`closeAuto_${t.k}_auto`);
+                cfg.types[t.k].close = get(`closeAuto_${t.k}_close`);
+                cfg.types[t.k].open = ''; // Open tetap manual.
+            });
+            cfg.withdraw.auto = checked('closeAuto_withdraw_auto');
+            cfg.withdraw.close = get('closeAuto_withdraw_close');
+            cfg.withdraw.open = ''; // Open tetap manual.
+            cfg.enabled = true;
+            return cfg;
+        }
+        async function loadAutoForScheduleUI() {
+            try {
+                if (!autoCfg) await auLoad();
+            } catch (_) {
+                autoCfg = auCacheGet() || autoDefaults();
+            }
+            fillCloseAutoControls(autoCfg);
+        }
+        async function saveCloseScheduleFromSettings() {
+            let cfg = autoCfg ? auMerge(autoCfg) : null;
+            if (!cfg) {
+                try { cfg = await auLoad(); } catch (_) { cfg = auCacheGet() || autoDefaults(); }
+            }
+            cfg = collectCloseAutoInto(cfg);
+            try { localStorage.setItem(AU_CACHE_KEY, JSON.stringify(cfg)); } catch (_) {}
+            await apiRequest('adminSaveAutoSettings', { settings: cfg });
+            autoCfg = cfg;
+        }
         function auFill(cfg) {
             const $ = id => document.getElementById(id);
-            $('auEnabled').checked = !!cfg.enabled;
-            AU_INFO.forEach(([k]) => { $('au_info_' + k).value = cfg.info[k] || ''; });
+            AU_INFO.forEach(([k]) => { const e = $('au_info_' + k); if (e) e.value = cfg.info[k] || ''; });
             AU_TYPES.forEach(t => {
                 const c = cfg.types[t.k] || {};
-                $(`au_${t.k}_auto`).checked = !!c.auto; $(`au_${t.k}_open`).value = c.open || ''; $(`au_${t.k}_close`).value = c.close || '';
-                $(`au_${t.k}_year`).value = c.year || ''; $(`au_${t.k}_need`).value = c.need || '';
+                const title = $(`au_${t.k}_closeTitle`); if (title) title.value = c.closeTitle || '';
+                const year = $(`au_${t.k}_year`); if (year) year.value = c.year || '';
+                const need = $(`au_${t.k}_need`); if (need) need.value = c.need || '';
             });
-            $('au_manual_status').value = cfg.types.manual.status || 'CLOSE';
-            $('au_manual_rate').value = Number(cfg.types.manual.rate || 0).toLocaleString('id-ID');
-            $('au_wd_auto').checked = !!cfg.withdraw.auto; $('au_wd_open').value = cfg.withdraw.open || ''; $('au_wd_close').value = cfg.withdraw.close || '';
+            const ms = $('au_manual_status'), mr = $('au_manual_rate');
+            if (ms) ms.value = cfg.types.manual.status || 'CLOSE';
+            if (mr) mr.value = Number(cfg.types.manual.rate || 0).toLocaleString('id-ID');
+            fillCloseAutoControls(cfg);
         }
         function auCollect() {
-            const $ = id => document.getElementById(id), cfg = autoDefaults();
-            cfg.enabled = $('auEnabled').checked;
-            AU_INFO.forEach(([k]) => { cfg.info[k] = $('au_info_' + k).value.trim(); });
+            const $ = id => document.getElementById(id); let cfg = auMerge(autoDefaults());
+            cfg.enabled = true;
+            AU_INFO.forEach(([k]) => { const e = $('au_info_' + k); if (e) cfg.info[k] = e.value.trim(); });
             AU_TYPES.forEach(t => {
-                cfg.types[t.k] = { auto: $(`au_${t.k}_auto`).checked, open: $(`au_${t.k}_open`).value, close: $(`au_${t.k}_close`).value,
-                    year: $(`au_${t.k}_year`).value.trim(), need: $(`au_${t.k}_need`).value.trim() };
+                const old = cfg.types[t.k] || {};
+                const title = $(`au_${t.k}_closeTitle`);
+                const year = $(`au_${t.k}_year`);
+                const need = $(`au_${t.k}_need`);
+                cfg.types[t.k] = {
+                    auto: old.auto, open: '',
+                    close: old.close,
+                    closeTitle: title ? title.value.trim() : (old.closeTitle || ''),
+                    year: year ? year.value.trim() : (old.year || ''),
+                    need: need ? need.value.trim() : (old.need || '')
+                };
             });
-            cfg.types.manual.status = $('au_manual_status').value; cfg.types.manual.rate = getCurrencyValue('au_manual_rate');
-            cfg.withdraw = { auto: $('au_wd_auto').checked, open: $('au_wd_open').value, close: $('au_wd_close').value };
+            const ms = $('au_manual_status'), mr = $('au_manual_rate');
+            cfg.types.manual.status = ms ? ms.value : (cfg.types.manual.status || 'CLOSE');
+            cfg.types.manual.rate = mr ? getCurrencyValue('au_manual_rate') : (cfg.types.manual.rate || 0);
+            cfg = collectCloseAutoInto(cfg);
             cfg.autoPostOnChange = true;
             return cfg;
         }
@@ -5605,7 +5675,6 @@
             const strip = h => h.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
             document.getElementById('auPrev').textContent = strip(it.build(cfg, st));
             document.getElementById('auPrevHint').textContent = it.hint;
-            const b = document.getElementById('auBadge'); b.textContent = cfg.enabled ? 'AKTIF' : 'OFF'; b.className = 'ref-status ' + (cfg.enabled ? 'on' : 'off');
             AU_TYPES.forEach(t => { if (!t.manual) document.getElementById(`au_${t.k}_cur`).textContent = 'Status sekarang (dari Pengaturan Storan): ' + auStatus(t, cfg, st); });
             document.getElementById('auWdCur').textContent = 'Status sekarang (dari Pengaturan Penarikan): ' + String(st.withdrawStatus || 'OPEN').toUpperCase();
         }
@@ -5624,8 +5693,8 @@
                     autoCfg = auCacheGet() || autoDefaults();
                     note.textContent = isMissingFunctionError(err) ? 'Supabase pengaturan otomatis belum dipasang (SQL menyusul). Pengaturan sementara tersimpan di perangkat ini.' : (err.message || 'Gagal memuat pengaturan.');
                 }
-                auFill(autoCfg);
             }
+            auFill(autoCfg || autoDefaults());
             auPreview();
             watchDiag();
         }
@@ -5651,7 +5720,7 @@
                 autoCfg = cfg;
                 document.getElementById('auLoadNote').textContent = '';
                 renderAutoSettings();
-                toast('Pengaturan otomatis berhasil disimpan!', 'success');
+                toast('Format storan & penarikan berhasil disimpan!', 'success');
             } catch (err) {
                 autoCfg = cfg;
                 if (isMissingFunctionError(err)) toast('Tersimpan di perangkat ini. Supabase menyusul setelah SQL dipasang.', 'info'); else toast(err.message || 'Gagal menyimpan.', 'error');
@@ -5665,47 +5734,31 @@
         // Setelah admin menyimpan status storan/penarikan: kirim format sesuai perubahan.
         // Penyematan (pin/unpin) diatur server berdasarkan "kind".
         async function announceAfterChange(pre, now) {
-            try {
-                // Tanpa argumen = dari simpan manual (pakai __preSnap). Dengan (sebelum, sesudah) = dari pemantau jadwal.
-                const manual = !pre;
-                const b = pre || window.__preSnap, n = now || statusSnapshot();
-                if (manual) { window.__manualUntil = 0; watchSnap = n; if (b) watchClaim(b, n); } // samakan pemantau jadwal agar perubahan manual tidak terkirim dobel
-                if (!b) return;
-                // Format Telegram untuk SEMUA perubahan open/close (manual maupun jadwal) kini dikirim oleh SERVER
-                // lewat pemicu di Database.sql blok 19.8, jadi browser tidak mengirim lagi (tidak dobel).
-                const chg = Object.keys(n).some(k => b[k] !== n[k]);
-                if (chg) toast('Status berubah, format dikirim ke channel Telegram oleh server.', 'success');
-                return chg ? 'server' : 'tanpa-pesan';
-                // selalu ambil pengaturan terbaru dari Supabase (jangan pakai salinan lama di memori);
-                // kalau server kosong/gagal, pakai salinan tersimpan di perangkat ini
-                const keep = autoCfg;
-                try {
-                    const res = await apiRequest('adminGetAutoSettings'), r = (res && res.data) || res || {};
-                    if (r.settings && Object.keys(r.settings).length) autoCfg = auMerge(r.settings);
-                    else autoCfg = auCacheGet() || keep || autoCfg;
-                } catch (_) { autoCfg = keep || auCacheGet(); }
-                if (!autoCfg || !autoCfg.enabled) {
-                    if (manual) toast('Format TIDAK dikirim ke channel: saklar "Kirim info otomatis" di Pengaturan Otomatis masih OFF (atau belum disimpan).', 'info');
-                    return 'off';
-                }
-                const cfg = autoCfg, st = dataStore.settings || {}, jobs = [], keys = ['fresh', 'bekas', 'biasa', 'old', 'captcha'];
-                const opened = keys.filter(k => b[k] !== 'OPEN' && n[k] === 'OPEN');
-                const closed = keys.filter(k => b[k] === 'OPEN' && n[k] !== 'OPEN');
-                const anyOpen = keys.some(k => n[k] === 'OPEN') || String(cfg.types.manual.status || '').toUpperCase() === 'OPEN';
-                if (opened.length) jobs.push({ kind: 'open', text: buildStorAnnouncement(cfg, st) });
-                if (closed.length) {
-                    if (!anyOpen) jobs.push({ kind: 'close_all', text: buildCloseAllAnnouncement(cfg, st) });
-                    else closed.forEach(k => jobs.push({ kind: 'close_item', type: k, text: buildCloseItemAnnouncement(cfg, st, AU_TYPES.find(t => t.k === k)) }));
-                }
-                if (b.wd !== 'OPEN' && n.wd === 'OPEN') jobs.push({ kind: 'wd_open', text: buildWdAnnouncement(cfg, st, true) });
-                if (b.wd === 'OPEN' && n.wd !== 'OPEN') jobs.push({ kind: 'wd_close', text: buildWdAnnouncement(cfg, st, false) });
-                for (const j of jobs) await tgDispatch(j);
-                if (jobs.length) toast('Info status terkirim ke channel Telegram.', 'success');
-                return jobs.length ? 'terkirim' : 'tanpa-pesan';
-            } catch (err) {
-                toast('Gagal kirim ke Telegram: ' + (err.message || ''), 'error');
-                return 'gagal: ' + (err.message || '');
+            const manual = !pre;
+            const b = pre || window.__preSnap, n = now || statusSnapshot();
+            if (manual) { window.__manualUntil = 0; watchSnap = n; if (b) watchClaim(b, n); }
+            if (!b) return 'tanpa-pesan';
+            if (!autoCfg) { try { await auLoad(); } catch (_) { autoCfg = auCacheGet() || autoDefaults(); } }
+            const cfg = auMerge(autoCfg || auCacheGet() || autoDefaults());
+            const st = dataStore.settings || {}, jobs = [];
+            const keys = ['fresh', 'bekas', 'biasa', 'old', 'captcha'];
+            const opened = keys.filter(k => b[k] !== 'OPEN' && n[k] === 'OPEN');
+            const closed = keys.filter(k => b[k] === 'OPEN' && n[k] !== 'OPEN');
+            const anyOpen = keys.some(k => n[k] === 'OPEN') || String(cfg.types.manual.status || '').toUpperCase() === 'OPEN';
+            if (opened.length) jobs.push({ kind: 'open', text: buildStorAnnouncement(cfg, st) });
+            if (closed.length) {
+                if (!anyOpen) jobs.push({ kind: 'close_all', text: buildCloseAllAnnouncement(cfg, st) });
+                else closed.forEach(k => {
+                    const type = AU_TYPES.find(t => t.k === k);
+                    if (type) jobs.push({ kind: 'close_item', type: k, text: buildCloseItemAnnouncement(cfg, st, type) });
+                });
             }
+            if (b.wd !== 'OPEN' && n.wd === 'OPEN') jobs.push({ kind: 'wd_open', text: buildWdAnnouncement(cfg, st, true) });
+            if (b.wd === 'OPEN' && n.wd !== 'OPEN') jobs.push({ kind: 'wd_close', text: buildWdAnnouncement(cfg, st, false) });
+            if (!jobs.length) return 'tanpa-pesan';
+            for (const job of jobs) await tgDispatch(job);
+            toast('Format status berhasil dikirim ke Telegram.', 'success');
+            return 'terkirim';
         }
 
         // ===== Notif Telegram saat status berubah karena JADWAL OTOMATIS =====
@@ -5721,7 +5774,7 @@
             } catch (_) {}
             return true;
         }
-        function watchDiag(patch) { // indikator "Pemantau jadwal" di menu Pengaturan Otomatis
+        function watchDiag(patch) { // indikator pemantau jadwal
             let d = {}; try { d = JSON.parse(localStorage.getItem('au_watch_diag_v1')) || {}; } catch (_) {}
             if (patch) { Object.assign(d, patch); try { localStorage.setItem('au_watch_diag_v1', JSON.stringify(d)); } catch (_) {} }
             const el = document.getElementById('auWatchInfo'); if (!el) return;
@@ -5739,12 +5792,9 @@
                 if (Date.now() < (window.__manualUntil || 0)) return;       // simpan manual sedang diproses: biar yang manual yang kirim
                 const b = watchSnap; watchSnap = n;
                 const what = Object.keys(n).filter(k => b[k] !== n[k]).map(k => k + ' ' + b[k] + '->' + n[k]).join(', ');
-                // Perubahan karena JADWAL otomatis kini dikirim ke Telegram oleh SERVER (Database.sql blok 19.8),
-                // jadi browser tidak ikut mengirim supaya tidak dobel dan tetap jalan walau halaman admin tertutup.
-                watchDiag({ last: { t: Date.now(), what, res: 'status berubah karena jadwal; format dikirim oleh server' } }); return;
                 if (!watchClaim(b, n)) { watchDiag({ last: { t: Date.now(), what, res: 'dilewati (tab lain di browser ini sudah kirim)' } }); return; }
                 const r = await announceAfterChange(b, n);
-                watchDiag({ last: { t: Date.now(), what, res: r === 'off' ? 'TIDAK dikirim: saklar "Kirim info otomatis" OFF' : r === 'terkirim' ? 'terkirim ke Telegram' : r === 'tanpa-pesan' ? 'tidak ada pesan untuk perubahan ini' : String(r || 'selesai') } });
+                watchDiag({ last: { t: Date.now(), what, res: r === 'terkirim' ? 'terkirim ke Telegram' : 'tidak ada pesan untuk perubahan ini' } });
             } catch (e) { try { watchDiag({ last: { t: Date.now(), what: '-', res: 'error: ' + ((e && e.message) || e) } }); } catch (_) {} }
         }
 
