@@ -5439,9 +5439,14 @@
             };
         }
         const AU_CACHE_KEY = 'au_cfg_cache_v1';
+        // Bersihkan sisa data format LAMA di browser ini (pemantau/pin lama sudah dipindah ke server)
+        ['au_tg_state_v1', 'au_watch_claim_v1', 'au_watch_diag_v1'].forEach(k => { try { localStorage.removeItem(k); } catch (_) {} });
         function auMerge(l) {
             const d = autoDefaults(); l = l || {};
-            const types = {}; AU_TYPES.forEach(t => { types[t.k] = Object.assign({}, d.types[t.k] || {}, (l.types && l.types[t.k]) || {}); }); return Object.assign(d, l, { info: Object.assign(d.info, l.info || {}), types, withdraw: Object.assign(d.withdraw, l.withdraw || {}) });
+            const types = {}; AU_TYPES.forEach(t => { types[t.k] = Object.assign({}, d.types[t.k] || {}, (l.types && l.types[t.k]) || {}); types[t.k].open = ''; });
+            const info = Object.assign(d.info, l.info || {}); delete info.manual;
+            const wd = Object.assign(d.withdraw, l.withdraw || {}); wd.open = '';
+            return Object.assign(d, l, { info, types, withdraw: wd });
         }
         function auCacheGet() { try { const c = JSON.parse(localStorage.getItem(AU_CACHE_KEY)); return c ? auMerge(c) : null; } catch (_) { return null; } }
         let autoCfg = null, autoBuilt = false;
