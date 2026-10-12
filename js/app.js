@@ -1942,3 +1942,76 @@ async function checkMaintenance(manual) {
 setInterval(function() { if (!document.hidden) checkMaintenance(false); }, 20000);
 document.addEventListener('visibilitychange', function() { if (!document.hidden) checkMaintenance(false); });
 window.addEventListener('load', function() { setTimeout(function() { checkMaintenance(false); }, 1500); });
+
+// ============================================================
+// CENTANG BIRU (verified) — tampilan baru, lurus sejajar dengan nama.
+// Syarat tampil tetap memakai fungsi lama (buildVerifiedBadgeHtml dari
+// core.js): kalau fungsi lama bilang user tidak terverifikasi, tetap kosong.
+// Hanya bentuk/posisi ikonnya yang diganti jadi segel biru + centang putih.
+// ============================================================
+(function() {
+  const orig = window.buildVerifiedBadgeHtml;
+  if (typeof orig !== 'function') return;
+  const SEAL = '12.00,1.80 14.23,3.69 17.10,3.17 18.08,5.92 20.83,6.90 20.31,9.77 22.20,12.00 20.31,14.23 20.83,17.10 18.08,18.08 17.10,20.83 14.23,20.31 12.00,22.20 9.77,20.31 6.90,20.83 5.92,18.08 3.17,17.10 3.69,14.23 1.80,12.00 3.69,9.77 3.17,6.90 5.92,5.92 6.90,3.17 9.77,3.69';
+  const BADGE = '<span class="vbadge" title="Akun Terverifikasi" aria-label="Akun Terverifikasi">' +
+    '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">' +
+    '<polygon points="' + SEAL + '" fill="#1D9BF0" stroke="#1D9BF0" stroke-width="1.6" stroke-linejoin="round"/>' +
+    '<path d="M7.6 12.4l3 3 5.9-6.3" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '</svg></span>';
+  window.buildVerifiedBadgeHtml = function() {
+    const html = orig.apply(this, arguments);
+    if (!html || !String(html).trim()) return html;
+    return BADGE;
+  };
+})();
+
+// ============================================================
+// TEKS POPUP SELAMAT DATANG — nama selalu mengikuti akun yang login.
+// ============================================================
+(function() {
+  const DESC = 'Terima kasih telah bergabung di <strong>STOR GMAIL FARIS</strong>. Kirim setoran Gmail dengan mudah, pantau saldo dan riwayat kapan saja, dan nikmati proses pembayaran yang transparan.';
+  let applying = false;
+
+  function applyWelcomeText() {
+    if (applying) return;
+    const t = document.getElementById('welcomeTitle');
+    const d = document.getElementById('welcomeDesc');
+    if (!t) return;
+    let user = null;
+    try { user = getCurrentUser(); } catch (_) {}
+    let name = user ? String(user.fullname || user.username || '') : '';
+    if (!name) {
+      const m = /Selamat Datang,?\s*(.+?)\s*!/i.exec(t.textContent || '');
+      name = m ? m[1] : '';
+    }
+    if (!name) return;
+    let badge = '';
+    try { badge = user ? (buildVerifiedBadgeHtml(user) || '') : ''; } catch (_) {}
+    const html = '<span class="wl-eyebrow">Selamat Datang</span><span class="wl-name">' + escapeHtml(name) + badge + '</span>';
+    applying = true;
+    try {
+      // Pakai penanda (bukan membandingkan innerHTML, karena browser menulis ulang
+      // HTML-nya) supaya tidak terjadi perulangan tak berujung.
+      const key = name + '|' + (badge ? '1' : '0');
+      if (t.dataset.wlKey !== key || !t.querySelector('.wl-eyebrow')) {
+        t.innerHTML = html;
+        t.dataset.wlKey = key;
+      }
+      if (d && d.dataset.wlSet !== '1') { d.innerHTML = DESC; d.dataset.wlSet = '1'; }
+    } finally {
+      applying = false;
+    }
+  }
+
+  function init() {
+    const toast = document.getElementById('welcomeToast');
+    const title = document.getElementById('welcomeTitle');
+    if (!toast || !title) return;
+    try {
+      new MutationObserver(applyWelcomeText).observe(toast, { attributes: true, attributeFilter: ['class'] });
+      new MutationObserver(applyWelcomeText).observe(title, { childList: true, characterData: true, subtree: true });
+    } catch (_) {}
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
