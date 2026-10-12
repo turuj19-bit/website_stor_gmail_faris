@@ -357,9 +357,23 @@ function updateUIApp() {
       const bekasLabel = settings.depositBekasStatus || 'OPEN';
       rs.innerHTML = `Fresh: <span class="${freshLabel==='OPEN'?'success':'danger'}">${freshLabel}</span> | Bekas: <span class="${bekasLabel==='OPEN'?'success':'danger'}">${bekasLabel}</span>`;
     }
+    // Status Biasa / Old / Captcha di halaman Rules (badge sama seperti Fresh & Bekas)
+    [
+      { id: 'rulesStatusBiasa', st: settings.depositBiasaStatus },
+      { id: 'rulesStatusOld', st: settings.depositOldStatus },
+      { id: 'rulesStatusCaptcha', st: settings.depositCaptchaStatus }
+    ].forEach(function(r) {
+      const el = safeGet(r.id);
+      if (!el) return;
+      const st = r.st || 'OPEN';
+      el.textContent = st;
+      el.className = 'badge-status ' + (st === 'OPEN' ? 'open' : 'close');
+    });
     const rp = safeGet('rulesStatusPenarikan');
+    // FIX: dulu className ditimpa jadi 'success'/'danger' sehingga badge Penarikan di Rules
+    // kehilangan gaya OPEN/CLOSE seperti status lainnya.
     if (rp) { rp.textContent = settings.withdrawStatus || 'OPEN';
-      rp.className = (settings.withdrawStatus === 'OPEN') ? 'success' : 'danger'; }
+      rp.className = 'badge-status ' + ((settings.withdrawStatus || 'OPEN') === 'OPEN' ? 'open' : 'close'); }
 
     // Harga
     const hargaBeranda = safeGet('berandaHarga');
@@ -459,7 +473,7 @@ function renderInbox() {
     return `
       <div class="inbox-msg" style="background:var(--bg-card-alt);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:8px;border:1px solid var(--border-subtle);transition:all 0.2s;display:flex;justify-content:space-between;align-items:center;" onclick="openMessageNotifByIndex(${idx})">
         <div>
-          <div style="font-weight:700;color:var(--text-primary);">${m.title||'Pesan'} ${privateBadge}</div>
+          <div style="font-weight:700;color:var(--text-primary);">${escapeHtml(m.title||'Pesan')} ${privateBadge}</div>
           <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">${formatTime(m.date)}</div>
         </div>
         <i class="fas fa-chevron-right" style="color:var(--text-secondary);font-size:12px;"></i>
@@ -1020,7 +1034,7 @@ function updateStorCards() {
       if (freshRateEl) freshRateEl.textContent = 'Rp ' + formatRupiah(freshPrice);
       const freshLabel = /fresh/i.test(freshName) ? freshName : (freshName + ' Fresh');
       if (freshNameEl) freshNameEl.textContent = freshLabel;
-      if (freshInfoEl) freshInfoEl.textContent = freshInfo || '';
+      if (freshInfoEl) freshInfoEl.textContent = freshInfo || '-';
     }
 
     const bekasCard = document.getElementById('storCardBekas');
@@ -1038,7 +1052,7 @@ function updateStorCards() {
       }
       if (bekasRateEl) bekasRateEl.textContent = 'Rp ' + formatRupiah(bekasPrice);
       if (bekasNameEl) bekasNameEl.textContent = bekasName;
-      if (bekasInfoEl) bekasInfoEl.textContent = bekasInfo || '';
+      if (bekasInfoEl) bekasInfoEl.textContent = bekasInfo || '-';
     }
 
     // Kartu Bekas Biasa & Bekas Old (settings dari database, lihat
@@ -1065,7 +1079,7 @@ function updateStorCards() {
       }
       if (rateEl) rateEl.textContent = 'Rp ' + formatRupiah(item.cfg.price);
       if (nameEl) nameEl.textContent = (item.prefix === 'storCardCaptcha') ? String(item.cfg.name).replace(/\bemail\b/i, 'Gmail') : item.cfg.name;
-      if (infoEl) infoEl.textContent = cleanPass(item.cfg.info);
+      if (infoEl) infoEl.textContent = getPasswordHariIni(item.cfg.info) || '-';
       if (closedMsgEl) closedMsgEl.style.display = isOpen ? 'none' : 'block';
     });
 
@@ -1359,6 +1373,9 @@ async function submitStor(type) {
   if (type === 'fresh') {
     const invalid = lines.filter(e => !e.toLowerCase().endsWith('@gmail.com'));
     if (invalid.length > 0) { showErrorModal('Gagal', 'Semua harus @gmail.com: ' + invalid.join(', ')); return; }
+    // FIX: tolak email berspasi / format rusak (sebelumnya cukup berakhiran @gmail.com)
+    const badFmtFresh = lines.filter(e => !STOR_EMAIL_RE.test(e));
+    if (badFmtFresh.length > 0) { showErrorModal('Gagal', 'Format email tidak valid (tanpa spasi, tulis satu email per baris): ' + badFmtFresh.join(', ')); return; }
     const forbidden = ['janda', 'mewing', 'imut', 'cantik', 'ganteng', 'bohay', 'icibos', 'anjing', 'kucing', 'hamster', 'babi', 'ayam'];
     const seen = new Set();
     for (const email of lines) {
@@ -1381,10 +1398,22 @@ async function submitStor(type) {
     // Kirim versi yang sudah dirapikan (spasi tunggal, tanpa spasi tak terlihat)
     lines = entries.map(function(e) { return e.v; });
   } else {
-    // Captcha: tanpa validasi khusus, cukup pastikan tidak ada baris kosong
-    if (lines.some(e => e.length < 1)) {
-      showErrorModal('Gagal', 'Ada baris kosong.');
+    // Captcha: sesuai Rules cukup alamat email saja (@gmail.com), satu per baris.
+    // FIX: dulu teks apa pun (bahkan bukan email) bisa terkirim.
+    const invalidCaptcha = lines.filter(e => !e.toLowerCase().endsWith('@gmail.com') || !STOR_EMAIL_RE.test(e));
+    if (invalidCaptcha.length > 0) {
+      showErrorModal('Gagal', 'Gmail Captcha hanya menerima alamat email @gmail.com saja, satu per baris (tanpa spasi/password): ' + invalidCaptcha.join(', '));
       return;
+    }
+  }
+
+  // FIX: cegah email dobel dalam satu setoran untuk semua jenis (Fresh sudah punya cek sendiri)
+  if (type !== 'fresh') {
+    const seenAll = new Set();
+    for (const ln of lines) {
+      const key = ln.split(' ')[0].toLowerCase();
+      if (seenAll.has(key)) { showErrorModal('Gagal', 'Duplikat: ' + ln.split(' ')[0]); return; }
+      seenAll.add(key);
     }
   }
 
