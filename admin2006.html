@@ -5457,30 +5457,45 @@
         const tgSend = (text, extra) => tgCall('sendMessage', Object.assign({ text, parse_mode: 'HTML', disable_web_page_preview: true }, extra || {}));
         // kind: open | close_item | close_all | wd_open | wd_close
         async function tgDispatch(job) {
-            const st = tgState(), today = wibKey(), unpin = id => id ? tgSilent('unpinChatMessage', { message_id: id }) : null;
-            if (job.kind === 'open') {
-                if (st.date === today && st.mainId) {
-                    try { await tgCall('editMessageText', { message_id: st.mainId, text: job.text, parse_mode: 'HTML', disable_web_page_preview: true }); return; }
-                    catch (e) { if (/not modified/i.test(e.message)) return; }
+            const st = tgState(), today = wibKey();
+            const unpin = id => id ? tgCall('unpinChatMessage', { message_id: id }).catch(() => null) : Promise.resolve(null);
+            const sendReliable = async (text, extra = {}, tries = 3) => {
+                let last;
+                for (let i = 0; i < tries; i++) {
+                    try { return await tgSend(text, extra); }
+                    catch (e) { last = e; if (i < tries - 1) await new Promise(r => setTimeout(r, 900 * (i + 1))); }
                 }
+                throw last || new Error('Gagal mengirim format Telegram.');
+            };
+            const pinReliable = async (id) => {
+                let last;
+                for (let i = 0; i < 3; i++) {
+                    try { return await tgCall('pinChatMessage', { message_id: id, disable_notification: true }); }
+                    catch (e) { last = e; if (i < 2) await new Promise(r => setTimeout(r, 700 * (i + 1))); }
+                }
+                throw last || new Error('Format terkirim tetapi gagal dipin.');
+            };
+            if (job.kind === 'open') {
+                // SETIAP OPEN wajib menjadi pesan baru. Jangan edit pesan lama agar event tidak pernah terlewat.
                 await unpin(st.closeAllId); await unpin(st.mainId);
-                const m = await tgSend(job.text);
-                await tgSilent('pinChatMessage', { message_id: m.message_id, disable_notification: true });
+                const m = await sendReliable(job.text);
+                await pinReliable(m.message_id);
                 tgSave(Object.assign(st, { date: today, mainId: m.message_id, closeAllId: null }));
             } else if (job.kind === 'close_item') {
-                await tgSend(job.text);
+                // Setiap CLOSE tipe wajib mengirim formatnya sendiri.
+                await sendReliable(job.text);
             } else if (job.kind === 'close_all') {
-                const m = await tgSend(job.text, st.mainId ? { reply_to_message_id: st.mainId, allow_sending_without_reply: true } : {});
+                const m = await sendReliable(job.text, st.mainId ? { reply_to_message_id: st.mainId, allow_sending_without_reply: true } : {});
                 await unpin(st.mainId);
-                await tgSilent('pinChatMessage', { message_id: m.message_id, disable_notification: true });
+                await pinReliable(m.message_id);
                 tgSave(Object.assign(st, { mainId: null, closeAllId: m.message_id }));
             } else if (job.kind === 'wd_open') {
                 await unpin(st.wdId);
-                const m = await tgSend(job.text);
-                await tgSilent('pinChatMessage', { message_id: m.message_id, disable_notification: true });
+                const m = await sendReliable(job.text);
+                await pinReliable(m.message_id);
                 tgSave(Object.assign(st, { wdId: m.message_id }));
             } else if (job.kind === 'wd_close') {
-                await tgSend(job.text);
+                await sendReliable(job.text);
                 await unpin(st.wdId);
                 tgSave(Object.assign(st, { wdId: null }));
             }
