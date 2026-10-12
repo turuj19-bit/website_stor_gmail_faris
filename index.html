@@ -611,6 +611,124 @@
   </style>
 
   <style>
+    /* ===== POPUP SELAMAT DATANG (desain baru) ===== */
+    #welcomeBackdrop {
+      position: fixed; inset: 0; z-index: 4990;
+      background: rgba(7,12,30,0.62);
+      -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+    #welcomeBackdrop.show { opacity: 1; visibility: visible; pointer-events: auto; }
+
+    #welcomeToast {
+      position: fixed !important; top: 50% !important; left: 50% !important;
+      right: auto !important; bottom: auto !important; margin: 0 !important; padding: 0 !important;
+      z-index: 5000 !important;
+      width: min(92vw, 380px) !important; max-width: none !important;
+      max-height: calc(var(--app-height, 100vh) - 32px);
+      overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch;
+      display: flex !important; flex-direction: column; text-align: center;
+      border-radius: 28px !important;
+      background: var(--bg-card, #fff) !important;
+      border: 1px solid rgba(28,79,209,0.22) !important;
+      box-shadow: 0 30px 80px rgba(8,16,48,0.45) !important;
+      opacity: 0 !important; visibility: hidden !important; pointer-events: none;
+      transform: translate(-50%, -46%) scale(0.92) !important;
+      transition: opacity .3s ease, transform .45s cubic-bezier(.2,.9,.25,1.15), visibility .3s ease !important;
+      animation: none !important;
+    }
+    #welcomeToast.show {
+      opacity: 1 !important; visibility: visible !important; pointer-events: auto;
+      transform: translate(-50%, -50%) scale(1) !important;
+    }
+    #welcomeToast .wl-hero {
+      position: relative; overflow: hidden; flex-shrink: 0;
+      display: flex; flex-direction: column; align-items: center; gap: 18px;
+      padding: 22px 20px 40px;
+      background: linear-gradient(135deg, #1C4FD1 0%, #2f55d4 48%, #6d28d9 100%);
+      border-radius: 0 0 50% 50% / 0 0 28px 28px;
+    }
+    #welcomeToast .wl-orb { position: absolute; border-radius: 50%; pointer-events: none; background: rgba(255,255,255,0.10); }
+    #welcomeToast .wl-orb.o1 { width: 170px; height: 170px; right: -50px; top: -60px; }
+    #welcomeToast .wl-orb.o2 { width: 120px; height: 120px; left: -40px; bottom: -50px; background: rgba(255,255,255,0.07); }
+    #welcomeToast .wl-spark {
+      position: absolute; width: 11px; height: 11px; background: #fff; opacity: .85; pointer-events: none;
+      clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+      animation: wlTwinkle 2.6s ease-in-out infinite;
+    }
+    #welcomeToast .wl-spark.s1 { left: 16%; top: 38%; }
+    #welcomeToast .wl-spark.s2 { right: 17%; top: 30%; width: 14px; height: 14px; animation-delay: .7s; }
+    #welcomeToast .wl-spark.s3 { left: 26%; bottom: 26%; width: 8px; height: 8px; animation-delay: 1.3s; }
+    #welcomeToast .wl-spark.s4 { right: 24%; bottom: 22%; width: 9px; height: 9px; animation-delay: 1.9s; }
+    #welcomeToast .wl-brand {
+      position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 7px;
+      padding: 6px 14px; border-radius: 99px;
+      font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #fff;
+      background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.28);
+    }
+    #welcomeToast .big-icon {
+      position: relative; z-index: 1; margin: 0 !important;
+      width: 88px !important; height: 88px !important; border-radius: 50% !important;
+      display: flex !important; align-items: center; justify-content: center;
+      font-size: 38px !important; color: #fff !important;
+      background: rgba(255,255,255,0.18) !important;
+      border: 1px solid rgba(255,255,255,0.38) !important;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.26), inset 0 1px 0 rgba(255,255,255,0.45) !important;
+      animation: wlFloat 3.2s ease-in-out infinite !important;
+    }
+    #welcomeToast .big-icon::before {
+      content: ''; position: absolute; inset: -10px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.40); animation: wlRing 2.4s ease-out infinite;
+    }
+    #welcomeToast .big-icon i { color: #fff !important; -webkit-text-fill-color: #fff; background: none !important; }
+
+    #welcomeToast .wl-body { padding: 22px 22px 24px; }
+    #welcomeToast .big-title {
+      margin: 0 0 10px !important; font-size: 22px !important; font-weight: 800 !important;
+      line-height: 1.28; color: var(--text-primary) !important;
+    }
+    #welcomeToast .big-desc {
+      margin: 0 0 16px !important; font-size: 14px !important; line-height: 1.65 !important;
+      color: var(--text-secondary) !important;
+    }
+    #welcomeToast .big-desc strong { color: var(--blue-bright); font-weight: 800; }
+    #welcomeToast .wl-feats { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 20px; }
+    #welcomeToast .wl-feat {
+      display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 99px;
+      font-size: 12px; font-weight: 700; color: var(--text-primary);
+      background: rgba(28,79,209,0.08); border: 1px solid rgba(28,79,209,0.20);
+    }
+    #welcomeToast .wl-feat i { color: var(--blue-bright); font-size: 12px; }
+    #welcomeToast .btn-close-big {
+      position: relative; overflow: hidden; width: 100% !important; margin: 0 !important;
+      display: inline-flex !important; align-items: center; justify-content: center; gap: 10px;
+      padding: 14px 18px !important; border: 0 !important; border-radius: 16px !important; cursor: pointer;
+      font-size: 15.5px !important; font-weight: 800 !important; color: #fff !important;
+      background: linear-gradient(135deg, var(--blue-primary, #1C4FD1), var(--blue-bright, #3A78F0)) !important;
+      box-shadow: 0 12px 26px rgba(28,79,209,0.38) !important;
+      transition: transform .15s ease;
+    }
+    #welcomeToast .btn-close-big:active { transform: scale(0.97); }
+    #welcomeToast .btn-close-big::after {
+      content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255,255,255,0.35), transparent);
+      transform: skewX(-20deg); animation: csShine 4s ease-in-out infinite; pointer-events: none;
+    }
+    @keyframes wlFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes wlRing { 0% { transform: scale(.92); opacity: .8; } 100% { transform: scale(1.35); opacity: 0; } }
+    @keyframes wlTwinkle { 0%, 100% { transform: scale(.6); opacity: .25; } 50% { transform: scale(1.15); opacity: 1; } }
+    @media (max-width: 360px) {
+      #welcomeToast .wl-body { padding: 20px 16px 20px; }
+      #welcomeToast .big-title { font-size: 20px !important; }
+      #welcomeToast .big-desc { font-size: 13px !important; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #welcomeToast .big-icon, #welcomeToast .big-icon::before, #welcomeToast .wl-spark, #welcomeToast .btn-close-big::after { animation: none !important; }
+    }
+  </style>
+
+  <style>
     /* ===== MAINTENANCE (user belum centang biru) ===== */
     html.mt-locked, html.mt-locked body { overflow: hidden !important; }
     #mtOverlay {
@@ -1163,6 +1281,9 @@ jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></
             <div id="rulesStatusInfo">
               <p><span style="font-weight:600;">Status Storan Fresh:</span> <span id="rulesStatusFresh" class="badge-status close">CLOSE</span></p>
               <p><span style="font-weight:600;">Status Storan Bekas 2FA:</span> <span id="rulesStatusBekas" class="badge-status open">OPEN</span></p>
+              <p><span style="font-weight:600;">Status Storan Bekas Biasa:</span> <span id="rulesStatusBiasa" class="badge-status open">OPEN</span></p>
+              <p><span style="font-weight:600;">Status Storan Bekas Old:</span> <span id="rulesStatusOld" class="badge-status open">OPEN</span></p>
+              <p><span style="font-weight:600;">Status Storan Gmail Captcha:</span> <span id="rulesStatusCaptcha" class="badge-status open">OPEN</span></p>
               <p><span style="font-weight:600;">Status Penarikan:</span> <span id="rulesStatusPenarikan" class="badge-status open">OPEN</span></p>
             </div>
             <!-- #rulesStatusStoran diisi untuk sinkronisasi JS, isinya sesuai foto -->
@@ -1598,11 +1719,24 @@ contoh3@gmail.com</code></li>
   </div>
 
   <!-- ===== TOAST BESAR ===== -->
-  <div class="toast-big" id="welcomeToast">
-    <div class="big-icon"><i class="fas fa-rocket"></i></div>
-    <div class="big-title" id="welcomeTitle">Selamat Datang!<i class="fas fa-champagne-glasses ei ei-gold ei-end"></i></div>
-    <div class="big-desc" id="welcomeDesc">Selamat datang di <strong>Website STOR GMAIL FARIS</strong>,<br />ayo stor sebanyak-banyaknya biar cuan ngalir terus!</div>
-    <button class="btn-close-big" onclick="closeWelcomeToast()">Oke, Siap!</button>
+  <div id="welcomeBackdrop" aria-hidden="true"></div>
+  <div class="toast-big" id="welcomeToast" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+    <div class="wl-hero">
+      <span class="wl-orb o1"></span><span class="wl-orb o2"></span>
+      <span class="wl-spark s1"></span><span class="wl-spark s2"></span><span class="wl-spark s3"></span><span class="wl-spark s4"></span>
+      <span class="wl-brand"><i class="fas fa-envelope"></i> S3L GM4IL</span>
+      <div class="big-icon"><i class="fas fa-rocket"></i></div>
+    </div>
+    <div class="wl-body">
+      <div class="big-title" id="welcomeTitle">Selamat Datang!<i class="fas fa-champagne-glasses ei ei-gold ei-end"></i></div>
+      <div class="big-desc" id="welcomeDesc">Selamat datang di <strong>Website STOR GMAIL FARIS</strong>,<br />ayo stor sebanyak-banyaknya biar cuan ngalir terus!</div>
+      <div class="wl-feats">
+        <span class="wl-feat"><i class="fas fa-paper-plane"></i>Stor Mudah</span>
+        <span class="wl-feat"><i class="fas fa-bolt"></i>Payment 24/48 Jam</span>
+        <span class="wl-feat"><i class="fas fa-headset"></i>Admin Siaga</span>
+      </div>
+      <button class="btn-close-big" onclick="closeWelcomeToast()"><span>Oke, Siap!</span><i class="fas fa-arrow-right"></i></button>
+    </div>
   </div>
 
   <!-- ===== MODALS ===== -->
@@ -1896,6 +2030,22 @@ contoh3@gmail.com</code></li>
     </div>
   </div>
   <div id="mtVipPill"><i class="fas fa-circle-check"></i><span>Maintenance aktif &middot; akses khusus akun centang biru</span></div>
+
+  <script>
+    // Backdrop popup Selamat Datang ikut tampil/hilang mengikuti kelas "show"
+    // pada #welcomeToast; tombol Esc juga menutup popup.
+    (function() {
+      var t = document.getElementById('welcomeToast');
+      var b = document.getElementById('welcomeBackdrop');
+      if (!t || !b) return;
+      function sync() { b.classList.toggle('show', t.classList.contains('show')); }
+      try { new MutationObserver(sync).observe(t, { attributes: true, attributeFilter: ['class'] }); } catch (e) {}
+      sync();
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && t.classList.contains('show') && typeof closeWelcomeToast === 'function') closeWelcomeToast();
+      });
+    })();
+  </script>
 
   <script src="js/config.js"></script>
   <script src="js/core.js"></script>
