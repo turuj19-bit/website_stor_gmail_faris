@@ -2585,7 +2585,7 @@
 
                             <div class="ref-sec" style="margin-top:8px;">
                                 <h4><i class="fas fa-clock"></i> Close Otomatis Storan</h4>
-                                <div class="ref-note" style="margin-bottom:12px;">Atur jam close otomatis per jenis. Saat jam close tercapai, status berubah ke CLOSE. Open tetap dilakukan manual dan format utama tetap dipakai seperti sekarang.</div>
+                                <div class="ref-note" style="margin-bottom:12px;">Atur jam close otomatis per jenis. Saat jam close tercapai, status berubah ke CLOSE. Open tetap dilakukan manual. Format close otomatis terkirim ke channel Telegram oleh server, walau dasbor admin tidak dibuka.</div>
                                 <div class="au-grid">
                                     <div class="form-group"><label>Fresh — Close otomatis</label><div class="mt-row"><input type="time" id="closeAuto_fresh_close" /><label class="switch"><input type="checkbox" id="closeAuto_fresh_auto" /><span class="slider"></span></label></div></div>
                                     <div class="form-group"><label>Bekas 2FA — Close otomatis</label><div class="mt-row"><input type="time" id="closeAuto_bekas_close" /><label class="switch"><input type="checkbox" id="closeAuto_bekas_auto" /><span class="slider"></span></label></div></div>
@@ -2608,7 +2608,7 @@
                             <div class="form-group"><label>Status Penarikan</label><select id="withdrawStatus"><option value="OPEN">OPEN — User dapat tarik</option><option value="CLOSE">CLOSE — Penarikan ditutup</option></select></div>
                             <div class="ref-sec">
                                 <h4><i class="fas fa-clock"></i> Close Otomatis Penarikan</h4>
-                                <div class="ref-note" style="margin-bottom:12px;">Open penarikan tetap manual. Jika close otomatis aktif, sistem hanya menutup penarikan pada jam yang dipilih.</div>
+                                <div class="ref-note" style="margin-bottom:12px;">Open penarikan tetap manual. Jika close otomatis aktif, sistem hanya menutup penarikan pada jam yang dipilih dan format close terkirim ke channel Telegram oleh server.</div>
                                 <div class="form-group"><label>Jam Close (WIB)</label><div class="mt-row"><input type="time" id="closeAuto_withdraw_close" /><label class="switch"><input type="checkbox" id="closeAuto_withdraw_auto" /><span class="slider"></span></label></div></div>
                             </div>
                             <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Pengaturan</button>
@@ -3044,7 +3044,9 @@
             adminSetMaintenance: { fn: 'panel_set_maintenance', needsToken: true, params: (d) => ({ p_enabled: !!d.enabled, p_message: d.message || '' }) },
             adminGetAutoSettings: { fn: 'panel_get_auto_settings', needsToken: true, params: () => ({}) },
             adminSaveAutoSettings: { fn: 'panel_save_auto_settings', needsToken: true, params: (d) => ({ p_settings: d.settings }) },
-            adminSendTelegram: { fn: 'panel_send_telegram', needsToken: true, params: (d) => ({ p_text: d.text, p_kind: d.kind || 'open', p_type: d.type || null }) },
+            adminSendTelegram: { fn: 'panel_send_telegram', needsToken: true, params: (d) => ({ p_id: d.id, p_settings: d.settings || null }) },
+            adminTgPreview: { fn: 'panel_tg_preview', needsToken: true, params: (d) => ({ p_id: d.id, p_settings: d.settings || null }) },
+            adminTgStatus: { fn: 'panel_tg_status', needsToken: true, params: () => ({}) },
             adminClearActivities: { fn: 'panel_clear_activities', needsToken: true, params: () => ({}) },
             adminDeleteMessages: { fn: 'panel_delete_messages', needsToken: true, params: () => ({}) }
         };
@@ -3060,7 +3062,7 @@
                 params.p_token = token;
             }
 
-            if (action === 'adminUpdateSettings') { legacySettingsMode = false; window.__preSnap = statusSnapshot(); window.__manualUntil = Date.now() + 20000; }
+            if (action === 'adminUpdateSettings') { legacySettingsMode = false; }
             let { data: json, error } = await supabase.rpc(map.fn, params);
             if (error && map.optionalKeys && isMissingFunctionError(error)) {
                 map.optionalKeys.forEach(k => { delete params[k]; });
@@ -5252,7 +5254,6 @@
                 await refreshAfterMutation();
                 if (legacySettingsMode) toast('Pengaturan lain tersimpan, tapi pengaturan Captcha belum didukung server. Jalankan SQL update dulu.', 'info');
                 else toast('Pengaturan storan berhasil disimpan!', 'success');
-                announceAfterChange();
                 legacySettingsMode = false;
                 hideLoading();
             } catch (err) {
@@ -5298,7 +5299,6 @@
                 await saveCloseScheduleFromSettings();
                 await refreshAfterMutation();
                 toast('Pengaturan penarikan berhasil disimpan!', 'success');
-                announceAfterChange();
                 legacySettingsMode = false;
                 hideLoading();
             } catch (err) {
@@ -5412,174 +5412,47 @@
         document.getElementById('mtSaveBtn').addEventListener('click', () => saveMaintenance(document.getElementById('mtToggle').checked));
 
         // ============================================================
-        //  PENGATURAN OTOMATIS + INFO CHANNEL TELEGRAM
-        //  (Supabase: panel_get_auto_settings / panel_save_auto_settings / panel_send_telegram)
-        //  Token bot disimpan di server Supabase, tidak ada di file ini.
+        //  PENGATURAN OTOMATIS + FORMAT CHANNEL TELEGRAM
+        //  Format open/close + pengiriman ke Telegram dijalankan penuh di SERVER (Supabase / Database.sql bagian 20):
+        //  panel_get_auto_settings / panel_save_auto_settings / panel_tg_preview / panel_send_telegram / panel_tg_status
+        //  Token bot TIDAK ada di file ini.
         // ============================================================
         const AU_TYPES = [
             { k: 'fresh', label: 'GMAIL FRESH', sKey: 'depositStatus', pKey: 'depositPrice' },
             { k: 'bekas', label: 'GMAIL BEKAS 2FA', sKey: 'depositBekasStatus', pKey: 'depositBekasPrice' },
-            { k: 'manual', label: 'GMAIL BEKAS MANUAL ( fast pay )', manual: true },
             { k: 'biasa', label: 'GMAIL BEKAS BIASA', sKey: 'depositBiasaStatus', pKey: 'depositBiasaPrice' },
             { k: 'old', label: 'GMAIL BEKAS OLD', sKey: 'depositOldStatus', pKey: 'depositOldPrice' },
             { k: 'captcha', label: 'GMAIL CAPTCHA', sKey: 'depositCaptchaStatus', pKey: 'depositCaptchaPrice' }
         ];
         const AU_INFO = [['closeAllTitle', 'Judul Close Semua Storan'], ['pwFresh', 'Password Wajib Fresh'], ['pwBekas', 'Password Wajib Bekas'], ['closeUmum', 'Close Umum (WIB)'], ['payment', 'Payment'],
-            ['wdWeb', 'Withdraw Web (WIB)'], ['link', 'Link Web'], ['wdPayment', 'Payment Penarikan'], ['rules', 'Rules'], ['testi', 'Testi Manual'], ['monitor', 'Monitor Withdraw'], ['manual', 'Stor Manual']];
+            ['wdWeb', 'Withdraw Web (WIB)'], ['link', 'Link Web'], ['wdPayment', 'Payment Penarikan'], ['rules', 'Rules'], ['testi', 'Testi Manual'], ['monitor', 'Monitor Withdraw']];
         function autoDefaults() {
             const t = {};
             AU_TYPES.forEach(x => { t[x.k] = { auto: false, open: '', close: '', year: '', need: '' }; });
             t.fresh.year = '1990 - 2000'; t.fresh.need = '10000'; t.fresh.close = '17:00'; t.fresh.closeTitle = 'STORAN FRESH DI TUTUP';
-            t.bekas.need = '10000'; t.bekas.closeTitle = 'STORAN 2FA DI TUTUP'; t.manual.need = '...'; t.manual.status = 'CLOSE'; t.manual.rate = 2000; t.manual.closeTitle = 'STORAN MANUAL DI TUTUP'; t.biasa.closeTitle = 'STORAN BIASA DI TUTUP'; t.old.closeTitle = 'STORAN OLD DI TUTUP'; t.captcha.closeTitle = 'STORAN CAPTCHA DI TUTUP';
+            t.bekas.need = '10000'; t.bekas.closeTitle = 'STORAN 2FA DI TUTUP'; t.biasa.closeTitle = 'STORAN BIASA DI TUTUP'; t.old.closeTitle = 'STORAN OLD DI TUTUP'; t.captcha.closeTitle = 'STORAN CAPTCHA DI TUTUP';
             return {
                 enabled: true, autoPostOnChange: true,
                 info: { closeAllTitle: 'STORAN DI TUTUP', pwFresh: '', pwBekas: '', closeUmum: '22.00', payment: '24 / 48 jam', wdPayment: 'Proses paling lama 24 jam', wdWeb: '20.00 - 00.00', link: 'www.webterbaru.my.id',
-                    rules: '@rulesgmail01', testi: '@testimanual', monitor: '@faristesti', manual: '@farishost1' },
+                    rules: '@rulesgmail01', testi: '@testimanual', monitor: '@faristesti' },
                 types: t, withdraw: { auto: false, open: '20:00', close: '00:00' }
             };
         }
-        // ===== TELEGRAM (langsung dari file admin) =====
-        const TG_BOT_TOKEN = '8851433921:AAEKRbFVULsZhPOg2WPnGuI017b9-KW0Jfk';
-        const TG_CHAT = '@teswebb'; // https://t.me/teswebb
-        const TG_STATE_KEY = 'au_tg_state_v1', AU_CACHE_KEY = 'au_cfg_cache_v1';
-        function tgState() { try { return JSON.parse(localStorage.getItem(TG_STATE_KEY)) || {}; } catch (_) { return {}; } }
-        function tgSave(st) { try { localStorage.setItem(TG_STATE_KEY, JSON.stringify(st)); } catch (_) {} }
-        async function tgCall(method, payload) {
-            const r = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/${method}`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ chat_id: TG_CHAT }, payload))
-            });
-            const j = await r.json();
-            if (!j.ok) throw new Error(j.description || 'Telegram error');
-            return j.result;
-        }
-        const tgSilent = (m, p) => tgCall(m, p).catch(() => null);
-        const wibKey = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Jakarta' });
-        const tgSend = (text, extra) => tgCall('sendMessage', Object.assign({ text, parse_mode: 'HTML', disable_web_page_preview: true }, extra || {}));
-        // kind: open | close_item | close_all | wd_open | wd_close
-        async function tgDispatch(job) {
-            const st = tgState(), today = wibKey();
-            const unpin = id => id ? tgCall('unpinChatMessage', { message_id: id }).catch(() => null) : Promise.resolve(null);
-            const sendReliable = async (text, extra = {}, tries = 3) => {
-                let last;
-                for (let i = 0; i < tries; i++) {
-                    try { return await tgSend(text, extra); }
-                    catch (e) { last = e; if (i < tries - 1) await new Promise(r => setTimeout(r, 900 * (i + 1))); }
-                }
-                throw last || new Error('Gagal mengirim format Telegram.');
-            };
-            const pinReliable = async (id) => {
-                let last;
-                for (let i = 0; i < 3; i++) {
-                    try { return await tgCall('pinChatMessage', { message_id: id, disable_notification: true }); }
-                    catch (e) { last = e; if (i < 2) await new Promise(r => setTimeout(r, 700 * (i + 1))); }
-                }
-                throw last || new Error('Format terkirim tetapi gagal dipin.');
-            };
-            if (job.kind === 'open') {
-                // SETIAP OPEN wajib menjadi pesan baru. Jangan edit pesan lama agar event tidak pernah terlewat.
-                await unpin(st.closeAllId); await unpin(st.mainId);
-                const m = await sendReliable(job.text);
-                await pinReliable(m.message_id);
-                tgSave(Object.assign(st, { date: today, mainId: m.message_id, closeAllId: null }));
-            } else if (job.kind === 'close_item') {
-                // Setiap CLOSE tipe wajib mengirim formatnya sendiri.
-                await sendReliable(job.text);
-            } else if (job.kind === 'close_all') {
-                const m = await sendReliable(job.text, st.mainId ? { reply_to_message_id: st.mainId, allow_sending_without_reply: true } : {});
-                await unpin(st.mainId);
-                await pinReliable(m.message_id);
-                tgSave(Object.assign(st, { mainId: null, closeAllId: m.message_id }));
-            } else if (job.kind === 'wd_open') {
-                await unpin(st.wdId);
-                const m = await sendReliable(job.text);
-                await pinReliable(m.message_id);
-                tgSave(Object.assign(st, { wdId: m.message_id }));
-            } else if (job.kind === 'wd_close') {
-                await sendReliable(job.text);
-                await unpin(st.wdId);
-                tgSave(Object.assign(st, { wdId: null }));
-            }
-        }
+        const AU_CACHE_KEY = 'au_cfg_cache_v1';
         function auMerge(l) {
             const d = autoDefaults(); l = l || {};
             const types = {}; AU_TYPES.forEach(t => { types[t.k] = Object.assign({}, d.types[t.k] || {}, (l.types && l.types[t.k]) || {}); }); return Object.assign(d, l, { info: Object.assign(d.info, l.info || {}), types, withdraw: Object.assign(d.withdraw, l.withdraw || {}) });
         }
         function auCacheGet() { try { const c = JSON.parse(localStorage.getItem(AU_CACHE_KEY)); return c ? auMerge(c) : null; } catch (_) { return null; } }
         let autoCfg = null, autoBuilt = false;
-        function tgEsc(v) { return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-        function wibDate() {
-            const p = new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta', day: '2-digit', month: '2-digit', year: 'numeric' }).formatToParts(new Date());
-            const g = t => p.find(x => x.type === t).value;
-            return `${g('day')} - ${g('month')} - ${g('year')}`;
-        }
-        const tHm = v => v ? String(v).replace(':', '.') : '';
-        function auStatus(t, cfg, st) { return String(t.manual ? (cfg.types.manual.status || 'CLOSE') : (st[t.sKey] || 'OPEN')).toUpperCase(); }
-        const AU_LINE = '━━━━━━━━━━━━━━━━━━';
-        function buildStorAnnouncement(cfg, st) {
-            const i = cfg.info, L = [];
-            const anyOpen = AU_TYPES.some(t => auStatus(t, cfg, st) === 'OPEN');
-            L.push('🎉 <b>INFO STORAN &amp; RATE HARI INI</b> 🎉', AU_LINE,
-                `📌 STATUS : ${anyOpen ? 'OPEN ✅' : 'CLOSE ❌'}`, `📆 TANGGAL : ${wibDate()}`, AU_LINE, '');
-            if (!anyOpen) L.push('🔒 Storan sedang ditutup. Pantau channel ini untuk info open berikutnya.', '');
-            AU_TYPES.forEach(t => {
-                const c = cfg.types[t.k] || {}, open = auStatus(t, cfg, st) === 'OPEN';
-                const rate = t.manual ? c.rate : st[t.pKey];
-                L.push(`📧 <b>${tgEsc(t.label)}</b>`, `   ${open ? '✅ OPEN' : '❌ CLOSE'}`);
-                if (rate) L.push(`   💰 Rate : Rp ${formatRupiah(rate)} / email`);
-                if (c.year) L.push(`   📅 Tahun wajib : ${tgEsc(c.year)}`);
-                if (open && c.close) L.push(`   ⏰ Close : ${tHm(c.close)} WIB`);
-                if (!open && c.auto && c.open) L.push(`   ⏰ Open lagi : ${tHm(c.open)} WIB`);
-                if (c.need) L.push(`   📦 Need : ${tgEsc(c.need)}${/^\d+$/.test(c.need) ? ' email' : ''}`);
-                L.push('');
-            });
-            L.push(AU_LINE, '🔐 <b>PASSWORD WEBSITE WAJIB</b>');
-            if (i.pwFresh) L.push(`   • Fresh : ( ${tgEsc(i.pwFresh)} )`);
-            if (i.pwBekas) L.push(`   • Bekas : ( ${tgEsc(i.pwBekas)} )`);
-            L.push(AU_LINE, '', '🌐 <b>MAU STOR?</b> Klik web di bawah 👇', tgEsc(i.link), '',
-                `📜 Rules : ${tgEsc(i.rules)}`, `💸 Testi manual : ${tgEsc(i.testi)}`, `🔔 Monitor withdraw : ${tgEsc(i.monitor)}`, `📥 Stor manual : ${tgEsc(i.manual)}`,
-                AU_LINE, `⏰ Close Umum : ${tgEsc(i.closeUmum)} WIB`, `💳 Payment : ${tgEsc(i.payment)}`, `💰 Withdraw web : ${tgEsc(i.wdWeb)} WIB`);
-            return L.join('\n');
-        }
-        // Format penarikan: open (disematkan) / close (sematan dilepas)
-        function buildWdAnnouncement(cfg, st, force) {
-            const i = cfg.info, w = cfg.withdraw;
-            const open = force === undefined ? String(st.withdrawStatus || 'OPEN').toUpperCase() === 'OPEN' : !!force;
-            const L = ['💸 <b>INFO PENARIKAN</b> 💸', AU_LINE, `📌 STATUS : ${open ? 'OPEN ✅' : 'CLOSE ❌'}`, `📆 TANGGAL : ${wibDate()}`, AU_LINE, ''];
-            if (open) {
-                L.push('✅ Penarikan saldo sedang dibuka.');
-                if (w.close) L.push(`⏰ Close : ${tHm(w.close)} WIB`);
-            } else {
-                L.push('❌ Penarikan saldo sedang ditutup.');
-                if (w.auto && w.open) L.push(`⏰ Open lagi : ${tHm(w.open)} WIB`);
-            }
-            L.push(`💰 Jam withdraw web : ${tgEsc(i.wdWeb)} WIB`, `💳 Payment : ${tgEsc(i.wdPayment)}`, AU_LINE, '',
-                `🌐 ${tgEsc(i.link)}`, `🔔 Monitor withdraw : ${tgEsc(i.monitor)}`, `💸 Testi manual : ${tgEsc(i.testi)}`);
-            return L.join('\n');
-        }
-        // Format kecil: satu jenis storan close (tidak disematkan)
-        function buildCloseItemAnnouncement(cfg, st, t) {
-            const c = cfg.types[t.k] || {}, defaults = { fresh: 'STORAN FRESH DI TUTUP', bekas: 'STORAN 2FA DI TUTUP', manual: 'STORAN MANUAL DI TUTUP', biasa: 'STORAN BIASA DI TUTUP', old: 'STORAN OLD DI TUTUP', captcha: 'STORAN CAPTCHA DI TUTUP' }, title = c.closeTitle || defaults[t.k] || 'STORAN DI TUTUP', L = [`🔴 <b>${tgEsc(title)}</b>`, AU_LINE, `📧 <b>${tgEsc(t.label)}</b>`, '   ❌ CLOSE', `📆 TANGGAL : ${wibDate()}`];
-            if (c.auto && c.open) L.push(`⏰ Open lagi : ${tHm(c.open)} WIB`);
-            L.push(AU_LINE, '🙏 Storan yang masuk sebelum close tetap diproses.');
-            return L.join('\n');
-        }
-        // Format umum: semua storan sudah close (disematkan, menggantikan format utama)
-        function buildCloseAllAnnouncement(cfg, st) {
-            const i = cfg.info, opens = AU_TYPES.map(t => cfg.types[t.k]).filter(c => c && c.auto && c.open).map(c => c.open).sort();
-            const title = i.closeAllTitle || 'STORAN DI TUTUP';
-            const L = [`🔒 <b>${tgEsc(title)}</b> 🔒`, AU_LINE, '📌 STATUS : CLOSE ❌', `📆 TANGGAL : ${wibDate()}`, AU_LINE, ''];
-            AU_TYPES.forEach(t => L.push(`📧 ${tgEsc(t.label)} : ❌ CLOSE`));
-            L.push('', AU_LINE, '🙏 Terima kasih sudah stor hari ini.', 'Storan yang sudah masuk tetap diproses admin.', `💳 Payment : ${tgEsc(i.payment)}`);
-            if (opens.length) L.push(`⏰ Open berikutnya : ${tHm(opens[0])} WIB`);
-            L.push(AU_LINE, '', `🌐 ${tgEsc(i.link)}`, `📜 Rules : ${tgEsc(i.rules)}`, `🔔 Monitor withdraw : ${tgEsc(i.monitor)}`);
-            return L.join('\n');
-        }
+        function auStatus(t, cfg, st) { return String((st && st[t.sKey]) || 'OPEN').toUpperCase(); }
+        // Daftar format untuk preview / kirim manual. Isi pesannya dibuat oleh SERVER (Database.sql bagian 20).
         const AU_PREVIEWS = [
-            { id: 'main', label: 'Storan Utama (open)', kind: 'open', hint: 'Disematkan otomatis. Sematan hari sebelumnya dilepas.', build: (c, s) => buildStorAnnouncement(c, s) },
-            ...AU_TYPES.map(t => ({ id: 'ci_' + t.k, label: 'Tutup Satuan: ' + t.label, kind: 'close_item', type: t.k, hint: 'Tidak disematkan.', build: (c, s) => buildCloseItemAnnouncement(c, s, t) })),
-            { id: 'closeall', label: 'Tutup Semua Storan', kind: 'close_all', hint: 'Disematkan, menggantikan sematan format utama.', build: (c, s) => buildCloseAllAnnouncement(c, s) },
-            { id: 'wdopen', label: 'Penarikan Open', kind: 'wd_open', hint: 'Disematkan, lepas otomatis saat penarikan close.', build: (c, s) => buildWdAnnouncement(c, s, true) },
-            { id: 'wdclose', label: 'Penarikan Close', kind: 'wd_close', hint: 'Tidak disematkan. Sematan penarikan dilepas.', build: (c, s) => buildWdAnnouncement(c, s, false) }
+            { id: 'main', label: 'Storan Utama (open)' },
+            ...AU_TYPES.map(t => ({ id: 'ci_' + t.k, label: 'Tutup Satuan: ' + t.label })),
+            { id: 'closeall', label: 'Tutup Semua Storan' },
+            { id: 'wdopen', label: 'Penarikan Open' },
+            { id: 'wdclose', label: 'Penarikan Close' }
         ];
         function auBuild() {
             const A = document.getElementById('auTypesBox');
@@ -5587,8 +5460,6 @@
                 `<div class="form-group"><label>${l}</label><input type="text" id="au_info_${k}" /></div>`).join('');
             A.innerHTML = AU_TYPES.map(t => `<div class="ref-sec"><h4>${t.label}</h4>
                 <div class="au-cur" id="au_${t.k}_cur"></div>
-                ${t.manual ? `<div class="au-grid"><div class="form-group"><label>Status</label><select id="au_manual_status"><option value="OPEN">OPEN</option><option value="CLOSE">CLOSE</option></select></div>
-                    <div class="form-group"><label>Rate (Rp / email)</label><input type="text" id="au_manual_rate" class="currency-input" /></div></div>` : ''}
                 <div class="au-grid">
                     <div class="form-group"><label>Judul Format Close</label><input type="text" id="au_${t.k}_closeTitle" placeholder="Contoh: STORAN 2FA DI TUTUP" /></div>
                     <div class="form-group"><label>Tahun / Syarat</label><input type="text" id="au_${t.k}_year" placeholder="Contoh: 1990 - 2000" /></div>
@@ -5654,9 +5525,6 @@
                 const year = $(`au_${t.k}_year`); if (year) year.value = c.year || '';
                 const need = $(`au_${t.k}_need`); if (need) need.value = c.need || '';
             });
-            const ms = $('au_manual_status'), mr = $('au_manual_rate');
-            if (ms) ms.value = cfg.types.manual.status || 'CLOSE';
-            if (mr) mr.value = Number(cfg.types.manual.rate || 0).toLocaleString('id-ID');
             fillCloseAutoControls(cfg);
         }
         function auCollect() {
@@ -5676,22 +5544,49 @@
                     need: need ? need.value.trim() : (old.need || '')
                 };
             });
-            const ms = $('au_manual_status'), mr = $('au_manual_rate');
-            cfg.types.manual.status = ms ? ms.value : (cfg.types.manual.status || 'CLOSE');
-            cfg.types.manual.rate = mr ? getCurrencyValue('au_manual_rate') : (cfg.types.manual.rate || 0);
             cfg = collectCloseAutoInto(cfg);
             cfg.autoPostOnChange = true;
             return cfg;
         }
+        const auStrip = h => String(h || '').replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+        let auPrevTimer = null, auPrevSeq = 0;
         function auPreview() {
-            const st = (dataStore && dataStore.settings) || {}, cfg = auCollect(), sel = document.getElementById('auPrevSel');
+            const st = (dataStore && dataStore.settings) || {}, sel = document.getElementById('auPrevSel');
             if (!sel.options.length) sel.innerHTML = AU_PREVIEWS.map(p => `<option value="${p.id}">${p.label}</option>`).join('');
-            const it = AU_PREVIEWS.find(x => x.id === sel.value) || AU_PREVIEWS[0];
-            const strip = h => h.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-            document.getElementById('auPrev').textContent = strip(it.build(cfg, st));
-            document.getElementById('auPrevHint').textContent = it.hint;
-            AU_TYPES.forEach(t => { if (!t.manual) document.getElementById(`au_${t.k}_cur`).textContent = 'Status sekarang (dari Pengaturan Storan): ' + auStatus(t, cfg, st); });
+            AU_TYPES.forEach(t => { const e = document.getElementById(`au_${t.k}_cur`); if (e) e.textContent = 'Status sekarang (dari Pengaturan Storan): ' + auStatus(t, null, st); });
             document.getElementById('auWdCur').textContent = 'Status sekarang (dari Pengaturan Penarikan): ' + String(st.withdrawStatus || 'OPEN').toUpperCase();
+            clearTimeout(auPrevTimer);
+            auPrevTimer = setTimeout(auPreviewFetch, 350);
+        }
+        async function auPreviewFetch() {
+            const sel = document.getElementById('auPrevSel'), box = document.getElementById('auPrev'), hint = document.getElementById('auPrevHint');
+            if (!sel || !box || !hint) return;
+            const seq = ++auPrevSeq;
+            try {
+                const res = await apiRequest('adminTgPreview', { id: sel.value || 'main', settings: auCollect() });
+                if (seq !== auPrevSeq) return;
+                const d = res.data || res || {};
+                box.textContent = auStrip(d.text);
+                hint.textContent = d.hint || '';
+            } catch (err) {
+                if (seq !== auPrevSeq) return;
+                box.textContent = isMissingFunctionError(err) ? 'Fungsi Telegram di Supabase belum dipasang. Jalankan Database.sql terbaru (bagian 20).' : (err.message || 'Gagal memuat preview.');
+                hint.textContent = '';
+            }
+        }
+        // Indikator antrean Telegram (dikirim oleh server, bukan oleh browser ini)
+        async function tgStatusRefresh() {
+            const el = document.getElementById('auWatchInfo'); if (!el) return;
+            try {
+                const res = await apiRequest('adminTgStatus');
+                const d = res.data || res || {};
+                if (!d.configured) { el.textContent = 'Telegram: token bot / channel belum diisi di Database.sql (tabel tg_config).'; return; }
+                const r = (d.recent || [])[0];
+                el.textContent = 'Telegram (dikirim dari server): ' + (d.pending ? d.pending + ' pesan dalam antrean' : 'antrean kosong')
+                    + (r ? ' | terakhir ' + r.jam + ' WIB: ' + r.kind + ' -> ' + r.status + (r.note ? ' (' + r.note + ')' : '') : ' | belum ada pesan terkirim');
+            } catch (err) {
+                el.textContent = isMissingFunctionError(err) ? 'Telegram: fungsi server belum dipasang. Jalankan Database.sql terbaru (bagian 20).' : '';
+            }
         }
         async function auLoad() {
             const res = await apiRequest('adminGetAutoSettings');
@@ -5711,18 +5606,19 @@
             }
             auFill(autoCfg || autoDefaults());
             auPreview();
-            watchDiag();
+            tgStatusRefresh();
         }
         document.getElementById('auSendBtn').addEventListener('click', async () => {
-            const cfg = auCollect(), st = dataStore.settings || {}, it = AU_PREVIEWS.find(x => x.id === document.getElementById('auPrevSel').value) || AU_PREVIEWS[0];
-            const ok = await openModal('Kirim ke Channel', `Kirim format "${it.label}" ke channel Telegram sekarang? ${it.hint}`, '', 'Kirim', 'Batal');
+            const sel = document.getElementById('auPrevSel'), it = AU_PREVIEWS.find(x => x.id === sel.value) || AU_PREVIEWS[0];
+            const ok = await openModal('Kirim ke Channel', `Kirim format "${it.label}" ke channel Telegram sekarang?`, '', 'Kirim', 'Batal');
             if (!ok) return;
             showLoading('Mengirim...');
             try {
-                await tgDispatch({ text: it.build(cfg, st), kind: it.kind, type: it.type });
-                toast('Info terkirim ke channel Telegram.', 'success');
+                await apiRequest('adminSendTelegram', { id: it.id, settings: auCollect() });
+                toast('Format masuk antrean dan dikirim ke channel Telegram.', 'success');
+                setTimeout(tgStatusRefresh, 6000);
             } catch (err) {
-                toast(err.message || 'Gagal kirim ke Telegram.', 'error');
+                toast(isMissingFunctionError(err) ? 'Fungsi Telegram di Supabase belum dipasang. Jalankan Database.sql terbaru.' : (err.message || 'Gagal kirim ke Telegram.'), 'error');
             }
             hideLoading();
         });
@@ -5742,76 +5638,6 @@
             }
             hideLoading();
         });
-        function statusSnapshot() {
-            const s = (dataStore && dataStore.settings) || {}, u = v => String(v || 'OPEN').toUpperCase();
-            return { fresh: u(s.depositStatus), bekas: u(s.depositBekasStatus), biasa: u(s.depositBiasaStatus), old: u(s.depositOldStatus), captcha: u(s.depositCaptchaStatus), wd: u(s.withdrawStatus) };
-        }
-        // Setelah admin menyimpan status storan/penarikan: kirim format sesuai perubahan.
-        // Penyematan (pin/unpin) diatur server berdasarkan "kind".
-        async function announceAfterChange(pre, now) {
-            const manual = !pre;
-            const b = pre || window.__preSnap, n = now || statusSnapshot();
-            if (manual) { window.__manualUntil = 0; watchSnap = n; if (b) watchClaim(b, n); }
-            if (!b) return 'tanpa-pesan';
-            if (!autoCfg) { try { await auLoad(); } catch (_) { autoCfg = auCacheGet() || autoDefaults(); } }
-            const cfg = auMerge(autoCfg || auCacheGet() || autoDefaults());
-            const st = dataStore.settings || {}, jobs = [];
-            const keys = ['fresh', 'bekas', 'biasa', 'old', 'captcha'];
-            const opened = keys.filter(k => b[k] !== 'OPEN' && n[k] === 'OPEN');
-            const closed = keys.filter(k => b[k] === 'OPEN' && n[k] !== 'OPEN');
-            const anyOpen = keys.some(k => n[k] === 'OPEN') || String(cfg.types.manual.status || '').toUpperCase() === 'OPEN';
-            if (opened.length) jobs.push({ kind: 'open', text: buildStorAnnouncement(cfg, st) });
-            if (closed.length) {
-                if (!anyOpen) jobs.push({ kind: 'close_all', text: buildCloseAllAnnouncement(cfg, st) });
-                else closed.forEach(k => {
-                    const type = AU_TYPES.find(t => t.k === k);
-                    if (type) jobs.push({ kind: 'close_item', type: k, text: buildCloseItemAnnouncement(cfg, st, type) });
-                });
-            }
-            if (b.wd !== 'OPEN' && n.wd === 'OPEN') jobs.push({ kind: 'wd_open', text: buildWdAnnouncement(cfg, st, true) });
-            if (b.wd === 'OPEN' && n.wd !== 'OPEN') jobs.push({ kind: 'wd_close', text: buildWdAnnouncement(cfg, st, false) });
-            if (!jobs.length) return 'tanpa-pesan';
-            for (const job of jobs) await tgDispatch(job);
-            toast('Format status berhasil dikirim ke Telegram.', 'success');
-            return 'terkirim';
-        }
-
-        // ===== Notif Telegram saat status berubah karena JADWAL OTOMATIS =====
-        // Jadwal jalan di server (pg_cron) dan hanya mengubah status. Halaman admin memantau status tiap polling
-        // lalu mengirim format yang sama seperti simpan manual. Hanya jalan selama halaman admin terbuka.
-        let watchSnap = null;
-        function watchClaim(b, n) { // true = kita yang kirim; false = tab lain di browser ini sudah mengirim perubahan yang sama
-            const sig = JSON.stringify(b) + '>' + JSON.stringify(n);
-            try {
-                const c = JSON.parse(localStorage.getItem('au_watch_claim_v1')) || {};
-                if (c.sig === sig && Date.now() - c.t < 120000) return false;
-                localStorage.setItem('au_watch_claim_v1', JSON.stringify({ sig, t: Date.now() }));
-            } catch (_) {}
-            return true;
-        }
-        function watchDiag(patch) { // indikator pemantau jadwal
-            let d = {}; try { d = JSON.parse(localStorage.getItem('au_watch_diag_v1')) || {}; } catch (_) {}
-            if (patch) { Object.assign(d, patch); try { localStorage.setItem('au_watch_diag_v1', JSON.stringify(d)); } catch (_) {} }
-            const el = document.getElementById('auWatchInfo'); if (!el) return;
-            const hm = t => t ? new Date(t).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false }) : '-';
-            el.textContent = 'Pemantau jadwal: cek terakhir ' + hm(d.tick) + (d.last ? ' | perubahan terakhir ' + hm(d.last.t) + ' ' + d.last.what + ' -> ' + d.last.res : ' | belum ada perubahan terdeteksi');
-        }
-        async function watchScheduleChange() {
-            try {
-                watchDiag({ tick: Date.now() });
-                const s = dataStore && dataStore.settings;
-                if (!s || !s.depositStatus) return;                         // data belum lengkap: jangan dibandingkan
-                const n = statusSnapshot();
-                if (!watchSnap) { watchSnap = n; return; }                  // pertama kali: hanya catat status awal
-                if (JSON.stringify(watchSnap) === JSON.stringify(n)) return;
-                if (Date.now() < (window.__manualUntil || 0)) return;       // simpan manual sedang diproses: biar yang manual yang kirim
-                const b = watchSnap; watchSnap = n;
-                const what = Object.keys(n).filter(k => b[k] !== n[k]).map(k => k + ' ' + b[k] + '->' + n[k]).join(', ');
-                if (!watchClaim(b, n)) { watchDiag({ last: { t: Date.now(), what, res: 'dilewati (tab lain di browser ini sudah kirim)' } }); return; }
-                const r = await announceAfterChange(b, n);
-                watchDiag({ last: { t: Date.now(), what, res: r === 'terkirim' ? 'terkirim ke Telegram' : 'tidak ada pesan untuk perubahan ini' } });
-            } catch (e) { try { watchDiag({ last: { t: Date.now(), what: '-', res: 'error: ' + ((e && e.message) || e) } }); } catch (_) {} }
-        }
 
         // ============================================================
         //  EMAIL STORE — SPLIT FRESH / BEKAS
@@ -6111,7 +5937,6 @@
                 showLoading('Memuat data...');
                 await loadData();
                 renderAll();
-                watchScheduleChange(); // catat status awal untuk pemantau jadwal
                 const activeNav = document.querySelector('.nav-item.active');
                 if (activeNav) {
                     const page = activeNav.dataset.page;
@@ -6124,7 +5949,6 @@
                     try {
                         await loadData();
                         if (dataChanged) renderAll();
-                        watchScheduleChange(); // kirim notif Telegram kalau status berubah karena jadwal otomatis
                     } catch (e) { /* silent */ } finally {
                         refreshInFlight = false;
                     }
