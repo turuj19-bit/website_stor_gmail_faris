@@ -1263,16 +1263,14 @@ function updateCounterBiasa() {
   const input = document.getElementById('storBiasaInput');
   const counter = document.getElementById('storBiasaCounter');
   if (!input || !counter) return;
-  const lines = input.value.trim() ? input.value.split('\n').filter(s => s.trim().length > 0) : [];
-  counter.textContent = 'Terdeteksi: ' + lines.length + ' item';
+  counter.textContent = 'Terdeteksi: ' + countStorAccounts(input.value) + ' item';
 }
 
 function updateCounterOld() {
   const input = document.getElementById('storOldInput');
   const counter = document.getElementById('storOldCounter');
   if (!input || !counter) return;
-  const lines = input.value.trim() ? input.value.split('\n').filter(s => s.trim().length > 0) : [];
-  counter.textContent = 'Terdeteksi: ' + lines.length + ' item';
+  counter.textContent = 'Terdeteksi: ' + countStorAccounts(input.value) + ' item';
 }
 
 function updateCounterCaptcha() {
@@ -1387,9 +1385,9 @@ async function submitStor(type) {
         if (local.includes(w)) { showErrorModal('Gagal', 'Kata terlarang: ' + email); return; }
       if ((local.match(/\d/g) || []).length > 2) { showErrorModal('Gagal', 'Angka >2: ' + email); return; }
     }
-  } else if (type === 'bekas' || type === 'biasa' || type === 'old') {
-    // Bekas 2FA, Bekas Biasa & Bekas Old: format WAJIB sesuai rules, kalau beda sedikit
-    // pun ditolak dan user dikasih tahu apa yang salah + cara memperbaikinya.
+  } else if (type === 'bekas') {
+    // Bekas 2FA: format WAJIB sesuai rules, kalau beda sedikit pun ditolak dan
+    // user dikasih tahu apa yang salah + cara memperbaikinya.
     const entries = text.split('\n')
       .map(function(s, i) { return { n: i + 1, v: normalizeStorLine(s) }; })
       .filter(function(e) { return e.v; });
@@ -1397,6 +1395,14 @@ async function submitStor(type) {
     if (problems.length > 0) { showStorFormatError(type, problems); return; }
     // Kirim versi yang sudah dirapikan (spasi tunggal, tanpa spasi tak terlihat)
     lines = entries.map(function(e) { return e.v; });
+  } else if (type === 'biasa' || type === 'old') {
+    // Bekas Biasa & Bekas Old: 1 akun = baris email+password lalu 5 baris kode
+    // cadangan (4+4 angka). Tiap akun dikirim ke server sebagai 1 string
+    // "email password kode1 kode2 ... kode5" supaya cara simpan di database tetap sama.
+    const hasil = parseStorBlocks(text);
+    if (hasil.problems.length > 0) { showStorFormatError(type, hasil.problems); return; }
+    if (hasil.lines.length === 0) { showErrorModal('Gagal', 'Masukkan daftar email.'); return; }
+    lines = hasil.lines;
   } else {
     // Captcha: sesuai Rules cukup alamat email saja (@gmail.com), satu per baris.
     // FIX: dulu teks apa pun (bahkan bukan email) bisa terkirim.
@@ -1503,15 +1509,16 @@ function updateCounter() {
 // ============================================================
 // VALIDASI FORMAT STORAN BEKAS 2FA & BEKAS BIASA (sesuai Rules)
 //   Bekas 2FA   : email password 2fakey   (2fakey = 8 blok x 4 karakter)
-//   Bekas Biasa : email password kode-cadangan (10 kode x 8 angka)
+//   Bekas Biasa : baris 1 = email password, lalu 5 baris kode cadangan (tiap baris 4 angka + 4 angka)
 //   Bekas Old   : sama persis dengan Bekas Biasa
 // Ubah angka di bawah kalau aturan berubah.
 // ============================================================
 const STOR_FORMAT = {
   key2faBlok: 8,        // jumlah blok 2FA key
   key2faPanjang: 4,     // panjang tiap blok 2FA key
-  kodeJumlah: 10,       // jumlah kode cadangan Google
-  kodePanjang: 8        // jumlah angka tiap kode cadangan
+  kodeJumlah: 5,        // jumlah kode cadangan (1 kode per baris)
+  kodeBlok: 2,          // tiap kode terdiri dari 2 blok angka
+  kodeBlokPanjang: 4    // tiap blok 4 angka (jadi 1 kode = "1234 5678")
 };
 const STOR_EMAIL_RE = /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)*\.[A-Za-z]{2,}$/;
 
@@ -1554,36 +1561,6 @@ function validateStorFormat(type, entries) {
           }
         });
       }
-    } else if (type === 'biasa' || type === 'old') {
-      if (tok.length >= 2 && rest.length === 0) {
-        msgs.push('Kode cadangan belum ada. Perbaiki: tambahkan ' + K.kodeJumlah + ' kode cadangan (tiap kode ' + K.kodePanjang + ' angka) di samping password.');
-      } else if (rest.length > 0) {
-        let bentukOK = true;
-        rest.forEach(function(b, i) {
-          if (msgs.length >= 4) return;
-          if (!/^\d+$/.test(b)) {
-            bentukOK = false;
-            msgs.push('Bagian kode ke-' + (i + 1) + ' ("' + b + '") bukan angka. Perbaiki: kode cadangan hanya berisi angka 0-9 (password tanpa spasi).');
-          } else if (b.length !== K.kodePanjang && b.length !== K.kodePanjang / 2) {
-            bentukOK = false;
-            msgs.push('Kode ke-' + (i + 1) + ' ("' + b + '") harus ' + K.kodePanjang + ' angka, sekarang ' + b.length + ' angka. Perbaiki: lengkapi angka yang kurang/lebih.');
-          }
-        });
-        if (bentukOK) {
-          const semuaPenuh = rest.every(function(b) { return b.length === K.kodePanjang; });
-          const semuaSetengah = rest.every(function(b) { return b.length === K.kodePanjang / 2; });
-          if (!semuaPenuh && !semuaSetengah) {
-            msgs.push('Format kode tidak konsisten. Perbaiki: tulis semua kode ' + K.kodePanjang + ' angka rapat, atau semua dipisah ' + (K.kodePanjang / 2) + '+' + (K.kodePanjang / 2) + ' angka.');
-          } else if (semuaSetengah && rest.length % 2 !== 0) {
-            msgs.push('Ada blok ' + (K.kodePanjang / 2) + ' angka yang tidak punya pasangan. Perbaiki: tiap kode terdiri dari 2 blok ' + (K.kodePanjang / 2) + ' angka.');
-          } else {
-            const jumlah = semuaPenuh ? rest.length : rest.length / 2;
-            if (jumlah !== K.kodeJumlah) {
-              msgs.push('Jumlah kode cadangan harus ' + K.kodeJumlah + ', sekarang ' + jumlah + '. Perbaiki: ' + (jumlah < K.kodeJumlah ? 'tambahkan ' + (K.kodeJumlah - jumlah) + ' kode lagi.' : 'kurangi ' + (jumlah - K.kodeJumlah) + ' kode.'));
-            }
-          }
-        }
-      }
     }
 
     if (msgs.length > 0) out.push({ n: e.n, email: email, msgs: msgs });
@@ -1591,11 +1568,76 @@ function validateStorFormat(type, entries) {
   return out;
 }
 
+// Bekas Biasa & Bekas Old: 1 akun = 1 blok baris
+//   baris 1      : email password
+//   baris 2 - 6  : 5 kode cadangan, 1 kode per baris, format "1234 5678"
+// Email berikutnya langsung lanjut di baris bawahnya (tanpa baris kosong).
+// Hasil: { lines: [satu string per akun], problems: [{ n, email, msgs }] }
+function parseStorBlocks(text) {
+  const K = STOR_FORMAT;
+  const kodeRe = new RegExp('^\\d{' + K.kodeBlokPanjang + '} \\d{' + K.kodeBlokPanjang + '}$');
+  const rows = String(text || '').split('\n')
+    .map(function(s, i) { return { n: i + 1, v: normalizeStorLine(s) }; })
+    .filter(function(r) { return r.v; });
+  const blocks = [];
+  const problems = [];
+  let cur = null;
+  rows.forEach(function(r) {
+    const first = r.v.split(' ')[0];
+    if (first.indexOf('@') !== -1) {
+      cur = { n: r.n, head: r.v, codes: [] };
+      blocks.push(cur);
+    } else if (cur) {
+      cur.codes.push(r);
+    } else {
+      problems.push({ n: r.n, email: '-', msgs: ['Baris ini ("' + r.v + '") tidak punya email di atasnya. Perbaiki: mulai dengan baris email dan password, baru kode cadangan di bawahnya.'] });
+    }
+  });
+  const lines = [];
+  blocks.forEach(function(bk) {
+    const msgs = [];
+    const tok = bk.head.split(' ');
+    const email = tok[0];
+    if (!STOR_EMAIL_RE.test(email)) {
+      msgs.push('Email "' + email + '" tidak valid. Perbaiki: tulis email lengkap, contoh nama@gmail.com.');
+    }
+    if (tok.length < 2) {
+      msgs.push('Password belum ada. Perbaiki: tulis password setelah email di baris pertama, dipisah 1 spasi.');
+    } else if (tok.length > 2) {
+      msgs.push('Baris pertama hanya boleh berisi email dan password (password tanpa spasi). Perbaiki: pindahkan kode cadangan ke baris di bawahnya, 1 kode per baris.');
+    }
+    bk.codes.forEach(function(c, i) {
+      if (msgs.length >= 5) return;
+      if (!kodeRe.test(c.v)) {
+        msgs.push('Kode ke-' + (i + 1) + ' (baris ' + c.n + ': "' + c.v + '") salah format. Perbaiki: tiap baris harus ' + K.kodeBlokPanjang + ' angka + spasi + ' + K.kodeBlokPanjang + ' angka, contoh 4162 4359.');
+      }
+    });
+    if (bk.codes.length !== K.kodeJumlah) {
+      msgs.push('Jumlah kode cadangan harus ' + K.kodeJumlah + ', sekarang ' + bk.codes.length + '. Perbaiki: ' + (bk.codes.length < K.kodeJumlah ? 'tambahkan ' + (K.kodeJumlah - bk.codes.length) + ' kode lagi.' : 'kurangi ' + (bk.codes.length - K.kodeJumlah) + ' kode.'));
+    }
+    if (msgs.length > 0) {
+      problems.push({ n: bk.n, email: email, msgs: msgs });
+    } else {
+      lines.push(bk.head + ' ' + bk.codes.map(function(c) { return c.v; }).join(' '));
+    }
+  });
+  problems.sort(function(x, y) { return x.n - y.n; });
+  return { lines: lines, problems: problems };
+}
+
+// Hitung jumlah akun (= jumlah baris email) untuk Bekas Biasa & Old
+function countStorAccounts(text) {
+  return String(text || '').split('\n').filter(function(s) {
+    const f = normalizeStorLine(s).split(' ')[0];
+    return f && f.indexOf('@') !== -1;
+  }).length;
+}
+
 function showStorFormatError(type, problems) {
   const MAX_BARIS = 5;
   const contoh = (type === 'bekas')
     ? 'email password 2fakey\nContoh: jokopurworo@gmail.com gundulmu123 2n5a dzmc 6tiz av5l uzok vwwf mtit 7kyi'
-    : 'email password kode-cadangan\nContoh: jokokendi@gmail.com joko123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567';
+    : 'baris 1 email + password, lalu 5 baris kode cadangan (4 angka + 4 angka)\nContoh:\njokokendi@gmail.com joko123\n4162 4359\n1739 3962\n1927 0875\n0785 9881\n9952 7681';
   let teks = 'Format belum sesuai rules, jadi belum bisa disetor. Perbaiki dulu:\n';
   problems.slice(0, MAX_BARIS).forEach(function(p) {
     teks += '\nBaris ' + p.n + ' (' + p.email + '):\n';
@@ -1969,7 +2011,7 @@ window.addEventListener('load', function() { setTimeout(function() { checkMainte
 // TEKS POPUP SELAMAT DATANG — nama selalu mengikuti akun yang login.
 // ============================================================
 (function() {
-  const DESC = 'Selamat datang di <strong>S3L GM4IL 06</strong>!<br>Saatnya manfaatkan email yang kamu punya untuk menghasilkan cuan. Setor Gmail dengan mudah, pantau saldo secara real-time, dan dapatkan pembayaran dengan proses yang jelas.';
+  const DESC = 'Senang bertemu denganmu di <strong>STOR GMAIL FARIS</strong>. Setor Gmail dengan mudah, pantau saldo dan riwayat kapan saja, dan nikmati pembayaran yang jelas serta transparan.';
   let applying = false;
 
   function applyWelcomeText() {
