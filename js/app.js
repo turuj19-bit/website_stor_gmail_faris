@@ -1969,7 +1969,7 @@ window.addEventListener('load', function() { setTimeout(function() { checkMainte
 // TEKS POPUP SELAMAT DATANG — nama selalu mengikuti akun yang login.
 // ============================================================
 (function() {
-  const DESC = 'Selamat datang di <strong>S3L GM4IL</strong>! Semoga hari ini lancar dan cuanmu sebanyak-banyaknya. Setor Gmail dengan mudah, pantau saldo kapan saja, dan nikmati pembayaran yang jelas serta transparan.';
+  const DESC = 'Selamat datang di <strong>S3L GM4IL 06</strong>!<br>Saatnya manfaatkan email yang kamu punya untuk menghasilkan cuan. Setor Gmail dengan mudah, pantau saldo secara real-time, dan dapatkan pembayaran dengan proses yang jelas.';
   let applying = false;
 
   function applyWelcomeText() {
