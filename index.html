@@ -711,7 +711,7 @@
     .vbadge {
       display: inline-block; width: 0.95em; height: 0.95em; margin-left: 4px;
       vertical-align: -0.2em !important; line-height: 1; flex-shrink: 0; align-self: center;
-      position: relative !important; top: -0.1em !important; transform: none !important;
+      position: static !important; top: auto !important; transform: none !important;
     }
     .vbadge svg { display: block; width: 100%; height: 100%; }
     #welcomeToast .wl-feats { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 20px; }
@@ -917,7 +917,7 @@
     <span class="bg-ic i8"><svg viewBox="0 0 64 64"><rect x="6" y="14" width="52" height="36" rx="7" fill="#1C4FD1"/><path d="M8 18 L32 36 L56 18" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
   </div>
     <div class="auth-logo">
-      <div class="brand-logo" role="img" aria-label="Logo S3L GM4IL 06">
+      <div class="brand-logo" role="img" aria-label="Logo Stor Gmail Faris">
         <span class="bl-glow"></span><span class="bl-ring"></span>
         <div class="bl-tile">
           <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
@@ -939,7 +939,7 @@
       <div class="store-text" style="display:none"></div>
     </div>
     <div class="auth-box">
-      <div class="auth-title">S3L <span class="highlight">GM4IL 06</span></div>
+      <div class="auth-title">STOR <span class="highlight">GM4IL FARIS</span></div>
       <div class="auth-sub">Silakan login atau daftar untuk melanjutkan</div>
       <div class="auth-tabs">
         <button id="tabLogin" class="active" onclick="switchAuthTab('login')">Login</button>
@@ -972,7 +972,6 @@
           <span class="gmail-mini"><i class="fas fa-envelope"></i></span>
           <span class="brand-text-sel">S3L</span>
           <span class="brand-text-gmail">GM4IL</span>
-          <span class="brand-text-num">06</span>
         </div>
         <div class="header-actions">
           <div class="user-badge" onclick="showPage('profil')">
@@ -1212,7 +1211,7 @@ jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></
             <input type="text" id="storBiasaPassword" readonly style="background:var(--bg-card-alt);cursor:default;" />
             <div class="helper">Terisi otomatis mengikuti password yang diset admin. Pastikan sudah sesuai rules.</div>
           </div>
-          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storBiasaInput" style="font-size:13px;" placeholder="jokokendi@gmail.com&#160;joko123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567"></textarea><div class="helper" id="storBiasaCounter">Terdeteksi: 0 item</div></div>
+          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storBiasaInput" style="font-size:13px;" placeholder="jokokendi@gmail.com&#160;joko123&#10;4162 4359&#10;1739 3962&#10;1927 0875&#10;0785 9881&#10;9952 7681"></textarea><div class="helper" id="storBiasaCounter">Terdeteksi: 0 item</div></div>
           <button class="btn-submit" id="storBiasaSubmitBtn" onclick="submitStor('biasa')"><span class="spinner"></span><span class="btn-text"><i class="fas fa-paper-plane"></i> Kirim Setoran Bekas Biasa</span></button>
           <div id="storBiasaClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Bekas Biasa sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
         </div>
@@ -1233,7 +1232,7 @@ jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></
             <input type="text" id="storOldPassword" readonly style="background:var(--bg-card-alt);cursor:default;" />
             <div class="helper">Terisi otomatis mengikuti password yang diset admin. Pastikan sudah sesuai rules.</div>
           </div>
-          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storOldInput" style="font-size:13px;" placeholder="gilang6538@gmail.com&#160;gilang123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567"></textarea><div class="helper" id="storOldCounter">Terdeteksi: 0 item</div></div>
+          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storOldInput" style="font-size:13px;" placeholder="gilang6538@gmail.com&#160;gilang123&#10;4162 4359&#10;1739 3962&#10;1927 0875&#10;0785 9881&#10;9952 7681"></textarea><div class="helper" id="storOldCounter">Terdeteksi: 0 item</div></div>
           <button class="btn-submit" id="storOldSubmitBtn" onclick="submitStor('old')"><span class="spinner"></span><span class="btn-text"><i class="fas fa-paper-plane"></i> Kirim Setoran Bekas Old</span></button>
           <div id="storOldClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Bekas Old sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
         </div>
@@ -1534,22 +1533,41 @@ jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></
             <hr style="border-color:var(--border-subtle);margin:12px 0;">
 
             <p style="font-weight:700;font-size:15px;"><i class="fas fa-envelope ei ei-blue"></i> MASUKKAN DATA AKUN</p>
-            <p>Silakan ketik atau copy-paste ke dalam kolom daftar email. Format Email Old sama persis dengan Bekas Biasa, memakai <strong>kode cadangan</strong> yang ditaruh di samping password.</p>
+            <p>Silakan ketik atau copy-paste ke dalam kolom daftar email. Format Email Old sama persis dengan Bekas Biasa, memakai <strong>5 kode cadangan</strong> yang ditaruh di baris bawah email dan password.</p>
             <p style="font-weight:700;font-size:15px;"><i class="fas fa-book-open ei"></i> TUTORIAL CARA KIRIM (DENGAN KODE CADANGAN)</p>
             <p><strong>Formatnya:</strong><br>
-            <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">Email Password KodeCadangan</code></p>
-            <p>Kode cadangan ditaruh di samping password. Batas spasi antara email, password dan kode cadangan. Berikan batas enter untuk email kedua dan seterusnya.</p>
+            <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;">Email Password
+KodeCadangan1
+KodeCadangan2
+KodeCadangan3
+KodeCadangan4
+KodeCadangan5</code></p>
+            <p>Baris pertama berisi email dan password (dipisah 1 spasi). Kode cadangan ditaruh di baris bawahnya, <strong>1 kode per baris</strong>. Untuk email kedua dan seterusnya, langsung lanjut di baris berikutnya tanpa baris kosong.</p>
             <ul>
-              <li><strong>Wajib 10 kode cadangan, tiap kode 8 angka.</strong> Kurang 1 angka saja atau kurang 1 kode, setoran ditolak dan muncul peringatan apa yang salah dan apa yang harus diperbaiki.</li>
-              <li>Kode boleh ditulis rapat (<code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">12345678</code>) atau dipisah 4+4 angka (<code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">1234 5678</code>), asal semua kode memakai gaya yang sama.</li>
+              <li><strong>Wajib 5 kode cadangan saja, tiap kode 8 angka ditulis 4 angka + spasi + 4 angka</strong> (contoh <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">4162 4359</code>). Kurang 1 angka saja atau kurang 1 kode, setoran ditolak dan muncul peringatan apa yang salah dan apa yang harus diperbaiki.</li>
               <li><strong><i class="fas fa-thumbtack ei ei-red"></i> Untuk Satuan:</strong><br>
-              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;word-break:break-all;">gilang6538@gmail.com gilang123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567</code></li>
+              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;word-break:break-all;">gilang6538@gmail.com gilang123
+4162 4359
+1739 3962
+1927 0875
+0785 9881
+9952 7681</code></li>
               <li style="margin-top:8px;"><strong><i class="fas fa-thumbtack ei ei-red"></i> Untuk Mode Bulk (Banyak):</strong><br>
-              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;word-break:break-all;">gilang6538@gmail.com gilang123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567
-budiman@gmail.com diman222 11112222 33334444 55556666 77778888 99990000 12121212 34343434 56565656 78787878 90909090</code></li>
+              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;word-break:break-all;">gilang6538@gmail.com gilang123
+4162 4359
+1739 3962
+1927 0875
+0785 9881
+9952 7681
+budiman@gmail.com diman222
+3306 1182
+5471 0926
+8820 3345
+1093 7764
+6658 2201</code></li>
             </ul>
             <p style="margin-top:4px;">Dan seterusnya...</p>
-            <p style="margin-top:6px;font-size:13px;color:var(--text-secondary);">Email, password, dan kode cadangan dipisah 1 spasi. Satu email per baris.</p>
+            <p style="margin-top:6px;font-size:13px;color:var(--text-secondary);">Email dan password dipisah 1 spasi di baris pertama. Satu kode cadangan per baris, 5 baris per email.</p>
 
             <p style="margin-top:12px;font-size:13px;color:var(--text-secondary);"><i class="fas fa-paper-plane ei ei-blue"></i> Terimakasih Atas Pengertiannya<br />Created By Faris<i class="fas fa-comment-dots ei ei-blue ei-end"></i></p>
           </div>
@@ -1577,22 +1595,41 @@ budiman@gmail.com diman222 11112222 33334444 55556666 77778888 99990000 12121212
             <hr style="border-color:var(--border-subtle);margin:12px 0;">
 
             <p style="font-weight:700;font-size:15px;"><i class="fas fa-envelope-open-text ei ei-blue"></i> MASUKAN DATA AKUN</p>
-            <p>Silakan ketik atau copy-paste ke dalam kolom daftar email. Karena memakai <strong>kode cadangan</strong>, tarok kode cadangan di samping password, tata letaknya sama seperti format 2FA.</p>
+            <p>Silakan ketik atau copy-paste ke dalam kolom daftar email. Karena memakai <strong>kode cadangan</strong>, tarok 5 kode cadangan di baris bawah email dan password (1 kode per baris).</p>
             <p style="font-weight:700;font-size:15px;"><i class="fas fa-book-open ei"></i> TUTORIAL CARA KIRIM (DENGAN KODE CADANGAN)</p>
             <p><strong>Formatnya:</strong><br>
-            <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">Email Password KodeCadangan</code></p>
-            <p>Kode cadangan ditaruh di samping password. Batas spasi antara email, password dan kode cadangan. Berikan batas enter untuk email kedua dan seterusnya.</p>
+            <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;">Email Password
+KodeCadangan1
+KodeCadangan2
+KodeCadangan3
+KodeCadangan4
+KodeCadangan5</code></p>
+            <p>Baris pertama berisi email dan password (dipisah 1 spasi). Kode cadangan ditaruh di baris bawahnya, <strong>1 kode per baris</strong>. Untuk email kedua dan seterusnya, langsung lanjut di baris berikutnya tanpa baris kosong.</p>
             <ul>
-              <li><strong>Wajib 10 kode cadangan, tiap kode 8 angka.</strong> Kurang 1 angka saja atau kurang 1 kode, setoran ditolak dan muncul peringatan apa yang salah dan apa yang harus diperbaiki.</li>
-              <li>Kode boleh ditulis rapat (<code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">12345678</code>) atau dipisah 4+4 angka (<code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">1234 5678</code>), asal semua kode memakai gaya yang sama.</li>
+              <li><strong>Wajib 5 kode cadangan saja, tiap kode 8 angka ditulis 4 angka + spasi + 4 angka</strong> (contoh <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">4162 4359</code>). Kurang 1 angka saja atau kurang 1 kode, setoran ditolak dan muncul peringatan apa yang salah dan apa yang harus diperbaiki.</li>
               <li><strong><i class="fas fa-thumbtack ei ei-red"></i> Untuk Satuan:</strong><br>
-              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;word-break:break-all;">jokokendi@gmail.com joko123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567</code></li>
+              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;word-break:break-all;">jokokendi@gmail.com joko123
+4162 4359
+1739 3962
+1927 0875
+0785 9881
+9952 7681</code></li>
               <li style="margin-top:8px;"><strong><i class="fas fa-thumbtack ei ei-red"></i> Untuk Mode Bulk (Banyak):</strong><br>
-              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;word-break:break-all;">jokokendi@gmail.com joko123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567
-jokokendi9875@gmail.com kendi333 11112222 33334444 55556666 77778888 99990000 12121212 34343434 56565656 78787878 90909090</code></li>
+              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;word-break:break-all;">jokokendi@gmail.com joko123
+4162 4359
+1739 3962
+1927 0875
+0785 9881
+9952 7681
+jokokendi9875@gmail.com kendi333
+3306 1182
+5471 0926
+8820 3345
+1093 7764
+6658 2201</code></li>
             </ul>
             <p style="margin-top:4px;">Dan seterusnya...</p>
-            <p style="margin-top:6px;font-size:13px;color:var(--text-secondary);">Email, password, dan kode cadangan dipisah 1 spasi. Satu email per baris.</p>
+            <p style="margin-top:6px;font-size:13px;color:var(--text-secondary);">Email dan password dipisah 1 spasi di baris pertama. Satu kode cadangan per baris, 5 baris per email.</p>
 
             <p style="margin-top:12px;font-size:13px;color:var(--text-secondary);"><i class="fas fa-paper-plane ei ei-blue"></i> Terimakasih Atas Pengertiannya<br />Created By Faris<i class="fas fa-comment-dots ei ei-blue ei-end"></i></p>
           </div>
@@ -1808,18 +1845,18 @@ contoh3@gmail.com</code></li>
     <div class="wl-hero">
       <span class="wl-orb o1"></span><span class="wl-orb o2"></span>
       <span class="wl-spark s1"></span><span class="wl-spark s2"></span><span class="wl-spark s3"></span><span class="wl-spark s4"></span>
-      <span class="wl-brand"><i class="fas fa-envelope"></i> S3L GM4IL 06</span>
+      <span class="wl-brand"><i class="fas fa-envelope"></i> S3L GM4IL</span>
       <div class="big-icon"><i class="fas fa-rocket"></i></div>
     </div>
     <div class="wl-body">
       <div class="big-title" id="welcomeTitle">Selamat Datang!<i class="fas fa-champagne-glasses ei ei-gold ei-end"></i></div>
-      <div class="big-desc" id="welcomeDesc">Selamat datang di <strong>S3L GM4IL 06</strong>!<br>Saatnya manfaatkan email yang kamu punya untuk menghasilkan cuan. Setor Gmail dengan mudah, pantau saldo secara real-time, dan dapatkan pembayaran dengan proses yang jelas.</div>
+      <div class="big-desc" id="welcomeDesc">Senang bertemu denganmu di <strong>STOR GMAIL FARIS</strong>. Setor Gmail dengan mudah, pantau saldo dan riwayat kapan saja, dan nikmati pembayaran yang jelas serta transparan.</div>
       <div class="wl-feats">
         <span class="wl-feat"><i class="fas fa-paper-plane"></i>Stor Mudah</span>
         <span class="wl-feat"><i class="fas fa-bolt"></i>Payment 24/48 Jam</span>
         <span class="wl-feat"><i class="fas fa-headset"></i>Admin Siaga</span>
       </div>
-      <button class="btn-close-big" onclick="closeWelcomeToast()"><span>Gas Cari Cuan!</span><i class="fas fa-arrow-right"></i></button>
+      <button class="btn-close-big" onclick="closeWelcomeToast()"><span>Mulai Sekarang</span><i class="fas fa-arrow-right"></i></button>
     </div>
   </div>
 
@@ -1993,7 +2030,7 @@ contoh3@gmail.com</code></li>
     </form>
   </div></div>
 
-  <div class="modal-overlay" id="modalInfo"><div class="modal"><button class="modal-close" onclick="closeModal('modalInfo')"><i class="fas fa-xmark"></i></button><div class="about-head"><span class="about-logo"><i class="fas fa-envelope"></i></span><div class="about-head-text"><div class="about-title">Tentang S3L <span>GM4IL 06</span></div><div class="about-sub">Platform untuk mengelola proses stor secara sederhana, cepat, dan terorganisir.</div></div></div><div class="about-label">Hubungi Admin</div><div class="cs-stack" style="margin-bottom:12px;"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" class="cs-card is-wa"><span class="cs-card-icon"><i class="fab fa-whatsapp"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS WhatsApp</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a><a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" class="cs-card is-tg"><span class="cs-card-icon"><i class="fab fa-telegram"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS Telegram</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a></div><div class="about-label">Informasi</div><div class="info-card is-time"><div class="ic-icon"><i class="fas fa-clock"></i></div><div class="ic-body"><div class="ic-title">Jam Operasional</div><div class="ic-desc">Senin - Jumat · 09:00 – 17:00</div></div></div><div class="info-card is-sys"><div class="ic-icon"><i class="fas fa-signal"></i></div><div class="ic-body"><div class="ic-title">Status Sistem</div><div class="ic-desc"><span class="status-online"><span class="dot"></span> ONLINE</span></div></div></div><div class="about-label">Saluran Resmi</div><div class="info-card is-wa" style="cursor:pointer;" onclick="window.open('https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran WhatsApp</div><div class="ic-desc"><a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp"></i> Gabung Saluran</a></div></div></div><div class="info-card is-tg" style="cursor:pointer;" onclick="window.open('https://t.me/farisgmail1','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran Telegram</div><div class="ic-desc"><a href="https://t.me/farisgmail1" target="_blank" rel="noopener noreferrer" style="color:#229ED9;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-telegram-plane"></i> Gabung Saluran</a></div></div></div><div class="about-foot"><i class="fas fa-shield-halved"></i> S3L GM4IL 06 v 1.1 · &copy; 2026</div></div></div>
+  <div class="modal-overlay" id="modalInfo"><div class="modal"><button class="modal-close" onclick="closeModal('modalInfo')"><i class="fas fa-xmark"></i></button><div class="about-head"><span class="about-logo"><i class="fas fa-envelope"></i></span><div class="about-head-text"><div class="about-title">Tentang STOR <span>GMAIL FARIS</span></div><div class="about-sub">Platform untuk mengelola proses stor secara sederhana, cepat, dan terorganisir.</div></div></div><div class="about-label">Hubungi Admin</div><div class="cs-stack" style="margin-bottom:12px;"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" class="cs-card is-wa"><span class="cs-card-icon"><i class="fab fa-whatsapp"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS WhatsApp</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a><a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" class="cs-card is-tg"><span class="cs-card-icon"><i class="fab fa-telegram"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS Telegram</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a></div><div class="about-label">Informasi</div><div class="info-card is-time"><div class="ic-icon"><i class="fas fa-clock"></i></div><div class="ic-body"><div class="ic-title">Jam Operasional</div><div class="ic-desc">Senin - Jumat · 09:00 – 17:00</div></div></div><div class="info-card is-sys"><div class="ic-icon"><i class="fas fa-signal"></i></div><div class="ic-body"><div class="ic-title">Status Sistem</div><div class="ic-desc"><span class="status-online"><span class="dot"></span> ONLINE</span></div></div></div><div class="about-label">Saluran Resmi</div><div class="info-card is-wa" style="cursor:pointer;" onclick="window.open('https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran WhatsApp</div><div class="ic-desc"><a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp"></i> Gabung Saluran</a></div></div></div><div class="info-card is-tg" style="cursor:pointer;" onclick="window.open('https://t.me/farisgmail1','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran Telegram</div><div class="ic-desc"><a href="https://t.me/farisgmail1" target="_blank" rel="noopener noreferrer" style="color:#229ED9;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-telegram-plane"></i> Gabung Saluran</a></div></div></div><div class="about-foot"><i class="fas fa-shield-halved"></i> STOR GMAIL FARIS v 1.1 · &copy; 2026</div></div></div>
 
   <!-- ===== MODAL TARIK SALDO (UPDATED) ===== -->
   <div class="modal-overlay" id="modalTarikSaldo">
