@@ -74,19 +74,6 @@
       } catch (e) {}
     })();
   </script>
-  <script>
-    // Balik dari halaman pilih akun Google: sembunyikan form login & tampilkan loading
-    // sampai proses masuk selesai (skrip login Google di bawah yang menyelesaikan / mengembalikan form).
-    (function() {
-      try {
-        var q = (location.search || '') + (location.hash || '');
-        if (sessionStorage.getItem('gAuthPending') === '1' && /[?&#](access_token|code)=/i.test(q) && !localStorage.getItem('storfaris_api_token')) {
-          document.documentElement.classList.add('has-session');
-          setTimeout(function() { document.documentElement.classList.remove('has-session'); }, 20000);
-        }
-      } catch (e) {}
-    })();
-  </script>
   <style>
     html.has-session #authPage { display: none !important; }
     /* Loading amplop langsung tampil dari awal saat sesi login masih ada (tidak layar kosong) */
@@ -722,8 +709,8 @@
 
     /* ===== CENTANG BIRU (verified): sejajar lurus dengan nama, ukuran ikut teks ===== */
     .vbadge {
-      display: inline-block; width: 1.05em; height: 1.05em; margin-left: 5px;
-      vertical-align: -0.17em; line-height: 1; flex-shrink: 0;
+      display: inline-block; width: 0.95em; height: 0.95em; margin-left: 4px;
+      vertical-align: -0.2em !important; line-height: 1; flex-shrink: 0; align-self: center;
       position: static !important; top: auto !important; transform: none !important;
     }
     .vbadge svg { display: block; width: 100%; height: 100%; }
@@ -872,27 +859,10 @@
     .brand-logo .bl-tile { position: relative; width: 100%; height: 100%; border-radius: 30px; overflow: hidden; box-shadow: 0 18px 38px rgba(18,63,174,.38), 0 3px 0 rgba(255,255,255,.35) inset, 0 -6px 14px rgba(8,30,100,.28) inset; }
     .brand-logo .bl-tile svg { width: 100%; height: 100%; display: block; }
     .brand-logo .bl-tile::after { content: ''; position: absolute; top: -10%; left: -70%; width: 45%; height: 130%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent); transform: skewX(-20deg); animation: csShine 4.2s ease-in-out infinite; }
-    .brand-logo .bl-g { position: absolute; right: -12px; bottom: -12px; width: 50px; height: 50px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 22px rgba(15,35,95,.32), 0 0 0 4px rgba(255,255,255,.75); }
-    .brand-logo .bl-g svg { width: 27px; height: 27px; display: block; }
     @keyframes brandFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
     @keyframes brandGlow { 0%,100% { opacity: .7; transform: scale(.95); } 50% { opacity: 1; transform: scale(1.06); } }
     @keyframes brandRing { 0% { transform: scale(.96); opacity: .8; } 100% { transform: scale(1.22); opacity: 0; } }
 
-    .btn-google {
-      width: 100%; display: flex; align-items: center; justify-content: center; gap: 11px;
-      padding: 13px 16px; border-radius: 14px; cursor: pointer; font: inherit; font-size: 15px; font-weight: 700;
-      color: #1f2937; background: #fff; border: 1px solid #dadce0;
-      box-shadow: 0 6px 16px rgba(15,35,95,.10); transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
-    }
-    .btn-google:active { transform: scale(.98); }
-    .btn-google:hover { box-shadow: 0 8px 20px rgba(15,35,95,.16); }
-    .btn-google[disabled] { opacity: .65; cursor: default; }
-    .btn-google svg { width: 20px; height: 20px; flex-shrink: 0; }
-    .btn-google .gb-spin { display: none; width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid #cbd5e1; border-top-color: #4285F4; animation: mtSpin .8s linear infinite; }
-    .btn-google.is-busy .gb-spin { display: inline-block; }
-    .btn-google.is-busy svg { display: none; }
-    .auth-or { display: flex; align-items: center; gap: 12px; margin: 16px 0 14px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary, #64748b); }
-    .auth-or::before, .auth-or::after { content: ''; flex: 1; height: 1px; background: var(--border-subtle, rgba(100,116,139,.28)); }
     @media (prefers-reduced-motion: reduce) {
       .brand-logo, .brand-logo .bl-glow, .brand-logo .bl-ring, .brand-logo .bl-tile::after, #authPage .auth-bg-art .bg-ic { animation: none !important; }
     }
@@ -952,21 +922,19 @@
         <div class="bl-tile">
           <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
             <defs>
-              <linearGradient id="blBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4C8DF6"/><stop offset=".55" stop-color="#1C4FD1"/><stop offset="1" stop-color="#0F2F8F"/></linearGradient>
-              <linearGradient id="blTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+              <linearGradient id="blBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3F7DF3"/><stop offset=".55" stop-color="#1C4FD1"/><stop offset="1" stop-color="#0F2F8F"/></linearGradient>
+              <linearGradient id="blTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".40"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
             </defs>
             <rect width="64" height="64" fill="url(#blBg)"/>
             <rect width="64" height="34" fill="url(#blTop)"/>
-            <path d="M16 12 H48 L53 25 a5.25 5.25 0 0 1 -10.5 0 a5.25 5.25 0 0 1 -10.5 0 a5.25 5.25 0 0 1 -10.5 0 a5.25 5.25 0 0 1 -10.5 0 Z" fill="#fff"/>
-            <path d="M24 12 L21.5 25 M32 12 V25 M40 12 L42.5 25" stroke="#BFD2FA" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-            <rect x="15" y="29" width="34" height="23" rx="4" fill="#fff" fill-opacity=".96"/>
-            <rect x="19" y="33" width="7" height="8" rx="1.6" fill="#1C4FD1" fill-opacity=".34"/>
-            <rect x="38" y="33" width="7" height="8" rx="1.6" fill="#1C4FD1" fill-opacity=".34"/>
-            <rect x="27.5" y="37" width="9" height="15" rx="2" fill="#1C4FD1"/>
-            <circle cx="34.4" cy="45" r="1" fill="#fff"/>
+            <rect x="14" y="26" width="36" height="27" rx="4" fill="#fff"/>
+            <path d="M16 12 H24 L21.5 25 a5.25 5.25 0 0 1 -10.5 0 Z" fill="#EA4335" stroke="#fff" stroke-width="1" stroke-linejoin="round"/>
+            <path d="M24 12 H32 L32 25 a5.25 5.25 0 0 1 -10.5 0 Z" fill="#FBBC05" stroke="#fff" stroke-width="1" stroke-linejoin="round"/>
+            <path d="M32 12 H40 L42.5 25 a5.25 5.25 0 0 1 -10.5 0 Z" fill="#34A853" stroke="#fff" stroke-width="1" stroke-linejoin="round"/>
+            <path d="M40 12 H48 L53 25 a5.25 5.25 0 0 1 -10.5 0 Z" fill="#4285F4" stroke="#fff" stroke-width="1" stroke-linejoin="round"/>
+            <g transform="translate(22 32) scale(0.4167)"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></g>
           </svg>
         </div>
-        <span class="bl-g"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
       </div>
       <div class="store-text" style="display:none"></div>
     </div>
@@ -983,8 +951,6 @@
         <div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="Masukkan password" autocomplete="current-password" required /></div>
         <button type="submit" class="btn-auth" id="loginBtn"><span class="spinner"></span><span class="btn-text"><i class="fas fa-sign-in-alt"></i> Login</span></button>
         <div class="toggle-link" onclick="openResetPassword()">Lupa kata sandi? <span>Reset di sini</span></div>
-        <div class="auth-or"><span>atau</span></div>
-        <button type="button" class="btn-google" id="googleBtn_login" onclick="startGoogleAuth('login')"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span class="gb-spin"></span><span class="gb-text">Masuk dengan Google</span></button>
       </form>
       <form id="registerForm" style="display:none;" onsubmit="handleRegister(event)">
         <div class="form-group"><label>Username</label><input type="text" id="regUsername" placeholder="Pilih username" required /></div>
@@ -994,8 +960,6 @@
         <div class="form-group" id="regReferralGroup"><label>Kode Referal <span style="font-weight:500;opacity:0.7;">(opsional)</span></label><input type="text" id="regReferral" placeholder="Masukkan kode referal jika ada" autocomplete="off" maxlength="40" oninput="this.value=this.value.replace(/[^A-Za-z0-9_-]/g,'')" /></div>
         <button type="submit" class="btn-auth" id="registerBtn"><span class="spinner"></span><span class="btn-text"><i class="fas fa-user-plus"></i> Daftar Sekarang</span></button>
         <div class="toggle-link" onclick="switchAuthTab('login')">Sudah punya akun? <span>Login</span></div>
-        <div class="auth-or"><span>atau</span></div>
-        <button type="button" class="btn-google" id="googleBtn_register" onclick="startGoogleAuth('register')"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span class="gb-spin"></span><span class="gb-text">Daftar dengan Google</span></button>
       </form>
     </div>
   </div>
@@ -1848,13 +1812,13 @@ contoh3@gmail.com</code></li>
     </div>
     <div class="wl-body">
       <div class="big-title" id="welcomeTitle">Selamat Datang!<i class="fas fa-champagne-glasses ei ei-gold ei-end"></i></div>
-      <div class="big-desc" id="welcomeDesc">Terima kasih telah bergabung di <strong>STOR GMAIL FARIS</strong>. Kirim setoran Gmail dengan mudah, pantau saldo dan riwayat kapan saja, dan nikmati proses pembayaran yang transparan.</div>
+      <div class="big-desc" id="welcomeDesc">Senang bertemu denganmu di <strong>STOR GMAIL FARIS</strong>. Setor Gmail dengan mudah, pantau saldo dan riwayat kapan saja, dan nikmati pembayaran yang jelas serta transparan.</div>
       <div class="wl-feats">
         <span class="wl-feat"><i class="fas fa-paper-plane"></i>Stor Mudah</span>
         <span class="wl-feat"><i class="fas fa-bolt"></i>Payment 24/48 Jam</span>
         <span class="wl-feat"><i class="fas fa-headset"></i>Admin Siaga</span>
       </div>
-      <button class="btn-close-big" onclick="closeWelcomeToast()"><span>Oke, Siap!</span><i class="fas fa-arrow-right"></i></button>
+      <button class="btn-close-big" onclick="closeWelcomeToast()"><span>Mulai Sekarang</span><i class="fas fa-arrow-right"></i></button>
     </div>
   </div>
 
@@ -2169,193 +2133,6 @@ contoh3@gmail.com</code></li>
   <script src="js/config.js"></script>
   <script src="js/core.js"></script>
   <script src="js/auth.js"></script>
-  <script>
-// ============================================================
-// LOGIN / DAFTAR DENGAN GOOGLE (Supabase Auth + akun Google pilihan)
-// Alur:
-//  1) User tekan tombol Google -> Supabase buka halaman Google dengan
-//     prompt "select_account" (muncul daftar akun Google di browser,
-//     termasuk "Gunakan akun lain").
-//  2) Google mengembalikan ke website ini -> sesi Supabase terbentuk.
-//  3) Fungsi SQL google_login (security definer) membaca email Google
-//     yang SUDAH TERVERIFIKASI dari JWT, lalu masuk ke akun yang email-nya
-//     sama, atau mendaftarkan akun baru otomatis (seperti daftar biasa
-//     pakai email), dan mengembalikan { token: "..." }.
-//  4) Token disimpan di kunci yang sama dengan login biasa, lalu halaman
-//     dimuat ulang sehingga init.js memulihkan sesi seperti biasa.
-// ============================================================
-(function() {
-  'use strict';
-
-  var TOKEN_KEY = 'storfaris_api_token';
-  var busy = false;
-
-  function getClient() {
-    try { return (typeof supabaseClient !== 'undefined' && supabaseClient && supabaseClient.auth) ? supabaseClient : null; }
-    catch (e) { return null; }
-  }
-
-  function notify(type, title, msg) {
-    try {
-      if (typeof showToast === 'function') { showToast(type, title, msg); return; }
-    } catch (e) {}
-    var el = document.getElementById('authError');
-    if (el) { el.textContent = msg; el.style.display = 'block'; }
-    else { try { alert(title + '\n' + msg); } catch (e) {} }
-  }
-
-  function setBusy(on) {
-    busy = !!on;
-    ['login', 'register'].forEach(function(m) {
-      var b = document.getElementById('googleBtn_' + m);
-      if (!b) return;
-      b.disabled = !!on;
-      b.classList.toggle('is-busy', !!on);
-    });
-  }
-
-  function cleanUrl(keepRef) {
-    try {
-      var url = location.pathname;
-      if (keepRef && window.__pendingRef) url += '?ref=' + encodeURIComponent(window.__pendingRef);
-      history.replaceState(history.state, '', url);
-    } catch (e) {}
-  }
-
-  function currentRef() {
-    var typed = '';
-    try {
-      var el = document.getElementById('regReferral');
-      typed = el ? String(el.value || '').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 40) : '';
-    } catch (e) {}
-    return typed || window.__pendingRef || '';
-  }
-
-  // ---------- 1) Mulai: buka pemilih akun Google ----------
-  window.startGoogleAuth = async function(mode) {
-    if (busy) return;
-    var client = getClient();
-    if (!client) {
-      notify('error', 'Google Belum Siap', 'Koneksi ke server belum siap. Muat ulang halaman lalu coba lagi.');
-      return;
-    }
-    setBusy(true);
-    try {
-      var ref = currentRef();
-      sessionStorage.setItem('gAuthPending', '1');
-      sessionStorage.setItem('gAuthMode', mode === 'register' ? 'register' : 'login');
-      var redirectTo = location.origin + location.pathname + (ref ? '?ref=' + encodeURIComponent(ref) : '');
-      var res = await client.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: redirectTo, queryParams: { prompt: 'select_account' } }
-      });
-      if (res && res.error) throw res.error;
-      // Browser akan pindah ke Google; tombol dibiarkan "loading" sampai pindah halaman.
-      setTimeout(function() { setBusy(false); }, 8000);
-    } catch (e) {
-      sessionStorage.removeItem('gAuthPending');
-      sessionStorage.removeItem('gAuthMode');
-      setBusy(false);
-      var m = (e && e.message) || '';
-      if (/provider is not enabled|unsupported provider/i.test(m)) {
-        notify('error', 'Google Belum Aktif', 'Login Google belum diaktifkan di server. Hubungi admin.');
-      } else {
-        notify('error', 'Gagal', 'Tidak bisa membuka login Google. Periksa koneksi lalu coba lagi.');
-      }
-    }
-  };
-
-  // ---------- 2) Selesaikan setelah kembali dari Google ----------
-  function finishFail(client, title, msg) {
-    try { sessionStorage.removeItem('gAuthPending'); sessionStorage.removeItem('gAuthMode'); } catch (e) {}
-    document.documentElement.classList.remove('has-session');
-    try { if (client) client.auth.signOut({ scope: 'local' }); } catch (e) {}
-    cleanUrl(true);
-    setBusy(false);
-    try { if (typeof hideLoading === 'function') hideLoading(); } catch (e) {}
-    notify('error', title, msg);
-  }
-
-  function pickToken(d) {
-    if (!d || typeof d !== 'object') return '';
-    return d.token || d.api_token || d.session_token || d.access_token ||
-      (d.session && d.session.token) || (d.data && (d.data.token || d.data.api_token)) || '';
-  }
-
-  async function handleReturn() {
-    var pending = false;
-    try { pending = sessionStorage.getItem('gAuthPending') === '1'; } catch (e) {}
-    if (!pending) return;
-
-    var q = (location.search || '') + '&' + (location.hash || '').replace(/^#/, '');
-    var client = getClient();
-
-    // User batal / Google menolak
-    if (/[?&](error|error_description)=/i.test(q)) {
-      var cancelled = /access_denied/i.test(q);
-      finishFail(client, cancelled ? 'Dibatalkan' : 'Gagal', cancelled ? 'Login dengan Google dibatalkan.' : 'Login dengan Google gagal. Silakan coba lagi.');
-      return;
-    }
-    if (!client) { finishFail(null, 'Gagal', 'Koneksi ke server belum siap. Muat ulang halaman.'); return; }
-
-    try {
-      // Ambil sesi Supabase (otomatis dibentuk dari URL; ada cadangan manual)
-      var got = await client.auth.getSession();
-      var session = got && got.data && got.data.session;
-      if (!session) {
-        var code = (/[?&]code=([^&#]+)/.exec(location.search || '') || [])[1];
-        if (code && client.auth.exchangeCodeForSession) {
-          var ex = await client.auth.exchangeCodeForSession(decodeURIComponent(code));
-          session = ex && ex.data && ex.data.session;
-        } else {
-          var hp = new URLSearchParams((location.hash || '').replace(/^#/, ''));
-          if (hp.get('access_token') && hp.get('refresh_token')) {
-            var st = await client.auth.setSession({ access_token: hp.get('access_token'), refresh_token: hp.get('refresh_token') });
-            session = st && st.data && st.data.session;
-          }
-        }
-      }
-      if (!session || !session.user) throw new Error('Sesi Google tidak ditemukan.');
-
-      var meta = session.user.user_metadata || {};
-      var name = String(meta.full_name || meta.name || '').trim();
-      var ref = window.__pendingRef || '';
-
-      var rpc = await client.rpc('google_login', { p_name: name, p_referral_code: ref });
-      if (rpc.error) {
-        var em = rpc.error.message || '';
-        if (/google_login|schema cache|could not find/i.test(em)) {
-          finishFail(client, 'Belum Siap', 'Fitur Google belum dipasang di database. Hubungi admin.');
-        } else {
-          finishFail(client, 'Gagal', em || 'Gagal masuk dengan Google.');
-        }
-        return;
-      }
-      var data = rpc.data;
-      if (typeof data === 'string') { try { data = JSON.parse(data); } catch (e) {} }
-      if (data && (data.success === false || data.error)) {
-        finishFail(client, 'Gagal', String(data.message || data.error || 'Gagal masuk dengan Google.'));
-        return;
-      }
-      var token = pickToken(data);
-      if (!token) { finishFail(client, 'Gagal', 'Server tidak mengembalikan sesi login. Hubungi admin.'); return; }
-
-      // Sukses: simpan token yang sama seperti login biasa, bersihkan sesi Google, muat ulang
-      localStorage.setItem(TOKEN_KEY, token);
-      try { sessionStorage.removeItem('gAuthPending'); sessionStorage.removeItem('gAuthMode'); } catch (e) {}
-      try { await client.auth.signOut({ scope: 'local' }); } catch (e) {}
-      window.__pendingRef = '';
-      location.replace(location.origin + location.pathname);
-    } catch (e) {
-      finishFail(client, 'Gagal', (e && e.message) || 'Gagal masuk dengan Google. Silakan coba lagi.');
-    }
-  }
-
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', handleReturn);
-  else handleReturn();
-})();
-
-  </script>
   <script src="js/app.js?v=20261019"></script>
   <script src="js/profile.js"></script>
   <script src="js/withdrawal.js"></script>
