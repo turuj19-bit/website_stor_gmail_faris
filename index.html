@@ -711,7 +711,7 @@
     .vbadge {
       display: inline-block; width: 0.95em; height: 0.95em; margin-left: 4px;
       vertical-align: -0.2em !important; line-height: 1; flex-shrink: 0; align-self: center;
-      position: static !important; top: auto !important; transform: none !important;
+      position: relative !important; top: -0.1em !important; transform: none !important;
     }
     .vbadge svg { display: block; width: 100%; height: 100%; }
     #welcomeToast .wl-feats { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 20px; }
@@ -917,7 +917,7 @@
     <span class="bg-ic i8"><svg viewBox="0 0 64 64"><rect x="6" y="14" width="52" height="36" rx="7" fill="#1C4FD1"/><path d="M8 18 L32 36 L56 18" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
   </div>
     <div class="auth-logo">
-      <div class="brand-logo" role="img" aria-label="Logo S3L GM4IL">
+      <div class="brand-logo" role="img" aria-label="Logo S3L GM4IL 06">
         <span class="bl-glow"></span><span class="bl-ring"></span>
         <div class="bl-tile">
           <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
@@ -939,7 +939,7 @@
       <div class="store-text" style="display:none"></div>
     </div>
     <div class="auth-box">
-      <div class="auth-title">S3L <span class="highlight">GM4IL</span></div>
+      <div class="auth-title">S3L <span class="highlight">GM4IL 06</span></div>
       <div class="auth-sub">Silakan login atau daftar untuk melanjutkan</div>
       <div class="auth-tabs">
         <button id="tabLogin" class="active" onclick="switchAuthTab('login')">Login</button>
@@ -972,6 +972,7 @@
           <span class="gmail-mini"><i class="fas fa-envelope"></i></span>
           <span class="brand-text-sel">S3L</span>
           <span class="brand-text-gmail">GM4IL</span>
+          <span class="brand-text-num">06</span>
         </div>
         <div class="header-actions">
           <div class="user-badge" onclick="showPage('profil')">
@@ -1807,12 +1808,12 @@ contoh3@gmail.com</code></li>
     <div class="wl-hero">
       <span class="wl-orb o1"></span><span class="wl-orb o2"></span>
       <span class="wl-spark s1"></span><span class="wl-spark s2"></span><span class="wl-spark s3"></span><span class="wl-spark s4"></span>
-      <span class="wl-brand"><i class="fas fa-envelope"></i> S3L GM4IL</span>
+      <span class="wl-brand"><i class="fas fa-envelope"></i> S3L GM4IL 06</span>
       <div class="big-icon"><i class="fas fa-rocket"></i></div>
     </div>
     <div class="wl-body">
       <div class="big-title" id="welcomeTitle">Selamat Datang!<i class="fas fa-champagne-glasses ei ei-gold ei-end"></i></div>
-      <div class="big-desc" id="welcomeDesc">Selamat datang di <strong>S3L GM4IL</strong>! Semoga hari ini lancar dan cuanmu sebanyak-banyaknya. Setor Gmail dengan mudah, pantau saldo kapan saja, dan nikmati pembayaran yang jelas serta transparan.</div>
+      <div class="big-desc" id="welcomeDesc">Selamat datang di <strong>S3L GM4IL 06</strong>!<br>Saatnya manfaatkan email yang kamu punya untuk menghasilkan cuan. Setor Gmail dengan mudah, pantau saldo secara real-time, dan dapatkan pembayaran dengan proses yang jelas.</div>
       <div class="wl-feats">
         <span class="wl-feat"><i class="fas fa-paper-plane"></i>Stor Mudah</span>
         <span class="wl-feat"><i class="fas fa-bolt"></i>Payment 24/48 Jam</span>
@@ -1992,7 +1993,7 @@ contoh3@gmail.com</code></li>
     </form>
   </div></div>
 
-  <div class="modal-overlay" id="modalInfo"><div class="modal"><button class="modal-close" onclick="closeModal('modalInfo')"><i class="fas fa-xmark"></i></button><div class="about-head"><span class="about-logo"><i class="fas fa-envelope"></i></span><div class="about-head-text"><div class="about-title">Tentang S3L <span>GM4IL</span></div><div class="about-sub">Platform untuk mengelola proses stor secara sederhana, cepat, dan terorganisir.</div></div></div><div class="about-label">Hubungi Admin</div><div class="cs-stack" style="margin-bottom:12px;"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" class="cs-card is-wa"><span class="cs-card-icon"><i class="fab fa-whatsapp"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS WhatsApp</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a><a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" class="cs-card is-tg"><span class="cs-card-icon"><i class="fab fa-telegram"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS Telegram</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a></div><div class="about-label">Informasi</div><div class="info-card is-time"><div class="ic-icon"><i class="fas fa-clock"></i></div><div class="ic-body"><div class="ic-title">Jam Operasional</div><div class="ic-desc">Senin - Jumat · 09:00 – 17:00</div></div></div><div class="info-card is-sys"><div class="ic-icon"><i class="fas fa-signal"></i></div><div class="ic-body"><div class="ic-title">Status Sistem</div><div class="ic-desc"><span class="status-online"><span class="dot"></span> ONLINE</span></div></div></div><div class="about-label">Saluran Resmi</div><div class="info-card is-wa" style="cursor:pointer;" onclick="window.open('https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran WhatsApp</div><div class="ic-desc"><a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp"></i> Gabung Saluran</a></div></div></div><div class="info-card is-tg" style="cursor:pointer;" onclick="window.open('https://t.me/farisgmail1','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran Telegram</div><div class="ic-desc"><a href="https://t.me/farisgmail1" target="_blank" rel="noopener noreferrer" style="color:#229ED9;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-telegram-plane"></i> Gabung Saluran</a></div></div></div><div class="about-foot"><i class="fas fa-shield-halved"></i> S3L GM4IL v 1.1 · &copy; 2026</div></div></div>
+  <div class="modal-overlay" id="modalInfo"><div class="modal"><button class="modal-close" onclick="closeModal('modalInfo')"><i class="fas fa-xmark"></i></button><div class="about-head"><span class="about-logo"><i class="fas fa-envelope"></i></span><div class="about-head-text"><div class="about-title">Tentang S3L <span>GM4IL 06</span></div><div class="about-sub">Platform untuk mengelola proses stor secara sederhana, cepat, dan terorganisir.</div></div></div><div class="about-label">Hubungi Admin</div><div class="cs-stack" style="margin-bottom:12px;"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" class="cs-card is-wa"><span class="cs-card-icon"><i class="fab fa-whatsapp"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS WhatsApp</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a><a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" class="cs-card is-tg"><span class="cs-card-icon"><i class="fab fa-telegram"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS Telegram</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a></div><div class="about-label">Informasi</div><div class="info-card is-time"><div class="ic-icon"><i class="fas fa-clock"></i></div><div class="ic-body"><div class="ic-title">Jam Operasional</div><div class="ic-desc">Senin - Jumat · 09:00 – 17:00</div></div></div><div class="info-card is-sys"><div class="ic-icon"><i class="fas fa-signal"></i></div><div class="ic-body"><div class="ic-title">Status Sistem</div><div class="ic-desc"><span class="status-online"><span class="dot"></span> ONLINE</span></div></div></div><div class="about-label">Saluran Resmi</div><div class="info-card is-wa" style="cursor:pointer;" onclick="window.open('https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran WhatsApp</div><div class="ic-desc"><a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp"></i> Gabung Saluran</a></div></div></div><div class="info-card is-tg" style="cursor:pointer;" onclick="window.open('https://t.me/farisgmail1','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran Telegram</div><div class="ic-desc"><a href="https://t.me/farisgmail1" target="_blank" rel="noopener noreferrer" style="color:#229ED9;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-telegram-plane"></i> Gabung Saluran</a></div></div></div><div class="about-foot"><i class="fas fa-shield-halved"></i> S3L GM4IL 06 v 1.1 · &copy; 2026</div></div></div>
 
   <!-- ===== MODAL TARIK SALDO (UPDATED) ===== -->
   <div class="modal-overlay" id="modalTarikSaldo">
