@@ -164,12 +164,13 @@
     .header { position:relative; flex:0 0 auto; z-index:100; background:rgba(255,255,255,0.88); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid var(--border-subtle); height:var(--header-height); display:flex; align-items:center; padding:0 16px; transition:background var(--transition); box-shadow:0 2px 20px rgba(18,42,110,0.04); margin:0; }
     body.light .header { background:rgba(245,248,255,0.90); }
     .header-inner { max-width:var(--max-width); width:100%; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
-    .logo { display:flex; align-items:center; gap:5px; font-weight:800; font-size:20px; letter-spacing:-0.5px; user-select:none; cursor:pointer; color:var(--text-primary); transition:transform 0.3s var(--ease-smooth); }
+    .logo { display:flex; align-items:center; gap:4px; font-weight:800; font-size:17px; letter-spacing:-0.5px; user-select:none; cursor:pointer; color:var(--text-primary); transition:transform 0.3s var(--ease-smooth); }
     .logo:active { transform:scale(0.97); }
-    .logo .gmail-mini { position:relative; display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; margin-right:6px; background:linear-gradient(155deg,#3F7DF3 0%,#1C4FD1 52%,#123FAE 100%); color:#fff; border-radius:11px; border:1px solid rgba(255,255,255,0.20); box-shadow:0 5px 12px rgba(18,63,174,0.30),0 1px 3px rgba(18,63,174,0.35),inset 0 1px 0 rgba(255,255,255,0.45),inset 0 -3px 5px rgba(8,30,100,0.30); flex-shrink:0; overflow:hidden; }
+    .logo .gmail-mini { position:relative; display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; margin-right:4px; background:linear-gradient(155deg,#3F7DF3 0%,#1C4FD1 52%,#123FAE 100%); color:#fff; border-radius:11px; border:1px solid rgba(255,255,255,0.20); box-shadow:0 5px 12px rgba(18,63,174,0.30),0 1px 3px rgba(18,63,174,0.35),inset 0 1px 0 rgba(255,255,255,0.45),inset 0 -3px 5px rgba(8,30,100,0.30); flex-shrink:0; overflow:hidden; }
     .logo .gmail-mini::before { content:''; position:absolute; left:0; right:0; top:0; height:52%; background:linear-gradient(180deg,rgba(255,255,255,0.36),rgba(255,255,255,0.02)); border-radius:11px 11px 60% 60% / 11px 11px 22% 22%; pointer-events:none; }
-    .logo .gmail-mini i { position:relative; z-index:1; font-size:15px; color:#fff; filter:drop-shadow(0 1px 1px rgba(8,30,100,0.35)); }
+    .logo .gmail-mini i { position:relative; z-index:1; font-size:14px; color:#fff; filter:drop-shadow(0 1px 1px rgba(8,30,100,0.35)); }
     .logo .brand-text-sel { color:#000; font-weight:800; }
+    .logo .brand-text-num { flex-shrink:0; align-self:center; font-size:11px; font-weight:800; letter-spacing:0; line-height:1; padding:3px 6px; margin-left:1px; border-radius:99px; color:var(--blue-primary); background:rgba(28,79,209,0.10); border:1px solid rgba(28,79,209,0.22); }
     .logo .brand-text-gmail { background:linear-gradient(155deg,var(--blue-bright) 0%,var(--blue-primary) 55%,var(--blue-deep) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; text-shadow:0 0 30px var(--blue-glow); }
     .header-actions { display:flex; align-items:center; gap:8px; }
     .user-badge { display:flex; align-items:center; gap:9px; padding:5px 14px; border-radius:var(--radius-full); background:rgba(28,79,209,0.05); border:1px solid rgba(28,79,209,0.08); cursor:pointer; transition:all var(--transition); }
@@ -528,7 +529,7 @@
        jadi nama-nya sendiri yang selalu pas center, bukan "nama+centang"
        yang di-tengah-kan bareng (itu penyebab nama kelihatan kegeser kiri
        sebelumnya). */
-    .podium-content .podium-name .verified-badge { position:absolute; left:100%; top:50%; margin-left:5px; transform:translateY(-50%); }
+    .podium-content .podium-name .verified-badge { position:absolute; left:100%; top:50%; margin-left:5px; transform:translateY(calc(-50% - 1px)); }
     .podium-content .podium-email {
       font-size: 12px;
       color: var(--text-secondary);
@@ -886,7 +887,7 @@
        tengahnya. Ini pola yang sama dipakai akun bercentang biru di sosmed:
        nama yang di-center, centang cuma nempel ngikut di sampingnya. */
     .profile-name { display:table; margin:0 auto; position:relative; font-size:22px; font-weight:800; letter-spacing:-0.3px; color:var(--text-primary); }
-    .profile-name .verified-badge { position:absolute; left:100%; top:50%; margin-left:5px; transform:translateY(-50%); }
+    .profile-name .verified-badge { position:absolute; left:100%; top:50%; margin-left:5px; transform:translateY(calc(-50% - 1px)); }
     .profile-role { font-size:14px; color:var(--text-secondary); margin-top:2px; font-weight:600; }
     .profile-menu { display:flex; flex-direction:column; gap:6px; }
     .profile-menu .pm-item { display:flex; align-items:center; padding:14px 18px; background:var(--bg-card); border-radius:var(--radius-sm); border:1px solid var(--border-subtle); box-shadow:var(--shadow-card); cursor:pointer; transition:all var(--transition); gap:14px; }
@@ -898,13 +899,13 @@
     .profile-menu .pm-item.danger .pm-icon { color:#EF4444; }
 
     /* ===== VERIFIED BADGE (SVG lencana bergerigi, gaya premium) ===== */
-    .verified-badge { display:inline-block; width:12px; height:12px; margin-left:4px; vertical-align:middle; flex-shrink:0; filter:drop-shadow(0 1px 2px rgba(19,96,208,.38)); position:relative; top:0; }
+    .verified-badge { display:inline-block; width:12px; height:12px; margin-left:4px; vertical-align:middle; flex-shrink:0; filter:drop-shadow(0 1px 2px rgba(19,96,208,.38)); position:relative; top:-1px; }
     .verified-badge svg { display:block; width:100%; height:100%; }
     /* Di header, nama+centang sekarang disejajarkan lewat flexbox (lihat
        .user-name), jadi offset manual "top:-2px" di atas tidak diperlukan lagi
        di sini -- kalau tetap dipakai malah bikin centangnya naik sendiri dan
        terlihat tidak sejajar dengan tulisan nama. */
-    .user-name .verified-badge { top:0; margin-left:0; }
+    .user-name .verified-badge { top:-1px; margin-left:0; }
 
     /* ===== BINGKAI / FRAME AVATAR ===== */
     /* z-index:0 WAJIB ada di sini: tanpa ini, cincin bingkai (z-index:-1 di bawah)
@@ -1387,7 +1388,7 @@
       .menu-icon { width:50px; height:50px; font-size:20px; }
       .menu-label { font-size:10px; }
     }
-    @media(max-width:380px){ .logo{font-size:18px;} .saldo-card .saldo-nominal{font-size:28px;} .saldo-card .saldo-actions .btn{font-size:11px;padding:6px 12px;} .menu-icon { width:44px; height:44px; font-size:18px; } .menu-label { font-size:9px; } }
+    @media(max-width:380px){ .logo{font-size:16px;} .logo .brand-text-num{font-size:10px;padding:2px 5px;} .saldo-card .saldo-nominal{font-size:28px;} .saldo-card .saldo-actions .btn{font-size:11px;padding:6px 12px;} .menu-icon { width:44px; height:44px; font-size:18px; } .menu-label { font-size:9px; } }
     @media(min-width:768px){ .bottom-nav{max-width:480px;align-self:center;width:calc(100% - 32px);margin-left:auto;margin-right:auto;border-radius:30px;} .toast-container{max-width:420px;left:50%;transform:translateX(-50%);bottom:calc(var(--nav-height) + var(--nav-gap) + var(--safe-bottom) + 24px);} }
 
 
