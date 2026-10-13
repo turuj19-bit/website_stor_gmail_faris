@@ -1969,7 +1969,7 @@ window.addEventListener('load', function() { setTimeout(function() { checkMainte
 // TEKS POPUP SELAMAT DATANG — nama selalu mengikuti akun yang login.
 // ============================================================
 (function() {
-  const DESC = 'Terima kasih telah bergabung di <strong>STOR GMAIL FARIS</strong>. Kirim setoran Gmail dengan mudah, pantau saldo dan riwayat kapan saja, dan nikmati proses pembayaran yang transparan.';
+  const DESC = 'Senang bertemu denganmu di <strong>STOR GMAIL FARIS</strong>. Setor Gmail dengan mudah, pantau saldo dan riwayat kapan saja, dan nikmati pembayaran yang jelas serta transparan.';
   let applying = false;
 
   function applyWelcomeText() {
