@@ -901,6 +901,9 @@ function switchRiwayatTab(tab) {
 const STOR_FORM_IDS = ['storFormFresh', 'storFormBekas', 'storFormBiasa', 'storFormOld', 'storFormCaptcha', 'storFormGen'];
 
 function showStorChoice() {
+  // Keluar dari form Generate lewat jalur mana pun (Kembali / tombol back HP): reset tugas
+  // supaya saat masuk lagi tampil "Cara kerja" dari awal.
+  try { if (typeof genCurrent !== 'undefined' && genCurrent && typeof genCancel === 'function') genCancel(); } catch (_) {}
   showChoiceMode = true;
   const choiceContainer = document.getElementById('storChoiceContainer');
   if (choiceContainer) choiceContainer.style.display = 'flex';
@@ -1506,7 +1509,7 @@ async function submitStor(type) {
 👤 Nama: ${nama}
 🆔 ID User: ${user.id}
 📧 Jumlah: ${lines.length} email
-${(type === 'fresh' || type === 'generate') ? `🔑 Password: ${password}\n` : ''}
+${(type === 'generate') ? `🧩 Jenis: Gmail Fresh Generate\n👤 Nama Akun: ${(typeof genCurrent !== 'undefined' && genCurrent) ? genCurrent.first + ' ' + genCurrent.last : '-'}\n🎂 Tahun Lahir: ${(typeof genCurrent !== 'undefined' && genCurrent) ? genCurrent.year : '-'}\n` : ''}${(type === 'fresh' || type === 'generate') ? `🔑 Password: ${password}\n` : ''}
 📱 Kontak: ${kontakType} - ${kontak}
 📅 Tanggal: ${tanggal}
 🕒 Waktu: ${jam}
@@ -2189,7 +2192,9 @@ function genMakeOne() {
   const female = Math.random() < 0.5;
   const first = genPick(female ? GEN_FIRST_F : GEN_FIRST_M);
   const last = genPick(female ? GEN_LAST_F : GEN_LAST_M);
-  const digits = Math.random() < 0.7 ? genRandomDigits() : '';
+  // Angka di belakang boleh tidak ada, 1 digit, atau 2 digit (maksimal 2)
+  const r = Math.random();
+  const digits = r < 0.35 ? '' : (r < 0.5 ? String(2 + genRand(8)) : genRandomDigits());
   const local = (first + last).toLowerCase() + digits;
   return { first: first, last: last, local: local, email: local + '@gmail.com', year: 1990 + genRand(16) };
 }
@@ -2264,13 +2269,21 @@ function genRender() {
   const task = document.getElementById('storGenTask');
   if (!idle || !task) return;
   genResetDoneBtn();
+  const explainBox = document.getElementById('genExplainBox');
+  const passGroup = document.getElementById('genPassGroup');
   if (!genCurrent) {
     idle.style.display = '';
     task.style.display = 'none';
+    if (explainBox) explainBox.style.display = '';
+    if (passGroup) passGroup.style.display = '';
     return;
   }
   idle.style.display = 'none';
   task.style.display = '';
+  // Saat tugas berjalan: Cara kerja & kolom Password disembunyikan, format salin tampil di atas
+  if (explainBox) explainBox.style.display = 'none';
+  if (passGroup) passGroup.style.display = 'none';
+  try { const f = document.getElementById('storFormGen'); if (f) f.scrollTop = 0; } catch (_) {}
   const set = function(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; };
   set('genFirst', genCurrent.first);
   set('genLast', genCurrent.last);
@@ -2322,6 +2335,13 @@ async function genChange() {
   const btn = document.getElementById('genChangeBtn');
   if (btn) btn.disabled = true;
   try {
+    // Email yang diganti berarti tidak bisa dipakai: simpan supaya tidak muncul lagi
+    if (genCurrent && genCurrent.email) {
+      const usedNow = genLoadUsed();
+      const oldMail = String(genCurrent.email).toLowerCase();
+      if (usedNow.indexOf(oldMail) === -1) { usedNow.push(oldMail); genSaveUsed(usedNow); }
+      genSeen[oldMail] = 1;
+    }
     const t = await genNewTask();
     if (!t) { showErrorModal('Gagal', 'Gagal membuat email baru. Coba lagi.', false); return; }
     genCurrent = t;
