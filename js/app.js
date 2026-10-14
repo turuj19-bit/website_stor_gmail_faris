@@ -2130,6 +2130,11 @@ const GEN_LAST_M = ['Pratama','Saputra','Wijaya','Kusuma','Santoso','Hidayat','N
 const GEN_FIRST_F = ['Siti','Dewi','Ayu','Rina','Sari','Wulan','Putri','Fitri','Indah','Maya','Novi','Anisa','Bella','Citra','Dina','Eka','Fani','Gita','Hana','Intan','Jihan','Kirana','Lia','Mega','Nadia','Rani','Salsa','Tiara','Vera','Winda','Yuni','Zahra','Amel','Bunga','Cindy','Devi','Elsa','Feby','Gina','Hesti','Ika','Juwita','Karin','Laila','Melati','Nisa','Rizka','Syifa','Nabila','Aulia'];
 const GEN_LAST_F = ['Lestari','Wulandari','Puspita','Anggraini','Safitri','Maharani','Oktaviani','Handayani','Permata','Kartika','Amelia','Febrianti','Damayanti','Rachmawati','Yulianti','Susilowati','Saputri','Pratiwi','Rahmawati','Kusuma','Wijayanti','Purnamasari','Nuraini','Fitriani','Octaviani'];
 
+// Tambahan nama supaya variasi email jauh lebih banyak (lebih kecil kemungkinan sudah dipakai di Google)
+GEN_FIRST_M.push('Alvin','Bagas','Candra','Daffa','Evan','Farhan','Galih','Haikal','Ilham','Jovan','Krisna','Langit','Mahesa','Naufal','Oka','Panji','Raka','Surya','Tegar','Ucok','Wildan','Yusuf','Arif','Bayu','Cahyo','Dimas','Erlangga','Fikri','Gading','Hafiz');
+GEN_LAST_M.push('Aditya','Prasetyo','Kurniawan','Utomo','Hartono','Pranoto','Mahendra','Purnomo','Sutrisno','Wardana','Nasution','Siregar','Harahap','Lubis','Simanjuntak','Gunawan','Rahardjo','Suryadi','Budiman','Cahyono');
+GEN_FIRST_F.push('Alya','Bunga','Clarissa','Dinda','Elsa','Fara','Greta','Helena','Imelda','Jasmine','Keisha','Laras','Mutiara','Nabila','Olivia','Prisca','Qonita','Rara','Salsa','Tiara','Ulfa','Vania','Winda','Yuni','Zahra','Amanda','Bianca','Cindy','Dewi','Ervina');
+GEN_LAST_F.push('Rahayu','Ningsih','Susanti','Kusumawati','Purnama','Utami','Fitriani','Agustina','Pertiwi','Larasati','Salsabila','Maulida','Nuraini','Sulistyowati','Hapsari','Andini','Nugraheni','Rosmala','Anjani','Cahyani');
 let genCurrent = null;       // { first, last, email, year }
 let genSeen = {};            // email yang sudah tampil di sesi ini
 let genConfirmTimer = null;
@@ -2171,7 +2176,7 @@ function genLocalOk(local) {
   if ((local.match(/\d/g) || []).length > 2) return false;
   if (!/^[a-z]+\d{0,2}$/.test(local)) return false;     // angka hanya di belakang, tanpa huruf setelah angka
   if (/(.)\1\1/.test(local)) return false;               // huruf kembar 3x
-  if ((local.match(/(.)\1/g) || []).length > 1) return false; // huruf double terlalu banyak
+  if ((local.match(/(.)\1/g) || []).length > 2) return false; // huruf double terlalu banyak
   for (let i = 0; i < GEN_FORBIDDEN.length; i++) if (local.indexOf(GEN_FORBIDDEN[i]) !== -1) return false;
   return true;
 }
@@ -2189,13 +2194,23 @@ function genRandomDigits() {
 
 function genMakeOne() {
   const female = Math.random() < 0.5;
-  const first = genPick(female ? GEN_FIRST_F : GEN_FIRST_M);
-  const last = genPick(female ? GEN_LAST_F : GEN_LAST_M);
+  const firstPool = female ? GEN_FIRST_F : GEN_FIRST_M;
+  const first = genPick(firstPool);
+  let lastName = genPick(female ? GEN_LAST_F : GEN_LAST_M);
+  let middle = '';
+  if (Math.random() < 0.75) {
+    for (let i = 0; i < 10; i++) {
+      const m = genPick(firstPool);
+      if (m !== first) { middle = m; break; }
+    }
+  }
+  // Nama tengah dimasukkan ke kolom "Nama belakang" (contoh: Dimas | Arya Nugroho)
+  const last = middle ? (middle + ' ' + lastName) : lastName;
   // Angka di belakang boleh tidak ada, 1 digit, atau 2 digit (maksimal 2)
   const r = Math.random();
   const digits = r < 0.35 ? '' : (r < 0.5 ? String(2 + genRand(8)) : genRandomDigits());
-  const local = (first + last).toLowerCase() + digits;
-  return { first: first, last: last, local: local, email: local + '@gmail.com', year: 1990 + genRand(16) };
+  const local = (first + middle + lastName).toLowerCase() + digits;
+  return { first: first, last: last, local: local, email: local + '@gmail.com', year: 1999 + genRand(2) };   // tahun lahir 1999 atau 2000
 }
 
 // Kumpulkan beberapa calon email yang BELUM pernah di-Done / belum tampil di sesi ini
@@ -2360,7 +2375,7 @@ function genCancel() {
 
 function genCopy(which) {
   if (!genCurrent) return;
-  const map = { first: genCurrent.first, last: genCurrent.last, email: genCurrent.email, pass: genPasswordNow() };
+  const map = { first: genCurrent.first, last: genCurrent.last, email: String(genCurrent.email).replace(/@gmail\.com$/i, ''), pass: genPasswordNow() };
   const text = String(map[which] || '');
   if (!text) return;
   const done = function() { showToast('success', 'Tersalin', 'Berhasil disalin.'); };
