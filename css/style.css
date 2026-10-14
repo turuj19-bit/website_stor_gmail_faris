@@ -1539,3 +1539,15 @@
     .gen-btn { flex: 1; border: 1px solid var(--border-subtle); background: var(--bg-card-alt); color: inherit; border-radius: 12px; padding: 12px 10px; font-weight: 700; font-size: 13.5px; cursor: pointer; }
     .gen-btn.is-danger { color: #EF4444; border-color: rgba(239,68,68,0.35); }
     .gen-btn:disabled { opacity: 0.55; cursor: default; }
+
+    /* ===== Logo header menu utama: diperbesar sedikit ===== */
+    .logo { font-size: 18px; gap: 4px; }
+    .logo .gmail-mini { width: 32px; height: 32px; border-radius: 10px; }
+    .logo .gmail-mini i { font-size: 15px; }
+    .logo .brand-text-num { font-size: 11px; padding: 2px 6px; }
+    @media (max-width: 380px) {
+      .logo { font-size: 16.5px; gap: 3px; }
+      .logo .gmail-mini { width: 30px; height: 30px; }
+      .logo .gmail-mini i { font-size: 14px; }
+      .logo .brand-text-num { font-size: 10px; padding: 2px 5px; }
+    }
