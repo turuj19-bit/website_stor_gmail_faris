@@ -155,7 +155,10 @@
             const bekasForm = document.getElementById('storFormBekas');
             const freshForm = document.getElementById('storFormFresh');
             const captchaForm = document.getElementById('storFormCaptcha');
-            if (captchaForm && captchaForm.classList.contains('show')) {
+            const genForm = document.getElementById('storFormGen');
+            if (genForm && genForm.classList.contains('show')) {
+              params.p_jenis = 'generate';
+            } else if (captchaForm && captchaForm.classList.contains('show')) {
               params.p_jenis = 'captcha';
             } else if (bekasForm && bekasForm.classList.contains('show')) {
               params.p_jenis = 'bekas';

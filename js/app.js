@@ -110,6 +110,11 @@
       settings.depositOldPrice    = window.appState.settings.depositOldPrice || settings.depositOldPrice || 2000;
       settings.depositOldName     = window.appState.settings.depositOldName || settings.depositOldName || 'Gmail Bekas Old';
       settings.depositOldInfo     = window.appState.settings.depositOldInfo || settings.depositOldInfo || '';
+      // Gmail Fresh Generate (jenis storan baru)
+      settings.depositGenStatus   = window.appState.settings.depositGenStatus || settings.depositGenStatus || 'OPEN';
+      settings.depositGenPrice    = window.appState.settings.depositGenPrice || settings.depositGenPrice || 0;
+      settings.depositGenName     = window.appState.settings.depositGenName || settings.depositGenName || 'Gmail Fresh Generate';
+      settings.depositGenInfo     = window.appState.settings.depositGenInfo || settings.depositGenInfo || '';
       // Gmail Captcha (jenis storan baru)
       settings.depositCaptchaStatus = window.appState.settings.depositCaptchaStatus || settings.depositCaptchaStatus || 'OPEN';
       settings.depositCaptchaPrice  = window.appState.settings.depositCaptchaPrice || settings.depositCaptchaPrice || 2000;
@@ -322,7 +327,8 @@ function updateUIApp() {
     const overallOpen = (freshOpen || bekasOpen ||
       settings.depositBiasaStatus === 'OPEN' ||
       settings.depositOldStatus === 'OPEN' ||
-      settings.depositCaptchaStatus === 'OPEN');
+      settings.depositCaptchaStatus === 'OPEN' ||
+      settings.depositGenStatus === 'OPEN');
     const stor = safeGet('statusStoran');
     if (stor) stor.innerHTML =
       `<span class="badge-status ${overallOpen?'open':'close'}">${overallOpen?'OPEN':'CLOSE'}</span>`;
@@ -349,6 +355,9 @@ function updateUIApp() {
     if (storOldPass) storOldPass.value = getPasswordHariIni(settings.depositOldInfo);
     const storCaptchaPass = safeGet('storCaptchaPassword');
     if (storCaptchaPass) storCaptchaPass.value = getPasswordHariIni(settings.depositCaptchaInfo);
+    const storGenPass = safeGet('storGenPassword');
+    if (storGenPass) storGenPass.value = getPasswordHariIni(getStorGenConfig().info);
+    if (typeof genRefreshPassword === 'function') genRefreshPassword();
 
     // Rules
     const rs = safeGet('rulesStatusStoran');
@@ -708,6 +717,7 @@ function getPendingRatePerItem(h, settings) {
   if (jenis === 'biasa') return Number(settings.depositBiasaPrice) || 0;
   if (jenis === 'old') return Number(settings.depositOldPrice) || 0;
   if (jenis === 'captcha') return Number(settings.depositCaptchaPrice) || 0;
+  if (jenis === 'generate') return Number(settings.depositGenPrice) || Number(settings.depositPrice) || 0;
   return Number(settings.depositPrice) || 0;
 }
 
@@ -888,7 +898,7 @@ function switchRiwayatTab(tab) {
 // ============================================================
 // FIX: daftar semua ID form full-screen Stor, dipakai bareng supaya nambah
 // jenis storan baru (Biasa, Old) tidak perlu ubah banyak tempat.
-const STOR_FORM_IDS = ['storFormFresh', 'storFormBekas', 'storFormBiasa', 'storFormOld', 'storFormCaptcha'];
+const STOR_FORM_IDS = ['storFormFresh', 'storFormBekas', 'storFormBiasa', 'storFormOld', 'storFormCaptcha', 'storFormGen'];
 
 function showStorChoice() {
   showChoiceMode = true;
@@ -944,6 +954,13 @@ function showOldForm() {
 function showCaptchaForm() {
   openStorForm('storFormCaptcha');
   updateCounterCaptcha();
+  pushOverlayHistoryGuard();
+}
+
+// Gmail Fresh Generate
+function showGenForm() {
+  openStorForm('storFormGen');
+  if (typeof genRestore === 'function') genRestore();
   pushOverlayHistoryGuard();
 }
 
@@ -1004,6 +1021,19 @@ function getStorCaptchaConfig() {
   };
 }
 
+// Gmail Fresh Generate: harga, status, nama & password diatur dari dasbor admin
+// (kolom deposit_gen_* di tabel settings). Selama belum ada, harga & password
+// ikut Gmail Fresh supaya menu tetap bisa dipakai.
+function getStorGenConfig() {
+  const settings = loadSettings();
+  return {
+    status: settings.depositGenStatus || 'OPEN',
+    name: settings.depositGenName || 'Gmail Fresh Generate',
+    price: settings.depositGenPrice || settings.depositPrice || 4000,
+    info: getPasswordHariIni(settings.depositGenInfo) || cleanPass(settings.depositInfo) || ''
+  };
+}
+
 function updateStorCards() {
   try {
     const settings = loadSettings();
@@ -1060,7 +1090,8 @@ function updateStorCards() {
     [
       { cfg: getStorBiasaConfig(), prefix: 'storCardBiasa', closedMsg: 'storBiasaClosedMsg' },
       { cfg: getStorOldConfig(), prefix: 'storCardOld', closedMsg: 'storOldClosedMsg' },
-      { cfg: getStorCaptchaConfig(), prefix: 'storCardCaptcha', closedMsg: 'storCaptchaClosedMsg' }
+      { cfg: getStorCaptchaConfig(), prefix: 'storCardCaptcha', closedMsg: 'storCaptchaClosedMsg' },
+      { cfg: getStorGenConfig(), prefix: 'storCardGen', closedMsg: 'storGenClosedMsg' }
     ].forEach(function(item) {
       const card = document.getElementById(item.prefix);
       const statusEl = document.getElementById(item.prefix + 'Status');
@@ -1181,6 +1212,23 @@ function initStorCards() {
       });
     }
 
+    const genCard = document.getElementById('storCardGen');
+    const backBtnGen = document.getElementById('storBackBtnGen');
+    if (genCard) {
+      genCard.addEventListener('click', function(e) {
+        if (getStorGenConfig().status !== 'OPEN') {
+          showErrorModal('Ditutup', 'Storan Fresh Generate sedang ditutup oleh admin.', false);
+          return;
+        }
+        showGenForm();
+      });
+    }
+    if (backBtnGen) {
+      backBtnGen.addEventListener('click', function(e) {
+        confirmGoBackStor();
+      });
+    }
+
     if (backBtnFresh) {
       backBtnFresh.addEventListener('click', function(e) {
         confirmGoBackStor();
@@ -1291,9 +1339,10 @@ const STOR_TYPE_FIELDS = {
   bekas:   { password: 'storBekasPassword',   input: 'storBekasInput',   counter: updateCounterBekas,   submitBtn: 'storBekasSubmitBtn' },
   biasa:   { password: 'storBiasaPassword',   input: 'storBiasaInput',   counter: updateCounterBiasa,   submitBtn: 'storBiasaSubmitBtn' },
   old:     { password: 'storOldPassword',     input: 'storOldInput',     counter: updateCounterOld,     submitBtn: 'storOldSubmitBtn' },
-  captcha: { password: 'storCaptchaPassword', input: 'storCaptchaInput', counter: updateCounterCaptcha, submitBtn: 'storCaptchaSubmitBtn' }
+  captcha: { password: 'storCaptchaPassword', input: 'storCaptchaInput', counter: updateCounterCaptcha, submitBtn: 'storCaptchaSubmitBtn' },
+  generate: { password: 'storGenPassword',   input: 'storGenInput',     counter: function() {},        submitBtn: 'storGenDoneBtn' }
 };
-const STOR_TYPE_LABELS = { fresh: 'Fresh', bekas: 'Bekas 2FA', biasa: 'Bekas Biasa', old: 'Bekas Old', captcha: 'Gmail Captcha' };
+const STOR_TYPE_LABELS = { fresh: 'Fresh', bekas: 'Bekas 2FA', biasa: 'Bekas Biasa', old: 'Bekas Old', captcha: 'Gmail Captcha', generate: 'Fresh Generate' };
 
 async function submitStor(type) {
   // Jika type tidak diberikan, coba deteksi otomatis dari form yang lagi tampil
@@ -1307,6 +1356,7 @@ async function submitStor(type) {
     else if (found === 'storFormOld') type = 'old';
     else if (found === 'storFormFresh') type = 'fresh';
     else if (found === 'storFormCaptcha') type = 'captcha';
+    else if (found === 'storFormGen') type = 'generate';
     else {
       showToast('error', 'Error', 'Tidak ada form storan yang aktif.');
       return;
@@ -1344,6 +1394,11 @@ async function submitStor(type) {
       showErrorModal('Ditutup', 'Storan Bekas Old sedang ditutup oleh admin.', false);
       return;
     }
+  } else if (type === 'generate') {
+    if ((settings.depositGenStatus || 'OPEN') !== 'OPEN') {
+      showErrorModal('Ditutup', 'Storan Fresh Generate sedang ditutup oleh admin.', false);
+      return;
+    }
   } else if (type === 'captcha') {
     if ((settings.depositCaptchaStatus || 'OPEN') !== 'OPEN') {
       showErrorModal('Ditutup', 'Storan Gmail Captcha sedang ditutup oleh admin.', false);
@@ -1368,7 +1423,7 @@ async function submitStor(type) {
 
   let lines = text.split('\n').map(s => s.trim()).filter(Boolean);
 
-  if (type === 'fresh') {
+  if (type === 'fresh' || type === 'generate') {
     const invalid = lines.filter(e => !e.toLowerCase().endsWith('@gmail.com'));
     if (invalid.length > 0) { showErrorModal('Gagal', 'Semua harus @gmail.com: ' + invalid.join(', ')); return; }
     // FIX: tolak email berspasi / format rusak (sebelumnya cukup berakhiran @gmail.com)
@@ -1451,7 +1506,7 @@ async function submitStor(type) {
 👤 Nama: ${nama}
 🆔 ID User: ${user.id}
 📧 Jumlah: ${lines.length} email
-${type === 'fresh' ? `🔑 Password: ${password}\n` : ''}
+${(type === 'fresh' || type === 'generate') ? `🔑 Password: ${password}\n` : ''}
 📱 Kontak: ${kontakType} - ${kontak}
 📅 Tanggal: ${tanggal}
 🕒 Waktu: ${jam}
@@ -1462,6 +1517,7 @@ ${lines.join('\n')}`;
 
     updatePaymentEstimate();
     openModal('modalStorSuccess');
+    if (type === 'generate' && typeof onGenSubmitted === 'function') { try { onGenSubmitted(lines); } catch (_) {} }
     if (inputEl) inputEl.value = '';
     if (fields.counter) fields.counter();
     renderHistory();
@@ -1880,9 +1936,9 @@ function copyReferral(kind) {
 function shareReferral() {
   const link = getReferralLink();
   if (!link) return;
-  const msg = 'Gabung S3L GM4IL lewat link referal aku ya: ' + link;
+  const msg = 'Gabung S3L GM4IL 06 lewat link referal aku ya: ' + link;
   if (navigator.share) {
-    navigator.share({ title: 'S3L GM4IL', text: msg, url: link }).catch(function() {});
+    navigator.share({ title: 'S3L GM4IL 06', text: msg, url: link }).catch(function() {});
   } else {
     copyReferral('link');
   }
@@ -2011,7 +2067,7 @@ window.addEventListener('load', function() { setTimeout(function() { checkMainte
 // TEKS POPUP SELAMAT DATANG — nama selalu mengikuti akun yang login.
 // ============================================================
 (function() {
-  const DESC = 'Senang bertemu denganmu di <strong>STOR GMAIL FARIS</strong>. Setor Gmail dengan mudah, pantau saldo dan riwayat kapan saja, dan nikmati pembayaran yang jelas serta transparan.';
+  const DESC = '<strong>Selamat datang di S3L GM4IL 06</strong><br>Saatnya manfaatkan email yang kamu punya untuk menghasilkan cuan. Setor Gmail dengan mudah, pantau saldo secara real-time, dan dapatkan pembayaran dengan proses yang jelas.';
   let applying = false;
 
   function applyWelcomeText() {
@@ -2057,3 +2113,277 @@ window.addEventListener('load', function() { setTimeout(function() { checkMainte
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
+
+
+// ============================================================
+// GMAIL FRESH GENERATE
+// Sistem membuatkan nama orang + email otomatis (aturan sama seperti Gmail
+// Fresh). Email yang sudah di-Done disimpan dan TIDAK akan dibuat lagi.
+// ============================================================
+const GEN_USED_KEY = 's3l_gen_used_emails';
+const GEN_CURRENT_KEY = 's3l_gen_current';
+const GEN_FORBIDDEN = ['janda', 'mewing', 'imut', 'cantik', 'ganteng', 'bohay', 'icibos', 'anjing', 'kucing', 'hamster', 'babi', 'ayam'];
+const GEN_FIRST_M = ['Ahmad','Budi','Dedi','Eko','Fajar','Gilang','Hendra','Irfan','Joko','Kevin','Lukman','Nanda','Putra','Rizky','Satria','Taufik','Vino','Wahyu','Yoga','Zaki','Andi','Bagas','Dimas','Farhan','Galih','Hadi','Ilham','Reza','Rangga','Aldi','Rafli','Bayu','Dani','Fikri','Guntur','Heru','Indra','Johan','Krisna','Lutfi','Naufal','Panji','Rendi','Surya','Tegar','Wawan','Yusuf','Arif','Bima','Cahyo','Fauzan','Haikal','Ridwan','Syahrul','Alvin','Adit','Rahmat','Abdul'];
+const GEN_LAST_M = ['Pratama','Saputra','Wijaya','Kusuma','Santoso','Hidayat','Nugroho','Setiawan','Ramadhan','Permana','Firmansyah','Wibowo','Susanto','Hakim','Maulana','Syahputra','Rahman','Hartono','Utomo','Lesmana','Gunawan','Purnama','Anggara','Kurniawan','Prasetyo','Hermawan','Fauzi','Ardiansyah','Mahendra','Cahyono','Suryanto','Aditya','Pramana','Sulistyo','Hariyanto'];
+const GEN_FIRST_F = ['Siti','Dewi','Ayu','Rina','Sari','Wulan','Putri','Fitri','Indah','Maya','Novi','Anisa','Bella','Citra','Dina','Eka','Fani','Gita','Hana','Intan','Jihan','Kirana','Lia','Mega','Nadia','Rani','Salsa','Tiara','Vera','Winda','Yuni','Zahra','Amel','Bunga','Cindy','Devi','Elsa','Feby','Gina','Hesti','Ika','Juwita','Karin','Laila','Melati','Nisa','Rizka','Syifa','Nabila','Aulia'];
+const GEN_LAST_F = ['Lestari','Wulandari','Puspita','Anggraini','Safitri','Maharani','Oktaviani','Handayani','Permata','Kartika','Amelia','Febrianti','Damayanti','Rachmawati','Yulianti','Susilowati','Saputri','Pratiwi','Rahmawati','Kusuma','Wijayanti','Purnamasari','Nuraini','Fitriani','Octaviani'];
+
+let genCurrent = null;       // { first, last, email, year }
+let genSeen = {};            // email yang sudah tampil di sesi ini
+let genConfirmTimer = null;
+
+function genRand(n) { return Math.floor(Math.random() * n); }
+function genPick(arr) { return arr[genRand(arr.length)]; }
+
+function genLoadUsed() {
+  try {
+    const arr = JSON.parse(localStorage.getItem(GEN_USED_KEY) || '[]');
+    return Array.isArray(arr) ? arr : [];
+  } catch (_) { return []; }
+}
+function genSaveUsed(arr) {
+  try { localStorage.setItem(GEN_USED_KEY, JSON.stringify(arr.slice(-5000))); } catch (_) {}
+}
+// Semua email yang pernah disetor akun ini (dari riwayat) + yang sudah di-Done di perangkat ini
+function genUsedSet() {
+  const set = {};
+  genLoadUsed().forEach(function(e) { set[String(e).toLowerCase()] = 1; });
+  try {
+    const hist = (window.appState && window.appState.history) || (typeof appState !== 'undefined' && appState.history) || [];
+    hist.forEach(function(it) {
+      let list = [];
+      if (Array.isArray(it.emails)) list = it.emails;
+      else if (typeof it.emails === 'string') list = it.emails.split('\n');
+      list.forEach(function(x) {
+        const first = String(x || '').trim().split(' ')[0].toLowerCase();
+        if (first) set[first] = 1;
+      });
+    });
+  } catch (_) {}
+  return set;
+}
+
+// Cek aturan yang sama dengan validasi Gmail Fresh
+function genLocalOk(local) {
+  if (local.length < 6 || local.length > 26) return false;
+  if ((local.match(/\d/g) || []).length > 2) return false;
+  if (!/^[a-z]+\d{0,2}$/.test(local)) return false;     // angka hanya di belakang, tanpa huruf setelah angka
+  if (/(.)\1\1/.test(local)) return false;               // huruf kembar 3x
+  if ((local.match(/(.)\1/g) || []).length > 1) return false; // huruf double terlalu banyak
+  for (let i = 0; i < GEN_FORBIDDEN.length; i++) if (local.indexOf(GEN_FORBIDDEN[i]) !== -1) return false;
+  return true;
+}
+
+function genRandomDigits() {
+  // 2 digit, tidak berurutan (12, 21, ...) dan tidak kembar (11, 22, ...)
+  for (let k = 0; k < 50; k++) {
+    const n = 13 + genRand(86);               // 13..98
+    const a = Math.floor(n / 10), b = n % 10;
+    if (a === b || Math.abs(a - b) === 1) continue;
+    return String(n);
+  }
+  return '47';
+}
+
+function genMakeOne() {
+  const female = Math.random() < 0.5;
+  const first = genPick(female ? GEN_FIRST_F : GEN_FIRST_M);
+  const last = genPick(female ? GEN_LAST_F : GEN_LAST_M);
+  const digits = Math.random() < 0.7 ? genRandomDigits() : '';
+  const local = (first + last).toLowerCase() + digits;
+  return { first: first, last: last, local: local, email: local + '@gmail.com', year: 1990 + genRand(16) };
+}
+
+// Kumpulkan beberapa calon email yang BELUM pernah di-Done / belum tampil di sesi ini
+function genCandidates(n) {
+  const used = genUsedSet();
+  const out = [];
+  const inOut = {};
+  for (let i = 0; i < 600 && out.length < n; i++) {
+    const t = genMakeOne();
+    const key = t.email.toLowerCase();
+    if (!genLocalOk(t.local)) continue;
+    if (used[key] || genSeen[key] || inOut[key]) continue;
+    inOut[key] = 1;
+    out.push({ first: t.first, last: t.last, email: t.email, year: t.year });
+  }
+  return out;
+}
+
+// Tanya server email mana yang sudah pernah disetor siapa pun (fungsi gen_check_emails).
+// Kalau server belum siap / gagal, dilewati dan cukup cek lokal saja.
+async function genServerTaken(emails) {
+  try {
+    if (typeof supabaseClient === 'undefined' || !supabaseClient || !getToken()) return [];
+    const res = await supabaseClient.rpc('gen_check_emails', { p_token: getToken(), p_emails: emails });
+    const d = res && res.data;
+    if (d && d.success !== false && d.data && Array.isArray(d.data.taken)) {
+      return d.data.taken.map(function(e) { return String(e).toLowerCase(); });
+    }
+  } catch (_) {}
+  return [];
+}
+
+// Buat email baru yang belum pernah dipakai
+async function genNewTask() {
+  for (let round = 0; round < 3; round++) {
+    const cands = genCandidates(8);
+    if (!cands.length) return null;
+    const taken = await genServerTaken(cands.map(function(c) { return c.email; }));
+    if (taken.length) {
+      const used = genLoadUsed();
+      taken.forEach(function(e) { if (used.indexOf(e) === -1) used.push(e); genSeen[e] = 1; });
+      genSaveUsed(used);
+    }
+    const ok = cands.filter(function(c) { return taken.indexOf(c.email.toLowerCase()) === -1; });
+    if (ok.length) { genSeen[ok[0].email.toLowerCase()] = 1; return ok[0]; }
+  }
+  return null;
+}
+
+function genPasswordNow() {
+  const el = document.getElementById('storGenPassword');
+  return el ? String(el.value || '') : '';
+}
+
+function genSaveCurrent() {
+  try {
+    if (genCurrent) localStorage.setItem(GEN_CURRENT_KEY, JSON.stringify(genCurrent));
+    else localStorage.removeItem(GEN_CURRENT_KEY);
+  } catch (_) {}
+}
+
+function genResetDoneBtn() {
+  if (genConfirmTimer) { clearTimeout(genConfirmTimer); genConfirmTimer = null; }
+  const t = document.getElementById('storGenDoneText');
+  if (t) t.innerHTML = '<i class="fas fa-circle-check"></i> Done, Kirim Setoran';
+}
+
+function genRender() {
+  const idle = document.getElementById('storGenIdle');
+  const task = document.getElementById('storGenTask');
+  if (!idle || !task) return;
+  genResetDoneBtn();
+  if (!genCurrent) {
+    idle.style.display = '';
+    task.style.display = 'none';
+    return;
+  }
+  idle.style.display = 'none';
+  task.style.display = '';
+  const set = function(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; };
+  set('genFirst', genCurrent.first);
+  set('genLast', genCurrent.last);
+  set('genEmail', genCurrent.email);
+  set('genYear', String(genCurrent.year));
+  set('genPass', genPasswordNow() || '-');
+}
+
+function genRefreshPassword() {
+  const el = document.getElementById('genPass');
+  if (el && genCurrent) el.textContent = genPasswordNow() || '-';
+}
+
+// Dipanggil saat form dibuka: lanjutkan tugas yang belum selesai (kalau ada)
+function genRestore() {
+  genCurrent = null;
+  try {
+    const raw = localStorage.getItem(GEN_CURRENT_KEY);
+    if (raw) {
+      const c = JSON.parse(raw);
+      if (c && c.email && c.first && !genUsedSet()[String(c.email).toLowerCase()]) {
+        genCurrent = c;
+        genSeen[String(c.email).toLowerCase()] = 1;
+      }
+    }
+  } catch (_) {}
+  if (!genCurrent) genSaveCurrent();
+  genRender();
+}
+
+async function genStart() {
+  const cfg = getStorGenConfig();
+  if (cfg.status !== 'OPEN') { showErrorModal('Ditutup', 'Storan Fresh Generate sedang ditutup oleh admin.', false); return; }
+  if (!genPasswordNow()) { showErrorModal('Belum Siap', 'Password hari ini belum diatur oleh admin. Coba lagi nanti.', false); return; }
+  const btn = document.getElementById('storGenStartBtn');
+  if (btn) btn.disabled = true;
+  try {
+    const t = await genNewTask();
+    if (!t) { showErrorModal('Gagal', 'Gagal membuat email baru. Coba tekan Mulai lagi.', false); return; }
+    genCurrent = t;
+    genSaveCurrent();
+    genRender();
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function genChange() {
+  const btn = document.getElementById('genChangeBtn');
+  if (btn) btn.disabled = true;
+  try {
+    const t = await genNewTask();
+    if (!t) { showErrorModal('Gagal', 'Gagal membuat email baru. Coba lagi.', false); return; }
+    genCurrent = t;
+    genSaveCurrent();
+    genRender();
+    showToast('success', 'Email diganti', 'Data akun baru sudah dibuat.');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+function genCancel() {
+  genCurrent = null;
+  genSaveCurrent();
+  genRender();
+}
+
+function genCopy(which) {
+  if (!genCurrent) return;
+  const map = { first: genCurrent.first, last: genCurrent.last, email: genCurrent.email, pass: genPasswordNow() };
+  const text = String(map[which] || '');
+  if (!text) return;
+  const done = function() { showToast('success', 'Tersalin', 'Berhasil disalin.'); };
+  const fallback = function() {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      done();
+    } catch (_) { showToast('error', 'Gagal', 'Tidak bisa menyalin, salin manual ya.'); }
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(fallback);
+  else fallback();
+}
+
+// Done: tekan 2x (konfirmasi) supaya tidak kepencet. Setoran lewat submitStor('generate')
+async function genDone() {
+  if (!genCurrent) return;
+  if (!genConfirmTimer) {
+    const t = document.getElementById('storGenDoneText');
+    if (t) t.innerHTML = '<i class="fas fa-triangle-exclamation"></i> Yakin akun sudah jadi? Tap lagi untuk kirim';
+    genConfirmTimer = setTimeout(genResetDoneBtn, 5000);
+    return;
+  }
+  genResetDoneBtn();
+  const input = document.getElementById('storGenInput');
+  if (input) input.value = genCurrent.email;
+  await submitStor('generate');
+  if (input && genCurrent && input.value) input.value = '';
+}
+
+// Dipanggil submitStor setelah setoran berhasil: tandai email sudah dipakai
+function onGenSubmitted(lines) {
+  const used = genLoadUsed();
+  (lines || []).forEach(function(l) {
+    const e = String(l || '').trim().split(' ')[0].toLowerCase();
+    if (e && used.indexOf(e) === -1) used.push(e);
+  });
+  genSaveUsed(used);
+  genCurrent = null;
+  genSaveCurrent();
+  genRender();
+}
