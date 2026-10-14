@@ -164,18 +164,18 @@
     .header { position:relative; flex:0 0 auto; z-index:100; background:rgba(255,255,255,0.88); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid var(--border-subtle); height:var(--header-height); display:flex; align-items:center; padding:0 16px; transition:background var(--transition); box-shadow:0 2px 20px rgba(18,42,110,0.04); margin:0; }
     body.light .header { background:rgba(245,248,255,0.90); }
     .header-inner { max-width:var(--max-width); width:100%; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
-    .logo { display:flex; align-items:center; gap:4px; font-weight:800; font-size:17px; letter-spacing:-0.5px; user-select:none; cursor:pointer; color:var(--text-primary); transition:transform 0.3s var(--ease-smooth); }
+    .logo { display:flex; align-items:center; gap:3px; font-weight:800; font-size:15px; letter-spacing:-0.5px; user-select:none; cursor:pointer; color:var(--text-primary); transition:transform 0.3s var(--ease-smooth); }
     .logo:active { transform:scale(0.97); }
-    .logo .gmail-mini { position:relative; display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; margin-right:4px; background:linear-gradient(155deg,#3F7DF3 0%,#1C4FD1 52%,#123FAE 100%); color:#fff; border-radius:11px; border:1px solid rgba(255,255,255,0.20); box-shadow:0 5px 12px rgba(18,63,174,0.30),0 1px 3px rgba(18,63,174,0.35),inset 0 1px 0 rgba(255,255,255,0.45),inset 0 -3px 5px rgba(8,30,100,0.30); flex-shrink:0; overflow:hidden; }
+    .logo .gmail-mini { position:relative; display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; margin-right:2px; background:linear-gradient(155deg,#3F7DF3 0%,#1C4FD1 52%,#123FAE 100%); color:#fff; border-radius:9px; border:1px solid rgba(255,255,255,0.20); box-shadow:0 5px 12px rgba(18,63,174,0.30),0 1px 3px rgba(18,63,174,0.35),inset 0 1px 0 rgba(255,255,255,0.45),inset 0 -3px 5px rgba(8,30,100,0.30); flex-shrink:0; overflow:hidden; }
     .logo .gmail-mini::before { content:''; position:absolute; left:0; right:0; top:0; height:52%; background:linear-gradient(180deg,rgba(255,255,255,0.36),rgba(255,255,255,0.02)); border-radius:11px 11px 60% 60% / 11px 11px 22% 22%; pointer-events:none; }
-    .logo .gmail-mini i { position:relative; z-index:1; font-size:14px; color:#fff; filter:drop-shadow(0 1px 1px rgba(8,30,100,0.35)); }
+    .logo .gmail-mini i { position:relative; z-index:1; font-size:12px; color:#fff; filter:drop-shadow(0 1px 1px rgba(8,30,100,0.35)); }
     .logo .brand-text-sel { color:#000; font-weight:800; }
-    .logo .brand-text-num { flex-shrink:0; align-self:center; font-size:11px; font-weight:800; letter-spacing:0; line-height:1; padding:3px 6px; margin-left:1px; border-radius:99px; color:var(--blue-primary); background:rgba(28,79,209,0.10); border:1px solid rgba(28,79,209,0.22); }
+    .logo .brand-text-num { flex-shrink:0; align-self:center; font-size:10px; font-weight:800; letter-spacing:0; line-height:1; padding:2px 5px; margin-left:1px; border-radius:99px; color:var(--blue-primary); background:rgba(28,79,209,0.10); border:1px solid rgba(28,79,209,0.22); }
     .logo .brand-text-gmail { background:linear-gradient(155deg,var(--blue-bright) 0%,var(--blue-primary) 55%,var(--blue-deep) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; text-shadow:0 0 30px var(--blue-glow); }
     .header-actions { display:flex; align-items:center; gap:8px; }
-    .user-badge { display:flex; align-items:center; gap:9px; padding:5px 14px; border-radius:var(--radius-full); background:rgba(28,79,209,0.05); border:1px solid rgba(28,79,209,0.08); cursor:pointer; transition:all var(--transition); }
+    .user-badge { display:flex; align-items:center; gap:7px; padding:4px 10px; border-radius:var(--radius-full); background:rgba(28,79,209,0.05); border:1px solid rgba(28,79,209,0.08); cursor:pointer; transition:all var(--transition); }
     .user-badge:hover { background:rgba(28,79,209,0.08); border-color:rgba(28,79,209,0.15); }
-    .user-avatar { width:34px; height:34px; border-radius:50%; background:linear-gradient(155deg,var(--blue-bright) 0%,var(--blue-primary) 55%,var(--blue-deep) 100%); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; color:#fff; box-shadow:0 3px 10px rgba(18,42,110,0.18), 0 0 12px var(--blue-glow); overflow:hidden; flex-shrink:0; }
+    .user-avatar { width:30px; height:30px; border-radius:50%; background:linear-gradient(155deg,var(--blue-bright) 0%,var(--blue-primary) 55%,var(--blue-deep) 100%); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; color:#fff; box-shadow:0 3px 10px rgba(18,42,110,0.18), 0 0 12px var(--blue-glow); overflow:hidden; flex-shrink:0; }
     .user-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
     /* Lapisan pembungkus konten avatar (emoji/foto) yang SELALU dipotong bulat sendiri,
        supaya tidak kena efek overflow:visible dari bingkai (.av-frame) di parent-nya.
@@ -185,7 +185,7 @@
     /* Nama + centang verifikasi digabung dalam satu baris flex supaya
        posisinya rapi & seimbang, bukan cuma teks mentah + ikon yang "ditempel"
        manual (sebelumnya bikin nama kelihatan kegeser ke kiri dari centangnya). */
-    .user-name { display:inline-flex; align-items:center; gap:4px; font-size:14px; font-weight:600; color:var(--text-primary); max-width:96px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .user-name { display:inline-flex; align-items:center; gap:4px; font-size:13px; font-weight:600; color:var(--text-primary); max-width:84px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .btn-inbox { font-size:20px; color:var(--text-secondary); padding:4px 8px; transition:color var(--transition); cursor:pointer; background:none; border:none; display:flex; align-items:center; justify-content:center; position:relative; }
     .btn-inbox:hover { color:var(--blue-bright); }
     .inbox-dot { position:absolute; top:0px; right:4px; width:10px; height:10px; background:#EF4444; border-radius:50%; border:2px solid var(--bg-body); display:none; z-index:5; }
@@ -1388,7 +1388,7 @@
       .menu-icon { width:50px; height:50px; font-size:20px; }
       .menu-label { font-size:10px; }
     }
-    @media(max-width:380px){ .logo{font-size:16px;} .logo .brand-text-num{font-size:10px;padding:2px 5px;} .saldo-card .saldo-nominal{font-size:28px;} .saldo-card .saldo-actions .btn{font-size:11px;padding:6px 12px;} .menu-icon { width:44px; height:44px; font-size:18px; } .menu-label { font-size:9px; } }
+    @media(max-width:380px){ .logo{font-size:14px;} .logo .brand-text-num{font-size:10px;padding:2px 5px;} .saldo-card .saldo-nominal{font-size:28px;} .saldo-card .saldo-actions .btn{font-size:11px;padding:6px 12px;} .menu-icon { width:44px; height:44px; font-size:18px; } .menu-label { font-size:9px; } }
     @media(min-width:768px){ .bottom-nav{max-width:480px;align-self:center;width:calc(100% - 32px);margin-left:auto;margin-right:auto;border-radius:30px;} .toast-container{max-width:420px;left:50%;transform:translateX(-50%);bottom:calc(var(--nav-height) + var(--nav-gap) + var(--safe-bottom) + 24px);} }
 
 
@@ -1520,3 +1520,22 @@
     #modalStorSuccess .success-note { display:flex; align-items:flex-start; gap:8px; text-align:left; margin:0 0 16px; padding:10px 12px; border-radius:12px; background:var(--bg-card-alt); border:1px solid var(--border-subtle); font-size:12.5px; line-height:1.5; color:var(--text-secondary); }
     #modalStorSuccess .success-note i { color:var(--blue-primary); font-size:13px; margin-top:2px; flex-shrink:0; }
 
+    /* ===== Gmail Fresh Generate (menu storan baru) ===== */
+    .stor-choice-card.is-gen { border-color: rgba(236,72,153,0.35); }
+    .stor-choice-icon.is-gen { background: linear-gradient(135deg, #db2777, #f472b6); }
+    .gen-explain { margin-bottom: 14px; padding: 14px 16px; border-radius: 14px; background: var(--bg-card-alt); border: 1px solid var(--border-subtle); font-size: 13.5px; line-height: 1.55; }
+    .gen-explain-title { font-weight: 800; font-size: 14.5px; margin-bottom: 6px; }
+    .gen-explain ol { margin: 4px 0 8px 18px; padding: 0; }
+    .gen-explain li { margin-bottom: 4px; }
+    .gen-explain .gen-note { font-size: 12.5px; color: var(--text-secondary); margin-top: 6px; }
+    .gen-task { margin: 4px 0 14px; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--border-subtle); background: var(--bg-card-alt); }
+    .gen-task-title { font-weight: 800; font-size: 14.5px; margin-bottom: 10px; }
+    .gen-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 0; border-top: 1px dashed var(--border-subtle); }
+    .gen-row:first-of-type { border-top: 0; }
+    .gen-label { font-size: 12.5px; color: var(--text-secondary); min-width: 92px; }
+    .gen-value { flex: 1; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 14px; font-weight: 700; word-break: break-all; text-align: right; }
+    .gen-copy { flex: 0 0 auto; border: 1px solid var(--border-subtle); background: transparent; color: inherit; border-radius: 8px; padding: 6px 9px; cursor: pointer; font-size: 12px; }
+    .gen-actions { display: flex; gap: 8px; margin-top: 10px; }
+    .gen-btn { flex: 1; border: 1px solid var(--border-subtle); background: var(--bg-card-alt); color: inherit; border-radius: 12px; padding: 12px 10px; font-weight: 700; font-size: 13.5px; cursor: pointer; }
+    .gen-btn.is-danger { color: #EF4444; border-color: rgba(239,68,68,0.35); }
+    .gen-btn:disabled { opacity: 0.55; cursor: default; }
