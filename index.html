@@ -867,6 +867,7 @@
       .brand-logo, .brand-logo .bl-glow, .brand-logo .bl-ring, .brand-logo .bl-tile::after, #authPage .auth-bg-art .bg-ic { animation: none !important; }
     }
   </style>
+
 </head>
 <body>
 
@@ -917,7 +918,7 @@
     <span class="bg-ic i8"><svg viewBox="0 0 64 64"><rect x="6" y="14" width="52" height="36" rx="7" fill="#1C4FD1"/><path d="M8 18 L32 36 L56 18" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
   </div>
     <div class="auth-logo">
-      <div class="brand-logo" role="img" aria-label="Logo Stor Gmail Faris">
+      <div class="brand-logo" role="img" aria-label="Logo S3L GM4IL 06">
         <span class="bl-glow"></span><span class="bl-ring"></span>
         <div class="bl-tile">
           <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
@@ -939,7 +940,7 @@
       <div class="store-text" style="display:none"></div>
     </div>
     <div class="auth-box">
-      <div class="auth-title">STOR <span class="highlight">GM4IL FARIS</span></div>
+      <div class="auth-title">S3L <span class="highlight">GM4IL 06</span></div>
       <div class="auth-sub">Silakan login atau daftar untuk melanjutkan</div>
       <div class="auth-tabs">
         <button id="tabLogin" class="active" onclick="switchAuthTab('login')">Login</button>
@@ -972,6 +973,7 @@
           <span class="gmail-mini"><i class="fas fa-envelope"></i></span>
           <span class="brand-text-sel">S3L</span>
           <span class="brand-text-gmail">GM4IL</span>
+          <span class="brand-text-num">06</span>
         </div>
         <div class="header-actions">
           <div class="user-badge" onclick="showPage('profil')">
@@ -1090,7 +1092,7 @@
         <span class="stor-choice-caption-icon"><i class="fas fa-paper-plane"></i></span>
         <span class="stor-choice-caption-text">
           <span class="stor-choice-caption-title"><i class="fas fa-envelopes-bulk ei ei-blue"></i> Pilih Jenis Storan</span>
-          <span class="stor-choice-caption-sub">Silakan pilih jenis storan email (Fresh, Bekas, atau Captcha) di bawah ini</span>
+          <span class="stor-choice-caption-sub">Silakan pilih jenis storan email (Fresh, Generate, Bekas, atau Captcha) di bawah ini</span>
         </span>
       </div>
 
@@ -1149,6 +1151,17 @@
             <div class="stor-choice-rate">Rate: <span id="storCardCaptchaRate">Rp 0</span> / email</div>
           </div>
           <span class="badge-status" id="storCardCaptchaStatus">OPEN</span>
+          <i class="fas fa-chevron-right stor-choice-chevron"></i>
+        </div>
+        <!-- Kartu Gmail Fresh Generate -->
+        <div id="storCardGen" class="stor-choice-card is-gen">
+          <div class="stor-choice-icon is-gen"><i class="fas fa-wand-magic-sparkles"></i></div>
+          <div class="stor-choice-body">
+            <div class="stor-choice-title" id="storCardGenName">Gmail Fresh Generate</div>
+            <div class="stor-choice-desc"><span class="stor-choice-desc-label">Password:</span> <span id="storCardGenInfo">-</span></div>
+            <div class="stor-choice-rate">Rate: <span id="storCardGenRate">Rp 0</span> / email</div>
+          </div>
+          <span class="badge-status" id="storCardGenStatus">OPEN</span>
           <i class="fas fa-chevron-right stor-choice-chevron"></i>
         </div>
       </div>
@@ -1257,6 +1270,54 @@ jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></
           <div id="storCaptchaClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Gmail Captcha sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
         </div>
       </div>
+      <!-- FORM GMAIL FRESH GENERATE — tampil full screen -->
+      <div id="storFormGen" class="stor-fullscreen-form">
+        <div class="stor-form-topbar">
+          <button id="storBackBtnGen" class="stor-form-back" title="Kembali"><i class="fas fa-arrow-left"></i></button>
+          <div>
+            <div class="stor-form-title">Stor Gmail Fresh Generate</div>
+            <div class="stor-form-sub">Nama &amp; email dibuatkan otomatis oleh sistem</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="gen-explain">
+            <div class="gen-explain-title"><i class="fas fa-circle-info"></i> Cara kerja</div>
+            <ol>
+              <li>Tekan <strong>Mulai</strong>. Sistem membuatkan nama orang dan email otomatis.</li>
+              <li>Buat akun Gmail di HP dengan nama, email, dan password <strong>persis</strong> seperti yang tampil.</li>
+              <li>Kalau akun sudah jadi, tekan <strong>Done</strong> untuk mengirim setoran.</li>
+              <li>Email tidak bisa dipakai (sudah terdaftar di Google)? Tekan <strong>Ganti Email</strong>.</li>
+            </ol>
+            <div class="gen-note">Email yang sudah di-Done tidak akan dibuat lagi. Rules sama seperti Gmail Fresh: nama orang, angka maksimal 2 digit di belakang, tidak pakai nomor HP, tidak berurutan. Jangan ubah nama, email, atau password dari sistem, kalau beda akun tidak dibayar.</div>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-key"></i> Password Hari Ini</label>
+            <input type="text" id="storGenPassword" readonly style="background:var(--bg-card-alt);cursor:default;" />
+            <div class="helper">Terisi otomatis mengikuti password yang diset admin.</div>
+          </div>
+          <textarea id="storGenInput" style="display:none;" aria-hidden="true" tabindex="-1"></textarea>
+          <div id="storGenIdle">
+            <button class="btn-submit" id="storGenStartBtn" type="button" onclick="genStart()"><span class="btn-text"><i class="fas fa-play"></i> Mulai</span></button>
+          </div>
+          <div id="storGenTask" style="display:none;">
+            <div class="gen-task">
+              <div class="gen-task-title"><i class="fas fa-wand-magic-sparkles"></i> Data akun yang harus dibuat</div>
+              <div class="gen-row"><span class="gen-label"><i class="fas fa-user"></i> Nama depan</span><span class="gen-value" id="genFirst">-</span><button class="gen-copy" type="button" onclick="genCopy('first')" title="Salin"><i class="fas fa-copy"></i></button></div>
+              <div class="gen-row"><span class="gen-label"><i class="fas fa-user"></i> Nama belakang</span><span class="gen-value" id="genLast">-</span><button class="gen-copy" type="button" onclick="genCopy('last')" title="Salin"><i class="fas fa-copy"></i></button></div>
+              <div class="gen-row"><span class="gen-label"><i class="fas fa-envelope"></i> Email</span><span class="gen-value" id="genEmail">-</span><button class="gen-copy" type="button" onclick="genCopy('email')" title="Salin"><i class="fas fa-copy"></i></button></div>
+              <div class="gen-row"><span class="gen-label"><i class="fas fa-key"></i> Password</span><span class="gen-value" id="genPass">-</span><button class="gen-copy" type="button" onclick="genCopy('pass')" title="Salin"><i class="fas fa-copy"></i></button></div>
+              <div class="gen-row"><span class="gen-label"><i class="fas fa-cake-candles"></i> Tahun lahir</span><span class="gen-value" id="genYear">-</span><span></span></div>
+            </div>
+            <button class="btn-submit" id="storGenDoneBtn" type="button" onclick="genDone()"><span class="spinner"></span><span class="btn-text" id="storGenDoneText"><i class="fas fa-circle-check"></i> Done, Kirim Setoran</span></button>
+            <div class="gen-actions">
+              <button class="gen-btn" id="genChangeBtn" type="button" onclick="genChange()"><i class="fas fa-rotate"></i> Ganti Email</button>
+              <button class="gen-btn is-danger" id="genCancelBtn" type="button" onclick="genCancel()"><i class="fas fa-xmark"></i> Batal</button>
+            </div>
+          </div>
+          <div id="storGenClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Fresh Generate sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
+        </div>
+      </div>
+
     </div>
 
     <!-- REFERAL -->
@@ -1432,7 +1493,7 @@ jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></
             <hr style="border-color:var(--border-subtle);margin:8px 0;">
 
             <p><strong>1. HUKUM DUPLIKASI DATA (DOUBLE SELL)</strong><br>
-            Setiap entri data yang dimasukkan ke node sistem ini eksklusif milik kemitraan S3L GM4IL. Menjual kembali aset yang sama ke agregator eksternal adalah pelanggaran <strong>TIER 1</strong>.</p>
+            Setiap entri data yang dimasukkan ke node sistem ini eksklusif milik kemitraan S3L GM4IL 06. Menjual kembali aset yang sama ke agregator eksternal adalah pelanggaran <strong>TIER 1</strong>.</p>
 
             <p><strong>2. PENALTI PELANGGARAN TIER 1</strong><br>
             Protokol web otomatis mendeteksi penyimpangan dan seketika mengeksekusi:</p>
@@ -1845,12 +1906,12 @@ contoh3@gmail.com</code></li>
     <div class="wl-hero">
       <span class="wl-orb o1"></span><span class="wl-orb o2"></span>
       <span class="wl-spark s1"></span><span class="wl-spark s2"></span><span class="wl-spark s3"></span><span class="wl-spark s4"></span>
-      <span class="wl-brand"><i class="fas fa-envelope"></i> S3L GM4IL</span>
+      <span class="wl-brand"><i class="fas fa-envelope"></i> S3L GM4IL 06</span>
       <div class="big-icon"><i class="fas fa-rocket"></i></div>
     </div>
     <div class="wl-body">
       <div class="big-title" id="welcomeTitle">Selamat Datang!<i class="fas fa-champagne-glasses ei ei-gold ei-end"></i></div>
-      <div class="big-desc" id="welcomeDesc">Senang bertemu denganmu di <strong>STOR GMAIL FARIS</strong>. Setor Gmail dengan mudah, pantau saldo dan riwayat kapan saja, dan nikmati pembayaran yang jelas serta transparan.</div>
+      <div class="big-desc" id="welcomeDesc"><strong>Selamat datang di S3L GM4IL 06</strong><br>Saatnya manfaatkan email yang kamu punya untuk menghasilkan cuan. Setor Gmail dengan mudah, pantau saldo secara real-time, dan dapatkan pembayaran dengan proses yang jelas.</div>
       <div class="wl-feats">
         <span class="wl-feat"><i class="fas fa-paper-plane"></i>Stor Mudah</span>
         <span class="wl-feat"><i class="fas fa-bolt"></i>Payment 24/48 Jam</span>
@@ -2030,7 +2091,7 @@ contoh3@gmail.com</code></li>
     </form>
   </div></div>
 
-  <div class="modal-overlay" id="modalInfo"><div class="modal"><button class="modal-close" onclick="closeModal('modalInfo')"><i class="fas fa-xmark"></i></button><div class="about-head"><span class="about-logo"><i class="fas fa-envelope"></i></span><div class="about-head-text"><div class="about-title">Tentang STOR <span>GMAIL FARIS</span></div><div class="about-sub">Platform untuk mengelola proses stor secara sederhana, cepat, dan terorganisir.</div></div></div><div class="about-label">Hubungi Admin</div><div class="cs-stack" style="margin-bottom:12px;"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" class="cs-card is-wa"><span class="cs-card-icon"><i class="fab fa-whatsapp"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS WhatsApp</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a><a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" class="cs-card is-tg"><span class="cs-card-icon"><i class="fab fa-telegram"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS Telegram</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a></div><div class="about-label">Informasi</div><div class="info-card is-time"><div class="ic-icon"><i class="fas fa-clock"></i></div><div class="ic-body"><div class="ic-title">Jam Operasional</div><div class="ic-desc">Senin - Jumat · 09:00 – 17:00</div></div></div><div class="info-card is-sys"><div class="ic-icon"><i class="fas fa-signal"></i></div><div class="ic-body"><div class="ic-title">Status Sistem</div><div class="ic-desc"><span class="status-online"><span class="dot"></span> ONLINE</span></div></div></div><div class="about-label">Saluran Resmi</div><div class="info-card is-wa" style="cursor:pointer;" onclick="window.open('https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran WhatsApp</div><div class="ic-desc"><a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp"></i> Gabung Saluran</a></div></div></div><div class="info-card is-tg" style="cursor:pointer;" onclick="window.open('https://t.me/farisgmail1','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran Telegram</div><div class="ic-desc"><a href="https://t.me/farisgmail1" target="_blank" rel="noopener noreferrer" style="color:#229ED9;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-telegram-plane"></i> Gabung Saluran</a></div></div></div><div class="about-foot"><i class="fas fa-shield-halved"></i> STOR GMAIL FARIS v 1.1 · &copy; 2026</div></div></div>
+  <div class="modal-overlay" id="modalInfo"><div class="modal"><button class="modal-close" onclick="closeModal('modalInfo')"><i class="fas fa-xmark"></i></button><div class="about-head"><span class="about-logo"><i class="fas fa-envelope"></i></span><div class="about-head-text"><div class="about-title">Tentang S3L <span>GM4IL 06</span></div><div class="about-sub">Platform untuk mengelola proses stor secara sederhana, cepat, dan terorganisir.</div></div></div><div class="about-label">Hubungi Admin</div><div class="cs-stack" style="margin-bottom:12px;"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" class="cs-card is-wa"><span class="cs-card-icon"><i class="fab fa-whatsapp"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS WhatsApp</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a><a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" class="cs-card is-tg"><span class="cs-card-icon"><i class="fab fa-telegram"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS Telegram</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a></div><div class="about-label">Informasi</div><div class="info-card is-time"><div class="ic-icon"><i class="fas fa-clock"></i></div><div class="ic-body"><div class="ic-title">Jam Operasional</div><div class="ic-desc">Senin - Jumat · 09:00 – 17:00</div></div></div><div class="info-card is-sys"><div class="ic-icon"><i class="fas fa-signal"></i></div><div class="ic-body"><div class="ic-title">Status Sistem</div><div class="ic-desc"><span class="status-online"><span class="dot"></span> ONLINE</span></div></div></div><div class="about-label">Saluran Resmi</div><div class="info-card is-wa" style="cursor:pointer;" onclick="window.open('https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran WhatsApp</div><div class="ic-desc"><a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp"></i> Gabung Saluran</a></div></div></div><div class="info-card is-tg" style="cursor:pointer;" onclick="window.open('https://t.me/farisgmail1','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran Telegram</div><div class="ic-desc"><a href="https://t.me/farisgmail1" target="_blank" rel="noopener noreferrer" style="color:#229ED9;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-telegram-plane"></i> Gabung Saluran</a></div></div></div><div class="about-foot"><i class="fas fa-shield-halved"></i> S3L GM4IL 06 v 1.1 · &copy; 2026</div></div></div>
 
   <!-- ===== MODAL TARIK SALDO (UPDATED) ===== -->
   <div class="modal-overlay" id="modalTarikSaldo">
