@@ -327,8 +327,7 @@ function updateUIApp() {
     const overallOpen = (freshOpen || bekasOpen ||
       settings.depositBiasaStatus === 'OPEN' ||
       settings.depositOldStatus === 'OPEN' ||
-      settings.depositCaptchaStatus === 'OPEN' ||
-      settings.depositGenStatus === 'OPEN');
+      settings.depositCaptchaStatus === 'OPEN');
     const stor = safeGet('statusStoran');
     if (stor) stor.innerHTML =
       `<span class="badge-status ${overallOpen?'open':'close'}">${overallOpen?'OPEN':'CLOSE'}</span>`;
@@ -1030,7 +1029,7 @@ function getStorCaptchaConfig() {
 function getStorGenConfig() {
   const settings = loadSettings();
   return {
-    status: settings.depositGenStatus || 'OPEN',
+    status: settings.depositStatus || 'OPEN',   // Generate ikut status Open/Close Fresh
     name: settings.depositGenName || 'Gmail Fresh Generate',
     price: settings.depositGenPrice || settings.depositPrice || 4000,
     info: getPasswordHariIni(settings.depositGenInfo) || cleanPass(settings.depositInfo) || ''
@@ -1398,7 +1397,7 @@ async function submitStor(type) {
       return;
     }
   } else if (type === 'generate') {
-    if ((settings.depositGenStatus || 'OPEN') !== 'OPEN') {
+    if ((settings.depositStatus || 'OPEN') !== 'OPEN') {
       showErrorModal('Ditutup', 'Storan Fresh Generate sedang ditutup oleh admin.', false);
       return;
     }
