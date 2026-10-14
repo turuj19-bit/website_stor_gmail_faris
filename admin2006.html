@@ -2583,6 +2583,18 @@
                                 </div>
                             </div>
 
+                            <!-- ===== FRESH GENERATE SETTINGS (hanya Open/Close; setoran masuk ke daftar Fresh) ===== -->
+                            <div style="border-left:3px solid #a78bfa;padding-left:14px;margin-bottom:18px;">
+                                <h4 style="font-size:14px;font-weight:600;color:#a78bfa;margin-bottom:10px;"><i class="fas fa-wand-magic-sparkles"></i> Fresh Generate</h4>
+                                <div class="form-group"><label>Status Storan Fresh Generate</label>
+                                    <select id="depositGenStatus">
+                                        <option value="OPEN">OPEN — Tersedia</option>
+                                        <option value="CLOSE">CLOSE — Ditutup</option>
+                                    </select>
+                                </div>
+                                <div class="ref-note">Email dari Fresh Generate otomatis masuk ke daftar Pending Fresh. Harga dan password mengikuti pengaturan Fresh.</div>
+                            </div>
+
                             <div class="ref-sec" style="margin-top:8px;">
                                 <h4><i class="fas fa-clock"></i> Close Otomatis Storan</h4>
                                 <div class="ref-note" style="margin-bottom:12px;">Atur jam close otomatis per jenis. Saat jam close tercapai, status berubah ke CLOSE. Open tetap dilakukan manual. Format close otomatis terkirim ke channel Telegram oleh server, walau dasbor admin tidak dibuka.</div>
@@ -3036,8 +3048,9 @@
                     p_deposit_captcha_status: d.depositCaptchaStatus || 'OPEN',
                     p_deposit_captcha_price: d.depositCaptchaPrice || 3000,
                     p_deposit_captcha_name: d.depositCaptchaName || 'Gmail Captcha',
-                    p_deposit_captcha_info: d.depositCaptchaInfo || ''
-                }), optionalKeys: ['p_deposit_captcha_status', 'p_deposit_captcha_price', 'p_deposit_captcha_name', 'p_deposit_captcha_info'] },
+                    p_deposit_captcha_info: d.depositCaptchaInfo || '',
+                    ...(d.depositGenStatus ? { p_deposit_gen_status: d.depositGenStatus } : {})
+                }), optionalKeys: ['p_deposit_captcha_status', 'p_deposit_captcha_price', 'p_deposit_captcha_name', 'p_deposit_captcha_info', 'p_deposit_gen_status'] },
             adminGetReferralSettings: { fn: 'panel_get_referral_settings', needsToken: true, params: () => ({}) },
             adminSaveReferralSettings: { fn: 'panel_update_referral_settings', needsToken: true, params: (d) => ({ p_enabled: !!d.enabled, p_bonus_per_email: d.bonusPerEmail || 0 }) },
             adminGetMaintenance: { fn: 'panel_get_maintenance', needsToken: true, params: () => ({}) },
@@ -3320,6 +3333,9 @@
         function setSettingField(id, value) {
             const el = document.getElementById(id);
             if (el && document.activeElement !== el && !depositSettingsDirtyFields.has(id)) el.value = value;
+        }
+        function renderDepositGenSettings(s) {
+            setSettingField('depositGenStatus', s.depositGenStatus || 'OPEN');
         }
         function renderDepositCaptchaSettings(s) {
             setSettingField('depositCaptchaStatus', s.depositCaptchaStatus || 'OPEN');
@@ -3754,7 +3770,9 @@
         // Ambil jenis storan sebuah deposit, default ke 'fresh' hanya kalau
         // benar-benar tidak ada jenis sama sekali (data lama).
         function depositJenis(d) {
-            return d.jenis || (d.type === 'Gmail Bekas' ? 'bekas' : null) || 'fresh';
+            const j = d.jenis || (d.type === 'Gmail Bekas' ? 'bekas' : null) || 'fresh';
+            // Fresh Generate digabung ke daftar Fresh
+            return j === 'generate' ? 'fresh' : j;
         }
 
         function updateBadges() {
@@ -5128,7 +5146,8 @@
             'depositBekasStatus', 'depositBekasName', 'depositBekasPrice', 'depositBekasInfo',
             'depositBiasaStatus', 'depositBiasaName', 'depositBiasaPrice', 'depositBiasaInfo',
             'depositOldStatus', 'depositOldName', 'depositOldPrice', 'depositOldInfo',
-            'depositCaptchaStatus', 'depositCaptchaName', 'depositCaptchaPrice', 'depositCaptchaInfo'
+            'depositCaptchaStatus', 'depositCaptchaName', 'depositCaptchaPrice', 'depositCaptchaInfo',
+            'depositGenStatus'
         ];
         DEPOSIT_SETTINGS_FIELD_IDS.forEach((id) => {
             const el = document.getElementById(id);
@@ -5218,6 +5237,7 @@
                 oldInfoInput.value = s.depositOldInfo || '';
             }
             renderDepositCaptchaSettings(s);
+            renderDepositGenSettings(s);
             loadAutoForScheduleUI();
         }
 
@@ -5247,7 +5267,8 @@
                     depositCaptchaStatus: document.getElementById('depositCaptchaStatus').value,
                     depositCaptchaPrice: getCurrencyValue('depositCaptchaPrice') || 3000,
                     depositCaptchaName: document.getElementById('depositCaptchaName').value.trim() || 'Gmail Captcha',
-                    depositCaptchaInfo: document.getElementById('depositCaptchaInfo').value.trim()
+                    depositCaptchaInfo: document.getElementById('depositCaptchaInfo').value.trim(),
+                    depositGenStatus: document.getElementById('depositGenStatus').value
                 });
                 await saveCloseScheduleFromSettings();
                 depositSettingsDirtyFields.clear();
@@ -5294,7 +5315,8 @@
                     depositCaptchaStatus: currentSettings.depositCaptchaStatus || 'OPEN',
                     depositCaptchaPrice: currentSettings.depositCaptchaPrice || 3000,
                     depositCaptchaName: currentSettings.depositCaptchaName || 'Gmail Captcha',
-                    depositCaptchaInfo: currentSettings.depositCaptchaInfo || ''
+                    depositCaptchaInfo: currentSettings.depositCaptchaInfo || '',
+                    depositGenStatus: currentSettings.depositGenStatus || ''
                 });
                 await saveCloseScheduleFromSettings();
                 await refreshAfterMutation();
