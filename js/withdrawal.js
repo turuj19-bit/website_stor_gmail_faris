@@ -191,6 +191,19 @@
           `🔔 <b>PENARIKAN</b>\n👤 ${user.fullname||user.username}\n🆔 ID: ${user.id}\n💰 Nominal: Rp${formatRupiah(nominal)}\n💸 Fee: Rp${formatRupiah(fee)}\n📦 Diterima: Rp${formatRupiah(diterima)}\n🏦 Metode: ${metode}\n📱 Akun: ${akun}\n📅 Tanggal: ${tgl}\n🕒 Jam: ${jam}`;
         sendTelegramMessage(TELEGRAM_BOT_TOKEN_WITHDRAW, TELEGRAM_CHAT_ID_WITHDRAW, text);
 
+        // ===== NOTIF KE SALURAN MONITOR WITHDRAW (format PENARIKAN BERHASIL) =====
+        try {
+          const wd = (appState.withdrawals || []).slice()
+            .sort((a, b) => new Date(b.date) - new Date(a.date))[0] || {};
+          const trxId = (result && result.data && (result.data.id || result.data.trx_id))
+            || wd.trx_id || wd.id || '-';
+          const tglWib = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' });
+          const jamWib = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Jakarta' }).replace('.', ':');
+          const textMonitor =
+            `🎉 PENARIKAN BERHASIL\n\n👤 Nama User : ${user.fullname || user.username}\n💰 Nominal : Rp${formatRupiah(nominal)}\n🏦 Metode : ${metode}\n📅 Tanggal : ${tglWib}\n⏰ Waktu : ${jamWib} WIB\n🔖 ID Transaksi : ${trxId}\n✅ Status : Berhasil`;
+          sendTelegramMessage(TELEGRAM_BOT_TOKEN_MONITOR, TELEGRAM_CHAT_ID_MONITOR, textMonitor);
+        } catch (e) { console.warn('Notif monitor gagal:', e); }
+
         closeModal('modalTarikSaldo');
         resetTarikSaldoModal();
         renderWithdrawalList();
