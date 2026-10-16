@@ -70,7 +70,12 @@
         'DANA': 500,
         'ShopeePay': 500,
         'GoPay': 1000,
-        'OVO': 1000
+        'OVO': 1000,
+        'BCA': 2500,
+        'BRI': 2500,
+        'BNI': 2500,
+        'Mandiri': 2500,
+        'BSI': 2500
       };
       return map[metode] || 500;
     }
@@ -80,7 +85,12 @@
         'DANA': 1500,
         'ShopeePay': 1500,
         'GoPay': 5000,
-        'OVO': 11000
+        'OVO': 11000,
+        'BCA': 10000,
+        'BRI': 10000,
+        'BNI': 10000,
+        'Mandiri': 10000,
+        'BSI': 10000
       };
       return map[metode] || 1500;
     }
