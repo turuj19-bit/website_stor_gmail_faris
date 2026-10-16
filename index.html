@@ -2128,6 +2128,13 @@ contoh3@gmail.com</code></li>
     #modalTarikSaldo .tk-status i { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; display: inline-block; }
     #modalTarikSaldo .tk-status.close { background: #fdecec; border-color: #f3b4b4; color: #b91c1c; }
     #modalTarikSaldo .tk-status.close i { background: #ef4444; }
+    /* Lampu kedip saat OPEN */
+    #modalTarikSaldo .tk-status:not(.close) i { animation: tkLamp 1.3s ease-in-out infinite; }
+    @keyframes tkLamp {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,.65), 0 0 8px 2px rgba(34,197,94,.75); }
+      50% { opacity: .3; box-shadow: 0 0 0 5px rgba(34,197,94,0), 0 0 2px 0 rgba(34,197,94,.2); }
+    }
+    @media (prefers-reduced-motion: reduce) { #modalTarikSaldo .tk-status:not(.close) i { animation: none; } }
 
     /* ---- Kartu saldo ---- */
     #modalTarikSaldo .tk-balance {
@@ -2181,6 +2188,11 @@ contoh3@gmail.com</code></li>
     #modalTarikSaldo .tk-m.active { background: #e9eefc; border: 2px solid #2a5fe0; box-shadow: 0 0 0 4px rgba(42, 95, 224, .13); padding: 0 11px; }
     #modalTarikSaldo .tk-mi { position: relative; width: 34px; height: 34px; flex-shrink: 0; }
     #modalTarikSaldo .tk-mi img { width: 34px; height: 34px; border-radius: 10px; object-fit: cover; display: block; background: #fff; }
+    /* Icon GoPay & OVO: tampil utuh (tidak terpotong), rapi dengan bingkai tipis */
+    #modalTarikSaldo .tk-mi img[alt="GoPay"], #modalTarikSaldo .tk-mi img[alt="OVO"],
+    #modalTarikSaldo .tk-saved img[alt="GoPay"], #modalTarikSaldo .tk-saved img[alt="OVO"] {
+      object-fit: contain; background: #fff; border: 1px solid #e3e9f5; padding: 2px;
+    }
     #modalTarikSaldo .tk-mi b {
       display: none; position: absolute; right: -4px; bottom: -4px; width: 15px; height: 15px; border-radius: 50%; background: #2a5fe0; border: 2px solid #fff;
       align-items: center; justify-content: center; color: #fff; font-size: 7px;
@@ -2269,8 +2281,8 @@ contoh3@gmail.com</code></li>
             <div class="tk-methods" id="tkMethods">
               <button type="button" class="tk-m active" data-m="DANA"><span class="tk-mi"><img src="https://cdn.phototourl.com/member/2026-10-16-77e3c0e9-bd40-4115-9491-f8693989c980.jpg" alt="DANA" /><b><i class="fas fa-check"></i></b></span><span>DANA</span></button>
               <button type="button" class="tk-m" data-m="ShopeePay"><span class="tk-mi"><img src="https://cdn.phototourl.com/member/2026-10-16-010d0c26-d33a-4049-9cd8-2c36fa8272c0.jpg" alt="ShopeePay" /><b><i class="fas fa-check"></i></b></span><span>ShopeePay</span></button>
-              <button type="button" class="tk-m" data-m="GoPay"><span class="tk-mi"><img src="https://cdn.phototourl.com/member/2026-10-16-2077676c-d543-42c8-82e1-2a34d9925f3e.jpg" alt="GoPay" /><b><i class="fas fa-check"></i></b></span><span>GoPay</span></button>
-              <button type="button" class="tk-m" data-m="OVO"><span class="tk-mi"><img src="https://cdn.phototourl.com/member/2026-10-16-2c9ba99d-a787-449f-a6c3-e85e170bfb2f.jpg" alt="OVO" /><b><i class="fas fa-check"></i></b></span><span>OVO</span></button>
+              <button type="button" class="tk-m" data-m="GoPay"><span class="tk-mi"><img src="https://cdn.phototourl.com/member/2026-10-16-583f5d5e-ccc2-45f6-834e-71601672ec19.jpg" alt="GoPay" /><b><i class="fas fa-check"></i></b></span><span>GoPay</span></button>
+              <button type="button" class="tk-m" data-m="OVO"><span class="tk-mi"><img src="https://cdn.phototourl.com/member/2026-10-16-e8f86509-f2bd-414d-8057-0ee1ee28f828.jpg" alt="OVO" /><b><i class="fas fa-check"></i></b></span><span>OVO</span></button>
             </div>
             <!-- KETERANGAN MINIMAL -->
             <div id="minimalInfo"></div>
@@ -2321,8 +2333,8 @@ contoh3@gmail.com</code></li>
         var ICONS = {
           DANA: 'https://cdn.phototourl.com/member/2026-10-16-77e3c0e9-bd40-4115-9491-f8693989c980.jpg',
           ShopeePay: 'https://cdn.phototourl.com/member/2026-10-16-010d0c26-d33a-4049-9cd8-2c36fa8272c0.jpg',
-          GoPay: 'https://cdn.phototourl.com/member/2026-10-16-2077676c-d543-42c8-82e1-2a34d9925f3e.jpg',
-          OVO: 'https://cdn.phototourl.com/member/2026-10-16-2c9ba99d-a787-449f-a6c3-e85e170bfb2f.jpg'
+          GoPay: 'https://cdn.phototourl.com/member/2026-10-16-583f5d5e-ccc2-45f6-834e-71601672ec19.jpg',
+          OVO: 'https://cdn.phototourl.com/member/2026-10-16-e8f86509-f2bd-414d-8057-0ee1ee28f828.jpg'
         };
         var CHIPS = [1500, 5000, 10000, 20000, 50000, 100000, 200000, 500000];
         var $ = function (id) { return document.getElementById(id); };
@@ -2344,11 +2356,20 @@ contoh3@gmail.com</code></li>
         function fire(el, type) { el.dispatchEvent(new Event(type, { bubbles: true })); }
 
         /* Pilihan cepat */
+        var MINS = { DANA: 1500, ShopeePay: 5000, GoPay: 5000, OVO: 5000 };
+        function minNow() {
+          var mi0 = $('minimalInfo'), m = metode();
+          var t = mi0 ? (mi0.textContent || '') : '';
+          var x = t.match(/Rp\s?([\d.,]+)/);
+          var v = x ? parseInt(x[1].replace(/\D/g, ''), 10) : 0;
+          return v > 0 ? v : (MINS[m] || 1500);
+        }
         function renderChips() {
           var box = $('tkChips'); if (!box) return;
-          var s = saldo();
+          var s = saldo(), mn = minNow();
+          var list = [mn].concat(CHIPS.filter(function (n) { return n > mn; }));
           box.innerHTML = '';
-          CHIPS.forEach(function (n) {
+          list.forEach(function (n) {
             var b = document.createElement('button');
             b.type = 'button'; b.className = 'tk-chip'; b.textContent = rp(n);
             if (n > s) b.disabled = true;
@@ -2440,7 +2461,7 @@ contoh3@gmail.com</code></li>
           });
         }
         var sel = $('tarikMetode');
-        if (sel) sel.addEventListener('change', function () { refreshAll(); autofill(); updateSaveBtn(); });
+        if (sel) sel.addEventListener('change', function () { refreshAll(); autofill(); updateSaveBtn(); renderChips(); });
 
         /* Info minimal: angka Rp dibuat tebal */
         var mi = $('minimalInfo'), miObs = null;
@@ -2452,7 +2473,7 @@ contoh3@gmail.com</code></li>
           mi.innerHTML = h;
           if (miObs) miObs.observe(mi, { childList: true, characterData: true, subtree: true });
         }
-        if (mi && window.MutationObserver) { miObs = new MutationObserver(fmtMin); miObs.observe(mi, { childList: true, characterData: true, subtree: true }); fmtMin(); }
+        if (mi && window.MutationObserver) { miObs = new MutationObserver(function () { fmtMin(); renderChips(); }); miObs.observe(mi, { childList: true, characterData: true, subtree: true }); fmtMin(); }
 
         /* Saldo berubah -> pilihan cepat ikut */
         var sd = $('tarikSaldoDisplay');
