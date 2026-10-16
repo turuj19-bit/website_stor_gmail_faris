@@ -10,17 +10,14 @@
       if (fnName === 'createStor' && params && typeof params === 'object') {
         // Jika params belum punya 'jenis', set berdasarkan form yang terbuka
         if (!params.jenis) {
-          // FIX: ikut cek form Biasa & Old juga (sebelumnya cuma Bekas)
+          // Cek form Bekas 2FA, Bekas Old 2FA, Captcha
           const bekasForm = document.getElementById('storFormBekas');
-          const biasaForm = document.getElementById('storFormBiasa');
           const oldForm = document.getElementById('storFormOld');
           const captchaForm = document.getElementById('storFormCaptcha');
           if (captchaForm && captchaForm.classList.contains('show')) {
             params.jenis = 'captcha';
           } else if (bekasForm && bekasForm.classList.contains('show')) {
             params.jenis = 'bekas';
-          } else if (biasaForm && biasaForm.classList.contains('show')) {
-            params.jenis = 'biasa';
           } else if (oldForm && oldForm.classList.contains('show')) {
             params.jenis = 'old';
           } else {
@@ -50,18 +47,15 @@
       if (action === 'createStor' && data && typeof data === 'object') {
         // Jika data.jenis belum diisi, set berdasarkan form yang aktif
         if (!data.jenis) {
-          // FIX: ikut cek form Biasa & Old juga (sebelumnya cuma Fresh/Bekas)
+          // Cek form Fresh, Bekas 2FA, Bekas Old 2FA, Captcha
           const freshForm = document.getElementById('storFormFresh');
           const bekasForm = document.getElementById('storFormBekas');
-          const biasaForm = document.getElementById('storFormBiasa');
           const oldForm = document.getElementById('storFormOld');
           const captchaForm = document.getElementById('storFormCaptcha');
           if (captchaForm && captchaForm.classList.contains('show')) {
             data.jenis = 'captcha';
           } else if (bekasForm && bekasForm.classList.contains('show')) {
             data.jenis = 'bekas';
-          } else if (biasaForm && biasaForm.classList.contains('show')) {
-            data.jenis = 'biasa';
           } else if (oldForm && oldForm.classList.contains('show')) {
             data.jenis = 'old';
           } else if (freshForm && freshForm.classList.contains('show')) {
@@ -100,21 +94,12 @@
       settings.depositBekasPrice  = window.appState.settings.depositBekasPrice || settings.depositBekasPrice || 3000;
       settings.depositBekasName   = window.appState.settings.depositBekasName || settings.depositBekasName || 'Gmail';
       settings.depositBekasInfo   = window.appState.settings.depositBekasInfo || settings.depositBekasInfo || '';
-      // FIX: ikut bawa settings Bekas Biasa & Bekas Old (sebelumnya nilai
+      // Ikut bawa settings Bekas Old 2FA (sebelumnya nilai
       // tetap, sekarang dari database sama seperti Bekas)
-      settings.depositBiasaStatus = window.appState.settings.depositBiasaStatus || settings.depositBiasaStatus || 'OPEN';
-      settings.depositBiasaPrice  = window.appState.settings.depositBiasaPrice || settings.depositBiasaPrice || 2500;
-      settings.depositBiasaName   = window.appState.settings.depositBiasaName || settings.depositBiasaName || 'Gmail Bekas Biasa';
-      settings.depositBiasaInfo   = window.appState.settings.depositBiasaInfo || settings.depositBiasaInfo || '';
       settings.depositOldStatus   = window.appState.settings.depositOldStatus || settings.depositOldStatus || 'OPEN';
       settings.depositOldPrice    = window.appState.settings.depositOldPrice || settings.depositOldPrice || 2000;
-      settings.depositOldName     = window.appState.settings.depositOldName || settings.depositOldName || 'Gmail Bekas Old';
+      settings.depositOldName     = window.appState.settings.depositOldName || settings.depositOldName || 'Gmail Bekas Old 2FA';
       settings.depositOldInfo     = window.appState.settings.depositOldInfo || settings.depositOldInfo || '';
-      // Gmail Fresh Generate (jenis storan baru)
-      settings.depositGenStatus   = window.appState.settings.depositGenStatus || settings.depositGenStatus || 'OPEN';
-      settings.depositGenPrice    = window.appState.settings.depositGenPrice || settings.depositGenPrice || 0;
-      settings.depositGenName     = window.appState.settings.depositGenName || settings.depositGenName || 'Gmail Fresh Generate';
-      settings.depositGenInfo     = window.appState.settings.depositGenInfo || settings.depositGenInfo || '';
       // Gmail Captcha (jenis storan baru)
       settings.depositCaptchaStatus = window.appState.settings.depositCaptchaStatus || settings.depositCaptchaStatus || 'OPEN';
       settings.depositCaptchaPrice  = window.appState.settings.depositCaptchaPrice || settings.depositCaptchaPrice || 2000;
@@ -133,18 +118,6 @@
     if (!settings.depositBekasInfo) {
       settings.depositBekasInfo = localStorage.getItem('depositBekasInfo') || '';
     }
-    if (!settings.depositBiasaStatus) {
-      settings.depositBiasaStatus = localStorage.getItem('depositBiasaStatus') || 'OPEN';
-    }
-    if (!settings.depositBiasaPrice) {
-      settings.depositBiasaPrice = parseInt(localStorage.getItem('depositBiasaPrice')) || 2500;
-    }
-    if (!settings.depositBiasaName) {
-      settings.depositBiasaName = localStorage.getItem('depositBiasaName') || 'Gmail Bekas Biasa';
-    }
-    if (!settings.depositBiasaInfo) {
-      settings.depositBiasaInfo = localStorage.getItem('depositBiasaInfo') || '';
-    }
     if (!settings.depositOldStatus) {
       settings.depositOldStatus = localStorage.getItem('depositOldStatus') || 'OPEN';
     }
@@ -152,7 +125,7 @@
       settings.depositOldPrice = parseInt(localStorage.getItem('depositOldPrice')) || 2000;
     }
     if (!settings.depositOldName) {
-      settings.depositOldName = localStorage.getItem('depositOldName') || 'Gmail Bekas Old';
+      settings.depositOldName = localStorage.getItem('depositOldName') || 'Gmail Bekas Old 2FA';
     }
     if (!settings.depositOldInfo) {
       settings.depositOldInfo = localStorage.getItem('depositOldInfo') || '';
@@ -325,7 +298,6 @@ function updateUIApp() {
     const freshOpen = (settings.depositStatus === 'OPEN');
     const bekasOpen = (settings.depositBekasStatus === 'OPEN');
     const overallOpen = (freshOpen || bekasOpen ||
-      settings.depositBiasaStatus === 'OPEN' ||
       settings.depositOldStatus === 'OPEN' ||
       settings.depositCaptchaStatus === 'OPEN');
     const stor = safeGet('statusStoran');
@@ -348,15 +320,10 @@ function updateUIApp() {
     // Password yang dikirim ke server per-email tetap yang ditaruh user di samping emailnya.
     const storBekasPass = safeGet('storBekasPassword');
     if (storBekasPass) storBekasPass.value = getPasswordHariIni(settings.depositBekasInfo);
-    const storBiasaPass = safeGet('storBiasaPassword');
-    if (storBiasaPass) storBiasaPass.value = getPasswordHariIni(settings.depositBiasaInfo);
     const storOldPass = safeGet('storOldPassword');
     if (storOldPass) storOldPass.value = getPasswordHariIni(settings.depositOldInfo);
     const storCaptchaPass = safeGet('storCaptchaPassword');
     if (storCaptchaPass) storCaptchaPass.value = getPasswordHariIni(settings.depositCaptchaInfo);
-    const storGenPass = safeGet('storGenPassword');
-    if (storGenPass) storGenPass.value = getPasswordHariIni(getStorGenConfig().info);
-    if (typeof genRefreshPassword === 'function') genRefreshPassword();
 
     // Rules
     const rs = safeGet('rulesStatusStoran');
@@ -365,9 +332,8 @@ function updateUIApp() {
       const bekasLabel = settings.depositBekasStatus || 'OPEN';
       rs.innerHTML = `Fresh: <span class="${freshLabel==='OPEN'?'success':'danger'}">${freshLabel}</span> | Bekas: <span class="${bekasLabel==='OPEN'?'success':'danger'}">${bekasLabel}</span>`;
     }
-    // Status Biasa / Old / Captcha di halaman Rules (badge sama seperti Fresh & Bekas)
+    // Status Old 2FA / Captcha di halaman Rules (badge sama seperti Fresh & Bekas)
     [
-      { id: 'rulesStatusBiasa', st: settings.depositBiasaStatus },
       { id: 'rulesStatusOld', st: settings.depositOldStatus },
       { id: 'rulesStatusCaptcha', st: settings.depositCaptchaStatus }
     ].forEach(function(r) {
@@ -713,10 +679,8 @@ function getPendingRatePerItem(h, settings) {
   }
   const jenis = String(h.jenis || h.type || 'fresh').toLowerCase();
   if (jenis === 'bekas') return Number(settings.depositBekasPrice) || 0;
-  if (jenis === 'biasa') return Number(settings.depositBiasaPrice) || 0;
   if (jenis === 'old') return Number(settings.depositOldPrice) || 0;
   if (jenis === 'captcha') return Number(settings.depositCaptchaPrice) || 0;
-  if (jenis === 'generate') return Number(settings.depositGenPrice) || Number(settings.depositPrice) || 0;
   return Number(settings.depositPrice) || 0;
 }
 
@@ -897,12 +861,9 @@ function switchRiwayatTab(tab) {
 // ============================================================
 // FIX: daftar semua ID form full-screen Stor, dipakai bareng supaya nambah
 // jenis storan baru (Biasa, Old) tidak perlu ubah banyak tempat.
-const STOR_FORM_IDS = ['storFormFresh', 'storFormBekas', 'storFormBiasa', 'storFormOld', 'storFormCaptcha', 'storFormGen'];
+const STOR_FORM_IDS = ['storFormFresh', 'storFormBekas', 'storFormOld', 'storFormCaptcha'];
 
 function showStorChoice() {
-  // Keluar dari form Generate lewat jalur mana pun (Kembali / tombol back HP): reset tugas
-  // supaya saat masuk lagi tampil "Cara kerja" dari awal.
-  try { if (typeof genCurrent !== 'undefined' && genCurrent && typeof genCancel === 'function') genCancel(); } catch (_) {}
   showChoiceMode = true;
   const choiceContainer = document.getElementById('storChoiceContainer');
   if (choiceContainer) choiceContainer.style.display = 'flex';
@@ -936,15 +897,7 @@ function showBekasForm() {
   pushOverlayHistoryGuard();
 }
 
-// FIX: 2 jenis storan baru — Bekas Biasa & Bekas Old (pola sama persis
-// seperti Bekas 2FA, tanpa validasi khusus)
-function showBiasaForm() {
-  openStorForm('storFormBiasa');
-  setTanggalBiasa();
-  updateCounterBiasa();
-  pushOverlayHistoryGuard();
-}
-
+// Bekas Old 2FA (pola & format sama persis dengan Bekas 2FA)
 function showOldForm() {
   openStorForm('storFormOld');
   setTanggalOld();
@@ -956,13 +909,6 @@ function showOldForm() {
 function showCaptchaForm() {
   openStorForm('storFormCaptcha');
   updateCounterCaptcha();
-  pushOverlayHistoryGuard();
-}
-
-// Gmail Fresh Generate
-function showGenForm() {
-  openStorForm('storFormGen');
-  if (typeof genRestore === 'function') genRestore();
   pushOverlayHistoryGuard();
 }
 
@@ -994,20 +940,11 @@ function confirmBackToStorChoice() {
 // panel_update_settings), sama seperti Fresh & Bekas. Nilai di bawah ini
 // cuma dipakai sebagai fallback kalau settings dari server belum sempat
 // termuat.
-function getStorBiasaConfig() {
-  const settings = loadSettings();
-  return {
-    status: settings.depositBiasaStatus || 'OPEN',
-    name: settings.depositBiasaName || 'Gmail Bekas Biasa',
-    price: settings.depositBiasaPrice || 2500,
-    info: settings.depositBiasaInfo || ''
-  };
-}
 function getStorOldConfig() {
   const settings = loadSettings();
   return {
     status: settings.depositOldStatus || 'OPEN',
-    name: settings.depositOldName || 'Gmail Bekas Old',
+    name: settings.depositOldName || 'Gmail Bekas Old 2FA',
     price: settings.depositOldPrice || 2000,
     info: settings.depositOldInfo || ''
   };
@@ -1020,19 +957,6 @@ function getStorCaptchaConfig() {
     name: settings.depositCaptchaName || 'Gmail Captcha',
     price: settings.depositCaptchaPrice || 2000,
     info: settings.depositCaptchaInfo || ''
-  };
-}
-
-// Gmail Fresh Generate: harga, status, nama & password diatur dari dasbor admin
-// (kolom deposit_gen_* di tabel settings). Selama belum ada, harga & password
-// ikut Gmail Fresh supaya menu tetap bisa dipakai.
-function getStorGenConfig() {
-  const settings = loadSettings();
-  return {
-    status: settings.depositStatus || 'OPEN',   // Generate ikut status Open/Close Fresh
-    name: settings.depositGenName || 'Gmail Fresh Generate',
-    price: settings.depositGenPrice || settings.depositPrice || 4000,
-    info: getPasswordHariIni(settings.depositGenInfo) || cleanPass(settings.depositInfo) || ''
   };
 }
 
@@ -1087,13 +1011,11 @@ function updateStorCards() {
       if (bekasInfoEl) bekasInfoEl.textContent = bekasInfo || '-';
     }
 
-    // Kartu Bekas Biasa & Bekas Old (settings dari database, lihat
-    // getStorBiasaConfig() / getStorOldConfig() di atas)
+    // Kartu Bekas Old 2FA (settings dari database, lihat
+    // getStorOldConfig() di atas)
     [
-      { cfg: getStorBiasaConfig(), prefix: 'storCardBiasa', closedMsg: 'storBiasaClosedMsg' },
       { cfg: getStorOldConfig(), prefix: 'storCardOld', closedMsg: 'storOldClosedMsg' },
-      { cfg: getStorCaptchaConfig(), prefix: 'storCardCaptcha', closedMsg: 'storCaptchaClosedMsg' },
-      { cfg: getStorGenConfig(), prefix: 'storCardGen', closedMsg: 'storGenClosedMsg' }
+      { cfg: getStorCaptchaConfig(), prefix: 'storCardCaptcha', closedMsg: 'storCaptchaClosedMsg' }
     ].forEach(function(item) {
       const card = document.getElementById(item.prefix);
       const statusEl = document.getElementById(item.prefix + 'Status');
@@ -1111,7 +1033,13 @@ function updateStorCards() {
         statusEl.className = 'badge-status ' + (isOpen ? 'open' : 'close');
       }
       if (rateEl) rateEl.textContent = 'Rp ' + formatRupiah(item.cfg.price);
-      if (nameEl) nameEl.textContent = (item.prefix === 'storCardCaptcha') ? String(item.cfg.name).replace(/\bemail\b/i, 'Gmail') : item.cfg.name;
+      if (nameEl) {
+        let nm = String(item.cfg.name || '');
+        if (item.prefix === 'storCardCaptcha') nm = nm.replace(/\bemail\b/i, 'Gmail');
+        // Old selalu tampil "Gmail Bekas Old 2FA" (walau nama di database masih versi lama)
+        if (item.prefix === 'storCardOld' && !/2fa/i.test(nm)) nm = nm.replace(/\s+$/,'') + ' 2FA';
+        nameEl.textContent = nm;
+      }
       if (infoEl) infoEl.textContent = getPasswordHariIni(item.cfg.info) || '-';
       if (closedMsgEl) closedMsgEl.style.display = isOpen ? 'none' : 'block';
     });
@@ -1148,11 +1076,9 @@ function initStorCards() {
 
     const freshCard = document.getElementById('storCardFresh');
     const bekasCard = document.getElementById('storCardBekas');
-    const biasaCard = document.getElementById('storCardBiasa');
     const oldCard = document.getElementById('storCardOld');
     const backBtnFresh = document.getElementById('storBackBtnFresh');
     const backBtnBekas = document.getElementById('storBackBtnBekas');
-    const backBtnBiasa = document.getElementById('storBackBtnBiasa');
     const backBtnOld = document.getElementById('storBackBtnOld');
     const captchaCard = document.getElementById('storCardCaptcha');
     const backBtnCaptcha = document.getElementById('storBackBtnCaptcha');
@@ -1179,20 +1105,11 @@ function initStorCards() {
       });
     }
 
-    // Kartu Bekas Biasa & Bekas Old (lihat getStorBiasaConfig()/getStorOldConfig())
-    if (biasaCard) {
-      biasaCard.addEventListener('click', function(e) {
-        if (getStorBiasaConfig().status !== 'OPEN') {
-          showErrorModal('Ditutup', 'Storan Bekas Biasa sedang ditutup oleh admin.', false);
-          return;
-        }
-        showBiasaForm();
-      });
-    }
+    // Kartu Bekas Old 2FA (lihat getStorOldConfig())
     if (oldCard) {
       oldCard.addEventListener('click', function(e) {
         if (getStorOldConfig().status !== 'OPEN') {
-          showErrorModal('Ditutup', 'Storan Bekas Old sedang ditutup oleh admin.', false);
+          showErrorModal('Ditutup', 'Storan Bekas Old 2FA sedang ditutup oleh admin.', false);
           return;
         }
         showOldForm();
@@ -1214,23 +1131,6 @@ function initStorCards() {
       });
     }
 
-    const genCard = document.getElementById('storCardGen');
-    const backBtnGen = document.getElementById('storBackBtnGen');
-    if (genCard) {
-      genCard.addEventListener('click', function(e) {
-        if (getStorGenConfig().status !== 'OPEN') {
-          showErrorModal('Ditutup', 'Storan Fresh Generate sedang ditutup oleh admin.', false);
-          return;
-        }
-        showGenForm();
-      });
-    }
-    if (backBtnGen) {
-      backBtnGen.addEventListener('click', function(e) {
-        confirmGoBackStor();
-      });
-    }
-
     if (backBtnFresh) {
       backBtnFresh.addEventListener('click', function(e) {
         confirmGoBackStor();
@@ -1238,11 +1138,6 @@ function initStorCards() {
     }
     if (backBtnBekas) {
       backBtnBekas.addEventListener('click', function(e) {
-        confirmGoBackStor();
-      });
-    }
-    if (backBtnBiasa) {
-      backBtnBiasa.addEventListener('click', function(e) {
         confirmGoBackStor();
       });
     }
@@ -1256,8 +1151,6 @@ function initStorCards() {
     if (freshInput) freshInput.addEventListener('input', updateCounterFresh);
     const bekasInput = document.getElementById('storBekasInput');
     if (bekasInput) bekasInput.addEventListener('input', updateCounterBekas);
-    const biasaInput = document.getElementById('storBiasaInput');
-    if (biasaInput) biasaInput.addEventListener('input', updateCounterBiasa);
     const oldInput = document.getElementById('storOldInput');
     if (oldInput) oldInput.addEventListener('input', updateCounterOld);
     const captchaInput = document.getElementById('storCaptchaInput');
@@ -1278,12 +1171,6 @@ function setTanggalFresh() {
 function setTanggalBekas() {
   const now = new Date();
   const el = document.getElementById('storBekasTanggal');
-  if (el) el.value = String(now.getDate()).padStart(2, '0') + '/' + String(now.getMonth() + 1).padStart(2, '0') + '/' + now.getFullYear();
-}
-
-function setTanggalBiasa() {
-  const now = new Date();
-  const el = document.getElementById('storBiasaTanggal');
   if (el) el.value = String(now.getDate()).padStart(2, '0') + '/' + String(now.getMonth() + 1).padStart(2, '0') + '/' + now.getFullYear();
 }
 
@@ -1309,18 +1196,12 @@ function updateCounterBekas() {
   counter.textContent = 'Terdeteksi: ' + lines.length + ' item';
 }
 
-function updateCounterBiasa() {
-  const input = document.getElementById('storBiasaInput');
-  const counter = document.getElementById('storBiasaCounter');
-  if (!input || !counter) return;
-  counter.textContent = 'Terdeteksi: ' + countStorAccounts(input.value) + ' item';
-}
-
 function updateCounterOld() {
   const input = document.getElementById('storOldInput');
   const counter = document.getElementById('storOldCounter');
   if (!input || !counter) return;
-  counter.textContent = 'Terdeteksi: ' + countStorAccounts(input.value) + ' item';
+  const lines = input.value.trim() ? input.value.split('\n').filter(s => s.trim().length > 0) : [];
+  counter.textContent = 'Terdeteksi: ' + lines.length + ' item';
 }
 
 function updateCounterCaptcha() {
@@ -1339,12 +1220,10 @@ function updateCounterCaptcha() {
 const STOR_TYPE_FIELDS = {
   fresh:   { password: 'storPassword',        input: 'storInput',        counter: updateCounterFresh,   submitBtn: 'storSubmitBtn' },
   bekas:   { password: 'storBekasPassword',   input: 'storBekasInput',   counter: updateCounterBekas,   submitBtn: 'storBekasSubmitBtn' },
-  biasa:   { password: 'storBiasaPassword',   input: 'storBiasaInput',   counter: updateCounterBiasa,   submitBtn: 'storBiasaSubmitBtn' },
   old:     { password: 'storOldPassword',     input: 'storOldInput',     counter: updateCounterOld,     submitBtn: 'storOldSubmitBtn' },
-  captcha: { password: 'storCaptchaPassword', input: 'storCaptchaInput', counter: updateCounterCaptcha, submitBtn: 'storCaptchaSubmitBtn' },
-  generate: { password: 'storGenPassword',   input: 'storGenInput',     counter: function() {},        submitBtn: 'storGenDoneBtn' }
+  captcha: { password: 'storCaptchaPassword', input: 'storCaptchaInput', counter: updateCounterCaptcha, submitBtn: 'storCaptchaSubmitBtn' }
 };
-const STOR_TYPE_LABELS = { fresh: 'Fresh', bekas: 'Bekas 2FA', biasa: 'Bekas Biasa', old: 'Bekas Old', captcha: 'Gmail Captcha', generate: 'Fresh Generate' };
+const STOR_TYPE_LABELS = { fresh: 'Fresh', bekas: 'Bekas 2FA', old: 'Bekas Old 2FA', captcha: 'Gmail Captcha' };
 
 async function submitStor(type) {
   // Jika type tidak diberikan, coba deteksi otomatis dari form yang lagi tampil
@@ -1354,11 +1233,9 @@ async function submitStor(type) {
       return el && el.classList.contains('show');
     });
     if (found === 'storFormBekas') type = 'bekas';
-    else if (found === 'storFormBiasa') type = 'biasa';
     else if (found === 'storFormOld') type = 'old';
     else if (found === 'storFormFresh') type = 'fresh';
     else if (found === 'storFormCaptcha') type = 'captcha';
-    else if (found === 'storFormGen') type = 'generate';
     else {
       showToast('error', 'Error', 'Tidak ada form storan yang aktif.');
       return;
@@ -1386,19 +1263,9 @@ async function submitStor(type) {
       showErrorModal('Ditutup', 'Storan Bekas 2FA sedang ditutup oleh admin.', false);
       return;
     }
-  } else if (type === 'biasa') {
-    if ((settings.depositBiasaStatus || 'OPEN') !== 'OPEN') {
-      showErrorModal('Ditutup', 'Storan Bekas Biasa sedang ditutup oleh admin.', false);
-      return;
-    }
   } else if (type === 'old') {
     if ((settings.depositOldStatus || 'OPEN') !== 'OPEN') {
-      showErrorModal('Ditutup', 'Storan Bekas Old sedang ditutup oleh admin.', false);
-      return;
-    }
-  } else if (type === 'generate') {
-    if ((settings.depositStatus || 'OPEN') !== 'OPEN') {
-      showErrorModal('Ditutup', 'Storan Fresh Generate sedang ditutup oleh admin.', false);
+      showErrorModal('Ditutup', 'Storan Bekas Old 2FA sedang ditutup oleh admin.', false);
       return;
     }
   } else if (type === 'captcha') {
@@ -1425,7 +1292,7 @@ async function submitStor(type) {
 
   let lines = text.split('\n').map(s => s.trim()).filter(Boolean);
 
-  if (type === 'fresh' || type === 'generate') {
+  if (type === 'fresh') {
     const invalid = lines.filter(e => !e.toLowerCase().endsWith('@gmail.com'));
     if (invalid.length > 0) { showErrorModal('Gagal', 'Semua harus @gmail.com: ' + invalid.join(', ')); return; }
     // FIX: tolak email berspasi / format rusak (sebelumnya cukup berakhiran @gmail.com)
@@ -1442,9 +1309,9 @@ async function submitStor(type) {
         if (local.includes(w)) { showErrorModal('Gagal', 'Kata terlarang: ' + email); return; }
       if ((local.match(/\d/g) || []).length > 2) { showErrorModal('Gagal', 'Angka >2: ' + email); return; }
     }
-  } else if (type === 'bekas') {
-    // Bekas 2FA: format WAJIB sesuai rules, kalau beda sedikit pun ditolak dan
-    // user dikasih tahu apa yang salah + cara memperbaikinya.
+  } else if (type === 'bekas' || type === 'old') {
+    // Bekas 2FA & Bekas Old 2FA: format WAJIB sesuai rules, kalau beda sedikit
+    // pun ditolak dan user dikasih tahu apa yang salah + cara memperbaikinya.
     const entries = text.split('\n')
       .map(function(s, i) { return { n: i + 1, v: normalizeStorLine(s) }; })
       .filter(function(e) { return e.v; });
@@ -1452,14 +1319,6 @@ async function submitStor(type) {
     if (problems.length > 0) { showStorFormatError(type, problems); return; }
     // Kirim versi yang sudah dirapikan (spasi tunggal, tanpa spasi tak terlihat)
     lines = entries.map(function(e) { return e.v; });
-  } else if (type === 'biasa' || type === 'old') {
-    // Bekas Biasa & Bekas Old: 1 akun = baris email+password lalu 5 baris kode
-    // cadangan (4+4 angka). Tiap akun dikirim ke server sebagai 1 string
-    // "email password kode1 kode2 ... kode5" supaya cara simpan di database tetap sama.
-    const hasil = parseStorBlocks(text);
-    if (hasil.problems.length > 0) { showStorFormatError(type, hasil.problems); return; }
-    if (hasil.lines.length === 0) { showErrorModal('Gagal', 'Masukkan daftar email.'); return; }
-    lines = hasil.lines;
   } else {
     // Captcha: sesuai Rules cukup alamat email saja (@gmail.com), satu per baris.
     // FIX: dulu teks apa pun (bahkan bukan email) bisa terkirim.
@@ -1508,7 +1367,7 @@ async function submitStor(type) {
 👤 Nama: ${nama}
 🆔 ID User: ${user.id}
 📧 Jumlah: ${lines.length} email
-${(type === 'generate') ? `🧩 Jenis: Gmail Fresh Generate\n👤 Nama Akun: ${(typeof genCurrent !== 'undefined' && genCurrent) ? genCurrent.first + ' ' + genCurrent.last : '-'}\n🎂 Tahun Lahir: ${(typeof genCurrent !== 'undefined' && genCurrent) ? genCurrent.year : '-'}\n` : ''}${(type === 'fresh' || type === 'generate') ? `🔑 Password: ${password}\n` : ''}
+${type === 'fresh' ? `🔑 Password: ${password}\n` : ''}
 📱 Kontak: ${kontakType} - ${kontak}
 📅 Tanggal: ${tanggal}
 🕒 Waktu: ${jam}
@@ -1519,7 +1378,6 @@ ${lines.join('\n')}`;
 
     updatePaymentEstimate();
     openModal('modalStorSuccess');
-    if (type === 'generate' && typeof onGenSubmitted === 'function') { try { onGenSubmitted(lines); } catch (_) {} }
     if (inputEl) inputEl.value = '';
     if (fields.counter) fields.counter();
     renderHistory();
@@ -1565,18 +1423,16 @@ function updateCounter() {
 }
 
 // ============================================================
-// VALIDASI FORMAT STORAN BEKAS 2FA & BEKAS BIASA (sesuai Rules)
+// VALIDASI FORMAT STORAN BEKAS 2FA & BEKAS OLD 2FA (sesuai Rules)
 //   Bekas 2FA   : email password 2fakey   (2fakey = 8 blok x 4 karakter)
-//   Bekas Biasa : baris 1 = email password, lalu 5 baris kode cadangan (tiap baris 4 angka + 4 angka)
-//   Bekas Old   : sama persis dengan Bekas Biasa
+//   Bekas Old 2FA : sama persis dengan Bekas 2FA (beda email saja)
 // Ubah angka di bawah kalau aturan berubah.
 // ============================================================
 const STOR_FORMAT = {
   key2faBlok: 8,        // jumlah blok 2FA key
   key2faPanjang: 4,     // panjang tiap blok 2FA key
-  kodeJumlah: 5,        // jumlah kode cadangan (1 kode per baris)
-  kodeBlok: 2,          // tiap kode terdiri dari 2 blok angka
-  kodeBlokPanjang: 4    // tiap blok 4 angka (jadi 1 kode = "1234 5678")
+  kodeJumlah: 10,       // jumlah kode cadangan Google
+  kodePanjang: 8        // jumlah angka tiap kode cadangan
 };
 const STOR_EMAIL_RE = /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)*\.[A-Za-z]{2,}$/;
 
@@ -1602,7 +1458,7 @@ function validateStorFormat(type, entries) {
       msgs.push('Password belum ada. Perbaiki: tulis password setelah email, dipisah 1 spasi.');
     }
 
-    if (type === 'bekas') {
+    if (type === 'bekas' || type === 'old') {
       if (tok.length >= 2 && rest.length === 0) {
         msgs.push('2FA key belum ada. Perbaiki: tambahkan 2FA key (' + K.key2faBlok + ' blok x ' + K.key2faPanjang + ' karakter) setelah password.');
       } else if (rest.length > 0) {
@@ -1620,82 +1476,16 @@ function validateStorFormat(type, entries) {
         });
       }
     }
-
     if (msgs.length > 0) out.push({ n: e.n, email: email, msgs: msgs });
   });
   return out;
 }
 
-// Bekas Biasa & Bekas Old: 1 akun = 1 blok baris
-//   baris 1      : email password
-//   baris 2 - 6  : 5 kode cadangan, 1 kode per baris, format "1234 5678"
-// Email berikutnya langsung lanjut di baris bawahnya (tanpa baris kosong).
-// Hasil: { lines: [satu string per akun], problems: [{ n, email, msgs }] }
-function parseStorBlocks(text) {
-  const K = STOR_FORMAT;
-  const kodeRe = new RegExp('^\\d{' + K.kodeBlokPanjang + '} \\d{' + K.kodeBlokPanjang + '}$');
-  const rows = String(text || '').split('\n')
-    .map(function(s, i) { return { n: i + 1, v: normalizeStorLine(s) }; })
-    .filter(function(r) { return r.v; });
-  const blocks = [];
-  const problems = [];
-  let cur = null;
-  rows.forEach(function(r) {
-    const first = r.v.split(' ')[0];
-    if (first.indexOf('@') !== -1) {
-      cur = { n: r.n, head: r.v, codes: [] };
-      blocks.push(cur);
-    } else if (cur) {
-      cur.codes.push(r);
-    } else {
-      problems.push({ n: r.n, email: '-', msgs: ['Baris ini ("' + r.v + '") tidak punya email di atasnya. Perbaiki: mulai dengan baris email dan password, baru kode cadangan di bawahnya.'] });
-    }
-  });
-  const lines = [];
-  blocks.forEach(function(bk) {
-    const msgs = [];
-    const tok = bk.head.split(' ');
-    const email = tok[0];
-    if (!STOR_EMAIL_RE.test(email)) {
-      msgs.push('Email "' + email + '" tidak valid. Perbaiki: tulis email lengkap, contoh nama@gmail.com.');
-    }
-    if (tok.length < 2) {
-      msgs.push('Password belum ada. Perbaiki: tulis password setelah email di baris pertama, dipisah 1 spasi.');
-    } else if (tok.length > 2) {
-      msgs.push('Baris pertama hanya boleh berisi email dan password (password tanpa spasi). Perbaiki: pindahkan kode cadangan ke baris di bawahnya, 1 kode per baris.');
-    }
-    bk.codes.forEach(function(c, i) {
-      if (msgs.length >= 5) return;
-      if (!kodeRe.test(c.v)) {
-        msgs.push('Kode ke-' + (i + 1) + ' (baris ' + c.n + ': "' + c.v + '") salah format. Perbaiki: tiap baris harus ' + K.kodeBlokPanjang + ' angka + spasi + ' + K.kodeBlokPanjang + ' angka, contoh 4162 4359.');
-      }
-    });
-    if (bk.codes.length !== K.kodeJumlah) {
-      msgs.push('Jumlah kode cadangan harus ' + K.kodeJumlah + ', sekarang ' + bk.codes.length + '. Perbaiki: ' + (bk.codes.length < K.kodeJumlah ? 'tambahkan ' + (K.kodeJumlah - bk.codes.length) + ' kode lagi.' : 'kurangi ' + (bk.codes.length - K.kodeJumlah) + ' kode.'));
-    }
-    if (msgs.length > 0) {
-      problems.push({ n: bk.n, email: email, msgs: msgs });
-    } else {
-      lines.push(bk.head + ' ' + bk.codes.map(function(c) { return c.v; }).join(' '));
-    }
-  });
-  problems.sort(function(x, y) { return x.n - y.n; });
-  return { lines: lines, problems: problems };
-}
-
-// Hitung jumlah akun (= jumlah baris email) untuk Bekas Biasa & Old
-function countStorAccounts(text) {
-  return String(text || '').split('\n').filter(function(s) {
-    const f = normalizeStorLine(s).split(' ')[0];
-    return f && f.indexOf('@') !== -1;
-  }).length;
-}
-
 function showStorFormatError(type, problems) {
   const MAX_BARIS = 5;
-  const contoh = (type === 'bekas')
-    ? 'email password 2fakey\nContoh: jokopurworo@gmail.com gundulmu123 2n5a dzmc 6tiz av5l uzok vwwf mtit 7kyi'
-    : 'baris 1 email + password, lalu 5 baris kode cadangan (4 angka + 4 angka)\nContoh:\njokokendi@gmail.com joko123\n4162 4359\n1739 3962\n1927 0875\n0785 9881\n9952 7681';
+  const contoh = (type === 'old')
+    ? 'email password 2fakey\nContoh: gilang6538@gmail.com gilang123 2n5a dzmc 6tiz av5l uzok vwwf mtit 7kyi'
+    : 'email password 2fakey\nContoh: jokopurworo@gmail.com gundulmu123 2n5a dzmc 6tiz av5l uzok vwwf mtit 7kyi';
   let teks = 'Format belum sesuai rules, jadi belum bisa disetor. Perbaiki dulu:\n';
   problems.slice(0, MAX_BARIS).forEach(function(p) {
     teks += '\nBaris ' + p.n + ' (' + p.email + '):\n';
@@ -1938,9 +1728,9 @@ function copyReferral(kind) {
 function shareReferral() {
   const link = getReferralLink();
   if (!link) return;
-  const msg = 'Gabung S3L GM4IL 06 lewat link referal aku ya: ' + link;
+  const msg = 'Gabung S3L GM4IL lewat link referal aku ya: ' + link;
   if (navigator.share) {
-    navigator.share({ title: 'S3L GM4IL 06', text: msg, url: link }).catch(function() {});
+    navigator.share({ title: 'S3L GM4IL', text: msg, url: link }).catch(function() {});
   } else {
     copyReferral('link');
   }
@@ -2069,7 +1859,7 @@ window.addEventListener('load', function() { setTimeout(function() { checkMainte
 // TEKS POPUP SELAMAT DATANG — nama selalu mengikuti akun yang login.
 // ============================================================
 (function() {
-  const DESC = '<strong>Selamat datang di S3L GM4IL 06</strong><br>Saatnya manfaatkan email yang kamu punya untuk menghasilkan cuan. Setor Gmail dengan mudah, pantau saldo secara real-time, dan dapatkan pembayaran dengan proses yang jelas.';
+  const DESC = 'Senang bertemu denganmu di <strong>STOR GMAIL FARIS</strong>. Setor Gmail dengan mudah, pantau saldo dan riwayat kapan saja, dan nikmati pembayaran yang jelas serta transparan.';
   let applying = false;
 
   function applyWelcomeText() {
@@ -2115,309 +1905,3 @@ window.addEventListener('load', function() { setTimeout(function() { checkMainte
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
-
-
-// ============================================================
-// GMAIL FRESH GENERATE
-// Sistem membuatkan nama orang + email otomatis (aturan sama seperti Gmail
-// Fresh). Email yang sudah di-Done disimpan dan TIDAK akan dibuat lagi.
-// ============================================================
-const GEN_USED_KEY = 's3l_gen_used_emails';
-const GEN_CURRENT_KEY = 's3l_gen_current';
-const GEN_FORBIDDEN = ['janda', 'mewing', 'imut', 'cantik', 'ganteng', 'bohay', 'icibos', 'anjing', 'kucing', 'hamster', 'babi', 'ayam'];
-const GEN_FIRST_M = ['Ahmad','Budi','Dedi','Eko','Fajar','Gilang','Hendra','Irfan','Joko','Kevin','Lukman','Nanda','Putra','Rizky','Satria','Taufik','Vino','Wahyu','Yoga','Zaki','Andi','Bagas','Dimas','Farhan','Galih','Hadi','Ilham','Reza','Rangga','Aldi','Rafli','Bayu','Dani','Fikri','Guntur','Heru','Indra','Johan','Krisna','Lutfi','Naufal','Panji','Rendi','Surya','Tegar','Wawan','Yusuf','Arif','Bima','Cahyo','Fauzan','Haikal','Ridwan','Syahrul','Alvin','Adit','Rahmat','Abdul'];
-const GEN_LAST_M = ['Pratama','Saputra','Wijaya','Kusuma','Santoso','Hidayat','Nugroho','Setiawan','Ramadhan','Permana','Firmansyah','Wibowo','Susanto','Hakim','Maulana','Syahputra','Rahman','Hartono','Utomo','Lesmana','Gunawan','Purnama','Anggara','Kurniawan','Prasetyo','Hermawan','Fauzi','Ardiansyah','Mahendra','Cahyono','Suryanto','Aditya','Pramana','Sulistyo','Hariyanto'];
-const GEN_FIRST_F = ['Siti','Dewi','Ayu','Rina','Sari','Wulan','Putri','Fitri','Indah','Maya','Novi','Anisa','Bella','Citra','Dina','Eka','Fani','Gita','Hana','Intan','Jihan','Kirana','Lia','Mega','Nadia','Rani','Salsa','Tiara','Vera','Winda','Yuni','Zahra','Amel','Bunga','Cindy','Devi','Elsa','Feby','Gina','Hesti','Ika','Juwita','Karin','Laila','Melati','Nisa','Rizka','Syifa','Nabila','Aulia'];
-const GEN_LAST_F = ['Lestari','Wulandari','Puspita','Anggraini','Safitri','Maharani','Oktaviani','Handayani','Permata','Kartika','Amelia','Febrianti','Damayanti','Rachmawati','Yulianti','Susilowati','Saputri','Pratiwi','Rahmawati','Kusuma','Wijayanti','Purnamasari','Nuraini','Fitriani','Octaviani'];
-
-// Tambahan nama supaya variasi email jauh lebih banyak (lebih kecil kemungkinan sudah dipakai di Google)
-GEN_FIRST_M.push('Alvin','Bagas','Candra','Daffa','Evan','Farhan','Galih','Haikal','Ilham','Jovan','Krisna','Langit','Mahesa','Naufal','Oka','Panji','Raka','Surya','Tegar','Ucok','Wildan','Yusuf','Arif','Bayu','Cahyo','Dimas','Erlangga','Fikri','Gading','Hafiz');
-GEN_LAST_M.push('Aditya','Prasetyo','Kurniawan','Utomo','Hartono','Pranoto','Mahendra','Purnomo','Sutrisno','Wardana','Nasution','Siregar','Harahap','Lubis','Simanjuntak','Gunawan','Rahardjo','Suryadi','Budiman','Cahyono');
-GEN_FIRST_F.push('Alya','Bunga','Clarissa','Dinda','Elsa','Fara','Greta','Helena','Imelda','Jasmine','Keisha','Laras','Mutiara','Nabila','Olivia','Prisca','Qonita','Rara','Salsa','Tiara','Ulfa','Vania','Winda','Yuni','Zahra','Amanda','Bianca','Cindy','Dewi','Ervina');
-GEN_LAST_F.push('Rahayu','Ningsih','Susanti','Kusumawati','Purnama','Utami','Fitriani','Agustina','Pertiwi','Larasati','Salsabila','Maulida','Nuraini','Sulistyowati','Hapsari','Andini','Nugraheni','Rosmala','Anjani','Cahyani');
-let genCurrent = null;       // { first, last, email, year }
-let genSeen = {};            // email yang sudah tampil di sesi ini
-let genConfirmTimer = null;
-
-function genRand(n) { return Math.floor(Math.random() * n); }
-function genPick(arr) { return arr[genRand(arr.length)]; }
-
-function genLoadUsed() {
-  try {
-    const arr = JSON.parse(localStorage.getItem(GEN_USED_KEY) || '[]');
-    return Array.isArray(arr) ? arr : [];
-  } catch (_) { return []; }
-}
-function genSaveUsed(arr) {
-  try { localStorage.setItem(GEN_USED_KEY, JSON.stringify(arr.slice(-5000))); } catch (_) {}
-}
-// Semua email yang pernah disetor akun ini (dari riwayat) + yang sudah di-Done di perangkat ini
-function genUsedSet() {
-  const set = {};
-  genLoadUsed().forEach(function(e) { set[String(e).toLowerCase()] = 1; });
-  try {
-    const hist = (window.appState && window.appState.history) || (typeof appState !== 'undefined' && appState.history) || [];
-    hist.forEach(function(it) {
-      let list = [];
-      if (Array.isArray(it.emails)) list = it.emails;
-      else if (typeof it.emails === 'string') list = it.emails.split('\n');
-      list.forEach(function(x) {
-        const first = String(x || '').trim().split(' ')[0].toLowerCase();
-        if (first) set[first] = 1;
-      });
-    });
-  } catch (_) {}
-  return set;
-}
-
-// Cek aturan yang sama dengan validasi Gmail Fresh
-function genLocalOk(local) {
-  if (local.length < 6 || local.length > 26) return false;
-  if ((local.match(/\d/g) || []).length > 2) return false;
-  if (!/^[a-z]+\d{0,2}$/.test(local)) return false;     // angka hanya di belakang, tanpa huruf setelah angka
-  if (/(.)\1\1/.test(local)) return false;               // huruf kembar 3x
-  if ((local.match(/(.)\1/g) || []).length > 2) return false; // huruf double terlalu banyak
-  for (let i = 0; i < GEN_FORBIDDEN.length; i++) if (local.indexOf(GEN_FORBIDDEN[i]) !== -1) return false;
-  return true;
-}
-
-function genRandomDigits() {
-  // 2 digit, tidak berurutan (12, 21, ...) dan tidak kembar (11, 22, ...)
-  for (let k = 0; k < 50; k++) {
-    const n = 13 + genRand(86);               // 13..98
-    const a = Math.floor(n / 10), b = n % 10;
-    if (a === b || Math.abs(a - b) === 1) continue;
-    return String(n);
-  }
-  return '47';
-}
-
-function genMakeOne() {
-  const female = Math.random() < 0.5;
-  const firstPool = female ? GEN_FIRST_F : GEN_FIRST_M;
-  const first = genPick(firstPool);
-  let lastName = genPick(female ? GEN_LAST_F : GEN_LAST_M);
-  let middle = '';
-  if (Math.random() < 0.75) {
-    for (let i = 0; i < 10; i++) {
-      const m = genPick(firstPool);
-      if (m !== first) { middle = m; break; }
-    }
-  }
-  // Nama tengah dimasukkan ke kolom "Nama belakang" (contoh: Dimas | Arya Nugroho)
-  const last = middle ? (middle + ' ' + lastName) : lastName;
-  // Angka di belakang boleh tidak ada, 1 digit, atau 2 digit (maksimal 2)
-  const r = Math.random();
-  const digits = r < 0.35 ? '' : (r < 0.5 ? String(2 + genRand(8)) : genRandomDigits());
-  const local = (first + middle + lastName).toLowerCase() + digits;
-  return { first: first, last: last, local: local, email: local + '@gmail.com', year: 1999 + genRand(2) };   // tahun lahir 1999 atau 2000
-}
-
-// Kumpulkan beberapa calon email yang BELUM pernah di-Done / belum tampil di sesi ini
-function genCandidates(n) {
-  const used = genUsedSet();
-  const out = [];
-  const inOut = {};
-  for (let i = 0; i < 600 && out.length < n; i++) {
-    const t = genMakeOne();
-    const key = t.email.toLowerCase();
-    if (!genLocalOk(t.local)) continue;
-    if (used[key] || genSeen[key] || inOut[key]) continue;
-    inOut[key] = 1;
-    out.push({ first: t.first, last: t.last, email: t.email, year: t.year });
-  }
-  return out;
-}
-
-// Tanya server email mana yang sudah pernah disetor siapa pun (fungsi gen_check_emails).
-// Kalau server belum siap / gagal, dilewati dan cukup cek lokal saja.
-async function genServerTaken(emails) {
-  try {
-    if (typeof supabaseClient === 'undefined' || !supabaseClient || !getToken()) return [];
-    const res = await supabaseClient.rpc('gen_check_emails', { p_token: getToken(), p_emails: emails });
-    const d = res && res.data;
-    if (d && d.success !== false && d.data && Array.isArray(d.data.taken)) {
-      return d.data.taken.map(function(e) { return String(e).toLowerCase(); });
-    }
-  } catch (_) {}
-  return [];
-}
-
-// Buat email baru yang belum pernah dipakai
-async function genNewTask() {
-  for (let round = 0; round < 3; round++) {
-    const cands = genCandidates(8);
-    if (!cands.length) return null;
-    const taken = await genServerTaken(cands.map(function(c) { return c.email; }));
-    if (taken.length) {
-      const used = genLoadUsed();
-      taken.forEach(function(e) { if (used.indexOf(e) === -1) used.push(e); genSeen[e] = 1; });
-      genSaveUsed(used);
-    }
-    const ok = cands.filter(function(c) { return taken.indexOf(c.email.toLowerCase()) === -1; });
-    if (ok.length) { genSeen[ok[0].email.toLowerCase()] = 1; return ok[0]; }
-  }
-  return null;
-}
-
-function genPasswordNow() {
-  const el = document.getElementById('storGenPassword');
-  return el ? String(el.value || '') : '';
-}
-
-function genSaveCurrent() {
-  try {
-    if (genCurrent) localStorage.setItem(GEN_CURRENT_KEY, JSON.stringify(genCurrent));
-    else localStorage.removeItem(GEN_CURRENT_KEY);
-  } catch (_) {}
-}
-
-function genResetDoneBtn() {
-  if (genConfirmTimer) { clearTimeout(genConfirmTimer); genConfirmTimer = null; }
-  const t = document.getElementById('storGenDoneText');
-  if (t) t.innerHTML = '<i class="fas fa-circle-check"></i> Done, Kirim Setoran';
-}
-
-function genRender() {
-  const idle = document.getElementById('storGenIdle');
-  const task = document.getElementById('storGenTask');
-  if (!idle || !task) return;
-  genResetDoneBtn();
-  const explainBox = document.getElementById('genExplainBox');
-  const passGroup = document.getElementById('genPassGroup');
-  if (!genCurrent) {
-    idle.style.display = '';
-    task.style.display = 'none';
-    if (explainBox) explainBox.style.display = '';
-    if (passGroup) passGroup.style.display = '';
-    return;
-  }
-  idle.style.display = 'none';
-  task.style.display = '';
-  // Saat tugas berjalan: Cara kerja & kolom Password disembunyikan, format salin tampil di atas
-  if (explainBox) explainBox.style.display = 'none';
-  if (passGroup) passGroup.style.display = 'none';
-  try { const f = document.getElementById('storFormGen'); if (f) f.scrollTop = 0; } catch (_) {}
-  const set = function(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; };
-  set('genFirst', genCurrent.first);
-  set('genLast', genCurrent.last);
-  set('genEmail', genCurrent.email);
-  set('genYear', String(genCurrent.year));
-  set('genPass', genPasswordNow() || '-');
-}
-
-function genRefreshPassword() {
-  const el = document.getElementById('genPass');
-  if (el && genCurrent) el.textContent = genPasswordNow() || '-';
-}
-
-// Dipanggil saat form dibuka: lanjutkan tugas yang belum selesai (kalau ada)
-function genRestore() {
-  genCurrent = null;
-  try {
-    const raw = localStorage.getItem(GEN_CURRENT_KEY);
-    if (raw) {
-      const c = JSON.parse(raw);
-      if (c && c.email && c.first && !genUsedSet()[String(c.email).toLowerCase()]) {
-        genCurrent = c;
-        genSeen[String(c.email).toLowerCase()] = 1;
-      }
-    }
-  } catch (_) {}
-  if (!genCurrent) genSaveCurrent();
-  genRender();
-}
-
-async function genStart() {
-  const cfg = getStorGenConfig();
-  if (cfg.status !== 'OPEN') { showErrorModal('Ditutup', 'Storan Fresh Generate sedang ditutup oleh admin.', false); return; }
-  if (!genPasswordNow()) { showErrorModal('Belum Siap', 'Password hari ini belum diatur oleh admin. Coba lagi nanti.', false); return; }
-  const btn = document.getElementById('storGenStartBtn');
-  if (btn) btn.disabled = true;
-  try {
-    const t = await genNewTask();
-    if (!t) { showErrorModal('Gagal', 'Gagal membuat email baru. Coba tekan Mulai lagi.', false); return; }
-    genCurrent = t;
-    genSaveCurrent();
-    genRender();
-  } finally {
-    if (btn) btn.disabled = false;
-  }
-}
-
-async function genChange() {
-  const btn = document.getElementById('genChangeBtn');
-  if (btn) btn.disabled = true;
-  try {
-    // Email yang diganti berarti tidak bisa dipakai: simpan supaya tidak muncul lagi
-    if (genCurrent && genCurrent.email) {
-      const usedNow = genLoadUsed();
-      const oldMail = String(genCurrent.email).toLowerCase();
-      if (usedNow.indexOf(oldMail) === -1) { usedNow.push(oldMail); genSaveUsed(usedNow); }
-      genSeen[oldMail] = 1;
-    }
-    const t = await genNewTask();
-    if (!t) { showErrorModal('Gagal', 'Gagal membuat email baru. Coba lagi.', false); return; }
-    genCurrent = t;
-    genSaveCurrent();
-    genRender();
-    showToast('success', 'Email diganti', 'Data akun baru sudah dibuat.');
-  } finally {
-    if (btn) btn.disabled = false;
-  }
-}
-
-function genCancel() {
-  genCurrent = null;
-  genSaveCurrent();
-  genRender();
-}
-
-function genCopy(which) {
-  if (!genCurrent) return;
-  const map = { first: genCurrent.first, last: genCurrent.last, email: String(genCurrent.email).replace(/@gmail\.com$/i, ''), pass: genPasswordNow() };
-  const text = String(map[which] || '');
-  if (!text) return;
-  const done = function() { showToast('success', 'Tersalin', 'Berhasil disalin.'); };
-  const fallback = function() {
-    try {
-      const ta = document.createElement('textarea');
-      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-      document.body.appendChild(ta); ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      done();
-    } catch (_) { showToast('error', 'Gagal', 'Tidak bisa menyalin, salin manual ya.'); }
-  };
-  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(fallback);
-  else fallback();
-}
-
-// Done: tekan 2x (konfirmasi) supaya tidak kepencet. Setoran lewat submitStor('generate')
-async function genDone() {
-  if (!genCurrent) return;
-  if (!genConfirmTimer) {
-    const t = document.getElementById('storGenDoneText');
-    if (t) t.innerHTML = '<i class="fas fa-triangle-exclamation"></i> Yakin akun sudah jadi? Tap lagi untuk kirim';
-    genConfirmTimer = setTimeout(genResetDoneBtn, 5000);
-    return;
-  }
-  genResetDoneBtn();
-  const input = document.getElementById('storGenInput');
-  if (input) input.value = genCurrent.email;
-  await submitStor('generate');
-  if (input && genCurrent && input.value) input.value = '';
-}
-
-// Dipanggil submitStor setelah setoran berhasil: tandai email sudah dipakai
-function onGenSubmitted(lines) {
-  const used = genLoadUsed();
-  (lines || []).forEach(function(l) {
-    const e = String(l || '').trim().split(' ')[0].toLowerCase();
-    if (e && used.indexOf(e) === -1) used.push(e);
-  });
-  genSaveUsed(used);
-  genCurrent = null;
-  genSaveCurrent();
-  genRender();
-}
