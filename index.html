@@ -889,8 +889,9 @@
 
     /* status penarikan: OPEN hijau berkedip, CLOSE merah */
     #modalTarikSaldo .tk-status { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 99px; font-size: 11.5px; font-weight: 800; letter-spacing: 0.5px; white-space: nowrap; border: 1px solid; }
-    #modalTarikSaldo .tk-status.open { background: rgba(34,197,94,0.18); color: #bbf7d0; border-color: rgba(34,197,94,0.6); }
-    #modalTarikSaldo .tk-status.close { background: rgba(239,68,68,0.18); color: #fecaca; border-color: rgba(239,68,68,0.6); }
+    #modalTarikSaldo .tk-status-row { display: flex; margin-bottom: 12px; }
+    #modalTarikSaldo .tk-status.open { background: rgba(34,197,94,0.12); color: #15803d; border-color: #16a34a; }
+    #modalTarikSaldo .tk-status.close { background: rgba(239,68,68,0.10); color: #b91c1c; border-color: #dc2626; }
     #modalTarikSaldo .tk-status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
     #modalTarikSaldo .tk-status.open .tk-status-dot { background: #22c55e; box-shadow: 0 0 8px #22c55e; animation: tkBlink 1.1s ease-in-out infinite; }
     #modalTarikSaldo .tk-status.close .tk-status-dot { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
@@ -2089,10 +2090,13 @@ contoh3@gmail.com</code></li>
         </div>
       </div>
 
+      <div class="tk-status-row">
+        <span class="tk-status open" id="tkStatus"><span class="tk-status-dot"></span><span id="tkStatusText">PENARIKAN OPEN</span></span>
+      </div>
+
       <div class="tk-banner">
         <div class="tk-banner-top">
           <div class="tk-banner-head"><span class="tk-banner-icon"><i class="fas fa-wallet"></i></span><span>SALDO TERSEDIA</span></div>
-          <span class="tk-status open" id="tkStatus"><span class="tk-status-dot"></span><span id="tkStatusText">PENARIKAN OPEN</span></span>
         </div>
         <div class="tk-banner-nominal" id="tarikSaldoDisplay"><span class="currency">Rp</span>0</div>
         <div class="tk-banner-chips"><span class="tk-chip"><i class="fas fa-circle-info"></i> Fee langsung dipotong</span></div>
