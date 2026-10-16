@@ -36,7 +36,11 @@
       // admin yang menyematkan -- lihat pin_chat_message()/unpin_chat_message()
       // di supabase_final_gabungan.sql.
       pinChatMessage:       { fn: 'pin_chat_message',           needsToken: true,  params: (d) => ({ p_message_id: d.id, p_hours: d.hours }) },
-      unpinChatMessage:     { fn: 'unpin_chat_message',         needsToken: true,  params: () => ({}) }
+      unpinChatMessage:     { fn: 'unpin_chat_message',         needsToken: true,  params: () => ({}) },
+      // Rekening tersimpan (menu Tarik Saldo)
+      listSavedAccounts:    { fn: 'list_saved_accounts',        needsToken: true,  params: () => ({}) },
+      saveSavedAccount:     { fn: 'save_saved_account',         needsToken: true,  params: (d) => ({ p_metode: d.metode, p_akun: d.akun, p_nama: d.nama || '' }) },
+      deleteSavedAccount:   { fn: 'delete_saved_account',       needsToken: true,  params: (d) => ({ p_id: d.id }) }
     };
 
     // ============================================================
