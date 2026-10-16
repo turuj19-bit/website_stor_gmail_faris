@@ -869,27 +869,15 @@
   </style>
 
   <style>
-    /* ===== Tarik Saldo: tampilan ROOM penuh seperti menu Referal (hanya tampilan) ===== */
+    /* ===== Tarik Saldo: ROOM penuh bergaya halaman Referal (hanya tampilan) ===== */
     #modalTarikSaldo { padding: 0; background: var(--bg-main, #eef3fb); overflow-y: auto; -webkit-overflow-scrolling: touch; }
-    #modalTarikSaldo .tk-modal {
-      width: 100%; max-width: 100%; min-height: 100%; height: auto; box-sizing: border-box;
-      margin: 0; border-radius: 0; box-shadow: none; transform: none;
-      padding: 22px 16px 40px; overflow-x: hidden; background: transparent; border: none;
-    }
+    #modalTarikSaldo .tk-modal { width: 100%; max-width: 100%; min-height: 100%; height: auto; box-sizing: border-box; margin: 0; border-radius: 0; box-shadow: none; transform: none; padding: 22px 16px 40px; overflow-x: hidden; background: transparent; border: none; }
     #modalTarikSaldo .modal-close { display: none; }
     #modalTarikSaldo .tk-top { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
     #modalTarikSaldo .tk-top .stor-form-title { font-size: 20px; }
 
-    #modalTarikSaldo .tk-banner {
-      position: relative; overflow: hidden; border-radius: 24px; padding: 20px 20px 18px;
-      margin-bottom: 14px; color: #fff;
-      background: linear-gradient(135deg, #1C4FD1 0%, #3A78F0 55%, #0e8fb3 100%);
-      box-shadow: 0 14px 34px rgba(28, 79, 209, 0.30);
-    }
-    #modalTarikSaldo .tk-banner::after {
-      content: ''; position: absolute; right: -40px; top: -40px;
-      width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,0.10);
-    }
+    #modalTarikSaldo .tk-banner { position: relative; overflow: hidden; border-radius: 24px; padding: 20px 20px 18px; margin-bottom: 14px; color: #fff; background: linear-gradient(135deg, #1C4FD1 0%, #3A78F0 55%, #0e8fb3 100%); box-shadow: 0 14px 34px rgba(28, 79, 209, 0.30); }
+    #modalTarikSaldo .tk-banner::after { content: ''; position: absolute; right: -40px; top: -40px; width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,0.10); }
     #modalTarikSaldo .tk-banner-head { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: 0.4px; font-size: 14px; position: relative; z-index: 1; }
     #modalTarikSaldo .tk-banner-icon { width: 34px; height: 34px; border-radius: 11px; background: rgba(255,255,255,0.20); display: flex; align-items: center; justify-content: center; font-size: 16px; }
     #modalTarikSaldo .tk-banner-nominal { font-size: 36px; font-weight: 900; margin: 10px 0 12px; position: relative; z-index: 1; }
@@ -900,36 +888,40 @@
 
     #modalTarikSaldo .card { box-sizing: border-box; width: 100%; min-width: 0; margin-bottom: 14px; }
     #modalTarikSaldo .card-title { display: flex; align-items: center; gap: 10px; }
-    #modalTarikSaldo .tk-num {
-      width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
-      display: inline-flex; align-items: center; justify-content: center;
-      background: linear-gradient(135deg, #1C4FD1, #3A78F0); color: #fff; font-size: 12px; font-weight: 800;
-    }
+    #modalTarikSaldo .tk-num { width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1C4FD1, #3A78F0); color: #fff; font-size: 12px; font-weight: 800; }
     #modalTarikSaldo .card .form-group { margin-bottom: 0; }
     #modalTarikSaldo .card .form-group input { box-sizing: border-box; max-width: 100%; }
+    #modalTarikSaldo .tk-subhead { font-size: 12.5px; font-weight: 700; color: var(--text-secondary, #64748b); margin: 14px 0 8px; letter-spacing: 0.2px; }
+
+    #modalTarikSaldo .tk-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    #modalTarikSaldo .tk-chip-btn { font: inherit; font-size: 13px; font-weight: 700; padding: 8px 12px; border-radius: 99px; cursor: pointer; background: var(--bg-card-alt, #f8fafc); color: var(--text-primary, #0f172a); border: 1.5px solid var(--border-subtle, #dbe3f0); }
+    #modalTarikSaldo .tk-chip-btn.active { background: rgba(28,79,209,0.10); border-color: #1C4FD1; color: #1C4FD1; }
+    #modalTarikSaldo .tk-chip-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
     #modalTarikSaldo .tk-methods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; width: 100%; box-sizing: border-box; }
-    #modalTarikSaldo .tk-method {
-      display: flex; align-items: center; gap: 10px; width: 100%; min-width: 0; box-sizing: border-box;
-      padding: 11px 12px; border-radius: 14px; cursor: pointer;
-      background: var(--bg-card-alt, #f8fafc); border: 1.5px solid var(--border-subtle, #dbe3f0);
-      color: var(--text-primary, #0f172a); font: inherit; text-align: left; position: relative;
-      transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
-    }
+    #modalTarikSaldo .tk-method { position: relative; display: flex; align-items: center; gap: 9px; width: 100%; min-width: 0; box-sizing: border-box; padding: 11px 30px 11px 10px; border-radius: 14px; cursor: pointer; background: var(--bg-card-alt, #f8fafc); border: 1.5px solid var(--border-subtle, #dbe3f0); color: var(--text-primary, #0f172a); font: inherit; text-align: left; transition: border-color .15s ease, box-shadow .15s ease, background .15s ease; }
     #modalTarikSaldo .tk-method:focus-visible { outline: 2px solid #1C4FD1; outline-offset: 2px; }
     #modalTarikSaldo .tk-method.active { border-color: #1C4FD1; background: rgba(28,79,209,0.08); box-shadow: 0 0 0 3px rgba(28,79,209,0.14); }
-    #modalTarikSaldo .tk-badge { width: 38px; height: 38px; border-radius: 11px; flex-shrink: 0; overflow: hidden; position: relative; display: block; background: #f1f5f9; box-shadow: 0 2px 6px rgba(15,23,42,0.12); }
+    #modalTarikSaldo .tk-badge { width: 38px; height: 38px; border-radius: 11px; flex-shrink: 0; overflow: hidden; position: relative; display: block; background: #fff; box-shadow: 0 2px 6px rgba(15,23,42,0.12); }
     #modalTarikSaldo .tk-badge img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    #modalTarikSaldo .tk-badge-fallback { display: none; width: 100%; height: 100%; align-items: center; justify-content: center; color: #fff; font-size: 16px; font-weight: 900; }
-    #modalTarikSaldo .tk-method-name { flex: 1; font-size: 14px; font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    #modalTarikSaldo .tk-check { color: #1C4FD1; font-size: 16px; opacity: 0; transition: opacity .15s ease; flex-shrink: 0; }
+    #modalTarikSaldo .tk-badge-fallback { width: 100%; height: 100%; align-items: center; justify-content: center; color: #fff; font-size: 16px; font-weight: 900; }
+    #modalTarikSaldo .tk-method-name { flex: 1; font-size: 13.5px; font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #modalTarikSaldo .tk-check { position: absolute; top: 8px; right: 8px; color: #1C4FD1; font-size: 14px; opacity: 0; transition: opacity .15s ease; }
     #modalTarikSaldo .tk-method.active .tk-check { opacity: 1; }
 
     #modalTarikSaldo .tk-hidden-select { display: none !important; }
     #modalTarikSaldo .tk-min { font-size: 13px; font-weight: 600; color: var(--text-secondary, #475569); margin-top: 12px; }
     #modalTarikSaldo .tk-min:empty { display: none; }
 
-    #modalTarikSaldo .save-ewallet-row { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; }
+    #modalTarikSaldo .tk-saved { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    #modalTarikSaldo .tk-saved-main { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 14px; cursor: pointer; font: inherit; text-align: left; background: var(--bg-card-alt, #f8fafc); border: 1.5px solid var(--border-subtle, #dbe3f0); color: var(--text-primary, #0f172a); }
+    #modalTarikSaldo .tk-saved-text { display: flex; flex-direction: column; min-width: 0; }
+    #modalTarikSaldo .tk-saved-num { font-weight: 800; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #modalTarikSaldo .tk-saved-name { font-size: 12.5px; font-weight: 600; color: var(--text-secondary, #64748b); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #modalTarikSaldo .tk-saved-del { flex-shrink: 0; width: 34px; height: 34px; border-radius: 10px; cursor: pointer; border: 1px solid rgba(239,68,68,0.25); background: rgba(239,68,68,0.08); color: #EF4444; }
+    #modalTarikSaldo .tk-empty { font-size: 13px; color: var(--text-secondary, #64748b); padding: 8px 2px 12px; }
+
+    #modalTarikSaldo .save-ewallet-row { display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; }
     #modalTarikSaldo .save-ewallet-row input[type="checkbox"] { width: 18px; height: 18px; margin-top: 1px; flex-shrink: 0; accent-color: #1C4FD1; cursor: pointer; }
     #modalTarikSaldo .save-ewallet-row label { font-size: 13px; font-weight: 600; color: var(--text-secondary, #475569); line-height: 1.45; cursor: pointer; }
 
@@ -941,14 +933,7 @@
     #modalTarikSaldo .fee-row-total > span:first-child { font-weight: 700; color: var(--text-primary, #0f172a); }
     #modalTarikSaldo .fee-row .value.highlight { font-size: 19px; font-weight: 800; color: #16a34a; }
 
-    #modalTarikSaldo .btn-tarik {
-      width: 100%; padding: 15px 16px; border: none; border-radius: 16px; cursor: pointer;
-      font: inherit; font-size: 16px; font-weight: 800; color: #fff;
-      background: linear-gradient(135deg, #22c55e, #16a34a);
-      box-shadow: 0 10px 24px rgba(34, 197, 94, 0.32);
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
-    }
+    #modalTarikSaldo .btn-tarik { width: 100%; padding: 15px 16px; border: none; border-radius: 16px; cursor: pointer; font: inherit; font-size: 16px; font-weight: 800; color: #fff; background: linear-gradient(135deg, #22c55e, #16a34a); box-shadow: 0 10px 24px rgba(34, 197, 94, 0.32); display: flex; align-items: center; justify-content: center; gap: 10px; transition: transform .12s ease, opacity .12s ease; }
     #modalTarikSaldo .btn-tarik:active:not(:disabled) { transform: scale(0.98); }
     #modalTarikSaldo .btn-tarik:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
@@ -2082,7 +2067,7 @@ contoh3@gmail.com</code></li>
 
   <div class="modal-overlay" id="modalInfo"><div class="modal"><button class="modal-close" onclick="closeModal('modalInfo')"><i class="fas fa-xmark"></i></button><div class="about-head"><span class="about-logo"><i class="fas fa-envelope"></i></span><div class="about-head-text"><div class="about-title">Tentang STOR <span>GMAIL FARIS</span></div><div class="about-sub">Platform untuk mengelola proses stor secara sederhana, cepat, dan terorganisir.</div></div></div><div class="about-label">Hubungi Admin</div><div class="cs-stack" style="margin-bottom:12px;"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" class="cs-card is-wa"><span class="cs-card-icon"><i class="fab fa-whatsapp"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS WhatsApp</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a><a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" class="cs-card is-tg"><span class="cs-card-icon"><i class="fab fa-telegram"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS Telegram</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a></div><div class="about-label">Informasi</div><div class="info-card is-time"><div class="ic-icon"><i class="fas fa-clock"></i></div><div class="ic-body"><div class="ic-title">Jam Operasional</div><div class="ic-desc">Senin - Jumat · 09:00 – 17:00</div></div></div><div class="info-card is-sys"><div class="ic-icon"><i class="fas fa-signal"></i></div><div class="ic-body"><div class="ic-title">Status Sistem</div><div class="ic-desc"><span class="status-online"><span class="dot"></span> ONLINE</span></div></div></div><div class="about-label">Saluran Resmi</div><div class="info-card is-wa" style="cursor:pointer;" onclick="window.open('https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran WhatsApp</div><div class="ic-desc"><a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp"></i> Gabung Saluran</a></div></div></div><div class="info-card is-tg" style="cursor:pointer;" onclick="window.open('https://t.me/farisgmail1','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran Telegram</div><div class="ic-desc"><a href="https://t.me/farisgmail1" target="_blank" rel="noopener noreferrer" style="color:#229ED9;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-telegram-plane"></i> Gabung Saluran</a></div></div></div><div class="about-foot"><i class="fas fa-shield-halved"></i> STOR GMAIL FARIS v 1.1 · &copy; 2026</div></div></div>
 
-  <!-- ===== HALAMAN TARIK SALDO (ROOM FULL, gaya seperti menu Referal; ID & LOGIKA TETAP) ===== -->
+  <!-- ===== HALAMAN TARIK SALDO (ROOM FULL; ID & LOGIKA INTI TETAP) ===== -->
   <div class="modal-overlay" id="modalTarikSaldo">
     <div class="modal tk-modal">
       <div class="tk-top">
@@ -2103,26 +2088,39 @@ contoh3@gmail.com</code></li>
         <div class="card">
           <div class="card-title"><span class="tk-num">1</span> Nominal</div>
           <div class="form-group"><label>Nominal Penarikan (Rp) — sudah termasuk fee</label><input type="text" id="tarikNominal" placeholder="Contoh: 10000" inputmode="numeric" oninput="formatRupiahInput(this)" /></div>
+          <div class="tk-subhead">Pilihan cepat</div>
+          <div class="tk-chips" id="tkNominalChips"></div>
         </div>
 
         <div class="card">
           <div class="card-title"><span class="tk-num">2</span> Metode Penarikan</div>
-          <div class="tk-methods" role="group" aria-label="Pilih metode penarikan"><button type="button" class="tk-method" data-method="DANA" aria-pressed="false"><span class="tk-badge"><img src="https://cdn.phototourl.com/member/2026-10-16-77e3c0e9-bd40-4115-9491-f8693989c980.jpg" alt="DANA" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><span class="tk-badge-fallback" style="background:#118EEA;">D</span></span><span class="tk-method-name">DANA</span><i class="fas fa-circle-check tk-check"></i></button><button type="button" class="tk-method" data-method="ShopeePay" aria-pressed="false"><span class="tk-badge"><img src="https://cdn.phototourl.com/member/2026-10-16-010d0c26-d33a-4049-9cd8-2c36fa8272c0.jpg" alt="ShopeePay" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><span class="tk-badge-fallback" style="background:#EE4D2D;">S</span></span><span class="tk-method-name">ShopeePay</span><i class="fas fa-circle-check tk-check"></i></button><button type="button" class="tk-method" data-method="GoPay" aria-pressed="false"><span class="tk-badge"><img src="https://cdn.phototourl.com/member/2026-10-16-2077676c-d543-42c8-82e1-2a34d9925f3e.jpg" alt="GoPay" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><span class="tk-badge-fallback" style="background:#00AED6;">G</span></span><span class="tk-method-name">GoPay</span><i class="fas fa-circle-check tk-check"></i></button><button type="button" class="tk-method" data-method="OVO" aria-pressed="false"><span class="tk-badge"><img src="https://cdn.phototourl.com/member/2026-10-16-2c9ba99d-a787-449f-a6c3-e85e170bfb2f.jpg" alt="OVO" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><span class="tk-badge-fallback" style="background:#4E2A8E;">O</span></span><span class="tk-method-name">OVO</span><i class="fas fa-circle-check tk-check"></i></button></div>
+          <div class="tk-subhead">E-Wallet</div>
+          <div class="tk-methods" id="tkMethodsEwallet"></div>
+          <div class="tk-subhead">Bank</div>
+          <div class="tk-methods" id="tkMethodsBank"></div>
           <select id="tarikMetode" class="tk-hidden-select" tabindex="-1" aria-hidden="true">
             <option value="DANA">DANA</option>
             <option value="ShopeePay">ShopeePay</option>
             <option value="GoPay">GoPay</option>
             <option value="OVO">OVO</option>
+            <option value="BCA">BCA</option>
+            <option value="BRI">BRI</option>
+            <option value="BNI">BNI</option>
+            <option value="Mandiri">Mandiri</option>
+            <option value="BSI">BSI</option>
           </select>
           <div id="minimalInfo" class="tk-min"></div>
         </div>
 
         <div class="card">
-          <div class="card-title"><span class="tk-num">3</span> Nomor Tujuan</div>
-          <div class="form-group"><label>Nomor Tujuan / Akun</label><input type="text" id="tarikAkun" placeholder="Masukkan nomor DANA / ShopeePay / GoPay / OVO" required /></div>
+          <div class="card-title"><span class="tk-num">3</span> Tujuan</div>
+          <div class="tk-subhead">Rekening tersimpan</div>
+          <div id="tkSavedList"></div>
+          <div class="form-group"><label>Nomor Tujuan / Akun</label><input type="text" id="tarikAkun" placeholder="Nomor rekening / nomor HP e-wallet" required /></div>
+          <div class="form-group" style="margin-top:12px;"><label>Atas Nama</label><input type="text" id="tkNama" placeholder="Nama pemilik rekening" autocomplete="off" maxlength="60" /></div>
           <div class="save-ewallet-row">
             <input type="checkbox" id="saveEwalletCheck" checked />
-            <label for="saveEwalletCheck">Simpan nomor ini untuk penarikan berikutnya</label>
+            <label for="saveEwalletCheck">Simpan rekening ini untuk penarikan berikutnya</label>
           </div>
         </div>
 
@@ -2142,28 +2140,164 @@ contoh3@gmail.com</code></li>
   </div>
   <script>
     (function () {
+      var CONFIG = [{"key": "DANA", "type": "ewallet", "color": "#118EEA", "letter": "D", "logo": "https://cdn.phototourl.com/member/2026-10-16-77e3c0e9-bd40-4115-9491-f8693989c980.jpg"}, {"key": "ShopeePay", "type": "ewallet", "color": "#EE4D2D", "letter": "S", "logo": "https://cdn.phototourl.com/member/2026-10-16-010d0c26-d33a-4049-9cd8-2c36fa8272c0.jpg"}, {"key": "GoPay", "type": "ewallet", "color": "#00AED6", "letter": "G", "logo": "https://cdn.phototourl.com/member/2026-10-16-2077676c-d543-42c8-82e1-2a34d9925f3e.jpg"}, {"key": "OVO", "type": "ewallet", "color": "#4E2A8E", "letter": "O", "logo": "https://cdn.phototourl.com/member/2026-10-16-2c9ba99d-a787-449f-a6c3-e85e170bfb2f.jpg"}, {"key": "BCA", "type": "bank", "color": "#0A5CAD", "letter": "B", "logo": ""}, {"key": "BRI", "type": "bank", "color": "#00529C", "letter": "B", "logo": ""}, {"key": "BNI", "type": "bank", "color": "#F15A22", "letter": "B", "logo": ""}, {"key": "Mandiri", "type": "bank", "color": "#003D79", "letter": "M", "logo": ""}, {"key": "BSI", "type": "bank", "color": "#00A59B", "letter": "B", "logo": ""}];
       var modal = document.getElementById('modalTarikSaldo');
       var sel = document.getElementById('tarikMetode');
-      if (!modal || !sel) return;
-      var btns = modal.querySelectorAll('.tk-method');
-      function syncMethod() {
-        for (var i = 0; i < btns.length; i++) {
-          var on = btns[i].getAttribute('data-method') === sel.value;
-          btns[i].classList.toggle('active', on);
-          btns[i].setAttribute('aria-pressed', on ? 'true' : 'false');
+      var nominal = document.getElementById('tarikNominal');
+      var akun = document.getElementById('tarikAkun');
+      var nama = document.getElementById('tkNama');
+      var saveCheck = document.getElementById('saveEwalletCheck');
+      var form = document.getElementById('tarikForm');
+      if (!modal || !sel || !nominal || !akun) return;
+
+      var accounts = [];   // cache dari database (list_saved_accounts)
+
+      function byKey(k) { for (var i = 0; i < CONFIG.length; i++) if (CONFIG[i].key === k) return CONFIG[i]; return null; }
+      function current() { return byKey(sel.value) || CONFIG[0]; }
+      function digits(v) { return String(v || '').replace(/\D/g, ''); }
+      function fmt(n) { return Number(n).toLocaleString('id-ID'); }
+      function saldo() { return Number(digits(document.getElementById('tarikSaldoDisplay').textContent)) || 0; }
+      // minimal & fee diambil dari withdrawal.js (sumber resmi, tidak diduplikasi)
+      function minOf(key) { return (typeof getMinimalByMetode === 'function') ? getMinimalByMetode(key) : 1500; }
+      function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+      function toast(type, title, msg) { if (typeof showToast === 'function') showToast(type, title, msg); }
+
+      function badge(m) {
+        var wrap = el('span', 'tk-badge');
+        var fb = el('span', 'tk-badge-fallback', m.letter);
+        fb.style.background = m.color;
+        if (m.logo) {
+          var img = document.createElement('img');
+          img.src = m.logo; img.alt = m.key; img.referrerPolicy = 'no-referrer';
+          img.onerror = function () { this.style.display = 'none'; this.nextSibling.style.display = 'flex'; };
+          wrap.appendChild(img);
+          fb.style.display = 'none';
+        } else {
+          fb.style.display = 'flex';
         }
+        wrap.appendChild(fb);
+        return wrap;
       }
-      for (var i = 0; i < btns.length; i++) {
-        btns[i].addEventListener('click', function () {
-          sel.value = this.getAttribute('data-method');
-          sel.dispatchEvent(new Event('change', { bubbles: true }));
-          sel.dispatchEvent(new Event('input', { bubbles: true }));
-          syncMethod();
+
+      function renderMethods() {
+        var groups = { ewallet: document.getElementById('tkMethodsEwallet'), bank: document.getElementById('tkMethodsBank') };
+        CONFIG.forEach(function (m) {
+          var b = el('button', 'tk-method');
+          b.type = 'button'; b.setAttribute('data-method', m.key); b.setAttribute('aria-pressed', 'false');
+          b.appendChild(badge(m));
+          b.appendChild(el('span', 'tk-method-name', m.key));
+          b.appendChild(el('i', 'fas fa-circle-check tk-check'));
+          b.addEventListener('click', function () {
+            sel.value = m.key;
+            sel.dispatchEvent(new Event('change', { bubbles: true }));
+            sel.dispatchEvent(new Event('input', { bubbles: true }));
+            syncAll();
+          });
+          groups[m.type].appendChild(b);
         });
       }
-      sel.addEventListener('change', syncMethod);
-      new MutationObserver(syncMethod).observe(modal, { attributes: true, attributeFilter: ['class'] });
-      syncMethod();
+
+      function renderChips() {
+        var box = document.getElementById('tkNominalChips');
+        box.innerHTML = '';
+        var m = current(), min = minOf(m.key), max = saldo();
+        var ladder = [min, 5000, 10000, 20000, 50000, 100000, 200000, 500000];
+        var seen = {};
+        ladder.forEach(function (v) {
+          if (v < min || seen[v]) return; seen[v] = true;
+          var b = el('button', 'tk-chip-btn', fmt(v));
+          b.type = 'button';
+          if (v > max) { b.disabled = true; b.title = 'Melebihi saldo'; }
+          if (digits(nominal.value) === String(v)) b.classList.add('active');
+          b.addEventListener('click', function () {
+            nominal.value = String(v);
+            nominal.dispatchEvent(new Event('input', { bubbles: true }));
+            syncAll();
+          });
+          box.appendChild(b);
+        });
+      }
+
+      function renderSaved() {
+        var box = document.getElementById('tkSavedList');
+        box.innerHTML = '';
+        var m = current();
+        var list = accounts.filter(function (r) { return r.metode === m.key; });
+        if (!list.length) { box.appendChild(el('div', 'tk-empty', 'Belum ada rekening tersimpan untuk ' + m.key + '.')); return; }
+        list.forEach(function (r) {
+          var row = el('div', 'tk-saved');
+          var main = el('button', 'tk-saved-main'); main.type = 'button';
+          main.appendChild(badge(m));
+          var txt = el('span', 'tk-saved-text');
+          txt.appendChild(el('span', 'tk-saved-num', r.akun));
+          txt.appendChild(el('span', 'tk-saved-name', r.nama || '—'));
+          main.appendChild(txt);
+          main.addEventListener('click', function () {
+            akun.value = r.akun; nama.value = r.nama || '';
+          });
+          var del = el('button', 'tk-saved-del'); del.type = 'button'; del.title = 'Hapus';
+          del.appendChild(el('i', 'fas fa-xmark'));
+          del.addEventListener('click', function () { deleteAccount(r.id); });
+          row.appendChild(main); row.appendChild(del);
+          box.appendChild(row);
+        });
+      }
+
+      async function refreshAccounts() {
+        try {
+          var r = await apiRequest('listSavedAccounts', {});
+          accounts = (r && r.data) || [];
+        } catch (e) {
+          console.warn('Gagal memuat rekening tersimpan:', e);
+          accounts = [];
+        }
+        renderSaved();
+      }
+
+      async function deleteAccount(id) {
+        try {
+          await apiRequest('deleteSavedAccount', { id: id });
+          await refreshAccounts();
+        } catch (e) {
+          toast('error', 'Gagal', e.message || 'Rekening tidak bisa dihapus.');
+        }
+      }
+
+      function syncMethod() {
+        document.querySelectorAll('#modalTarikSaldo .tk-method').forEach(function (b) {
+          var on = b.getAttribute('data-method') === sel.value;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+      }
+      function syncAll() { syncMethod(); renderChips(); renderSaved(); }
+
+      // Simpan rekening ke database saat tarik (mengikuti checkbox yang sudah ada).
+      // Hanya disimpan kalau nominal lolos minimal & saldo, supaya tidak menyimpan
+      // rekening dari percobaan tarik yang pasti gagal.
+      form.addEventListener('submit', async function () {
+        if (!saveCheck.checked) return;
+        var number = akun.value.replace(/[\s-]/g, '');
+        var name = nama.value.trim();
+        var amt = Number(digits(nominal.value)) || 0;
+        var m = current();
+        if (!/^[0-9]{5,20}$/.test(number)) return;
+        if (amt < minOf(m.key) || amt > saldo()) return;
+        try {
+          await apiRequest('saveSavedAccount', { metode: m.key, akun: number, nama: name });
+          await refreshAccounts();
+        } catch (e) {
+          console.warn('Gagal menyimpan rekening:', e);
+        }
+      });
+
+      renderMethods();
+      nominal.addEventListener('input', syncAll);
+      new MutationObserver(function () {
+        if (modal.classList.contains('open')) refreshAccounts();
+        syncAll();
+      }).observe(modal, { attributes: true, attributeFilter: ['class'] });
+      syncAll();
     })();
   </script>
 
