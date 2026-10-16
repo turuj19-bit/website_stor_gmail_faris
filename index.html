@@ -2188,10 +2188,13 @@ contoh3@gmail.com</code></li>
     #modalTarikSaldo .tk-m.active { background: #e9eefc; border: 2px solid #2a5fe0; box-shadow: 0 0 0 4px rgba(42, 95, 224, .13); padding: 0 11px; }
     #modalTarikSaldo .tk-mi { position: relative; width: 34px; height: 34px; flex-shrink: 0; }
     #modalTarikSaldo .tk-mi img { width: 34px; height: 34px; border-radius: 10px; object-fit: cover; display: block; background: #fff; }
-    /* Icon GoPay & OVO: tampil utuh (tidak terpotong), rapi dengan bingkai tipis */
+    /* Icon disamakan ukurannya dengan DANA: margin putih bawaan gambar dipangkas (zoom) supaya logo memenuhi kotak */
+    #modalTarikSaldo .tk-mi img[alt="ShopeePay"], #modalTarikSaldo .tk-saved img[alt="ShopeePay"] {
+      transform: scale(1.55); clip-path: inset(17.7% round 6.5px);
+    }
     #modalTarikSaldo .tk-mi img[alt="GoPay"], #modalTarikSaldo .tk-mi img[alt="OVO"],
     #modalTarikSaldo .tk-saved img[alt="GoPay"], #modalTarikSaldo .tk-saved img[alt="OVO"] {
-      object-fit: contain; background: #fff; border: 1px solid #e3e9f5; padding: 2px;
+      transform: scale(1.15); clip-path: inset(6.5% round 8.7px);
     }
     #modalTarikSaldo .tk-mi b {
       display: none; position: absolute; right: -4px; bottom: -4px; width: 15px; height: 15px; border-radius: 50%; background: #2a5fe0; border: 2px solid #fff;
