@@ -867,7 +867,6 @@
       .brand-logo, .brand-logo .bl-glow, .brand-logo .bl-ring, .brand-logo .bl-tile::after, #authPage .auth-bg-art .bg-ic { animation: none !important; }
     }
   </style>
-
 </head>
 <body>
 
@@ -918,7 +917,7 @@
     <span class="bg-ic i8"><svg viewBox="0 0 64 64"><rect x="6" y="14" width="52" height="36" rx="7" fill="#1C4FD1"/><path d="M8 18 L32 36 L56 18" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
   </div>
     <div class="auth-logo">
-      <div class="brand-logo" role="img" aria-label="Logo S3L GM4IL 06">
+      <div class="brand-logo" role="img" aria-label="Logo Stor Gmail Faris">
         <span class="bl-glow"></span><span class="bl-ring"></span>
         <div class="bl-tile">
           <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
@@ -940,7 +939,7 @@
       <div class="store-text" style="display:none"></div>
     </div>
     <div class="auth-box">
-      <div class="auth-title">S3L <span class="highlight">GM4IL 06</span></div>
+      <div class="auth-title">STOR <span class="highlight">GM4IL FARIS</span></div>
       <div class="auth-sub">Silakan login atau daftar untuk melanjutkan</div>
       <div class="auth-tabs">
         <button id="tabLogin" class="active" onclick="switchAuthTab('login')">Login</button>
@@ -973,7 +972,6 @@
           <span class="gmail-mini"><i class="fas fa-envelope"></i></span>
           <span class="brand-text-sel">S3L</span>
           <span class="brand-text-gmail">GM4IL</span>
-          <span class="brand-text-num">06</span>
         </div>
         <div class="header-actions">
           <div class="user-badge" onclick="showPage('profil')">
@@ -1092,7 +1090,7 @@
         <span class="stor-choice-caption-icon"><i class="fas fa-paper-plane"></i></span>
         <span class="stor-choice-caption-text">
           <span class="stor-choice-caption-title"><i class="fas fa-envelopes-bulk ei ei-blue"></i> Pilih Jenis Storan</span>
-          <span class="stor-choice-caption-sub">Silakan pilih jenis storan email (Fresh, Generate, Bekas, atau Captcha) di bawah ini</span>
+          <span class="stor-choice-caption-sub">Silakan pilih jenis storan email (Fresh, Bekas, atau Captcha) di bawah ini</span>
         </span>
       </div>
 
@@ -1107,17 +1105,6 @@
             <div class="stor-choice-rate">Rate: <span id="storCardFreshRate">Rp 0</span> / email</div>
           </div>
           <span class="badge-status" id="storCardFreshStatus">OPEN</span>
-          <i class="fas fa-chevron-right stor-choice-chevron"></i>
-        </div>
-        <!-- Kartu Gmail Fresh Generate -->
-        <div id="storCardGen" class="stor-choice-card is-gen">
-          <div class="stor-choice-icon is-gen"><i class="fas fa-wand-magic-sparkles"></i></div>
-          <div class="stor-choice-body">
-            <div class="stor-choice-title" id="storCardGenName">Gmail Fresh Generate</div>
-            <div class="stor-choice-desc"><span class="stor-choice-desc-label">Password:</span> <span id="storCardGenInfo">-</span></div>
-            <div class="stor-choice-rate">Rate: <span id="storCardGenRate">Rp 0</span> / email</div>
-          </div>
-          <span class="badge-status" id="storCardGenStatus">OPEN</span>
           <i class="fas fa-chevron-right stor-choice-chevron"></i>
         </div>
         <!-- Kartu Bekas -->
@@ -1224,7 +1211,7 @@ jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></
             <input type="text" id="storBiasaPassword" readonly style="background:var(--bg-card-alt);cursor:default;" />
             <div class="helper">Terisi otomatis mengikuti password yang diset admin. Pastikan sudah sesuai rules.</div>
           </div>
-          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storBiasaInput" style="font-size:13px;" placeholder="jokokendi@gmail.com&#160;joko123&#10;4162 4359&#10;1739 3962&#10;1927 0875&#10;0785 9881&#10;9952 7681"></textarea><div class="helper" id="storBiasaCounter">Terdeteksi: 0 item</div></div>
+          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storBiasaInput" style="font-size:13px;" placeholder="jokokendi@gmail.com&#160;joko123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567"></textarea><div class="helper" id="storBiasaCounter">Terdeteksi: 0 item</div></div>
           <button class="btn-submit" id="storBiasaSubmitBtn" onclick="submitStor('biasa')"><span class="spinner"></span><span class="btn-text"><i class="fas fa-paper-plane"></i> Kirim Setoran Bekas Biasa</span></button>
           <div id="storBiasaClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Bekas Biasa sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
         </div>
@@ -1245,7 +1232,7 @@ jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></
             <input type="text" id="storOldPassword" readonly style="background:var(--bg-card-alt);cursor:default;" />
             <div class="helper">Terisi otomatis mengikuti password yang diset admin. Pastikan sudah sesuai rules.</div>
           </div>
-          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storOldInput" style="font-size:13px;" placeholder="gilang6538@gmail.com&#160;gilang123&#10;4162 4359&#10;1739 3962&#10;1927 0875&#10;0785 9881&#10;9952 7681"></textarea><div class="helper" id="storOldCounter">Terdeteksi: 0 item</div></div>
+          <div class="form-group"><label><i class="fas fa-envelope"></i> Daftar Gmail (satu per baris)</label><textarea id="storOldInput" style="font-size:13px;" placeholder="gilang6538@gmail.com&#160;gilang123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567"></textarea><div class="helper" id="storOldCounter">Terdeteksi: 0 item</div></div>
           <button class="btn-submit" id="storOldSubmitBtn" onclick="submitStor('old')"><span class="spinner"></span><span class="btn-text"><i class="fas fa-paper-plane"></i> Kirim Setoran Bekas Old</span></button>
           <div id="storOldClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Bekas Old sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
         </div>
@@ -1270,54 +1257,6 @@ jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></
           <div id="storCaptchaClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Gmail Captcha sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
         </div>
       </div>
-      <!-- FORM GMAIL FRESH GENERATE — tampil full screen -->
-      <div id="storFormGen" class="stor-fullscreen-form">
-        <div class="stor-form-topbar">
-          <button id="storBackBtnGen" class="stor-form-back" title="Kembali"><i class="fas fa-arrow-left"></i></button>
-          <div>
-            <div class="stor-form-title">Stor Gmail Fresh Generate</div>
-            <div class="stor-form-sub">Nama &amp; email dibuatkan otomatis oleh sistem</div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="gen-explain" id="genExplainBox">
-            <div class="gen-explain-title"><i class="fas fa-circle-info"></i> Cara kerja</div>
-            <ol>
-              <li>Tekan <strong>Mulai</strong>. Sistem membuatkan nama orang dan email otomatis.</li>
-              <li>Buat akun Gmail di HP dengan nama, email, dan password <strong>persis</strong> seperti yang tampil.</li>
-              <li>Kalau akun sudah jadi, tekan <strong>Done</strong> untuk mengirim setoran.</li>
-              <li>Email tidak bisa dipakai (sudah terdaftar di Google)? Tekan <strong>Ganti Email</strong>.</li>
-            </ol>
-            <div class="gen-note">Email yang sudah di-Done tidak akan dibuat lagi. Rules sama seperti Gmail Fresh: nama orang, angka maksimal 2 digit di belakang, tidak pakai nomor HP, tidak berurutan. Jangan ubah nama, email, atau password dari sistem, kalau beda akun tidak dibayar.</div>
-          </div>
-          <div class="form-group" id="genPassGroup">
-            <label><i class="fas fa-key"></i> Password Hari Ini</label>
-            <input type="text" id="storGenPassword" readonly style="background:var(--bg-card-alt);cursor:default;" />
-            <div class="helper">Terisi otomatis mengikuti password yang diset admin.</div>
-          </div>
-          <textarea id="storGenInput" style="display:none;" aria-hidden="true" tabindex="-1"></textarea>
-          <div id="storGenIdle">
-            <button class="btn-submit" id="storGenStartBtn" type="button" onclick="genStart()"><span class="btn-text"><i class="fas fa-play"></i> Mulai</span></button>
-          </div>
-          <div id="storGenTask" style="display:none;">
-            <div class="gen-task">
-              <div class="gen-task-title"><i class="fas fa-wand-magic-sparkles"></i> Data akun yang harus dibuat</div>
-              <div class="gen-row"><span class="gen-label"><i class="fas fa-user"></i> Nama depan</span><span class="gen-value" id="genFirst">-</span><button class="gen-copy" type="button" onclick="genCopy('first')" title="Salin"><i class="fas fa-copy"></i></button></div>
-              <div class="gen-row"><span class="gen-label"><i class="fas fa-user"></i> Nama belakang</span><span class="gen-value" id="genLast">-</span><button class="gen-copy" type="button" onclick="genCopy('last')" title="Salin"><i class="fas fa-copy"></i></button></div>
-              <div class="gen-row"><span class="gen-label"><i class="fas fa-envelope"></i> Email</span><span class="gen-value" id="genEmail">-</span><button class="gen-copy" type="button" onclick="genCopy('email')" title="Salin"><i class="fas fa-copy"></i></button></div>
-              <div class="gen-row"><span class="gen-label"><i class="fas fa-key"></i> Password</span><span class="gen-value" id="genPass">-</span><button class="gen-copy" type="button" onclick="genCopy('pass')" title="Salin"><i class="fas fa-copy"></i></button></div>
-              <div class="gen-row"><span class="gen-label"><i class="fas fa-cake-candles"></i> Tahun lahir</span><span class="gen-value" id="genYear">-</span><span></span></div>
-            </div>
-            <button class="btn-submit" id="storGenDoneBtn" type="button" onclick="genDone()"><span class="spinner"></span><span class="btn-text" id="storGenDoneText"><i class="fas fa-circle-check"></i> Done, Kirim Setoran</span></button>
-            <div class="gen-actions">
-              <button class="gen-btn" id="genChangeBtn" type="button" onclick="genChange()"><i class="fas fa-rotate"></i> Ganti Email</button>
-              <button class="gen-btn is-danger" id="genCancelBtn" type="button" onclick="genCancel()"><i class="fas fa-xmark"></i> Batal</button>
-            </div>
-          </div>
-          <div id="storGenClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Storan Fresh Generate sedang ditutup oleh admin. Silakan coba lagi nanti.</div>
-        </div>
-      </div>
-
     </div>
 
     <!-- REFERAL -->
@@ -1493,7 +1432,7 @@ jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></
             <hr style="border-color:var(--border-subtle);margin:8px 0;">
 
             <p><strong>1. HUKUM DUPLIKASI DATA (DOUBLE SELL)</strong><br>
-            Setiap entri data yang dimasukkan ke node sistem ini eksklusif milik kemitraan S3L GM4IL 06. Menjual kembali aset yang sama ke agregator eksternal adalah pelanggaran <strong>TIER 1</strong>.</p>
+            Setiap entri data yang dimasukkan ke node sistem ini eksklusif milik kemitraan S3L GM4IL. Menjual kembali aset yang sama ke agregator eksternal adalah pelanggaran <strong>TIER 1</strong>.</p>
 
             <p><strong>2. PENALTI PELANGGARAN TIER 1</strong><br>
             Protokol web otomatis mendeteksi penyimpangan dan seketika mengeksekusi:</p>
@@ -1594,41 +1533,22 @@ jokopurworo2@gmail.com&#160;rejo7778 3q7s 3txp qzan nsv2 5p2r d45j qmdm 7otp"></
             <hr style="border-color:var(--border-subtle);margin:12px 0;">
 
             <p style="font-weight:700;font-size:15px;"><i class="fas fa-envelope ei ei-blue"></i> MASUKKAN DATA AKUN</p>
-            <p>Silakan ketik atau copy-paste ke dalam kolom daftar email. Format Email Old sama persis dengan Bekas Biasa, memakai <strong>5 kode cadangan</strong> yang ditaruh di baris bawah email dan password.</p>
+            <p>Silakan ketik atau copy-paste ke dalam kolom daftar email. Format Email Old sama persis dengan Bekas Biasa, memakai <strong>kode cadangan</strong> yang ditaruh di samping password.</p>
             <p style="font-weight:700;font-size:15px;"><i class="fas fa-book-open ei"></i> TUTORIAL CARA KIRIM (DENGAN KODE CADANGAN)</p>
             <p><strong>Formatnya:</strong><br>
-            <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;">Email Password
-KodeCadangan1
-KodeCadangan2
-KodeCadangan3
-KodeCadangan4
-KodeCadangan5</code></p>
-            <p>Baris pertama berisi email dan password (dipisah 1 spasi). Kode cadangan ditaruh di baris bawahnya, <strong>1 kode per baris</strong>. Untuk email kedua dan seterusnya, langsung lanjut di baris berikutnya tanpa baris kosong.</p>
+            <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">Email Password KodeCadangan</code></p>
+            <p>Kode cadangan ditaruh di samping password. Batas spasi antara email, password dan kode cadangan. Berikan batas enter untuk email kedua dan seterusnya.</p>
             <ul>
-              <li><strong>Wajib 5 kode cadangan saja, tiap kode 8 angka ditulis 4 angka + spasi + 4 angka</strong> (contoh <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">4162 4359</code>). Kurang 1 angka saja atau kurang 1 kode, setoran ditolak dan muncul peringatan apa yang salah dan apa yang harus diperbaiki.</li>
+              <li><strong>Wajib 10 kode cadangan, tiap kode 8 angka.</strong> Kurang 1 angka saja atau kurang 1 kode, setoran ditolak dan muncul peringatan apa yang salah dan apa yang harus diperbaiki.</li>
+              <li>Kode boleh ditulis rapat (<code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">12345678</code>) atau dipisah 4+4 angka (<code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">1234 5678</code>), asal semua kode memakai gaya yang sama.</li>
               <li><strong><i class="fas fa-thumbtack ei ei-red"></i> Untuk Satuan:</strong><br>
-              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;word-break:break-all;">gilang6538@gmail.com gilang123
-4162 4359
-1739 3962
-1927 0875
-0785 9881
-9952 7681</code></li>
+              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;word-break:break-all;">gilang6538@gmail.com gilang123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567</code></li>
               <li style="margin-top:8px;"><strong><i class="fas fa-thumbtack ei ei-red"></i> Untuk Mode Bulk (Banyak):</strong><br>
-              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;word-break:break-all;">gilang6538@gmail.com gilang123
-4162 4359
-1739 3962
-1927 0875
-0785 9881
-9952 7681
-budiman@gmail.com diman222
-3306 1182
-5471 0926
-8820 3345
-1093 7764
-6658 2201</code></li>
+              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;word-break:break-all;">gilang6538@gmail.com gilang123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567
+budiman@gmail.com diman222 11112222 33334444 55556666 77778888 99990000 12121212 34343434 56565656 78787878 90909090</code></li>
             </ul>
             <p style="margin-top:4px;">Dan seterusnya...</p>
-            <p style="margin-top:6px;font-size:13px;color:var(--text-secondary);">Email dan password dipisah 1 spasi di baris pertama. Satu kode cadangan per baris, 5 baris per email.</p>
+            <p style="margin-top:6px;font-size:13px;color:var(--text-secondary);">Email, password, dan kode cadangan dipisah 1 spasi. Satu email per baris.</p>
 
             <p style="margin-top:12px;font-size:13px;color:var(--text-secondary);"><i class="fas fa-paper-plane ei ei-blue"></i> Terimakasih Atas Pengertiannya<br />Created By Faris<i class="fas fa-comment-dots ei ei-blue ei-end"></i></p>
           </div>
@@ -1656,41 +1576,22 @@ budiman@gmail.com diman222
             <hr style="border-color:var(--border-subtle);margin:12px 0;">
 
             <p style="font-weight:700;font-size:15px;"><i class="fas fa-envelope-open-text ei ei-blue"></i> MASUKAN DATA AKUN</p>
-            <p>Silakan ketik atau copy-paste ke dalam kolom daftar email. Karena memakai <strong>kode cadangan</strong>, tarok 5 kode cadangan di baris bawah email dan password (1 kode per baris).</p>
+            <p>Silakan ketik atau copy-paste ke dalam kolom daftar email. Karena memakai <strong>kode cadangan</strong>, tarok kode cadangan di samping password, tata letaknya sama seperti format 2FA.</p>
             <p style="font-weight:700;font-size:15px;"><i class="fas fa-book-open ei"></i> TUTORIAL CARA KIRIM (DENGAN KODE CADANGAN)</p>
             <p><strong>Formatnya:</strong><br>
-            <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;">Email Password
-KodeCadangan1
-KodeCadangan2
-KodeCadangan3
-KodeCadangan4
-KodeCadangan5</code></p>
-            <p>Baris pertama berisi email dan password (dipisah 1 spasi). Kode cadangan ditaruh di baris bawahnya, <strong>1 kode per baris</strong>. Untuk email kedua dan seterusnya, langsung lanjut di baris berikutnya tanpa baris kosong.</p>
+            <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">Email Password KodeCadangan</code></p>
+            <p>Kode cadangan ditaruh di samping password. Batas spasi antara email, password dan kode cadangan. Berikan batas enter untuk email kedua dan seterusnya.</p>
             <ul>
-              <li><strong>Wajib 5 kode cadangan saja, tiap kode 8 angka ditulis 4 angka + spasi + 4 angka</strong> (contoh <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">4162 4359</code>). Kurang 1 angka saja atau kurang 1 kode, setoran ditolak dan muncul peringatan apa yang salah dan apa yang harus diperbaiki.</li>
+              <li><strong>Wajib 10 kode cadangan, tiap kode 8 angka.</strong> Kurang 1 angka saja atau kurang 1 kode, setoran ditolak dan muncul peringatan apa yang salah dan apa yang harus diperbaiki.</li>
+              <li>Kode boleh ditulis rapat (<code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">12345678</code>) atau dipisah 4+4 angka (<code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;">1234 5678</code>), asal semua kode memakai gaya yang sama.</li>
               <li><strong><i class="fas fa-thumbtack ei ei-red"></i> Untuk Satuan:</strong><br>
-              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;word-break:break-all;">jokokendi@gmail.com joko123
-4162 4359
-1739 3962
-1927 0875
-0785 9881
-9952 7681</code></li>
+              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;word-break:break-all;">jokokendi@gmail.com joko123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567</code></li>
               <li style="margin-top:8px;"><strong><i class="fas fa-thumbtack ei ei-red"></i> Untuk Mode Bulk (Banyak):</strong><br>
-              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;word-break:break-all;">jokokendi@gmail.com joko123
-4162 4359
-1739 3962
-1927 0875
-0785 9881
-9952 7681
-jokokendi9875@gmail.com kendi333
-3306 1182
-5471 0926
-8820 3345
-1093 7764
-6658 2201</code></li>
+              <code style="background:var(--bg-card-alt);padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;white-space:pre-wrap;word-break:break-all;">jokokendi@gmail.com joko123 12345678 23456789 34567890 45678901 56789012 67890123 78901234 89012345 90123456 01234567
+jokokendi9875@gmail.com kendi333 11112222 33334444 55556666 77778888 99990000 12121212 34343434 56565656 78787878 90909090</code></li>
             </ul>
             <p style="margin-top:4px;">Dan seterusnya...</p>
-            <p style="margin-top:6px;font-size:13px;color:var(--text-secondary);">Email dan password dipisah 1 spasi di baris pertama. Satu kode cadangan per baris, 5 baris per email.</p>
+            <p style="margin-top:6px;font-size:13px;color:var(--text-secondary);">Email, password, dan kode cadangan dipisah 1 spasi. Satu email per baris.</p>
 
             <p style="margin-top:12px;font-size:13px;color:var(--text-secondary);"><i class="fas fa-paper-plane ei ei-blue"></i> Terimakasih Atas Pengertiannya<br />Created By Faris<i class="fas fa-comment-dots ei ei-blue ei-end"></i></p>
           </div>
@@ -1906,12 +1807,12 @@ contoh3@gmail.com</code></li>
     <div class="wl-hero">
       <span class="wl-orb o1"></span><span class="wl-orb o2"></span>
       <span class="wl-spark s1"></span><span class="wl-spark s2"></span><span class="wl-spark s3"></span><span class="wl-spark s4"></span>
-      <span class="wl-brand"><i class="fas fa-envelope"></i> S3L GM4IL 06</span>
+      <span class="wl-brand"><i class="fas fa-envelope"></i> S3L GM4IL</span>
       <div class="big-icon"><i class="fas fa-rocket"></i></div>
     </div>
     <div class="wl-body">
       <div class="big-title" id="welcomeTitle">Selamat Datang!<i class="fas fa-champagne-glasses ei ei-gold ei-end"></i></div>
-      <div class="big-desc" id="welcomeDesc"><strong>Selamat datang di S3L GM4IL 06</strong><br>Saatnya manfaatkan email yang kamu punya untuk menghasilkan cuan. Setor Gmail dengan mudah, pantau saldo secara real-time, dan dapatkan pembayaran dengan proses yang jelas.</div>
+      <div class="big-desc" id="welcomeDesc">Senang bertemu denganmu di <strong>STOR GMAIL FARIS</strong>. Setor Gmail dengan mudah, pantau saldo dan riwayat kapan saja, dan nikmati pembayaran yang jelas serta transparan.</div>
       <div class="wl-feats">
         <span class="wl-feat"><i class="fas fa-paper-plane"></i>Stor Mudah</span>
         <span class="wl-feat"><i class="fas fa-bolt"></i>Payment 24/48 Jam</span>
@@ -2091,42 +1992,112 @@ contoh3@gmail.com</code></li>
     </form>
   </div></div>
 
-  <div class="modal-overlay" id="modalInfo"><div class="modal"><button class="modal-close" onclick="closeModal('modalInfo')"><i class="fas fa-xmark"></i></button><div class="about-head"><span class="about-logo"><i class="fas fa-envelope"></i></span><div class="about-head-text"><div class="about-title">Tentang S3L <span>GM4IL 06</span></div><div class="about-sub">Platform untuk mengelola proses stor secara sederhana, cepat, dan terorganisir.</div></div></div><div class="about-label">Hubungi Admin</div><div class="cs-stack" style="margin-bottom:12px;"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" class="cs-card is-wa"><span class="cs-card-icon"><i class="fab fa-whatsapp"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS WhatsApp</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a><a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" class="cs-card is-tg"><span class="cs-card-icon"><i class="fab fa-telegram"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS Telegram</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a></div><div class="about-label">Informasi</div><div class="info-card is-time"><div class="ic-icon"><i class="fas fa-clock"></i></div><div class="ic-body"><div class="ic-title">Jam Operasional</div><div class="ic-desc">Senin - Jumat · 09:00 – 17:00</div></div></div><div class="info-card is-sys"><div class="ic-icon"><i class="fas fa-signal"></i></div><div class="ic-body"><div class="ic-title">Status Sistem</div><div class="ic-desc"><span class="status-online"><span class="dot"></span> ONLINE</span></div></div></div><div class="about-label">Saluran Resmi</div><div class="info-card is-wa" style="cursor:pointer;" onclick="window.open('https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran WhatsApp</div><div class="ic-desc"><a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp"></i> Gabung Saluran</a></div></div></div><div class="info-card is-tg" style="cursor:pointer;" onclick="window.open('https://t.me/farisgmail1','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran Telegram</div><div class="ic-desc"><a href="https://t.me/farisgmail1" target="_blank" rel="noopener noreferrer" style="color:#229ED9;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-telegram-plane"></i> Gabung Saluran</a></div></div></div><div class="about-foot"><i class="fas fa-shield-halved"></i> S3L GM4IL 06 v 1.1 · &copy; 2026</div></div></div>
+  <div class="modal-overlay" id="modalInfo"><div class="modal"><button class="modal-close" onclick="closeModal('modalInfo')"><i class="fas fa-xmark"></i></button><div class="about-head"><span class="about-logo"><i class="fas fa-envelope"></i></span><div class="about-head-text"><div class="about-title">Tentang STOR <span>GMAIL FARIS</span></div><div class="about-sub">Platform untuk mengelola proses stor secara sederhana, cepat, dan terorganisir.</div></div></div><div class="about-label">Hubungi Admin</div><div class="cs-stack" style="margin-bottom:12px;"><a href="https://wa.me/6283821406716" target="_blank" rel="noopener noreferrer" class="cs-card is-wa"><span class="cs-card-icon"><i class="fab fa-whatsapp"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS WhatsApp</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a><a href="https://t.me/farishost1" target="_blank" rel="noopener noreferrer" class="cs-card is-tg"><span class="cs-card-icon"><i class="fab fa-telegram"></i></span><span class="cs-card-body"><span class="cs-card-title">Admin CS Telegram</span><span class="cs-card-sub">Klik untuk chat</span></span><i class="fas fa-chevron-right cs-card-chevron"></i></a></div><div class="about-label">Informasi</div><div class="info-card is-time"><div class="ic-icon"><i class="fas fa-clock"></i></div><div class="ic-body"><div class="ic-title">Jam Operasional</div><div class="ic-desc">Senin - Jumat · 09:00 – 17:00</div></div></div><div class="info-card is-sys"><div class="ic-icon"><i class="fas fa-signal"></i></div><div class="ic-body"><div class="ic-title">Status Sistem</div><div class="ic-desc"><span class="status-online"><span class="dot"></span> ONLINE</span></div></div></div><div class="about-label">Saluran Resmi</div><div class="info-card is-wa" style="cursor:pointer;" onclick="window.open('https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran WhatsApp</div><div class="ic-desc"><a href="https://whatsapp.com/channel/0029VbDWjXeADTOGKV6myR0v" target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-whatsapp"></i> Gabung Saluran</a></div></div></div><div class="info-card is-tg" style="cursor:pointer;" onclick="window.open('https://t.me/farisgmail1','_blank','noopener,noreferrer')"><div class="ic-icon"><i class="fas fa-bullhorn"></i></div><div class="ic-body"><div class="ic-title">Saluran Telegram</div><div class="ic-desc"><a href="https://t.me/farisgmail1" target="_blank" rel="noopener noreferrer" style="color:#229ED9;font-weight:600;" onclick="event.stopPropagation()"><i class="fab fa-telegram-plane"></i> Gabung Saluran</a></div></div></div><div class="about-foot"><i class="fas fa-shield-halved"></i> STOR GMAIL FARIS v 1.1 · &copy; 2026</div></div></div>
 
-  <!-- ===== MODAL TARIK SALDO (UPDATED) ===== -->
+  <!-- ===== MODAL TARIK SALDO (TAMPILAN BARU - logika tidak diubah) ===== -->
   <div class="modal-overlay" id="modalTarikSaldo">
-    <div class="modal">
-      <button class="modal-close" onclick="closeModal('modalTarikSaldo')"><i class="fas fa-xmark"></i></button>
-      <div class="modal-title"><i class="fas fa-arrow-down" style="color:var(--blue-bright);"></i> Tarik Saldo</div>
-      <div class="modal-sub">Pilih metode, minimal penarikan berbeda-beda. <strong>Fee langsung dipotong</strong>.</div>
-      <div class="saldo-info"><span class="label">Saldo Tersedia</span><span class="nominal" id="tarikSaldoDisplay"><span style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-right:2px;">Rp</span>0</span></div>
-      <form id="tarikForm" onsubmit="handleTarikSaldo(event)">
-        <div class="form-group"><label>Nominal Penarikan (Rp) — sudah termasuk fee</label><input type="text" id="tarikNominal" placeholder="Contoh: 10000" inputmode="numeric" oninput="formatRupiahInput(this)" /></div>
-        <div class="form-group"><label>Metode Penarikan</label>
-          <select id="tarikMetode">
-            <option value="DANA">DANA</option>
-            <option value="ShopeePay">ShopeePay</option>
-            <option value="GoPay">GoPay</option>
-            <option value="OVO">OVO</option>
-          </select>
+    <div class="modal tarik-modal">
+      <div class="tarik-head">
+        <span class="tarik-head-icon"><i class="fas fa-arrow-down"></i></span>
+        <div class="tarik-head-text">
+          <div class="modal-title">Tarik Saldo</div>
+          <div class="modal-sub">Pilih metode, minimal penarikan berbeda-beda. <strong>Fee langsung dipotong</strong>.</div>
         </div>
-        <!-- KETERANGAN MINIMAL -->
-        <div id="minimalInfo" style="font-size:13px;color:var(--text-secondary);margin-top:-10px;margin-bottom:12px;font-weight:600;"></div>
-        <div class="form-group"><label>Nomor Tujuan / Akun</label><input type="text" id="tarikAkun" placeholder="Masukkan nomor DANA / ShopeePay / GoPay / OVO" required /></div>
-        <div class="save-ewallet-row">
-          <input type="checkbox" id="saveEwalletCheck" checked />
-          <label for="saveEwalletCheck">Simpan nomor ini untuk penarikan berikutnya</label>
+        <button type="button" class="modal-close" aria-label="Tutup" onclick="closeModal('modalTarikSaldo')"><i class="fas fa-xmark"></i></button>
+      </div>
+      <form id="tarikForm" class="tarik-form" onsubmit="handleTarikSaldo(event)">
+        <div class="tarik-body">
+          <div class="saldo-info"><span class="label"><i class="fas fa-wallet"></i> Saldo Tersedia</span><span class="nominal" id="tarikSaldoDisplay"><span style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-right:2px;">Rp</span>0</span></div>
+
+          <div class="form-group tarik-field"><label for="tarikNominal">Nominal Penarikan (Rp) — sudah termasuk fee</label>
+            <div class="tarik-input">
+              <span class="tarik-input-pre">Rp</span>
+              <input type="text" id="tarikNominal" placeholder="Contoh: 10000" inputmode="numeric" oninput="formatRupiahInput(this)" />
+            </div>
+          </div>
+
+          <div class="form-group tarik-field"><label>Metode Penarikan</label>
+            <select id="tarikMetode" class="tarik-select-native" tabindex="-1" aria-hidden="true">
+              <option value="DANA">DANA</option>
+              <option value="ShopeePay">ShopeePay</option>
+              <option value="GoPay">GoPay</option>
+              <option value="OVO">OVO</option>
+            </select>
+            <div class="pay-grid" id="payGrid" role="radiogroup" aria-label="Metode penarikan">
+              <button type="button" class="pay-opt is-dana active" data-val="DANA" role="radio" aria-checked="true">
+                <span class="pay-logo"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="13" fill="#118EEA"/><path d="M14 14h11.5c6.2 0 10 3.9 10 10s-3.800 10-10 10H14z" fill="none" stroke="#fff" stroke-width="4.2" stroke-linejoin="round"/><path d="M14 24h16" stroke="#fff" stroke-width="4.2" stroke-linecap="round"/></svg></span>
+                <span class="pay-name">DANA</span><span class="pay-check"><i class="fas fa-check"></i></span>
+              </button>
+              <button type="button" class="pay-opt is-shopee" data-val="ShopeePay" role="radio" aria-checked="false">
+                <span class="pay-logo"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="13" fill="#EE4D2D"/><path d="M14.500 18.500h19l-1.800 15a2.500 2.500 0 0 1-2.500 2.200H18.800a2.500 2.500 0 0 1-2.500-2.200z" fill="#fff"/><path d="M19.500 21v-3a4.500 4.500 0 0 1 9 0v3" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M21 26.500c0-1.600 1.300-2.300 3-2.300s3 .8 3 2.200c0 3-5.800 1.700-5.800 4.800 0 1.300 1.200 2.100 2.800 2.100" fill="none" stroke="#EE4D2D" stroke-width="2.200" stroke-linecap="round"/></svg></span>
+                <span class="pay-name">ShopeePay</span><span class="pay-check"><i class="fas fa-check"></i></span>
+              </button>
+              <button type="button" class="pay-opt is-gopay" data-val="GoPay" role="radio" aria-checked="false">
+                <span class="pay-logo"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="13" fill="#00AED6"/><circle cx="24" cy="24" r="11" fill="none" stroke="#fff" stroke-width="4.200"/><circle cx="24" cy="24" r="4" fill="#fff"/><path d="M24 24h11" stroke="#fff" stroke-width="4.200" stroke-linecap="round"/></svg></span>
+                <span class="pay-name">GoPay</span><span class="pay-check"><i class="fas fa-check"></i></span>
+              </button>
+              <button type="button" class="pay-opt is-ovo" data-val="OVO" role="radio" aria-checked="false">
+                <span class="pay-logo"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="13" fill="#4C3494"/><ellipse cx="24" cy="24" rx="13" ry="10.500" fill="none" stroke="#fff" stroke-width="4.200"/><ellipse cx="24" cy="24" rx="4.500" ry="3.500" fill="#fff" opacity=".9"/></svg></span>
+                <span class="pay-name">OVO</span><span class="pay-check"><i class="fas fa-check"></i></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- KETERANGAN MINIMAL -->
+          <div id="minimalInfo" class="tarik-min"></div>
+
+          <div class="form-group tarik-field"><label for="tarikAkun">Nomor Tujuan / Akun</label>
+            <div class="tarik-input">
+              <span class="tarik-input-ico"><i class="fas fa-mobile-screen-button"></i></span>
+              <input type="text" id="tarikAkun" placeholder="Masukkan nomor DANA / ShopeePay / GoPay / OVO" required />
+            </div>
+          </div>
+
+          <div class="save-ewallet-row">
+            <input type="checkbox" id="saveEwalletCheck" checked />
+            <label for="saveEwalletCheck">Simpan nomor ini untuk penarikan berikutnya</label>
+          </div>
         </div>
-        <div class="fee-info">
-          <div class="fee-row"><span>Biaya Penarikan</span><span class="value" id="feeDisplay">Rp 500</span></div>
-          <div class="fee-row"><span>Nominal</span><span class="value" id="totalBayarDisplay">Rp 0</span></div>
-          <div class="fee-row"><span>Dana yang Diterima</span><span class="value highlight" id="danaDiterimaDisplay">Rp 0</span></div>
+
+        <div class="tarik-foot">
+          <div class="fee-info">
+            <div class="fee-row"><span>Biaya Penarikan</span><span class="value" id="feeDisplay">Rp 500</span></div>
+            <div class="fee-row"><span>Nominal</span><span class="value" id="totalBayarDisplay">Rp 0</span></div>
+            <div class="fee-row total"><span>Dana yang Diterima</span><span class="value highlight" id="danaDiterimaDisplay">Rp 0</span></div>
+          </div>
+          <button type="submit" class="btn-tarik" id="tarikSubmitBtn"><i class="fas fa-arrow-down"></i> Tarik Saldo</button>
+          <div id="tarikClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Penarikan sedang ditutup oleh admin.</div>
         </div>
-        <button type="submit" class="btn-tarik" id="tarikSubmitBtn"><i class="fas fa-arrow-down"></i> Tarik Saldo</button>
-        <div id="tarikClosedMsg" style="display:none;margin-top:10px;padding:12px 16px;background:rgba(239,68,68,0.10);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.20);color:#EF4444;font-weight:600;text-align:center;"><i class="fas fa-ban" style="margin-right:8px;"></i> Penarikan sedang ditutup oleh admin.</div>
       </form>
     </div>
   </div>
+  <script>
+  /* Tampilan saja: pilihan metode bergambar, tersambung ke <select id="tarikMetode"> asli */
+  (function(){
+    var sel=document.getElementById('tarikMetode'), grid=document.getElementById('payGrid'), ov=document.getElementById('modalTarikSaldo');
+    if(!sel||!grid) return;
+    var opts=grid.querySelectorAll('.pay-opt');
+    function sync(){
+      var v=sel.value;
+      opts.forEach(function(b){var on=b.getAttribute('data-val')===v;b.classList.toggle('active',on);b.setAttribute('aria-checked',on?'true':'false');});
+    }
+    opts.forEach(function(b){
+      b.addEventListener('click',function(){
+        sel.value=b.getAttribute('data-val');
+        sel.dispatchEvent(new Event('input',{bubbles:true}));
+        sel.dispatchEvent(new Event('change',{bubbles:true}));
+        sync();
+      });
+    });
+    sel.addEventListener('change',sync);
+    try{
+      var d=Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,'value');
+      Object.defineProperty(sel,'value',{configurable:true,get:function(){return d.get.call(this);},set:function(v){d.set.call(this,v);sync();}});
+    }catch(e){}
+    if(window.MutationObserver) new MutationObserver(sync).observe(ov,{attributes:true,attributeFilter:['class']});
+    sync();
+  })();
+  </script>
 
   <div class="toast-container" id="toastContainer"></div>
 
